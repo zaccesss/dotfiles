@@ -1,0 +1,44 @@
+name: Shell Check
+
+# Validates shell scripts on every push to main and every pull request.
+# shellcheck does not support zsh natively - we run it in bash-compatibility
+# mode which catches the vast majority of syntax and logic errors.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  shellcheck:
+    name: Lint shell scripts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Run ShellCheck on Mac zshrc
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: './mac'
+          additional_files: 'zshrc'
+          severity: warning
+        env:
+          SHELLCHECK_OPTS: --shell=bash
+
+      - name: Run ShellCheck on Linux bashrc
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: './linux'
+          additional_files: 'bashrc'
+          severity: warning
+        env:
+          SHELLCHECK_OPTS: --shell=bash

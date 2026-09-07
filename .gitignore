@@ -1,0 +1,27 @@
+# OS metadata - never commit these
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# Editor and IDE local files - not for version control
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files
+*.bak
+*.orig
+*.tmp
+
+# Logs
+*.log
+
+# Local idea notes - private scratchpad, never publish
+will-do/

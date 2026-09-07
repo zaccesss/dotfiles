@@ -1,0 +1,337 @@
+# Starship prompt config - shared across Mac (zsh), Linux (bash) and Windows (PowerShell)
+# Symlink to ~/.config/starship.toml on each device.
+# One file, all 3 platforms, no platform-specific versions needed.
+#
+# To disable Starship entirely: comment out the eval line in 34-starship.zsh / .sh / .ps1
+# To hide a specific module: add disabled = true under its [section] below
+#
+# Colour theme: uses Starship's named ANSI colours (bold green/cyan/yellow/red/blue/purple/
+# orange, plus bright- variants), not fixed hex values, so every colour here renders using the
+# terminal's own theme, matching the welcome banner exactly, since the banner also uses plain
+# ANSI escape codes (02-colours.zsh). A fixed hex palette looked visually inconsistent with the
+# banner, this doesn't. Every navigational module (directory, git, hostname, jobs, duration,
+# battery, time) gets a colour distinct from every other navigational module on the same line,
+# using a bright- variant where the base 8 colours run out. Language modules reuse colours more
+# freely since at most one renders at a time in practice, picked to match each language's real
+# brand identity as closely as the base ANSI palette allows.
+
+# Explicit format: Starship's own default order (confirmed against its docs, not guessed),
+# minus $time, which moves to right_format below instead of sharing line 2 with $character.
+# $hostname already sits before $directory in the real default order, "machine, then folder"
+# for an SSH session already happens without needing to reorder anything.
+format = """
+$username\
+$hostname\
+$localip\
+$shlvl\
+$singularity\
+$kubernetes\
+$nats\
+$directory\
+$vcsh\
+$fossil_branch\
+$fossil_metrics\
+$git_branch\
+$git_commit\
+$git_state\
+$git_metrics\
+$git_status\
+$hg_branch\
+$hg_state\
+$pijul_channel\
+$docker_context\
+$package\
+$bun\
+$c\
+$cmake\
+$cobol\
+$cpp\
+$daml\
+$dart\
+$deno\
+$dotnet\
+$elixir\
+$elm\
+$erlang\
+$fennel\
+$fortran\
+$gleam\
+$golang\
+$gradle\
+$haskell\
+$haxe\
+$helm\
+$java\
+$julia\
+$kotlin\
+$lua\
+$maven\
+$mojo\
+$nim\
+$nodejs\
+$ocaml\
+$odin\
+$opa\
+$perl\
+$php\
+$pulumi\
+$purescript\
+$python\
+$quarto\
+$raku\
+$rlang\
+$red\
+$ruby\
+$rust\
+$scala\
+$solidity\
+$swift\
+$terraform\
+$typst\
+$vlang\
+$vagrant\
+$xmake\
+$zig\
+$buf\
+$guix_shell\
+$nix_shell\
+$conda\
+$pixi\
+$meson\
+$spack\
+$memory_usage\
+$aws\
+$gcloud\
+$openstack\
+$azure\
+$direnv\
+$env_var\
+$mise\
+$crystal\
+$custom\
+$sudo\
+$cmd_duration\
+$line_break\
+$jobs\
+$battery\
+$status\
+$container\
+$netns\
+$os\
+$shell\
+$character"""
+
+# Time on the right edge of line 1 instead of sharing line 2 with the prompt character,
+# frees up a whole line since it no longer needs its own row
+right_format = "$time"
+
+# Disable cloud modules I don't use so startup stays fast
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[azure]
+disabled = true
+
+# Jobs - count of background/suspended jobs, easy to lose track of otherwise
+[jobs]
+symbol = "+"
+style = "bold bright-cyan"
+
+# Battery - only shows while discharging. Same 10%/30% threshold split as Starship's own
+# default (already sensible). Bright red below 10%, distinct from cmd_duration's own bright
+# red since they never appear on the same line, plain yellow 10-30%, hidden above 30%.
+[battery]
+[[battery.display]]
+threshold = 10
+style = "bold bright-red"
+
+[[battery.display]]
+threshold = 30
+style = "bold yellow"
+
+# Prompt character - green on success, red on failure, the one deliberately universal
+# green/red pair in this theme, since success/failure is a widely understood convention
+[character]
+success_symbol = "[>](bold green)"
+error_symbol = "[>](bold bright-red)"
+
+# Git branch
+[git_branch]
+symbol = " "
+style = "bold cyan"
+
+# Git status - ASCII so it works without a Nerd Font
+[git_status]
+conflicted = "!"
+ahead = "^${count}"
+behind = "v${count}"
+diverged = "^${ahead_count}v${behind_count}"
+modified = "*"
+staged = "+"
+untracked = "?"
+deleted = "x"
+style = "bold yellow"
+
+# Directory - shorten to 3 segments, collapse at repo root
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+style = "bold blue"
+
+# Hostname - only shown over SSH, so a machine's own local prompt stays uncluttered but a
+# session onto the home lab cluster (see 10-ssh) always makes clear which node you are on
+[hostname]
+ssh_only = true
+disabled = false
+format = "[$hostname]($style) "
+style = "bold purple"
+
+# Python - shows venv name when inside a Python project. Python's own brand yellow.
+[python]
+detect_extensions = ["py"]
+detect_files = ["pyproject.toml", "requirements.txt", "setup.py", ".python-version"]
+style = "bold yellow"
+
+# Node - only shows when package.json is present. Node's own brand green.
+[nodejs]
+detect_files = ["package.json"]
+style = "bold green"
+
+# Go - the gopher's own brand cyan-blue
+[golang]
+detect_extensions = ["go"]
+detect_files = ["go.mod"]
+style = "bold cyan"
+
+# Rust - the Rust Foundation's own brand orange
+[rust]
+detect_extensions = ["rs"]
+detect_files = ["Cargo.toml"]
+style = "bold orange"
+
+# Java - Java's own brand orange-red
+[java]
+detect_extensions = ["java"]
+style = "bold red"
+
+# Kotlin - split out from Java, Starship has its own native module. Kotlin's own brand purple.
+[kotlin]
+detect_extensions = ["kt", "kts"]
+style = "bold purple"
+
+# Scala - split out from Java, Starship has its own native module. Scala's own brand red.
+[scala]
+detect_extensions = ["scala"]
+style = "bold red"
+
+# Maven - Starship's own native module, added in Starship 1.25.0. Distinct from the generic
+# Java version so a pom.xml-based project shows Maven itself, not just "some Java is here".
+[maven]
+style = "bold red"
+
+# PHP - PHP's own brand blue-purple
+[php]
+detect_extensions = ["php"]
+style = "bold purple"
+
+# Ruby - Ruby's own brand red
+[ruby]
+detect_extensions = ["rb"]
+detect_files = ["Gemfile"]
+style = "bold red"
+
+# R - R's own community brand leans blue (not from an official brand guide, the R Foundation
+# has never published one, but the shade used consistently across r-project.org and CRAN)
+[rlang]
+style = "bold blue"
+
+# .NET / C# - Microsoft's own .NET brand purple
+[dotnet]
+detect_extensions = ["cs", "csproj", "fsproj"]
+style = "bold purple"
+
+# Docker - shows when a Dockerfile or compose file is present. Docker's own brand blue.
+[docker_context]
+detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
+style = "bold blue"
+
+# Kubernetes - shows the current kubectl context and namespace whenever a kube config is
+# active, a real safety net against running a command against the wrong cluster. Kubernetes'
+# own brand blue, distinct from Docker's.
+[kubernetes]
+disabled = false
+style = "bold bright-blue"
+
+# Helm - shows when a Chart.yaml or helmfile.yaml is present. Same bright blue as Kubernetes,
+# the two are closely related tools that rarely show alongside directory's or Docker's plain
+# blue on the same line, Helm has no single published official colour of its own.
+[helm]
+style = "bold bright-blue"
+
+# Lua - Lua's own brand leans navy, closest named colour is blue
+[lua]
+detect_extensions = ["lua"]
+style = "bold blue"
+
+# Zig - Zig's own brand gold
+[zig]
+detect_extensions = ["zig"]
+style = "bold yellow"
+
+# Swift - Swift's own brand orange-red, from swift.org
+[swift]
+detect_extensions = ["swift"]
+style = "bold orange"
+
+# Elixir - Elixir's own brand purple
+[elixir]
+detect_extensions = ["ex", "exs"]
+detect_files = ["mix.exs"]
+style = "bold purple"
+
+# Haskell - only shows when stack.yaml or .cabal files are present. Haskell's own brand purple.
+[haskell]
+detect_files = ["stack.yaml", "cabal.project"]
+detect_extensions = ["hs", "cabal"]
+style = "bold purple"
+
+# Deno - only shows when deno.json or deno.lock is present. Deno's own brand mint green.
+[deno]
+detect_files = ["deno.json", "deno.jsonc", "deno.lock"]
+style = "bold green"
+
+# Bun - only shows when bun.lockb is present. A warm gold close to Bun's own pale brand tone,
+# brightened for terminal visibility since Bun's actual palette is too pale to read on a
+# dark background.
+[bun]
+detect_files = ["bun.lockb"]
+style = "bold yellow"
+
+# Dart / Flutter - only shows when pubspec.yaml is present. Dart's own brand blue.
+[dart]
+detect_files = ["pubspec.yaml"]
+style = "bold blue"
+
+# C / C++ - only shows when .c, .cpp, .h files are present
+[c]
+detect_extensions = ["c", "cpp", "h", "hpp"]
+style = "bold blue"
+
+# Command duration - shows how long the last command took if over 2s
+[cmd_duration]
+min_time = 2_000
+style = "bold bright-red"
+
+# Time - redraws on every prompt, the only way to get a clock that actually stays current
+# without opening a new terminal, unlike the one-time welcome banner's static timestamp.
+# White, not yellow, yellow's meaning everywhere else in this theme is "warning" (git_status,
+# the banner's own date line), time isn't a warning, keeping it off yellow keeps that meaning
+# unambiguous.
+[time]
+disabled = true
+format = "[$time]($style) "
+time_format = "%a %d %b  %H:%M:%S"
+style = "bold white"
