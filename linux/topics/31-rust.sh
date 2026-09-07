@@ -1,0 +1,18 @@
+# =============================================================================
+# Rust and Cargo
+# =============================================================================
+
+alias cr="cargo run"
+alias cb="cargo build"
+alias cbr="cargo build --release"
+alias ct="cargo test"
+alias ccheck="cargo check"
+alias cfmt="cargo fmt"
+alias cclean="cargo clean"
+alias cinit="cargo init"
+alias cadd="cargo add"
+alias crm="cargo remove"
+alias cupd="cargo update"
+alias cdoc="cargo doc --open"
+alias cbench="cargo bench"
+alias cclippy="cargo clippy"
