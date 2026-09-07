@@ -1,0 +1,24 @@
+# Dependabot configuration.
+# Checks for outdated GitHub Actions versions weekly and opens a pull request
+# for each update so action pins stay current without manual tracking.
+
+version: 2
+
+updates:
+  # GitHub Actions workflow dependencies (pins action versions)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    groups:
+      actions-patch-minor:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+          - "minor"
+    labels:
+      - "chore"
+    commit-message:
+      prefix: "chore"

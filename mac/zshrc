@@ -1,0 +1,37 @@
+# =============================================================================
+# dotfiles - macOS zsh profile
+# github.com/zaccesss/dotfiles - MIT licence
+#
+# I built this as a topic loader so each group of aliases and functions lives
+# in its own file under mac/topics/. That keeps things isolated - adding a
+# new language section means creating one file, not scrolling through hundreds
+# of lines. The numbered prefix guarantees load order: colours load before
+# anything that uses colour variables, PATH loads before any tool that depends
+# on it being set.
+#
+# To deploy on a new machine, copy this file to ~/.zshrc:
+#   cp ~/dev/github/repos/dotfiles/mac/zshrc ~/.zshrc
+# All topic files are sourced relative to DOTFILES so they're found automatically
+# as long as the repo is cloned to the standard path.
+# =============================================================================
+
+DOTFILES="${DOTFILES:-$HOME/dev/github/repos/dotfiles}"
+
+for _f in "$DOTFILES/mac/topics/"*.zsh; do
+    # shellcheck disable=SC1090
+    [[ -f "$_f" ]] && source "$_f"
+done
+unset _f
+
+# =============================================================================
+# Welcome banner - printed after all topics load so colour variables are ready
+# =============================================================================
+
+echo ""
+echo "${BOLD}${CYAN}---------------------------------------------${RESET}"
+echo "${BOLD}${CYAN}  🚀 Welcome back, ${USER}!${RESET}"
+echo "${GREEN}  ✅ macOS profile loaded${RESET}"
+echo "${GREEN}  💻 $(scutil --get ComputerName) - zsh${RESET}"
+echo "${YELLOW}  📅 $(date '+%a %d %b %Y  %H:%M')${RESET}"
+echo "${BOLD}${CYAN}---------------------------------------------${RESET}"
+echo ""

@@ -1,0 +1,29 @@
+# =============================================================================
+# dotfiles - Linux bash profile
+# github.com/zaccesss/dotfiles - MIT licence
+#
+# Topic loader - all aliases and functions live in linux/topics/*.sh.
+# Deploy on a new machine by appending a source line to ~/.bashrc:
+#   echo "source $HOME/dev/github/repos/dotfiles/linux/bashrc" >> ~/.bashrc
+# =============================================================================
+
+DOTFILES="${DOTFILES:-$HOME/dev/github/repos/dotfiles}"
+
+for _f in "$DOTFILES/linux/topics/"*.sh; do
+    # shellcheck disable=SC1090
+    [[ -f "$_f" ]] && source "$_f"
+done
+unset _f
+
+# =============================================================================
+# Welcome banner - printed after all topics load so colour variables are ready
+# =============================================================================
+
+echo ""
+echo -e "${BOLD}${CYAN}---------------------------------------------${RESET}"
+echo -e "${BOLD}${CYAN}  🚀 Welcome back, ${USER}!${RESET}"
+echo -e "${GREEN}  ✅ Linux profile loaded${RESET}"
+echo -e "${GREEN}  💻 $(hostname) - bash${RESET}"
+echo -e "${YELLOW}  📅 $(date '+%a %d %b %Y  %H:%M')${RESET}"
+echo -e "${BOLD}${CYAN}---------------------------------------------${RESET}"
+echo ""
