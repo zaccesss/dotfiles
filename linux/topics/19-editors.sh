@@ -25,9 +25,6 @@ extrestore() {
     done < "$file"
 }
 
-# Cursor - AI-native editor, a VS Code fork that accepts the same CLI flags
-cursor() { if command -v cursor &>/dev/null; then cursor "${1:-.}"; else echo "cursor not found on PATH"; fi }
-
 # JetBrains - Toolbox scripts are already on PATH from 01-path.sh
 # These functions check for the script and print a helpful message if missing.
 _jb_open() {

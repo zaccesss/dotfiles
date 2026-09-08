@@ -29,9 +29,6 @@ extrestore() {
     done < "$file"
 }
 
-# Cursor - AI-native editor, a VS Code fork that accepts the same CLI flags
-cursor() { if command -v cursor &>/dev/null; then cursor "${1:-.}"; else open -a "Cursor" "${1:-.}"; fi }
-
 # JetBrains IDE launchers - open the current dir (or a path) in each IDE.
 # These use the Toolbox shell scripts. If Toolbox is not installed, fall back
 # to 'open -a' which opens the app without passing a path argument.

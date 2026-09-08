@@ -1,0 +1,52 @@
+# Produced by `brew bundle dump --describe --no-vscode`. VS Code extensions are excluded since
+# the separate .vscode repo's own extensions.txt is the source of truth for those.
+
+brew "assimp" # Portable library for importing many well-known 3D model formats
+brew "binaryen" # Compiler infrastructure and toolchain library for WebAssembly
+brew "gh" # GitHub command-line tool
+brew "gifsicle" # GIF image/animation creator/editor
+brew "git" # Distributed revision control system
+brew "git-lfs" # Git extension for versioning large files
+brew "jp2a" # Convert JPG images to ASCII
+brew "libpq" # Postgres C API library
+brew "librsvg" # Library to render SVG files using Cairo
+brew "lychee" # Fast, async, resource-friendly link checker
+brew "node" # Open-source, cross-platform JavaScript runtime environment
+brew "openjdk" # Development kit for the Java programming language
+brew "poppler" # PDF rendering library (based on the xpdf-3.0 code base)
+brew "postgresql@18", link: true # Object-relational database system
+brew "powershell" # Command-line shell and scripting language
+brew "python@3.14" # Interpreted, interactive, object-oriented programming language
+brew "ruff" # Extremely fast Python linter, written in Rust
+brew "shellcheck" # Static analysis and lint tool, for (ba)sh scripts
+brew "starship" # Cross-shell prompt for astronauts
+brew "tree" # Display directories as trees (with optional colour/HTML output)
+
+cask "adobe-acrobat-reader" # View, print and comment on PDF documents
+cask "anaconda" # Distribution of the Python and R programming languages for scientific computing
+cask "anki" # Memory training application
+cask "arduino-ide" # Electronics prototyping platform
+cask "autodesk-fusion" # Integrated CAD, CAM, CAE and PCB software
+cask "corelocationcli" # Prints location information from CoreLocation
+cask "cyberduck" # Server and cloud storage browser
+cask "drawio" # Online diagram software
+cask "eclipse-java" # Eclipse IDE for Java developers
+cask "figma" # Collaborative design software
+cask "font-jetbrains-mono-nerd-font" # JetBrains Mono, patched with Nerd Font icons
+cask "jetbrains-toolbox" # JetBrains tools manager
+cask "kicad" # Electronics design automation suite
+cask "libreoffice" # Free cross-platform office suite, fresh version
+cask "ltspice" # SPICE simulation software, schematic capture and waveform viewer
+cask "mamp" # Web development solution with Apache, Nginx, PHP and MySQL
+cask "notion" # App to write, plan, collaborate and get organised
+cask "obsidian" # Knowledge base that works on top of a local folder of plain text markdown
+cask "processing" # Flexible software sketchbook and a language for learning how to code
+cask "raycast" # Control your tools with a few keystrokes
+cask "rectangle" # Move and resize windows using keyboard shortcuts or snap areas
+cask "stats" # System monitor for the menu bar
+cask "telegram" # Messaging app with a focus on speed and security
+cask "thonny" # Python IDE for beginners
+cask "zoom" # Video communication and virtual meeting platform
+cask "zotero" # Collect, organise, cite and share research sources
+
+npm "vercel" # Vercel deployment CLI

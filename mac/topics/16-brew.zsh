@@ -62,3 +62,10 @@ alias bservices="brew services list"
 # bservicestart/bservicestop: start or stop a brew-managed background service
 alias bservicestart="brew services start"
 alias bservicestop="brew services stop"
+
+# bbundle: install every package listed in mac/Brewfile, the way a new machine gets set up
+alias bbundle='brew bundle install --file="$DOTFILES/mac/Brewfile"'
+
+# bdump: regenerate mac/Brewfile from what is actually installed right now.
+# --no-vscode skips VS Code extensions, the separate .vscode repo is the source of truth there.
+alias bdump='brew bundle dump --describe --no-vscode --force --file="$DOTFILES/mac/Brewfile"'

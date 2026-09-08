@@ -183,7 +183,7 @@ The profile covers a wide range of tools. Here is a summary grouped by area. For
 
 | Area | Key commands | Topic file |
 | --- | --- | --- |
-| Homebrew | `bup`, `bins`, `brm`, `brewclean`, `brewoutd` | [16-brew.zsh](../mac/topics/16-brew.zsh) |
+| Homebrew | `bup`, `bins`, `brm`, `brewclean`, `brewoutd`, `bbundle`, `bdump` | [16-brew.zsh](../mac/topics/16-brew.zsh) |
 | GitHub CLI | `ghpr`, `ghprc`, `ghclone`, `ghissue`, `ghgist`, `ghrun` | [17-gh.zsh](../mac/topics/17-gh.zsh) |
 | Node/nvm | `nvminstall`, `nvmuse`, `nvmlts` (lazy-loaded) | [18-nvm.zsh](../mac/topics/18-nvm.zsh) |
 | Docker | `dps`, `drun2`, `dcb`, `dcu`, `dcd`, `dlogs`, `dex` | [22-docker.zsh](../mac/topics/22-docker.zsh) |
@@ -199,6 +199,18 @@ The profile covers a wide range of tools. Here is a summary grouped by area. For
 | Rust | `cr`, `cb`, `cbr`, `ct`, `ccheck`, `cfmt`, `cclippy` | [31-rust.zsh](../mac/topics/31-rust.zsh) |
 | Java | `mvnt`, `mvnb`, `mvni`, `mvnc`, `gwb`, `gwt`, `gwr` | [32-java.zsh](../mac/topics/32-java.zsh) |
 | C/C++ | `cc2`, `ccrun`, `ccdbg`, `ccsan`, `cppc`, `cfmt2` | [33-c-cpp.zsh](../mac/topics/33-c-cpp.zsh) |
+
+---
+
+## Homebrew packages
+
+[mac/Brewfile](../mac/Brewfile) lists every formula, cask and global npm package installed on this
+machine via Homebrew, produced by `brew bundle dump --describe --no-vscode`. VS Code extensions are
+excluded, the separate `.vscode` repo's own `extensions.txt` is the source of truth there.
+
+- **New machine**: `bbundle` installs everything listed in `mac/Brewfile`.
+- **After installing or removing something with brew**: `bdump` regenerates `mac/Brewfile` from
+  what is actually installed.
 
 ---
 

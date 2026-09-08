@@ -14,8 +14,5 @@ export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 # Python 3.14 shims so 'python' and 'pip' resolve to the brew-managed version
 export PATH="/opt/homebrew/opt/python@3.14/libexec/bin:$PATH"
 
-# Antigravity tools
-export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
-
 # User-installed scripts and binaries
 export PATH="$HOME/.local/bin:$PATH"

@@ -21,9 +21,6 @@ function extrestore {
     Get-Content $File | ForEach-Object { code --install-extension $_ }
 }
 
-# Cursor - AI-native editor, a VS Code fork that accepts the same CLI flags
-function cursor { param($P = ".") cursor.exe $P }
-
 # JetBrains IDE launchers - Toolbox installs scripts to
 # %APPDATA%\JetBrains\Toolbox\scripts\ - ensure that's on PATH
 function _jb_open {
