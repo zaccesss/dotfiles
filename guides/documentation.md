@@ -379,6 +379,12 @@ Defined in `16-brew`. Note: `binsc` (cask install) is macOS only. Linuxbrew does
 | `brewoutd` | List formulae with available updates |
 | `bpin <formula>` | Pin a formula to prevent upgrades |
 | `bunpin <formula>` | Unpin a formula |
+| `bbundle` | Install every package in `mac/Brewfile` |
+| `bdump` | Regenerate `mac/Brewfile` from what's actually installed right now |
+
+`mac/Brewfile` lists every formula, cask and global npm package on this machine, produced by
+`brew bundle dump --describe --no-vscode`. VS Code extensions are excluded, the separate `.vscode`
+repo's own `extensions.txt` is the source of truth for those.
 
 ### winget and Chocolatey (Windows)
 
