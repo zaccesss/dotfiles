@@ -6,6 +6,17 @@ Versions increment by one patch step (0.0.1) per release.
 
 ---
 
+## [1.0.1] - 2026-09-08
+
+### Added
+
+- `mac/Brewfile`, every Homebrew formula, cask and global npm package on this machine, produced by
+  `brew bundle dump --describe --no-vscode` (VS Code extensions excluded, the separate `.vscode`
+  repo's own `extensions.txt` is the source of truth for those)
+- `bbundle`/`bdump` aliases in `16-brew.zsh` to install from and regenerate `mac/Brewfile`
+
+---
+
 ## [1.0.0] - 2026-08-19
 
 ### Added
