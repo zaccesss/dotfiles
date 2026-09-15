@@ -1,0 +1,65 @@
+name: Bug report
+description: Report an alias or function that misfires or breaks on your platform
+title: "fix: "
+labels: ["bug"]
+assignees:
+  - zaccesss
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What
+      description: A short description of what is broken.
+    validations:
+      required: true
+  - type: checkboxes
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - label: macOS
+        - label: Linux
+        - label: Windows
+  - type: input
+    id: location
+    attributes:
+      label: Which topic file and command
+      placeholder: "04-git's gundo function, 22-docker's dprune alias"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: "shell/version, e.g. zsh --version, bash --version or $PSVersionTable.PSVersion"
+    validations:
+      required: false
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Output, screenshots or related issues.
+    validations:
+      required: false
