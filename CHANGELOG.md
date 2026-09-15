@@ -6,6 +6,12 @@ Versions increment by one patch step (0.0.1) per release.
 
 ---
 
+## [1.0.2] - 2026-09-15
+
+### Changed
+
+- Issue templates converted from markdown frontmatter to YAML issue forms
+
 ## [1.0.1] - 2026-09-08
 
 ### Added
