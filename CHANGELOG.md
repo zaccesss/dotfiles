@@ -6,6 +6,12 @@ Versions increment by one patch step (0.0.1) per release.
 
 ---
 
+## [1.0.5] - 2026-09-17
+
+### Changed
+
+- `reload-profile` now hard-clears the terminal, including scrollback, before re-sourcing the profile, so the reprinted welcome banner lands on a clean screen instead of stacking under the old one
+
 ## [1.0.4] - 2026-09-17
 
 ### Added

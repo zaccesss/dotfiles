@@ -149,7 +149,7 @@ Defined in [mac/topics/06-functions.zsh](../mac/topics/06-functions.zsh).
 | `mkt <name>` | Scaffold a new TypeScript/Node project |
 | `dot` | `cd` to the dotfiles repo |
 | `edit-profile` | Open `~/.zshrc` in VS Code |
-| `reload-profile` | Re-source the profile without restarting the terminal |
+| `reload-profile` | Hard-clear the terminal then re-source the profile without restarting it |
 
 `cmds` pipes its output through `less`, the same mechanism `git diff` and `man` use, so real scrolling and a clean `q`-to-exit work regardless of terminal or output length.
 

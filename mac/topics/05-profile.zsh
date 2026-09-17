@@ -6,4 +6,6 @@
 # =============================================================================
 
 alias edit-profile="code ~/.zshrc"
-alias reload-profile="source ~/.zshrc"
+# Hard-clear (including scrollback) before re-sourcing, so the reprinted welcome banner
+# lands on a clean screen instead of stacking under the old one.
+alias reload-profile="printf '\033[2J\033[3J\033[H'; source ~/.zshrc"
