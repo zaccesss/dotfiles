@@ -18,6 +18,12 @@ alias dprune="docker system prune -f"
 alias dprunea="docker system prune -af --volumes" # aggressive - also drops unused images and volumes
 alias dstats="docker stats"
 alias dinspect="docker inspect"
+
+# dip: print a container's IP address in one step, for reaching it directly rather than
+# through a published port
+dip() {
+    docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "${1:?Usage: dip <container>}"
+}
 alias dnet="docker network ls"
 alias dvol="docker volume ls"
 alias dpull="docker pull"

@@ -16,6 +16,7 @@ alias kpods="kubectl get pods -A"
 
 # Get resources by type
 alias kgp="kubectl get pods"
+alias kgpw="kubectl get pods -w"
 alias kgs="kubectl get svc"
 alias kgd="kubectl get deployments"
 alias kgn="kubectl get nodes"
@@ -40,6 +41,12 @@ alias krollout="kubectl rollout status"
 alias kcur="kubectl config current-context"
 kuse() {
     kubectl config use-context "${1:?Usage: kuse <context>}"
+}
+
+# kn: switch the current context's default namespace, so every kubectl command that follows
+# targets it without needing -n on every call
+kn() {
+    kubectl config set-context --current --namespace="${1:?Usage: kn <namespace>}"
 }
 
 # Exec into a pod, defaulting to sh since not every image ships bash

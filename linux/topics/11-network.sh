@@ -41,3 +41,7 @@ alias nginx-access="sudo tail -f /var/log/nginx/access.log"
 
 # gateway: show the default gateway - useful when a node's IP config looks wrong
 alias gateway="ip route | grep default"
+
+# flushdns: clear the systemd-resolved DNS cache, my go-to when a site still resolves to a
+# stale IP after a DNS change. Assumes systemd-resolved (default on Ubuntu/WSL2)
+alias flushdns="sudo resolvectl flush-caches"

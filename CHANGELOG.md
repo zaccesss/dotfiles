@@ -6,6 +6,16 @@ Versions increment by one patch step (0.0.1) per release.
 
 ---
 
+## [1.0.6] - 2026-09-17
+
+### Added
+
+- `battery`, `flushdns` and `please`, three genuine gaps found while auditing the existing alias set
+- `kn` and `kgpw`, switching the current namespace and watching pods live, since `kuse` only switched context and `kgp` only listed pods once
+- `dip`, printing a container's IP address in one step
+- Eleven quick-launcher functions sharing one internal helper: `gh-search`, `so`, `mdn`, `npmjs`, `pypi`, `caniuse`, `leetcode`, `neetcode`, `codeforces`, `translate`, `regex101`
+- All of the above documented in `guides/documentation.md`, the three platform guides and the `cmds` cheat-sheet
+
 ## [1.0.5] - 2026-09-17
 
 ### Changed
