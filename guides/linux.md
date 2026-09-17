@@ -133,6 +133,7 @@ Defined in [linux/topics/04-git.sh](../linux/topics/04-git.sh). Identical to mac
 | `gundo` | Undo last commit, keep changes staged |
 | `gclean` | Remove untracked files: `git clean -fd` |
 | `gcp "message"` | Stage all, commit and push in one step |
+| `gclean-branches` | Delete every local branch already merged into main in one step |
 
 ---
 
@@ -179,6 +180,7 @@ Defined in [linux/topics/07-utilities.sh](../linux/topics/07-utilities.sh) and [
 | `localip` | Print LAN IP via `hostname -I` |
 | `weather` | Print weather for current location |
 | `temp` | Print temperature only |
+| `google <query>` | Open the default browser straight to a search for `<query>` |
 | `extract <archive>` | Extract any archive format |
 | `dataurl <file>` | Convert a file to a base64 data URL |
 | `envup [file]` | Load a `.env` file into the current session |

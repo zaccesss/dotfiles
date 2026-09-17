@@ -78,6 +78,7 @@ _cmds_body() {
     echo -e "  ${CYAN}gs / ga / gaa / gcmt / gpsh / gcp / gpul${RESET}   ${WHITE}status/add/commit/push/pull${RESET}"
     echo -e "  ${CYAN}glog / gco / gcb / gb / gd${RESET}           ${WHITE}log/checkout/branch/diff${RESET}"
     echo -e "  ${CYAN}gundo / gbd / gclean${RESET}                 ${WHITE}undo/delete branch/clean${RESET}"
+    echo -e "  ${CYAN}gclean-branches${RESET}                      ${WHITE}delete every local branch already merged into main${RESET}"
     echo -e "  ${CYAN}automerge${RESET}                            ${WHITE}squash auto-merge the current PR and delete the branch${RESET}"
     echo ""
 
@@ -104,6 +105,7 @@ _cmds_body() {
     echo -e "  ${CYAN}weather${RESET}       ${WHITE}terminal weather via wttr.in${RESET}"
     echo -e "  ${CYAN}duh${RESET}           ${WHITE}disk usage of current dir sorted by size${RESET}"
     echo -e "  ${CYAN}psgrep${RESET}        ${WHITE}ps aux | grep${RESET}"
+    echo -e "  ${CYAN}google${RESET}        ${WHITE}open the browser straight to a Google search for the given query${RESET}"
     echo ""
 
     echo -e "${BOLD}${MAGENTA}COMMUNITY TOOLS${RESET}"

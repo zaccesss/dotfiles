@@ -20,6 +20,13 @@ function pubip  { Invoke-RestMethod -Uri "https://ifconfig.me" }
 # Terminal weather
 function weather { (Invoke-WebRequest -Uri "wttr.in?format=3").Content }
 
+# google: open the default browser straight to a Google search for the given query
+function google {
+    param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Query)
+    $encoded = [System.Uri]::EscapeDataString($Query -join ' ')
+    Start-Process "https://www.google.com/search?q=$encoded"
+}
+
 # path: print each PATH entry on its own line - easier to scan than one long semicolon-separated string
 function path { $env:Path -split ';' }
 
