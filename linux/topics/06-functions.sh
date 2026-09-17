@@ -93,7 +93,7 @@ _cmds_body() {
     echo -e "  ${CYAN}mkcd${RESET}            ${WHITE}mkdir + cd in one step${RESET}"
     echo -e "  ${CYAN}cls${RESET}             ${WHITE}hard-clear terminal (including scrollback) and reprint welcome banner${RESET}"
     echo -e "  ${CYAN}edit-profile${RESET}    ${WHITE}open ~/.bashrc in VS Code${RESET}"
-    echo -e "  ${CYAN}reload-profile${RESET}  ${WHITE}source ~/.bashrc${RESET}"
+    echo -e "  ${CYAN}reload-profile${RESET}  ${WHITE}hard-clear the terminal then source ~/.bashrc${RESET}"
     echo -e "  ${CYAN}dot${RESET}             ${WHITE}pull latest dotfiles and apply them${RESET}"
     echo -e "  ${CYAN}cmds${RESET}            ${WHITE}show this command reference (q to exit)${RESET}"
     echo -e "  ${CYAN}lc / listcmds${RESET}   ${WHITE}dump every alias, function and PATH executable actually loaded${RESET}"

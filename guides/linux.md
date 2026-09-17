@@ -161,7 +161,7 @@ Defined in [linux/topics/06-functions.sh](../linux/topics/06-functions.sh). Iden
 | `mkt <name>` | Scaffold a new TypeScript/Node project |
 | `dot` | `cd` to the dotfiles repo |
 | `edit-profile` | Open `~/.bashrc` in VS Code |
-| `reload-profile` | Re-source the profile without restarting the terminal |
+| `reload-profile` | Hard-clear the terminal then re-source the profile without restarting it |
 
 ---
 

@@ -83,7 +83,7 @@ function _cmdsBody {
     "  `e[36mmkcd`e[0m`e[37m            mkdir + cd in one step`e[0m"
     "  `e[36mrefresh`e[0m`e[37m         hard-clear terminal and reprint welcome banner`e[0m"
     "  `e[36mEdit-Profile`e[0m`e[37m    open profile in VS Code`e[0m"
-    "  `e[36mReload-Profile`e[0m`e[37m  reload profile in current session`e[0m"
+    "  `e[36mReload-Profile`e[0m`e[37m  hard-clear the terminal then reload profile in current session`e[0m"
     "  `e[36mdot`e[0m`e[37m             pull latest dotfiles and apply them`e[0m"
     "  `e[36mcmds`e[0m`e[37m            show this command reference (q to exit)`e[0m"
     "  `e[36mlc / List-Cmds`e[0m`e[37m  dump every alias, function and PATH executable actually loaded`e[0m"
