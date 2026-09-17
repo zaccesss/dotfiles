@@ -54,6 +54,12 @@ gnb() {
 # End-of-session cleanup: prune stale remote-tracking refs locally and on origin
 alias gprune="git fetch --prune && git remote prune origin"
 
+# Delete every local branch already merged into main in one go - the stale-branch cleanup
+# gdone can't do, since it only takes one named branch at a time. Skips main itself.
+gclean-branches() {
+    git branch --merged main | grep -v '^\*\|main' | xargs -r git branch -d
+}
+
 # Full end-of-task ritual: back on main with stale local and remote branches pruned
 gdone() {
     git checkout main && git pull --ff-only

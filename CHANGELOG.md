@@ -6,6 +6,13 @@ Versions increment by one patch step (0.0.1) per release.
 
 ---
 
+## [1.0.4] - 2026-09-17
+
+### Added
+
+- `gclean-branches`, deleting every local branch already merged into main in one step, a gap found while writing git-practice-lab's daily-workflow module since `gdone` only takes one branch at a time
+- `google`, opening the default browser straight to a Google search for the given query, on every platform
+
 ## [1.0.3] - 2026-09-17
 
 ### Added

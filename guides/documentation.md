@@ -136,6 +136,10 @@ All git commands behave identically across platforms.
 | `gundo` | Undo last commit, keep changes staged: `git reset --soft HEAD~1` |
 | `gclean` | Remove untracked files and directories: `git clean -fd` |
 | `gcp "message"` | Stage all, commit and push in one step |
+| `gnb <branch>` | Branch fresh off an up-to-date main: `git checkout main && git pull --ff-only && git checkout -b <branch>` |
+| `gprune` | Prune stale remote-tracking refs, locally and on origin |
+| `gdone [branch]` | Full end-of-task reset: back on main, up to date, the named branch deleted and everything pruned |
+| `gclean-branches` | Delete every local branch already merged into main in one step, unlike `gdone` which only takes one named branch |
 | `automerge` | Enable squash auto-merge on the current branch's PR and delete the branch after it lands: `gh pr merge --squash --delete-branch --auto` |
 | `gfmt` | Format with gofmt (Go projects) |
 
@@ -195,6 +199,7 @@ These are defined in `06-functions` on all platforms.
 | `localip` | Linux/Windows | Print local IP via `hostname -I` |
 | `weather` | All | Print weather for current location via `wttr.in` |
 | `temp` | All | Print temperature only via `wttr.in/?format="%t"` |
+| `google <query>` | All | Open the default browser straight to a Google search for `<query>` |
 
 ---
 
