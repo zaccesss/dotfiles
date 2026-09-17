@@ -16,6 +16,12 @@ function dprune { docker system prune -f }
 function dprunea { docker system prune -af --volumes }
 function dstats  { docker stats }
 function dinspect { docker inspect $args }
+# dip: print a container's IP address in one step, for reaching it directly rather than
+# through a published port
+function dip {
+    param([string]$Container)
+    docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $Container
+}
 function dnet    { docker network ls }
 function dvol    { docker volume ls }
 function dpull   { docker pull $args }

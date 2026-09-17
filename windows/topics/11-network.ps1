@@ -55,6 +55,10 @@ function ping4 { param([string]$HostName) ping -n 4 $HostName }
 # gateway: show the default gateway - useful when a node's IP config looks wrong
 function gateway { (Get-NetRoute -DestinationPrefix "0.0.0.0/0" | Select-Object -First 1).NextHop }
 
+# flushdns: clear the DNS resolver cache, my go-to when a site still resolves to a stale IP
+# after a DNS change
+function flushdns { ipconfig /flushdns }
+
 # nginx shortcuts (if nginx is installed on Windows)
 function nginx-test    { nginx -t }
 function nginx-reload  { nginx -s reload }

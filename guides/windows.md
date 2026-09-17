@@ -180,7 +180,21 @@ Defined in [windows/topics/07-utilities.ps1](../windows/topics/07-utilities.ps1)
 | `localip` | Print LAN IP |
 | `weather` | Print weather for current location |
 | `temp` | Print temperature only |
+| `battery` | Print charge percentage and status |
+| `please` | Rerun the last command elevated in a new PowerShell window |
+| `cheat <command>` | Print an instant command cheatsheet from `cheat.sh` |
 | `google <query>` | Open the default browser straight to a search for `<query>` |
+| `gh-search <query>` | Search GitHub itself (code and repos) |
+| `so <query>` | Search Stack Overflow |
+| `mdn <query>` | Search MDN Web Docs |
+| `npmjs <package>` | Jump to a package's npm page |
+| `pypi <package>` | Jump to a package's PyPI page |
+| `caniuse <query>` | Check browser support for a web feature |
+| `leetcode <slug>` | Jump to a LeetCode problem page |
+| `neetcode <slug>` | Jump to a NeetCode problem page |
+| `codeforces [path]` | Jump to a Codeforces page, defaults to my own profile |
+| `translate <text>` | Quick Google Translate lookup |
+| `regex101` | Open regex101.com for quick regex testing |
 | `extract <archive>` | Extract any archive format |
 | `dataurl <file>` | Convert a file to a base64 data URL |
 | `envup [file]` | Load a `.env` file into the current session |
