@@ -1,0 +1,12 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Security issue
+    url: https://github.com/zaccesss/dotfiles/security/policy
+    about: Report privately following SECURITY.md, never a public issue.
+  - name: Questions or ideas
+    url: https://isaacadjei.me/contact
+    about: For a question or a chat, reach me through my contact page.
+  - name: Prefer email?
+    url: mailto:support@isaacadjei.me
+    about: Reach me directly at support@isaacadjei.me.
