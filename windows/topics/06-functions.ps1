@@ -102,9 +102,14 @@ function _cmdsBody {
 
     "`e[35mQUICK LAUNCHERS`e[0m"
     "  `e[36mgoogle / gh-search / so / mdn`e[0m`e[37m   open a browser search on that site`e[0m"
-    "  `e[36mnpmjs / pypi`e[0m`e[37m                    jump to a package's page`e[0m"
+    "  `e[36mnpmjs / pypi / crates / godocs`e[0m`e[37m  jump to a package's page`e[0m"
+    "  `e[36mpackagist / rubygems / nugetpkg / hexpm`e[0m`e[37m jump to a package's page`e[0m"
+    "  `e[36mmvnrepo / dockerhub`e[0m`e[37m             search a package registry`e[0m"
     "  `e[36mcaniuse / regex101 / translate`e[0m`e[37m  open the tool directly`e[0m"
     "  `e[36mleetcode / neetcode / codeforces`e[0m`e[37m jump to a problem or profile`e[0m"
+    "  `e[36mmaps / yt / wiki`e[0m`e[37m                open a browser search on that site`e[0m"
+    "  `e[36mvt / shodan / cve`e[0m`e[37m               security lookups`e[0m"
+    "  `e[36marchive / bundlephobia`e[0m`e[37m          Wayback Machine / npm bundle size`e[0m"
     ""
 
     "`e[35mCOMMUNITY TOOLS`e[0m"
@@ -144,6 +149,18 @@ function _cmdsBody {
     "`e[35mSECURITY / CRYPTO`e[0m"
     "  `e[36msha256 / sha512`e[0m`e[37m   file checksums (Get-FileHash)`e[0m"
     "  `e[36mgpgls / gpglss / gpgenc / gpgdec / gpgsign / gpgverify`e[0m`e[37m   GPG`e[0m"
+    ""
+
+    "`e[35mRED TEAM`e[0m`e[37m (authorised testing only)`e[0m"
+    "  `e[36mrevshell / listener`e[0m`e[37m    print a reverse shell one-liner / catch it`e[0m"
+    "  `e[36mhydra-ssh / fuzz`e[0m`e[37m       brute-force SSH creds / ffuf directory fuzzing`e[0m"
+    "  `e[36msubenum / msfq`e[0m`e[37m         subdomain enumeration / quiet msfconsole`e[0m"
+    ""
+
+    "`e[35mBLUE TEAM`e[0m"
+    "  `e[36mauthfails / lastlogins`e[0m`e[37m  recent failed / successful logins`e[0m"
+    "  `e[36mconns / fwstatus`e[0m`e[37m        established connections / firewall status`e[0m"
+    "  `e[36msigcheck`e[0m`e[37m               verify a binary's Authenticode signature`e[0m"
     ""
 
     "`e[35mDATABASE`e[0m"

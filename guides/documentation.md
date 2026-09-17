@@ -215,6 +215,22 @@ These are defined in `06-functions` on all platforms.
 | `codeforces [path]` | All | Jump to a Codeforces page, defaults to my own profile |
 | `translate <text>` | All | Quick Google Translate lookup, auto-detects the source language |
 | `regex101` | All | Open regex101.com for quick regex testing |
+| `maps <query>` | All | Search Google Maps |
+| `yt <query>` | All | Search YouTube |
+| `wiki <query>` | All | Search Wikipedia |
+| `godocs <package>` | All | Jump to a Go package's page on pkg.go.dev (named with an 's', `godoc` is already `go doc`) |
+| `crates <package>` | All | Jump to a Rust package's page on crates.io |
+| `dockerhub <query>` | All | Search Docker Hub for an image |
+| `packagist <vendor/package>` | All | Jump to a PHP/Composer package's page |
+| `rubygems <package>` | All | Jump to a Ruby gem's page |
+| `nugetpkg <package>` | All | Jump to a .NET package's page on NuGet |
+| `mvnrepo <query>` | All | Search Maven Central for a Java/Kotlin package |
+| `hexpm <package>` | All | Jump to an Elixir package's page on Hex.pm |
+| `archive <url>` | All | Open the Wayback Machine's history for a URL |
+| `bundlephobia <package>` | All | Check an npm package's real bundle-size cost before adding it |
+| `vt <query>` | All | Search VirusTotal for a hash, IP or domain |
+| `shodan <query>` | All | Search Shodan |
+| `cve <id>` | All | Jump to a CVE's NVD detail page |
 
 ---
 
@@ -301,6 +317,30 @@ Defined in `12-security` on all platforms. Requires OpenSSL and GPG.
 | `gpgexport <keyid>` | Export a public key in armoured format |
 | `gpgimport <file>` | Import a key from a file |
 | `wh <domain>` | Run `whois` on a domain |
+
+### Red team
+
+> [!IMPORTANT]
+> Authorised testing only, never use these against systems you do not own or have explicit written permission to test.
+
+| Command | What it does |
+| --- | --- |
+| `revshell <ip> <port>` | Print a copy-paste bash reverse shell one-liner, does not run anything itself |
+| `listener <port>` | Quick netcat listener for catching a reverse shell |
+| `hydra-ssh <host> <userlist> <passlist>` | Brute-force SSH credentials (requires hydra) |
+| `fuzz <url> <wordlist>` | Directory/content fuzzing via `ffuf`, a faster modern alternative to `gobust` |
+| `subenum <domain>` | Subdomain enumeration (requires subfinder) |
+| `msfq` | Launch `msfconsole` quietly, skipping the banner |
+
+### Blue team
+
+| Command | What it does |
+| --- | --- |
+| `authfails` | Show recent failed login attempts |
+| `conns` | List established network connections with the process name attached |
+| `fwstatus` | Check the OS firewall's current status |
+| `sigcheck <file>` | Verify a binary's code signature (Gatekeeper on macOS, package ownership on Linux, Authenticode on Windows) |
+| `lastlogins` | Show recent login history |
 
 ---
 

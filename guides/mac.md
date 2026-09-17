@@ -185,6 +185,22 @@ Defined in [mac/topics/07-utilities.zsh](../mac/topics/07-utilities.zsh) and [ma
 | `codeforces [path]` | Jump to a Codeforces page, defaults to my own profile |
 | `translate <text>` | Quick Google Translate lookup |
 | `regex101` | Open regex101.com for quick regex testing |
+| `maps <query>` | Search Google Maps |
+| `yt <query>` | Search YouTube |
+| `wiki <query>` | Search Wikipedia |
+| `godocs <package>` | Jump to a Go package's page on pkg.go.dev |
+| `crates <package>` | Jump to a Rust package's page on crates.io |
+| `dockerhub <query>` | Search Docker Hub for an image |
+| `packagist <vendor/package>` | Jump to a PHP/Composer package's page |
+| `rubygems <package>` | Jump to a Ruby gem's page |
+| `nugetpkg <package>` | Jump to a .NET package's page on NuGet |
+| `mvnrepo <query>` | Search Maven Central for a Java/Kotlin package |
+| `hexpm <package>` | Jump to an Elixir package's page on Hex.pm |
+| `archive <url>` | Open the Wayback Machine's history for a URL |
+| `bundlephobia <package>` | Check an npm package's real bundle-size cost |
+| `vt <query>` | Search VirusTotal for a hash, IP or domain |
+| `shodan <query>` | Search Shodan |
+| `cve <id>` | Jump to a CVE's NVD detail page |
 | `extract <archive>` | Extract any archive format (zip, tar.gz, tar.bz2, 7z, rar, etc.) |
 | `dataurl <file>` | Convert a file to a base64 data URL |
 | `envup [file]` | Load a `.env` file and export all variables into the current session |

@@ -112,9 +112,14 @@ _cmds_body() {
 
     echo -e "${BOLD}${MAGENTA}QUICK LAUNCHERS${RESET}"
     echo -e "  ${CYAN}google / gh-search / so / mdn${RESET}   ${WHITE}open a browser search on that site${RESET}"
-    echo -e "  ${CYAN}npmjs / pypi${RESET}                    ${WHITE}jump to a package's page${RESET}"
+    echo -e "  ${CYAN}npmjs / pypi / crates / godocs${RESET}  ${WHITE}jump to a package's page${RESET}"
+    echo -e "  ${CYAN}packagist / rubygems / nugetpkg / hexpm${RESET} ${WHITE}jump to a package's page${RESET}"
+    echo -e "  ${CYAN}mvnrepo / dockerhub${RESET}             ${WHITE}search a package registry${RESET}"
     echo -e "  ${CYAN}caniuse / regex101 / translate${RESET}  ${WHITE}open the tool directly${RESET}"
     echo -e "  ${CYAN}leetcode / neetcode / codeforces${RESET} ${WHITE}jump to a problem or profile${RESET}"
+    echo -e "  ${CYAN}maps / yt / wiki${RESET}                ${WHITE}open a browser search on that site${RESET}"
+    echo -e "  ${CYAN}vt / shodan / cve${RESET}               ${WHITE}security lookups${RESET}"
+    echo -e "  ${CYAN}archive / bundlephobia${RESET}          ${WHITE}Wayback Machine / npm bundle size${RESET}"
     echo ""
 
     echo -e "${BOLD}${MAGENTA}COMMUNITY TOOLS${RESET}"
@@ -159,6 +164,18 @@ _cmds_body() {
     echo -e "  ${CYAN}gpgsign / gpgverify${RESET}   ${WHITE}sign / verify${RESET}"
     echo -e "  ${CYAN}gpgexport / gpgimport${RESET}   ${WHITE}export / import a key${RESET}"
     echo -e "  ${CYAN}nikto${RESET}         ${WHITE}web server vulnerability scanner${RESET}"
+    echo ""
+
+    echo -e "${BOLD}${MAGENTA}RED TEAM${RESET} ${WHITE}(authorised testing only)${RESET}"
+    echo -e "  ${CYAN}revshell / listener${RESET}    ${WHITE}print a reverse shell one-liner / catch it${RESET}"
+    echo -e "  ${CYAN}hydra-ssh / fuzz${RESET}       ${WHITE}brute-force SSH creds / ffuf directory fuzzing${RESET}"
+    echo -e "  ${CYAN}subenum / msfq${RESET}         ${WHITE}subdomain enumeration / quiet msfconsole${RESET}"
+    echo ""
+
+    echo -e "${BOLD}${MAGENTA}BLUE TEAM${RESET}"
+    echo -e "  ${CYAN}authfails / lastlogins${RESET}  ${WHITE}recent failed / successful logins${RESET}"
+    echo -e "  ${CYAN}conns / fwstatus${RESET}        ${WHITE}established connections / firewall status${RESET}"
+    echo -e "  ${CYAN}sigcheck${RESET}                ${WHITE}verify a binary's code signature${RESET}"
     echo ""
 
     echo -e "${BOLD}${MAGENTA}DATABASE${RESET}"
