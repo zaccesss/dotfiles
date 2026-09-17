@@ -159,7 +159,7 @@ Defined in [windows/topics/06-functions.ps1](../windows/topics/06-functions.ps1)
 | `mkt <name>` | Scaffold a new TypeScript/Node project |
 | `dot` | `cd` to the dotfiles repo |
 | `Edit-Profile` | Open `$PROFILE` in VS Code |
-| `Reload-Profile` | Re-source the profile without restarting PowerShell |
+| `Reload-Profile` | Hard-clear the terminal then re-source the profile without restarting PowerShell |
 
 `cmds` pipes its output through `Out-Host -Paging`, PowerShell's native pager, so real scrolling and a clean q-to-exit work regardless of output length. Colour is preserved because `cmds` builds each line as a plain string with raw ANSI codes rather than `Write-Host -ForegroundColor`, since `Write-Host` output cannot be piped.
 

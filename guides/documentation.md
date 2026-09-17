@@ -159,7 +159,7 @@ All git commands behave identically across platforms.
 | Command | What it does |
 | --- | --- |
 | `edit-profile` | Open the shell profile in VS Code |
-| `reload-profile` | Re-source the profile without restarting the terminal |
+| `reload-profile` | Hard-clear the terminal then re-source the profile without restarting it |
 | `dot` | `cd` to the dotfiles repo |
 
 On macOS the profile lives at `~/.zshrc`. On Linux it is `~/.bashrc`. On Windows it is at `$PROFILE` (the path printed by `echo $PROFILE`).

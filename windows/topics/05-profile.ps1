@@ -5,4 +5,6 @@
 # =============================================================================
 
 function Edit-Profile   { code $PROFILE }
-function Reload-Profile { . $PROFILE }
+# Hard-clear (including scrollback) before re-dotting, so the reprinted welcome banner
+# lands on a clean screen instead of stacking under the old one.
+function Reload-Profile { [System.Console]::Clear(); . $PROFILE }

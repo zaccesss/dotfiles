@@ -95,7 +95,7 @@ _cmds_body() {
     echo "  ${CYAN}mkcd${RESET}            ${WHITE}mkdir + cd in one step${RESET}"
     echo "  ${CYAN}cls${RESET}             ${WHITE}hard-clear terminal and reprint welcome banner${RESET}"
     echo "  ${CYAN}edit-profile${RESET}    ${WHITE}open ~/.zshrc in VS Code${RESET}"
-    echo "  ${CYAN}reload-profile${RESET}  ${WHITE}source ~/.zshrc${RESET}"
+    echo "  ${CYAN}reload-profile${RESET}  ${WHITE}hard-clear the terminal then source ~/.zshrc${RESET}"
     echo "  ${CYAN}dot${RESET}             ${WHITE}pull latest dotfiles and apply them${RESET}"
     echo "  ${CYAN}cmds${RESET}            ${WHITE}show this command reference (q to exit)${RESET}"
     echo "  ${CYAN}lc / listcmds${RESET}   ${WHITE}dump every alias, function and PATH executable actually loaded${RESET}"
