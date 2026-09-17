@@ -78,6 +78,55 @@ function translate { _open_search "https://translate.google.com/?sl=auto&tl=en&o
 # regex101: open regex101.com for quick regex testing
 function regex101 { Start-Process "https://regex101.com" }
 
+# vt: search VirusTotal for a hash, IP or domain
+function vt { _open_search "https://www.virustotal.com/gui/search/" @args }
+
+# shodan: search Shodan
+function shodan { _open_search "https://www.shodan.io/search?query=" @args }
+
+# cve: jump straight to a CVE's NVD detail page
+function cve { param([string]$Id) Start-Process "https://nvd.nist.gov/vuln/detail/$Id" }
+
+# maps: search Google Maps
+function maps { _open_search "https://www.google.com/maps/search/" @args }
+
+# yt: search YouTube
+function yt { _open_search "https://www.youtube.com/results?search_query=" @args }
+
+# wiki: search Wikipedia
+function wiki { _open_search "https://en.wikipedia.org/wiki/Special:Search?search=" @args }
+
+# godocs: jump straight to a Go package's page on pkg.go.dev - named with an 's' since
+# godoc is already the local `go doc` wrapper in 34-go.ps1
+function godocs { param([string]$Package) Start-Process "https://pkg.go.dev/$Package" }
+
+# crates: jump straight to a Rust package's page on crates.io
+function crates { param([string]$Package) Start-Process "https://crates.io/crates/$Package" }
+
+# dockerhub: search Docker Hub for an image
+function dockerhub { _open_search "https://hub.docker.com/search?q=" @args }
+
+# packagist: jump straight to a PHP/Composer package's page
+function packagist { param([string]$Package) Start-Process "https://packagist.org/packages/$Package" }
+
+# rubygems: jump straight to a Ruby gem's page
+function rubygems { param([string]$Package) Start-Process "https://rubygems.org/gems/$Package" }
+
+# nugetpkg: jump straight to a .NET package's page on NuGet
+function nugetpkg { param([string]$Package) Start-Process "https://www.nuget.org/packages/$Package" }
+
+# mvnrepo: search Maven Central for a Java/Kotlin package
+function mvnrepo { _open_search "https://mvnrepository.com/search?q=" @args }
+
+# hexpm: jump straight to an Elixir package's page on Hex.pm
+function hexpm { param([string]$Package) Start-Process "https://hex.pm/packages/$Package" }
+
+# archive: open the Wayback Machine's history for a URL
+function archive { param([string]$Url) Start-Process "https://web.archive.org/web/*/$Url" }
+
+# bundlephobia: check an npm package's real bundle-size cost before adding it as a dependency
+function bundlephobia { param([string]$Package) Start-Process "https://bundlephobia.com/package/$Package" }
+
 # path: print each PATH entry on its own line - easier to scan than one long semicolon-separated string
 function path { $env:Path -split ';' }
 

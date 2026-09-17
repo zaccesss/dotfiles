@@ -75,6 +75,55 @@ translate() { _open_search "https://translate.google.com/?sl=auto&tl=en&op=trans
 # regex101: open regex101.com for quick regex testing
 alias regex101='xdg-open "https://regex101.com"'
 
+# vt: search VirusTotal for a hash, IP or domain
+vt() { _open_search "https://www.virustotal.com/gui/search/" "$@"; }
+
+# shodan: search Shodan
+shodan() { _open_search "https://www.shodan.io/search?query=" "$@"; }
+
+# cve: jump straight to a CVE's NVD detail page
+cve() { xdg-open "https://nvd.nist.gov/vuln/detail/${1:?Usage: cve <id>}"; }
+
+# maps: search Google Maps
+maps() { _open_search "https://www.google.com/maps/search/" "$@"; }
+
+# yt: search YouTube
+yt() { _open_search "https://www.youtube.com/results?search_query=" "$@"; }
+
+# wiki: search Wikipedia
+wiki() { _open_search "https://en.wikipedia.org/wiki/Special:Search?search=" "$@"; }
+
+# godocs: jump straight to a Go package's page on pkg.go.dev - named with an 's' since
+# godoc is already the local `go doc` wrapper in 34-go.sh
+godocs() { xdg-open "https://pkg.go.dev/${1:?Usage: godocs <package>}"; }
+
+# crates: jump straight to a Rust package's page on crates.io
+crates() { xdg-open "https://crates.io/crates/${1:?Usage: crates <package>}"; }
+
+# dockerhub: search Docker Hub for an image
+dockerhub() { _open_search "https://hub.docker.com/search?q=" "$@"; }
+
+# packagist: jump straight to a PHP/Composer package's page
+packagist() { xdg-open "https://packagist.org/packages/${1:?Usage: packagist <vendor/package>}"; }
+
+# rubygems: jump straight to a Ruby gem's page
+rubygems() { xdg-open "https://rubygems.org/gems/${1:?Usage: rubygems <package>}"; }
+
+# nugetpkg: jump straight to a .NET package's page on NuGet
+nugetpkg() { xdg-open "https://www.nuget.org/packages/${1:?Usage: nugetpkg <package>}"; }
+
+# mvnrepo: search Maven Central for a Java/Kotlin package
+mvnrepo() { _open_search "https://mvnrepository.com/search?q=" "$@"; }
+
+# hexpm: jump straight to an Elixir package's page on Hex.pm
+hexpm() { xdg-open "https://hex.pm/packages/${1:?Usage: hexpm <package>}"; }
+
+# archive: open the Wayback Machine's history for a URL
+archive() { xdg-open "https://web.archive.org/web/*/${1:?Usage: archive <url>}"; }
+
+# bundlephobia: check an npm package's real bundle-size cost before adding it as a dependency
+bundlephobia() { xdg-open "https://bundlephobia.com/package/${1:?Usage: bundlephobia <package>}"; }
+
 # path: print each PATH entry on its own line - easier to scan than one long colon-separated string
 path() {
     echo "$PATH" | tr ':' '\n'

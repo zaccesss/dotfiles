@@ -6,6 +6,14 @@ Versions increment by one patch step (0.0.1) per release.
 
 ---
 
+## [1.0.7] - 2026-09-17
+
+### Added
+
+- A red team and blue team section in `12-security`, authorised testing only: `revshell`, `listener`, `hydra-ssh`, `fuzz`, `subenum` and `msfq` for red team; `authfails`, `conns`, `fwstatus`, `sigcheck` and `lastlogins` for blue team
+- Sixteen more quick-launcher functions: `vt`, `shodan`, `cve`, `maps`, `yt`, `wiki`, `godocs`, `crates`, `dockerhub`, `packagist`, `rubygems`, `nugetpkg`, `mvnrepo`, `hexpm`, `archive` and `bundlephobia`, matching every language ecosystem I already have tooling for
+- All of the above documented in `guides/documentation.md`, the three platform guides and the `cmds` cheat-sheet
+
 ## [1.0.6] - 2026-09-17
 
 ### Added
