@@ -61,3 +61,7 @@ alias nginx-access="tail -f /opt/homebrew/var/log/nginx/access.log"
 
 # gateway: show the default gateway - useful when a node's IP config looks wrong
 alias gateway="route -n get default | grep gateway"
+
+# flushdns: clear the DNS resolver cache, my go-to when a site still resolves to a stale IP
+# after a DNS change
+alias flushdns="sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder"

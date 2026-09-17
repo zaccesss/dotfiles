@@ -199,7 +199,22 @@ These are defined in `06-functions` on all platforms.
 | `localip` | Linux/Windows | Print local IP via `hostname -I` |
 | `weather` | All | Print weather for current location via `wttr.in` |
 | `temp` | All | Print temperature only via `wttr.in/?format="%t"` |
+| `battery` | All | Print charge percentage and status |
+| `please` | macOS/Linux | Rerun the last command with `sudo` |
+| `please` | Windows | Rerun the last command elevated in a new PowerShell window |
+| `cheat <command>` | All | Print an instant command cheatsheet from `cheat.sh`, no browser needed |
 | `google <query>` | All | Open the default browser straight to a Google search for `<query>` |
+| `gh-search <query>` | All | Search GitHub itself (code and repos), not just your own repos' issues |
+| `so <query>` | All | Search Stack Overflow directly |
+| `mdn <query>` | All | Search MDN Web Docs |
+| `npmjs <package>` | All | Jump to a package's npm page |
+| `pypi <package>` | All | Jump to a package's PyPI page |
+| `caniuse <query>` | All | Check browser support for a web feature |
+| `leetcode <slug>` | All | Jump to a LeetCode problem page |
+| `neetcode <slug>` | All | Jump to a NeetCode problem page |
+| `codeforces [path]` | All | Jump to a Codeforces page, defaults to my own profile |
+| `translate <text>` | All | Quick Google Translate lookup, auto-detects the source language |
+| `regex101` | All | Open regex101.com for quick regex testing |
 
 ---
 
@@ -261,6 +276,7 @@ Defined in `11-network` on all platforms.
 | `openports` | List all open listening ports on the current machine |
 | `portscan <host>` | Run a quick nmap port scan |
 | `headers <url>` | Print HTTP response headers via `curl -I` |
+| `flushdns` | Clear the DNS resolver cache |
 
 ---
 
@@ -560,6 +576,7 @@ Defined in `22-docker` on all platforms. Requires Docker Desktop (or Docker Engi
 | `dcheck` | `docker-compose config` - validate the compose file |
 | `dinfo` | `docker info` |
 | `dpa` | `docker system prune -a` - remove everything unused |
+| `dip <container>` | Print a container's IP address, for reaching it directly rather than through a published port |
 
 ---
 
@@ -577,6 +594,8 @@ Defined in `23-kubernetes` on all platforms. Requires `kubectl`.
 | `kns <namespace>` | `kubectl config set-context --current --namespace=<namespace>` |
 | `kctx` | `kubectl config get-contexts` - list contexts |
 | `kpods` | `kubectl get pods --all-namespaces` |
+| `kn <namespace>` | Switch the current context's default namespace: `kubectl config set-context --current --namespace=<namespace>` |
+| `kgpw` | Watch pods live: `kubectl get pods -w` |
 
 ---
 

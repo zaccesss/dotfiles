@@ -13,6 +13,7 @@ function kctx   { kubectl config get-contexts }
 function kpods  { kubectl get pods -A }
 
 function kgp    { kubectl get pods $args }
+function kgpw   { kubectl get pods -w }
 function kgs    { kubectl get svc $args }
 function kgd    { kubectl get deployments $args }
 function kgn    { kubectl get nodes $args }
@@ -35,6 +36,13 @@ function kcur { kubectl config current-context }
 function kuse {
     param([string]$Context)
     kubectl config use-context $Context
+}
+
+# kn: switch the current context's default namespace, so every kubectl command that follows
+# targets it without needing -n on every call
+function kn {
+    param([string]$Namespace)
+    kubectl config set-context --current --namespace=$Namespace
 }
 
 # Exec into a pod, defaulting to sh since not every image ships bash
