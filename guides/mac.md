@@ -118,6 +118,7 @@ Defined in [mac/topics/04-git.zsh](../mac/topics/04-git.zsh).
 | `gundo` | Undo last commit, keep changes staged: `git reset --soft HEAD~1` |
 | `gclean` | Remove untracked files and directories: `git clean -fd` |
 | `gcp "message"` | Stage all, commit and push in one step |
+| `gclean-branches` | Delete every local branch already merged into main in one step |
 
 > [!CAUTION]
 > `gclean` runs `git clean -fd` which permanently deletes untracked files and directories. There is no undo. Make sure you do not need any of the untracked files before running it.
@@ -169,6 +170,7 @@ Defined in [mac/topics/07-utilities.zsh](../mac/topics/07-utilities.zsh) and [ma
 | `localip` | Print LAN IP via `ipconfig getifaddr en0` |
 | `weather` | Print weather for current location via `wttr.in` |
 | `temp` | Print temperature only |
+| `google <query>` | Open Google Chrome straight to a search for `<query>` |
 | `extract <archive>` | Extract any archive format (zip, tar.gz, tar.bz2, 7z, rar, etc.) |
 | `dataurl <file>` | Convert a file to a base64 data URL |
 | `envup [file]` | Load a `.env` file and export all variables into the current session |

@@ -29,6 +29,11 @@ alias pubip="curl -s ifconfig.me"
 # Terminal weather via wttr.in
 alias weather="curl -s wttr.in"
 
+# google: open Chrome straight to a Google search for the given query, no manual typing into the address bar
+google() {
+    open -a "Google Chrome" "https://www.google.com/search?q=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(' '.join(sys.argv[1:])))" "$@")"
+}
+
 # path: print each PATH entry on its own line - easier to scan than one long colon-separated string
 path() {
     echo "$PATH" | tr ':' '\n'

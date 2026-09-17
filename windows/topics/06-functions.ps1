@@ -69,6 +69,7 @@ function _cmdsBody {
     "  `e[36mgs / ga / gaa / gcmt / gpsh / gcp / gpul`e[0m`e[37m   status/add/commit/push/pull`e[0m"
     "  `e[36mglog / gco / gcb / gb / gd`e[0m`e[37m           log/checkout/branch/diff`e[0m"
     "  `e[36mgundo / gbd / gclean`e[0m`e[37m                 undo/delete branch/clean`e[0m"
+    "  `e[36mgclean-branches`e[0m`e[37m                      delete every local branch already merged into main`e[0m"
     "  `e[36mautomerge`e[0m`e[37m                            squash auto-merge the current PR and delete the branch`e[0m"
     ""
 
@@ -94,6 +95,7 @@ function _cmdsBody {
     "  `e[36mweather`e[0m`e[37m       terminal weather from wttr.in`e[0m"
     "  `e[36mduh`e[0m`e[37m           disk usage sorted by size`e[0m"
     "  `e[36mpsgrep`e[0m`e[37m        search running processes by name`e[0m"
+    "  `e[36mgoogle`e[0m`e[37m        open the browser straight to a Google search for the given query`e[0m"
     ""
 
     "`e[35mCOMMUNITY TOOLS`e[0m"
