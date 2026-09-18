@@ -173,6 +173,7 @@ Defined in [mac/topics/07-utilities.zsh](../mac/topics/07-utilities.zsh) and [ma
 | `battery` | Print charge percentage and status |
 | `please` | Rerun the last command with `sudo` |
 | `cheat <command>` | Print an instant command cheatsheet from `cheat.sh` |
+| `zipf <file-or-folder>` | Zip a file or folder into a same-named `.zip` |
 | `google <query>` | Open Google Chrome straight to a search for `<query>` |
 | `gh-search <query>` | Search GitHub itself (code and repos) |
 | `so <query>` | Search Stack Overflow |

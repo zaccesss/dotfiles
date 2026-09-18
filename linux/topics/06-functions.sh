@@ -108,6 +108,7 @@ _cmds_body() {
     echo -e "  ${CYAN}battery${RESET}       ${WHITE}charge percentage and health${RESET}"
     echo -e "  ${CYAN}please${RESET}        ${WHITE}rerun the last command with sudo${RESET}"
     echo -e "  ${CYAN}cheat${RESET}         ${WHITE}instant command cheatsheet from cheat.sh${RESET}"
+    echo -e "  ${CYAN}zipf${RESET}          ${WHITE}zip a file or folder into a same-named .zip${RESET}"
     echo ""
 
     echo -e "${BOLD}${MAGENTA}QUICK LAUNCHERS${RESET}"

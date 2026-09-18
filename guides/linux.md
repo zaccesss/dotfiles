@@ -183,6 +183,7 @@ Defined in [linux/topics/07-utilities.sh](../linux/topics/07-utilities.sh) and [
 | `battery` | Print charge percentage and status. Requires `acpi` |
 | `please` | Rerun the last command with `sudo` |
 | `cheat <command>` | Print an instant command cheatsheet from `cheat.sh` |
+| `zipf <file-or-folder>` | Zip a file or folder into a same-named `.zip` |
 | `google <query>` | Open the default browser straight to a search for `<query>` |
 | `gh-search <query>` | Search GitHub itself (code and repos) |
 | `so <query>` | Search Stack Overflow |

@@ -6,6 +6,15 @@ Versions increment by one patch step (0.0.1) per release.
 
 ---
 
+## [1.0.8] - 2026-09-18
+
+### Added
+
+- `zipf` in `07-utilities`, across mac, linux and windows, zipping a file or folder into a same-named `.zip`. The counterpart to `extract` in `08-community`, which already unpacks a zip among other archive formats but had no equivalent for creating one
+- `zipf` documented in `guides/documentation.md`, the three platform guides and `cmds`
+
+---
+
 ## [1.0.7] - 2026-09-17
 
 ### Added
