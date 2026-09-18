@@ -203,6 +203,7 @@ These are defined in `06-functions` on all platforms.
 | `please` | macOS/Linux | Rerun the last command with `sudo` |
 | `please` | Windows | Rerun the last command elevated in a new PowerShell window |
 | `cheat <command>` | All | Print an instant command cheatsheet from `cheat.sh`, no browser needed |
+| `zipf <file-or-folder>` | All | Zip a file or folder into a same-named `.zip`, the counterpart to `extract` |
 | `google <query>` | All | Open the default browser straight to a Google search for `<query>` |
 | `gh-search <query>` | All | Search GitHub itself (code and repos), not just your own repos' issues |
 | `so <query>` | All | Search Stack Overflow directly |

@@ -133,3 +133,11 @@ path() {
 bigfiles() {
     du -ah . 2>/dev/null | sort -hr | head -n "${1:-10}"
 }
+
+# zipf: zip a file or folder into a same-named .zip in the current directory.
+# The counterpart to extract in 08-community.sh, which already unpacks a zip
+# among other archive formats, so there was no equivalent for creating one
+zipf() {
+    local target="${1:?Usage: zipf <file-or-folder>}"
+    zip -r "${target%/}.zip" "$target"
+}
