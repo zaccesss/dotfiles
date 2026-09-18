@@ -183,6 +183,7 @@ Defined in [windows/topics/07-utilities.ps1](../windows/topics/07-utilities.ps1)
 | `battery` | Print charge percentage and status |
 | `please` | Rerun the last command elevated in a new PowerShell window |
 | `cheat <command>` | Print an instant command cheatsheet from `cheat.sh` |
+| `zipf <file-or-folder>` | Zip a file or folder into a same-named `.zip` |
 | `google <query>` | Open the default browser straight to a search for `<query>` |
 | `gh-search <query>` | Search GitHub itself (code and repos) |
 | `so <query>` | Search Stack Overflow |

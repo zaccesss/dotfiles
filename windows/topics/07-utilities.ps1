@@ -137,3 +137,11 @@ function bigfiles {
         Sort-Object Length -Descending |
         Select-Object -First $Count FullName, @{N = 'Size'; E = { "{0:N2} MB" -f ($_.Length / 1MB) } }
 }
+
+# zipf: zip a file or folder into a same-named .zip in the current directory.
+# The counterpart to extract in 08-community.ps1, which already unpacks a zip
+# among other archive formats, so there was no equivalent for creating one
+function zipf {
+    param([string]$Target)
+    Compress-Archive -Path $Target -DestinationPath "$($Target.TrimEnd('\', '/')).zip"
+}
