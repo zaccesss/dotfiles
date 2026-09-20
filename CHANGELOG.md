@@ -6,6 +6,12 @@ Versions increment by one patch step (0.0.1) per release.
 
 ---
 
+## [Unreleased]
+
+### Fixed
+
+- Linux JetBrains launchers now support manual IDE installations under `~/dev/tools/jetbrains` while retaining JetBrains Toolbox shell-script support
+
 ## [1.0.8] - 2026-09-18
 
 ### Added

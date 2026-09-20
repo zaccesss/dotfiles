@@ -25,14 +25,31 @@ extrestore() {
     done < "$file"
 }
 
-# JetBrains - Toolbox scripts are already on PATH from 01-path.sh
-# These functions check for the script and print a helpful message if missing.
+# JetBrains - prefer manual installations under ~/dev/tools/jetbrains,
+# then fall back to JetBrains Toolbox shell scripts on PATH.
 _jb_open() {
-    local cmd="$1"; local path="${2:-.}"
-    if command -v "$cmd" &>/dev/null; then
+    local cmd="$1"
+    local path="${2:-.}"
+    local manual=""
+
+    case "$cmd" in
+        idea)     manual="$HOME/dev/tools/jetbrains/intellij/bin/idea.sh" ;;
+        pycharm)  manual="$HOME/dev/tools/jetbrains/pycharm/bin/pycharm.sh" ;;
+        webstorm) manual="$HOME/dev/tools/jetbrains/webstorm/bin/webstorm.sh" ;;
+        clion)    manual="$HOME/dev/tools/jetbrains/clion/bin/clion.sh" ;;
+        goland)   manual="$HOME/dev/tools/jetbrains/goland/bin/goland.sh" ;;
+        rider)    manual="$HOME/dev/tools/jetbrains/rider/bin/rider.sh" ;;
+        phpstorm) manual="$HOME/dev/tools/jetbrains/phpstorm/bin/phpstorm.sh" ;;
+        datagrip) manual="$HOME/dev/tools/jetbrains/datagrip/bin/datagrip.sh" ;;
+    esac
+
+    if [[ -n "$manual" && -x "$manual" ]]; then
+        "$manual" "$path"
+    elif command -v "$cmd" &>/dev/null; then
         "$cmd" "$path"
     else
-        echo "$cmd not found - enable shell scripts in JetBrains Toolbox settings"
+        echo "$cmd not found - install it through JetBrains Toolbox or configure a manual Linux installation"
+        return 1
     fi
 }
 
