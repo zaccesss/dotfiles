@@ -1,6 +1,6 @@
 # linux/topics/
 
-35 numbered `.sh` files loaded in order by `../bashrc`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
+36 numbered `.sh` files loaded in order by `../bashrc`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
 
 ## Topic files
 
@@ -41,10 +41,11 @@
 | `33-c-cpp.sh` | GCC, Clang, LLDB, binary inspection | `cc2`, `ccrun`, `ccdbg`, `ccsan`, `cfmt2`, `ctidy`, `symbols` |
 | `34-starship.sh` | Starship prompt | Initialises the Starship cross-shell prompt (config in `linux/starship.toml`) |
 | `35-secrets.sh` | age and sops secrets encryption | `agenew`, `agenc`, `agedec`, `sopsenc`, `sopsdec`, `sopsedit`, `sopsview` |
+| `36-swift.sh` | Swift on Linux | `sr`, `sb2`, `sb2r`, `st2`, `srepl`, `spinit`, `spup`, `spres`, `spls`, `spclean` |
 
 ## Adding a topic
 
-Create a new file with the next available number, e.g. `36-mytopic.sh`. It is sourced automatically. There is no need to edit `bashrc`.
+Create a new file with the next available number, e.g. `37-mytopic.sh`. It is sourced automatically. There is no need to edit `bashrc`.
 
 ## Platform differences from macOS
 
