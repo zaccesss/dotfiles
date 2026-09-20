@@ -1,6 +1,6 @@
 # linux/topics/
 
-35 numbered `.sh` files loaded in order by `../bashrc`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
+36 numbered `.sh` files loaded in order by `../bashrc`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
 
 ## Topic files
 
