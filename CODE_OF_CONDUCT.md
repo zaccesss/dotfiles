@@ -3,12 +3,12 @@
 ## Our standards
 
 This is a personal repository shared publicly for learning and reference. Anyone
-interacting with it - through issues, pull requests or discussions - is expected
+interacting with it, through issues, pull requests or discussions, is expected
 to:
 
 - Be respectful and constructive in all communications
 - Provide helpful and specific feedback rather than vague criticism
-- Accept that personal dotfiles reflect personal preferences - not every choice
+- Accept that personal dotfiles reflect personal preferences: not every choice
   needs to be debated
 - Assume good faith when something looks unusual
 
