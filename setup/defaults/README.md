@@ -10,18 +10,18 @@ meaningful native equivalent exists, otherwise it stays platform-specific.
 
 ## What's here
 
-- [`common/preferences.md`](common/preferences.md) - the cross-platform preference model.
-- [`mac/defaults.sh`](mac/defaults.sh) - the macOS implementation. It applies [`mac/defaults.tsv`](mac/defaults.tsv)
+- [`common/preferences.md`](common/preferences.md): the cross-platform preference model.
+- [`mac/defaults.sh`](mac/defaults.sh): the macOS implementation. It applies [`mac/defaults.tsv`](mac/defaults.tsv)
   (example values) and captures your own with `--capture`, using the keys in [`mac/tracked.txt`](mac/tracked.txt); the text highlight colour is left out, since `zt` sets it from the Zacess theme.
-- [`windows/defaults.ps1`](windows/defaults.ps1) - the Windows implementation, the same way, for the
+- [`windows/defaults.ps1`](windows/defaults.ps1): the Windows implementation, the same way, for the
   registry values in [`windows/tracked.txt`](windows/tracked.txt). Run `-Capture` on your PC first.
-- [`linux/defaults.sh`](linux/defaults.sh) - the GNOME implementation, using `gsettings`. It only
+- [`linux/defaults.sh`](linux/defaults.sh): the GNOME implementation, using `gsettings`. It only
   applies settings for schemas and keys available in the current environment.
-- [`linux/kde/apply.sh`](linux/kde/apply.sh) - the KDE Plasma implementation: high contrast global
+- [`linux/kde/apply.sh`](linux/kde/apply.sh): the KDE Plasma implementation: high contrast global
   themes, a see-through Windows 11-style taskbar with a centred start menu, wallpapers, power and
   keys. See its [README](linux/kde/README.md).
-- [`guides/reference.md`](guides/reference.md) - every setting and what it does.
-- [`guides/setup.md`](guides/setup.md) - how to apply the scripts safely.
+- [`guides/reference.md`](guides/reference.md): every setting and what it does.
+- [`guides/setup.md`](guides/setup.md): how to apply the scripts safely.
 
 ## Setup
 
