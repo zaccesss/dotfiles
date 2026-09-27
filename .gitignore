@@ -1,4 +1,4 @@
-# OS metadata - never commit these
+# OS metadata: never commit these
 .DS_Store
 .DS_Store?
 ._*
@@ -8,7 +8,7 @@ Thumbs.db
 desktop.ini
 ehthumbs.db
 
-# Editor and IDE local files - not for version control
+# Editor and IDE local files: not for version control
 .vscode/
 .idea/
 *.swp
@@ -27,7 +27,7 @@ ehthumbs.db
 __pycache__/
 *.pyc
 
-# Local idea notes - private scratchpad, never publish
+# Local idea notes: private scratchpad, never publish
 will-do/
 __pycache__/
 
