@@ -31,10 +31,9 @@ welcome.
 
 ## Style rules
 
-- **Comments**: first-person, WHY not WHAT. One line maximum per function.
+- **Comments** explain why, not what. One line maximum per function.
   Bad: `# this function lists packages`
-  Good: `# bls: I use this daily to audit what Homebrew has installed.`
-- **UK English** in prose comments and documentation.
+  Good: `# bls: audit what Homebrew has installed before a clean-up.`
 - **No secrets** - never include tokens, passwords or personal credentials.
   See [NOTICE](NOTICE.md) for the token policy.
 - **Three platforms**: if a change applies to all three platforms, update all

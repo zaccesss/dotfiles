@@ -8,6 +8,14 @@ Versions increment by one patch step (0.0.1) per release.
 
 ## [Unreleased]
 
+### Added
+
+- `ACCESSIBILITY.md`: how the colours, the prompt and the aliases support people with low or monocular vision, colour vision differences and typing fatigue, plus the known gaps.
+
+### Changed
+
+- Tidied code comments and the contributor guide.
+
 ### Fixed
 
 - Linux JetBrains launchers now support manual IDE installations under `~/dev/tools/jetbrains` while retaining JetBrains Toolbox shell-script support

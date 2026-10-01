@@ -1,11 +1,11 @@
 # =============================================================================
 # Security tools
 # Shortcuts for authorised testing, CTF work, cert management and key ops.
-# All offensive tools here are for authorised testing only - never use against
+# all offensive tools here are for authorised testing only - never use against
 # systems you do not own or have explicit written permission to test.
 # =============================================================================
 
-# openssl shortcuts - I use these constantly for cert inspection and API testing
+# openssl shortcuts for cert inspection and API testing
 
 # ssl-check: inspect a remote certificate (expiry, issuer, SANs)
 ssl-check() {

@@ -43,18 +43,18 @@ kn() {
     kubectl config set-context --current --namespace="${1:?Usage: kn <namespace>}"
 }
 
-# Exec into a pod, defaulting to sh since not every image ships bash
+# exec into a pod, defaulting to sh since not every image ships bash
 kexec() {
     local pod="$1"; shift
     kubectl exec -it "$pod" -- "${@:-sh}"
 }
 
-# Forward a local port to a pod or service - same syntax as kubectl itself
+# forward a local port to a pod or service - same syntax as kubectl itself
 kpf() {
     kubectl port-forward "${1:?Usage: kpf <pod-or-svc> <local>:<remote>}" "${2:?Usage: kpf <pod-or-svc> <local>:<remote>}"
 }
 
-# Roll a deployment - forces new pods without changing the manifest, my go-to for "pick up the new secret/config"
+# roll a deployment - forces new pods without changing the manifest, the quick way to pick up a new secret or config
 krestart() {
     kubectl rollout restart deployment "${1:?Usage: krestart <deployment>}"
 }

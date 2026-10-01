@@ -2,8 +2,8 @@
 # dotfiles - Windows PowerShell profile
 # github.com/zaccesss/dotfiles - MIT licence
 #
-# Topic loader - all functions and aliases live in windows/topics/*.ps1.
-# Deploy on a new machine by copying this file to $PROFILE:
+# topic loader - all functions and aliases live in windows/topics/*.ps1.
+# deploy on a new machine by copying this file to $PROFILE:
 #   Copy-Item windows\Microsoft.PowerShell_profile.ps1 $PROFILE -Force
 # All topic files are dot-sourced in numbered order from the DOTFILES path.
 # =============================================================================

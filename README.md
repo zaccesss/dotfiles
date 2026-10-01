@@ -94,6 +94,7 @@ dotfiles/
 | Resource | What it covers |
 | --- | --- |
 | [guides/documentation.md](guides/documentation.md) | Full technical reference: architecture, loader mechanics and every command described |
+| [ACCESSIBILITY.md](ACCESSIBILITY.md) | How the colours, prompt and aliases support low or monocular vision, colour vision differences and typing fatigue |
 | [guides/mac.md](guides/mac.md) | macOS installation, modular profile walkthrough and command reference |
 | [guides/linux.md](guides/linux.md) | Linux and WSL2 installation, platform differences and command reference |
 | [guides/windows.md](guides/windows.md) | Windows installation, PowerShell specifics and command reference |

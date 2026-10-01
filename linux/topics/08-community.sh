@@ -2,7 +2,7 @@
 # Community tools and advanced utilities
 # Linux-specific where needed: dns-flush uses systemd-resolve, copy/paste
 # use xclip; cdf is omitted (no Finder) and targz uses stat -c%s.
-# Global pipe aliases (alias -g) are zsh-only and are not included here.
+# global pipe aliases (alias -g) are zsh-only and are not included here.
 # =============================================================================
 
 # extract: unpack any archive without remembering the right tar/unzip flags
@@ -86,7 +86,7 @@ dns-flush() {
     echo -e "${GREEN}DNS cache flushed${RESET}"
 }
 
-# Clipboard shortcuts - requires xclip to be installed (sudo apt install xclip)
+# clipboard shortcuts - requires xclip to be installed (sudo apt install xclip)
 alias clipcopy="xclip -selection clipboard"
 alias paste="xclip -selection clipboard -o"
 
@@ -105,12 +105,12 @@ change-extension() {
 }
 
 # o: open a file or directory in the default GUI app - defaults to the current directory.
-# Backgrounded and silenced since xdg-open prints noise from whatever handler it launches.
+# backgrounded and silenced since xdg-open prints noise from whatever handler it launches.
 o() {
     xdg-open "${1:-.}" >/dev/null 2>&1 &
 }
 
-# backup: copy a file to a timestamped .bak alongside it before I risk editing it
+# backup: copy a file to a timestamped .bak alongside it before a risky edit
 backup() {
     local file="${1:?Usage: backup <file>}"
     cp "$file" "${file}.bak.$(date +%Y%m%d%H%M%S)"

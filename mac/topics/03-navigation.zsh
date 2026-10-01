@@ -1,16 +1,16 @@
 # =============================================================================
 # Navigation shortcuts
-# I jump between these directories dozens of times a day - having single-word
-# aliases means I never have to type a full path or remember where things live.
+# These directories get visited dozens of times a day - single-word
+# aliases mean never typing a full path or remembering where things live.
 # =============================================================================
 
-# Primary dev folder
+# primary dev folder
 alias dev="cd ~/dev"
 
-# Other locations
+# other locations
 alias downloads="cd ~/Downloads"
 
-# Quick upward navigation - faster than typing cd ../../..
+# quick upward navigation - faster than typing cd ../../..
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."

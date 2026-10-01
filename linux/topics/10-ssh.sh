@@ -1,12 +1,12 @@
 # =============================================================================
 # SSH helpers
-# I manage a small home lab plus various remote servers. These
-# shortcuts save me typing the same ssh flags and key paths repeatedly.
-# Edit the node aliases below to match your own ~/.ssh/config host names.
+# Shortcuts for a small home lab plus various remote servers. They
+# save typing the same ssh flags and key paths repeatedly.
+# edit the node aliases below to match your own ~/.ssh/config host names.
 # =============================================================================
 
-# keygen: generate a modern Ed25519 key with a comment matching my git email.
-# I run this on every new machine before adding the key to GitHub and servers.
+# keygen: generate a modern Ed25519 key with a comment matching the git email.
+# run this on every new machine before adding the key to GitHub and servers.
 keygen() {
     local name="${1:-id_ed25519}"
     ssh-keygen -t ed25519 -C "$(git config user.email 2>/dev/null || echo "$USER@$(hostname)")" -f "$HOME/.ssh/$name"
@@ -19,7 +19,7 @@ sshcp() {
     ssh-copy-id -i "$key" "$target"
 }
 
-# ssha: add a key to the agent so I'm not prompted for the passphrase again.
+# ssha: add a key to the agent so the passphrase is not asked for again.
 ssha() {
     local key="${1:-$HOME/.ssh/id_ed25519}"
     eval "$(ssh-agent -s)" 2>/dev/null
@@ -38,7 +38,7 @@ sshfp() {
     ssh-keygen -lf "${1:-$HOME/.ssh/id_ed25519.pub}"
 }
 
-# sshrm: remove a host's entry from known_hosts - I use this after a VM/node gets
+# sshrm: remove a host's entry from known_hosts - needed after a VM/node gets
 # reimaged and ssh refuses to connect with a "REMOTE HOST IDENTIFICATION HAS CHANGED" warning
 sshrm() {
     ssh-keygen -R "${1:?Usage: sshrm <host>}"

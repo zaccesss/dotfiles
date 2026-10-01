@@ -2,8 +2,8 @@
 # dotfiles - Linux bash profile
 # github.com/zaccesss/dotfiles - MIT licence
 #
-# Topic loader - all aliases and functions live in linux/topics/*.sh.
-# Deploy on a new machine by appending a source line to ~/.bashrc:
+# topic loader - all aliases and functions live in linux/topics/*.sh.
+# deploy on a new machine by appending a source line to ~/.bashrc:
 #   echo "source $HOME/dev/github/repos/dotfiles/linux/bashrc" >> ~/.bashrc
 # =============================================================================
 

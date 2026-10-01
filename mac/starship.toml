@@ -1,11 +1,11 @@
 # Starship prompt config - shared across Mac (zsh), Linux (bash) and Windows (PowerShell)
 # Symlink to ~/.config/starship.toml on each device.
-# One file, all 3 platforms, no platform-specific versions needed.
+# one file, all 3 platforms, no platform-specific versions needed.
 #
-# To disable Starship entirely: comment out the eval line in 34-starship.zsh / .sh / .ps1
+# to disable Starship entirely: comment out the eval line in 34-starship.zsh / .sh / .ps1
 # To hide a specific module: add disabled = true under its [section] below
 #
-# Colour theme: uses Starship's named ANSI colours (bold green/cyan/yellow/red/blue/purple/
+# colour theme: uses Starship's named ANSI colours (bold green/cyan/yellow/red/blue/purple/
 # orange, plus bright- variants), not fixed hex values, so every colour here renders using the
 # terminal's own theme, matching the welcome banner exactly, since the banner also uses plain
 # ANSI escape codes (02-colours.zsh). A fixed hex palette looked visually inconsistent with the
@@ -15,7 +15,7 @@
 # freely since at most one renders at a time in practice, picked to match each language's real
 # brand identity as closely as the base ANSI palette allows.
 
-# Explicit format: Starship's own default order (confirmed against its docs, not guessed),
+# explicit format: Starship's own default order (confirmed against its docs, not guessed),
 # minus $time, which moves to right_format below instead of sharing line 2 with $character.
 # $hostname already sits before $directory in the real default order, "machine, then folder"
 # for an SSH session already happens without needing to reorder anything.
@@ -121,11 +121,11 @@ $os\
 $shell\
 $character"""
 
-# Time on the right edge of line 1 instead of sharing line 2 with the prompt character,
+# time on the right edge of line 1 instead of sharing line 2 with the prompt character,
 # frees up a whole line since it no longer needs its own row
 right_format = "$time"
 
-# Disable cloud modules I don't use so startup stays fast
+# disable cloud modules that are not needed so startup stays fast
 [aws]
 disabled = true
 
@@ -135,12 +135,12 @@ disabled = true
 [azure]
 disabled = true
 
-# Jobs - count of background/suspended jobs, easy to lose track of otherwise
+# jobs - count of background/suspended jobs, easy to lose track of otherwise
 [jobs]
 symbol = "+"
 style = "bold bright-cyan"
 
-# Battery - only shows while discharging. Same 10%/30% threshold split as Starship's own
+# battery - only shows while discharging. Same 10%/30% threshold split as Starship's own
 # default (already sensible). Bright red below 10%, distinct from cmd_duration's own bright
 # red since they never appear on the same line, plain yellow 10-30%, hidden above 30%.
 [battery]
@@ -152,7 +152,7 @@ style = "bold bright-red"
 threshold = 30
 style = "bold yellow"
 
-# Prompt character - green on success, red on failure, the one deliberately universal
+# prompt character - green on success, red on failure, the one deliberately universal
 # green/red pair in this theme, since success/failure is a widely understood convention
 [character]
 success_symbol = "[>](bold green)"
@@ -175,13 +175,13 @@ untracked = "?"
 deleted = "x"
 style = "bold yellow"
 
-# Directory - shorten to 3 segments, collapse at repo root
+# directory - shorten to 3 segments, collapse at repo root
 [directory]
 truncation_length = 3
 truncate_to_repo = true
 style = "bold blue"
 
-# Hostname - only shown over SSH, so a machine's own local prompt stays uncluttered but a
+# hostname - only shown over SSH, so a machine's own local prompt stays uncluttered but a
 # session onto the home lab cluster (see 10-ssh) always makes clear which node you are on
 [hostname]
 ssh_only = true
@@ -320,14 +320,14 @@ style = "bold blue"
 detect_extensions = ["c", "cpp", "h", "hpp"]
 style = "bold blue"
 
-# Command duration - shows how long the last command took if over 2s
+# command duration - shows how long the last command took if over 2s
 [cmd_duration]
 min_time = 2_000
 style = "bold bright-red"
 
-# Time - redraws on every prompt, the only way to get a clock that actually stays current
+# time - redraws on every prompt, the only way to get a clock that actually stays current
 # without opening a new terminal, unlike the one-time welcome banner's static timestamp.
-# White, not yellow, yellow's meaning everywhere else in this theme is "warning" (git_status,
+# white, not yellow, yellow's meaning everywhere else in this theme is "warning" (git_status,
 # the banner's own date line), time isn't a warning, keeping it off yellow keeps that meaning
 # unambiguous.
 [time]

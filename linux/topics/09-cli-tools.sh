@@ -45,7 +45,7 @@ whatport() { lsof -i ":${1:?Usage: whatport <port>}"; }
 killport() { lsof -ti ":${1:?Usage: killport <port>}" | xargs kill -9; }
 
 # notify: run a command, send a desktop notification with its exit status when
-# done. I use this for a build or long-running script I want to walk away from.
+# done. Useful for a build or long-running script that does not need watching.
 notify() {
     "$@"
     local status=$?

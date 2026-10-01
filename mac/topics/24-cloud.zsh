@@ -1,8 +1,8 @@
 # =============================================================================
 # Cloud platform CLIs - AWS, Google Cloud and Azure
-# I use all three. Shortcuts focus on the operations I run most: checking
+# All three are in use. Shortcuts focus on the most frequent operations: checking
 # running resources, tailing logs and managing deployments.
-# Requires: brew install awscli google-cloud-sdk azure-cli
+# requires: brew install awscli google-cloud-sdk azure-cli
 # =============================================================================
 
 # ─── AWS ─────────────────────────────────────────────────────────────────────

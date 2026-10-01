@@ -1,7 +1,7 @@
 # =============================================================================
 # Network tools
 # Linux-specific: uses ip instead of ifconfig, nmap for scanning.
-# Requires: apt install nmap netcat-openbsd
+# requires: apt install nmap netcat-openbsd
 # =============================================================================
 
 alias myip="curl -s ifconfig.me && echo"
@@ -42,6 +42,6 @@ alias nginx-access="sudo tail -f /var/log/nginx/access.log"
 # gateway: show the default gateway - useful when a node's IP config looks wrong
 alias gateway="ip route | grep default"
 
-# flushdns: clear the systemd-resolved DNS cache, my go-to when a site still resolves to a
+# flushdns: clear the systemd-resolved DNS cache, the first fix when a site still resolves to a
 # stale IP after a DNS change. Assumes systemd-resolved (default on Ubuntu/WSL2)
 alias flushdns="sudo resolvectl flush-caches"

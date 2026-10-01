@@ -1,6 +1,6 @@
 # =============================================================================
 # Colour variables
-# I define these once here so every function in every topic file can use them
+# Define these once here so every function in every topic file can use them
 # without redefining escape codes. BOLD and RESET work alongside any colour.
 # =============================================================================
 
@@ -36,7 +36,7 @@ export LSCOLORS=GxFxCxDxBxegedabagaced
 
 alias diff='diff --color=auto'
 
-# Coloured man pages via less TERMCAP variables.
+# coloured man pages via less TERMCAP variables.
 # md=bold (section headers), us=underline (emphasis), so=standout (search hits).
 export LESS="-R"
 export LESS_TERMCAP_mb=$'\033[1;32m'

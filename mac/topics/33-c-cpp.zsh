@@ -1,8 +1,8 @@
 # =============================================================================
 # C and C++
 # Low-level shortcuts for compiling/running/debugging C/C++ code.
-# These are for quick single-file compilation, not project-scale builds.
-# Requires: clang from Xcode or brew install gcc
+# these are for quick single-file compilation, not project-scale builds.
+# requires: clang from Xcode or brew install gcc
 # =============================================================================
 
 # ─── C ───────────────────────────────────────────────────────────────────────

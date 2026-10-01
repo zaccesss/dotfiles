@@ -1,2 +1,2 @@
-# Initialise Starship prompt
+# initialise Starship prompt
 Invoke-Expression (&starship init powershell)

@@ -1,4 +1,4 @@
-# Produced by `brew bundle dump --describe --no-vscode`. VS Code extensions are excluded since
+# produced by `brew bundle dump --describe --no-vscode`. VS Code extensions are excluded since
 # the separate .vscode repo's own extensions.txt is the source of truth for those.
 
 brew "assimp" # Portable library for importing many well-known 3D model formats

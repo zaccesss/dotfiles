@@ -1,7 +1,7 @@
 # =============================================================================
 # Colour and separator variables
 # PowerShell uses -ForegroundColor on Write-Host rather than ANSI escape codes.
-# I define the separator string here so refresh() and the welcome banner both
+# define the separator string here so refresh() and the welcome banner both
 # use the same width.
 # =============================================================================
 
@@ -20,7 +20,7 @@ function prompt {
 # =============================================================================
 # PSReadLine syntax highlighting (PS7+)
 # Commands green, strings yellow, errors red, keywords magenta, parameters cyan.
-# Consistent with RED=errors GREEN=success CYAN=info YELLOW=warnings MAGENTA=headers.
+# consistent with RED=errors GREEN=success CYAN=info YELLOW=warnings MAGENTA=headers.
 # =============================================================================
 
 if (Get-Module -ListAvailable -Name PSReadLine -ErrorAction SilentlyContinue) {

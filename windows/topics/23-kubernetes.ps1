@@ -45,19 +45,19 @@ function kn {
     kubectl config set-context --current --namespace=$Namespace
 }
 
-# Exec into a pod, defaulting to sh since not every image ships bash
+# exec into a pod, defaulting to sh since not every image ships bash
 function kexec {
     param([string]$Pod, [string]$Cmd = "sh")
     kubectl exec -it $Pod -- $Cmd
 }
 
-# Forward a local port to a pod or service - same syntax as kubectl itself
+# forward a local port to a pod or service - same syntax as kubectl itself
 function kpf {
     param([string]$Target, [string]$Ports)
     kubectl port-forward $Target $Ports
 }
 
-# Roll a deployment - forces new pods without changing the manifest, my go-to for "pick up the new secret/config"
+# roll a deployment - forces new pods without changing the manifest, the quick way to pick up a new secret or config
 function krestart {
     param([string]$Deployment)
     kubectl rollout restart deployment $Deployment

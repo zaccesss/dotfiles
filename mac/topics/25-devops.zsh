@@ -1,8 +1,8 @@
 # =============================================================================
 # DevOps and infrastructure tools
-# Terraform/Ansible/Helm/Vagrant shortcuts. I prefix terraform with tf,
-# ansible with an; helm with h and vagrant with v to keep things short.
-# Requires: brew install terraform ansible helm vagrant
+# Terraform/Ansible/Helm/Vagrant shortcuts. Terraform gets the tf prefix,
+# ansible an, helm h and vagrant v to keep things short.
+# requires: brew install terraform ansible helm vagrant
 # =============================================================================
 
 # ─── Terraform ───────────────────────────────────────────────────────────────
@@ -53,7 +53,7 @@ alias ai="ansible-inventory --list"
 # aping: ping all hosts in the inventory
 alias aping="ansible all -m ping"
 
-# afacts: gather and dump facts from every host - my first move when a playbook behaves oddly
+# afacts: gather and dump facts from every host - the first step when a playbook behaves oddly
 alias afacts="ansible all -m setup"
 
 # av: encrypt/decrypt/edit vault-protected files

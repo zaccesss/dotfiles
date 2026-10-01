@@ -1,40 +1,40 @@
 # =============================================================================
 # System utilities and general aliases
 # Day-to-day shell utilities that don't belong to any specific language or
-# tool. I keep these separate from language aliases so they're easy to find.
+# tool. They stay separate from language aliases so they're easy to find.
 # =============================================================================
 
-# ll: long listing with human-readable sizes and hidden files - my default for inspecting a directory
+# ll: long listing with human-readable sizes and hidden files - the default for inspecting a directory
 alias ll="ls -lahG"
-# la: list all files including hidden, no size details - quicker scan when I only need names
+# la: list all files including hidden, no size details - a quicker scan when only names matter
 alias la="ls -AG"
 
 alias grep='grep --color=auto'
 
-# Always create parent directories and print what was created
+# always create parent directories and print what was created
 alias mkdir="mkdir -pv"
 
-# Disk usage of the current directory sorted by size - I use this to find what's eating space
+# disk usage of the current directory sorted by size - finds what is eating space
 alias duh="du -h -d 1 | sort -hr"
 
-# Process search shortcut
+# process search shortcut
 alias psgrep="ps aux | grep"
 
-# Quick HTTP server from the current folder - I use this for frontend testing without a full dev server
+# quick HTTP server from the current folder - for frontend testing without a full dev server
 alias serve="python3 -m http.server 8080"
 
-# Public IP - useful when configuring SSH access, port forwarding or checking VPN routing
+# public IP - useful when configuring SSH access, port forwarding or checking VPN routing
 alias pubip="curl -s ifconfig.me"
 
-# Terminal weather via wttr.in
+# terminal weather via wttr.in
 alias weather="curl -s wttr.in"
 
-# battery: charge percentage and health, the two things I actually check day to day
+# battery: charge percentage and health, the two figures that matter day to day
 battery() {
     pmset -g batt
 }
 
-# please: rerun the last command with sudo, for when I forget it the first time
+# please: rerun the last command with sudo, for when it was left off the first time
 alias please='sudo $(fc -ln -1)'
 
 # cheat: instant command cheatsheet from cheat.sh, no browser needed
@@ -51,7 +51,7 @@ _open_search() {
 # google: open Chrome straight to a Google search for the given query, no manual typing into the address bar
 google() { _open_search "https://www.google.com/search?q=" "$@"; }
 
-# gh-search: search GitHub itself (code and repos), not just my own repos' issues
+# gh-search: search all of GitHub (code and repos), not only issues in the signed-in account's repos
 gh-search() { _open_search "https://github.com/search?q=" "$@"; }
 
 # so: search Stack Overflow directly
@@ -75,7 +75,7 @@ leetcode() { open -a "Google Chrome" "https://leetcode.com/problems/${1:?Usage: 
 # neetcode: jump straight to a problem page by its slug
 neetcode() { open -a "Google Chrome" "https://neetcode.io/problems/${1:?Usage: neetcode <slug>}"; }
 
-# codeforces: open a path under codeforces.com, defaults to my own profile
+# codeforces: open a path under codeforces.com, defaults to the zaccesss profile
 codeforces() { open -a "Google Chrome" "https://codeforces.com/${1:-profile/zaccesss}"; }
 
 # translate: quick Google Translate lookup, auto-detects the source language
@@ -144,7 +144,7 @@ bigfiles() {
 }
 
 # zipf: zip a file or folder into a same-named .zip in the current directory.
-# The counterpart to extract in 08-community.zsh, which already unpacks a zip
+# the counterpart to extract in 08-community.zsh, which already unpacks a zip
 # among other archive formats, so there was no equivalent for creating one
 zipf() {
     local target="${1:?Usage: zipf <file-or-folder>}"
