@@ -12,7 +12,7 @@ function mkcd {
 }
 
 # refresh: hard-clear the terminal and reprint the welcome banner.
-# Named refresh because cls is a built-in PS alias for Clear-Host.
+# named refresh because cls is a built-in PS alias for Clear-Host.
 # [System.Console]::Clear() clears the scrollback buffer; Clear-Host only clears the visible area.
 function refresh {
     [System.Console]::Clear()
@@ -288,7 +288,7 @@ function _cmdsBody {
 }
 
 # cmds: list all custom functions with short descriptions.
-# Piped through Out-Host -Paging so real scrolling works on output this long and mouse-wheel
+# piped through Out-Host -Paging so real scrolling works on output this long and mouse-wheel
 # scroll is handled by the pager itself instead of leaking through as arrow keys onto the
 # prompt underneath. Press q to exit.
 function cmds {

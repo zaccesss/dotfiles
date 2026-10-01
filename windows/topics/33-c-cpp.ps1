@@ -4,7 +4,7 @@
 # MinGW gcc/g++ also work if on PATH.
 # =============================================================================
 
-# Use clang if available, fall back to cl.exe (MSVC)
+# use clang if available, fall back to cl.exe (MSVC)
 function cc2 {
     param([string]$File, [string]$Out = ($File -replace "\.c$", ".exe"))
     if (Get-Command clang -ErrorAction SilentlyContinue) {
@@ -78,7 +78,7 @@ function cfmt2 { param($File) clang-format -i $File }
 function ctidy { clang-tidy @args }
 function hd    { param($File) Format-Hex $File }
 
-# Debugger and binutils - prefer LLVM tools (winget install LLVM.LLVM), fall back to MinGW
+# debugger and binutils - prefer LLVM tools (winget install LLVM.LLVM), fall back to MinGW
 function dbg {
     if (Get-Command lldb -ErrorAction SilentlyContinue) { lldb @args } else { gdb @args }
 }

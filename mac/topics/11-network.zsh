@@ -1,24 +1,24 @@
 # =============================================================================
 # Network tools
-# I use these constantly when debugging hardware nodes, checking API servers
+# Used constantly when debugging hardware nodes, checking API servers
 # and testing connectivity on the cluster. Requires nmap for scan/portscan.
 # =============================================================================
 
-# Public IP - shows the IP your traffic leaves from
+# public IP - shows the IP your traffic leaves from
 alias myip="curl -s ifconfig.me && echo"
 
-# Local network IP
+# local network IP
 alias localip="ipconfig getifaddr en0"
 
-# All network interfaces and their IPs
+# all network interfaces and their IPs
 ips() { ifconfig | grep 'inet ' | awk '{print $2}'; }
 
 # headers: show HTTP response headers for a URL without downloading the body
 headers() { curl -sI "$@"; }
 
 # scan: quick nmap ping scan of a subnet to find live hosts.
-# I use this to locate nodes on the cluster network when IPs change.
-# Usage: scan 192.168.1.0/24
+# finds nodes on the cluster network when IPs change.
+# usage: scan 192.168.1.0/24
 scan() {
     nmap -sn "${1:-192.168.1.0/24}"
 }
@@ -46,7 +46,7 @@ alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/m
 # ping shortcuts
 alias ping4="ping -c 4"
 
-# Check if a port is open on a remote host
+# check if a port is open on a remote host
 # Usage: portcheck host port
 portcheck() {
     nc -zv "${1:?Usage: portcheck <host> <port>}" "${2:?}" 2>&1
@@ -62,6 +62,6 @@ alias nginx-access="tail -f /opt/homebrew/var/log/nginx/access.log"
 # gateway: show the default gateway - useful when a node's IP config looks wrong
 alias gateway="route -n get default | grep gateway"
 
-# flushdns: clear the DNS resolver cache, my go-to when a site still resolves to a stale IP
+# flushdns: clear the DNS resolver cache, the first fix when a site still resolves to a stale IP
 # after a DNS change
 alias flushdns="sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder"

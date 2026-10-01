@@ -1,7 +1,7 @@
 # =============================================================================
 # Colour variables
 # Same variables as the mac profile so functions work identically on Linux.
-# Used by cls(), cmds() and any function that prints formatted output.
+# used by cls(), cmds() and any function that prints formatted output.
 # =============================================================================
 
 # shellcheck disable=SC2034
@@ -34,7 +34,7 @@ PS1="\[\033[0;36m\]\u@\h\[\033[0m\] \[\033[1;33m\]\w\[\033[0m\] \[\033[0;32m\]\$
 alias ls='ls --color=auto'
 alias diff='diff --color=auto'
 
-# Coloured man pages via less TERMCAP variables.
+# coloured man pages via less TERMCAP variables.
 export LESS="-R"
 export LESS_TERMCAP_mb=$'\033[1;32m'
 export LESS_TERMCAP_md=$'\033[1;36m'

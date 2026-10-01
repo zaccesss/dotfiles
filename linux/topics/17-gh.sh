@@ -43,47 +43,47 @@ alias ghgist="gh gist list"
 alias ghgistc="gh gist create"
 alias ghwho="gh auth status"
 
-# Labels: list, add to a PR/issue
+# labels: list, add to a PR/issue
 alias ghlabels="gh label list"
 ghaddlabel() {
     gh pr edit "$1" --add-label "$2" 2>/dev/null || gh issue edit "$1" --add-label "$2"
 }
 
-# Review with a comment - use on your own repos, where self-approval is blocked anyway
+# review with a comment - use on your own repos, where self-approval is blocked anyway
 ghreview() {
     gh pr review "$1" --comment --body "$2"
 }
 
-# Approve - only for someone else's repo or a fork, never your own
+# approve - only for someone else's repo or a fork, never your own
 ghapprove() {
     gh pr review "$1" --approve --body "${2:-}"
 }
 
 alias ghprchecks="gh pr checks"
 
-# Branch protection / ruleset check for the current repo
+# branch protection / ruleset check for the current repo
 alias ghrules="gh api repos/{owner}/{repo}/rulesets --jq '.[].name'"
 
 # Issues/PRs assigned to you in the current repo
 alias ghmine="gh issue list --assignee @me"
 alias ghprmine="gh pr list --assignee @me"
 
-# Full create-issue-with-label-then-branch ritual, matching the real issue -> branch -> PR flow
+# full create-issue-with-label-then-branch ritual, matching the real issue -> branch -> PR flow
 ghstart() {
     local title="$1" label="$2" branch="$3"
     gh issue create --title "$title" --label "$label"
     git checkout main && git pull --ff-only && git checkout -b "$branch"
 }
 
-# Projects (v2)
+# projects (v2)
 alias ghprojls="gh project list"
 alias ghprojview="gh project view"
 alias ghprojadd="gh project item-add"
 
-# Clone a repo's wiki - GitHub CLI has no native wiki command, it's a real git repo of its own
+# clone a repo's wiki - GitHub CLI has no native wiki command, it's a real git repo of its own
 ghwiki() {
     git clone "https://github.com/${1:?Usage: ghwiki owner/repo}.wiki.git"
 }
 
-# Sync a fork with its upstream
+# sync a fork with its upstream
 alias ghsync="gh repo sync"

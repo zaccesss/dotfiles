@@ -15,7 +15,7 @@ function gb    { git branch $args }
 function gd    { git diff }
 function gclean { git clean -fd }
 
-# Stage everything, commit with a message then push in one step
+# stage everything, commit with a message then push in one step
 function gcp {
     param([string]$message)
     git add --all
@@ -23,16 +23,16 @@ function gcp {
     git push
 }
 
-# Create and switch to a new branch in one step
+# create and switch to a new branch in one step
 function gcb {
     param([string]$branch)
     git checkout -b $branch
 }
 
-# Undo the last commit but keep the changes staged
+# undo the last commit but keep the changes staged
 function gundo { git reset HEAD~1 }
 
-# Delete a local branch - git will refuse if there are unmerged changes
+# delete a local branch - git will refuse if there are unmerged changes
 function gbd {
     param([string]$branch)
     git branch -d $branch
@@ -44,10 +44,10 @@ function gbdf {
     git branch -D $branch
 }
 
-# Switch to main and pull fast-forward only - the start-of-task ritual before branching
+# switch to main and pull fast-forward only - the start-of-task ritual before branching
 function gmain { git checkout main; git pull --ff-only }
 
-# Branch fresh off an up-to-date main in one step, the safest way to start real work
+# branch fresh off an up-to-date main in one step, the safest way to start real work
 function gnb {
     param([string]$branch)
     git checkout main
@@ -58,13 +58,13 @@ function gnb {
 # End-of-session cleanup: prune stale remote-tracking refs locally and on origin
 function gprune { git fetch --prune; git remote prune origin }
 
-# Delete every local branch already merged into main in one go - the stale-branch cleanup
+# delete every local branch already merged into main in one go - the stale-branch cleanup
 # gdone can't do, since it only takes one named branch at a time. Skips main itself.
 function gclean-branches {
     git branch --merged main | Where-Object { $_ -notmatch '^\*|main' } | ForEach-Object { git branch -d $_.Trim() }
 }
 
-# Full end-of-task ritual: back on main with stale local and remote branches pruned
+# full end-of-task ritual: back on main with stale local and remote branches pruned
 function gdone {
     param([string]$branch)
     git checkout main
@@ -74,10 +74,10 @@ function gdone {
     git remote prune origin
 }
 
-# Enable squash auto-merge on the current branch's PR and delete the branch after it lands
+# enable squash auto-merge on the current branch's PR and delete the branch after it lands
 function automerge { gh pr merge --squash --delete-branch --auto $args }
 
-# Pull latest in every repo under C:\dev\github\repos
+# pull latest in every repo under C:\dev\github\repos
 function pull-all {
     $reposDir = "C:\dev\github\repos"
     Write-Host "Pulling all repos in $reposDir..." -ForegroundColor Cyan
@@ -98,7 +98,7 @@ function pull-all {
     Write-Host "Done." -ForegroundColor Green
 }
 
-# Show clean/dirty status and current branch for every repo
+# show clean/dirty status and current branch for every repo
 function repo-status {
     $reposDir = "C:\dev\github\repos"
     Write-Host "Repo status:" -ForegroundColor Cyan

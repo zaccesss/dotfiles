@@ -7,7 +7,7 @@
 # =============================================================================
 
 # extract: unpack any archive without remembering the right flags.
-# Requires 7-Zip (7z) for non-zip formats.
+# requires 7-Zip (7z) for non-zip formats.
 function extract {
     param([string]$file)
     if (-not (Test-Path $file)) { Write-Host "'$file' is not a valid file" -ForegroundColor Red; return }
@@ -24,7 +24,7 @@ function extract {
 }
 
 # dataurl: encode a file as a base64 data URL.
-# I use this when I need to embed a small image or font directly in CSS.
+# handy for embedding a small image or font directly in CSS.
 function dataurl {
     param([string]$file)
     $bytes = [System.IO.File]::ReadAllBytes($file)
@@ -53,7 +53,7 @@ function gz {
 }
 
 # envup: load a .env file and export every variable into the current session.
-# I use this when running scripts locally that read from environment variables.
+# use this when running scripts locally that read from environment variables.
 function envup {
     param([string]$file = ".env")
     if (-not (Test-Path $file)) { Write-Host "No $file found" -ForegroundColor Red; return }
@@ -92,7 +92,7 @@ function DELETE { Invoke-RestMethod -Uri $args[0] -Method Delete $args[1..99] }
 function HEAD   { Invoke-WebRequest -Uri $args[0] -Method Head   $args[1..99] }
 
 # change-extension: batch rename file extensions in the current directory.
-# Usage: change-extension erb haml
+# usage: change-extension erb haml
 function change-extension {
     param([string]$old, [string]$new)
     Get-ChildItem "*.$old" | Rename-Item -NewName { $_.Name -replace "\.$old$", ".$new" }
@@ -104,7 +104,7 @@ function o {
     Invoke-Item $Path
 }
 
-# backup: copy a file to a timestamped .bak alongside it before I risk editing it
+# backup: copy a file to a timestamped .bak alongside it before a risky edit
 function backup {
     param([string]$File)
     Copy-Item $File "$File.bak.$(Get-Date -Format yyyyMMddHHmmss)"

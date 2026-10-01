@@ -1,6 +1,6 @@
 # =============================================================================
 # Git aliases and helpers
-# Short aliases for the git commands I type most. I use the 'g' prefix
+# Short aliases for the most-typed git commands. The 'g' prefix is used
 # throughout so muscle memory is consistent across Mac/Linux/Windows.
 # =============================================================================
 
@@ -16,24 +16,24 @@ alias gb="git branch"
 alias gd="git diff"
 alias gclean="git clean -fd"
 
-# Stage everything, commit with a message then push in one step
+# stage everything, commit with a message then push in one step
 gcp() {
     git add --all
     git commit -m "$1"
     git push
 }
 
-# Create and switch to a new branch in one step
+# create and switch to a new branch in one step
 gcb() {
     git checkout -b "$1"
 }
 
-# Undo the last commit but keep the changes staged - I use this when I commit too early
+# undo the last commit but keep the changes staged - for a commit made too early
 gundo() {
     git reset HEAD~1
 }
 
-# Delete a local branch - git will refuse if there are unmerged changes
+# delete a local branch - git will refuse if there are unmerged changes
 gbd() {
     git branch -d "$1"
 }
@@ -43,10 +43,10 @@ gbdf() {
     git branch -D "$1"
 }
 
-# Switch to main and pull fast-forward only - the start-of-task ritual before branching
+# switch to main and pull fast-forward only - the start-of-task ritual before branching
 alias gmain="git checkout main && git pull --ff-only"
 
-# Branch fresh off an up-to-date main in one step, the safest way to start real work
+# branch fresh off an up-to-date main in one step, the safest way to start real work
 gnb() {
     git checkout main && git pull --ff-only && git checkout -b "$1"
 }
@@ -54,26 +54,26 @@ gnb() {
 # End-of-session cleanup: prune stale remote-tracking refs locally and on origin
 alias gprune="git fetch --prune && git remote prune origin"
 
-# Delete every local branch already merged into main in one go - the stale-branch cleanup
+# delete every local branch already merged into main in one go - the stale-branch cleanup
 # gdone can't do, since it only takes one named branch at a time. Skips main itself.
 gclean-branches() {
     git branch --merged main | grep -v '^\*\|main' | xargs -r git branch -d
 }
 
-# Full end-of-task ritual: back on main with stale local and remote branches pruned
+# full end-of-task ritual: back on main with stale local and remote branches pruned
 gdone() {
     git checkout main && git pull --ff-only
     [ -n "$1" ] && git branch -D "$1"
     git fetch --prune && git remote prune origin
 }
 
-# Enable squash auto-merge on the current branch's PR and delete the branch after it lands.
-# This is my standard workflow: open a PR, run this then it merges itself once CI passes.
+# enable squash auto-merge on the current branch's PR and delete the branch after it lands.
+# the usual flow: open a PR, run this and it merges itself once CI passes.
 automerge() {
     gh pr merge --squash --delete-branch --auto "$@"
 }
 
-# Pull latest in every repo under a directory (defaults to ~/dev/github/repos)
+# pull latest in every repo under a directory (defaults to ~/dev/github/repos)
 pull-all() {
     local repos_dir="${1:-$HOME/dev/github/repos}"
     local dir name output exit_code
@@ -96,7 +96,7 @@ pull-all() {
     echo "${GREEN}Done.${RESET}"
 }
 
-# Show the current branch and clean/dirty state for every repo in a directory
+# show the current branch and clean/dirty state for every repo in a directory
 repo-status() {
     local repos_dir="${1:-$HOME/dev/github/repos}"
     local dir name branch dirty

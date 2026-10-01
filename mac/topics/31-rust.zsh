@@ -1,6 +1,6 @@
 # =============================================================================
 # Rust and Cargo
-# All aliases use the 'c' prefix via cargo. I avoid 'cr' for 'cargo run'
+# All aliases use the 'c' prefix via cargo. 'cr' for 'cargo run' avoids
 # conflicting with anything since there's no standard 'cr' on macOS.
 # =============================================================================
 

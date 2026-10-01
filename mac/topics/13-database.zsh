@@ -1,7 +1,7 @@
 # =============================================================================
 # Database CLI shortcuts
-# Quick connect aliases and common operations for every database I use.
-# Connection strings read from environment variables where possible so
+# Quick connect aliases and common operations for every database in use.
+# connection strings read from environment variables where possible so
 # credentials never live in this file.
 # =============================================================================
 

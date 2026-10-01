@@ -6,24 +6,24 @@
 
 # la: list all files including hidden - names only, quick scan
 function la   { Get-ChildItem -Force -Name }
-# ll: full listing with sizes and dates - my default for inspecting a directory
+# ll: full listing with sizes and dates - the default for inspecting a directory
 function ll   { Get-ChildItem -Force | Format-Table -AutoSize }
 function duh  { Get-ChildItem | ForEach-Object { "{0,10} {1}" -f (Get-ChildItem $_.FullName -Recurse -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum).Sum, $_.Name } | Sort-Object }
 function psgrep { param([string]$p) Get-Process | Where-Object { $_.Name -like "*$p*" } }
 
-# Quick HTTP server from the current folder
+# quick HTTP server from the current folder
 function serve  { python -m http.server 8080 }
 
-# Public IP
+# public IP
 function pubip  { Invoke-RestMethod -Uri "https://ifconfig.me" }
 
-# Terminal weather
+# terminal weather
 function weather { (Invoke-WebRequest -Uri "wttr.in?format=3").Content }
 
 # battery: charge percentage and status
 function battery { Get-CimInstance -ClassName Win32_Battery | Select-Object EstimatedChargeRemaining, BatteryStatus }
 
-# please: rerun the last command elevated, for when I forget to run PowerShell as admin
+# please: rerun the last command elevated, for when PowerShell was not started as admin
 function please {
     $lastCmd = (Get-History)[-1].CommandLine
     Start-Process pwsh -Verb RunAs -ArgumentList "-NoExit", "-Command", $lastCmd
@@ -45,7 +45,7 @@ function _open_search {
 # google: open the default browser straight to a Google search for the given query
 function google { _open_search "https://www.google.com/search?q=" @args }
 
-# gh-search: search GitHub itself (code and repos), not just my own repos' issues
+# gh-search: search all of GitHub (code and repos), not only issues in the signed-in account's repos
 function gh-search { _open_search "https://github.com/search?q=" @args }
 
 # so: search Stack Overflow directly
@@ -69,7 +69,7 @@ function leetcode { param([string]$Slug) Start-Process "https://leetcode.com/pro
 # neetcode: jump straight to a problem page by its slug
 function neetcode { param([string]$Slug) Start-Process "https://neetcode.io/problems/$Slug" }
 
-# codeforces: open a path under codeforces.com, defaults to my own profile
+# codeforces: open a path under codeforces.com, defaults to the zaccesss profile
 function codeforces { param([string]$Path = "profile/zaccesss") Start-Process "https://codeforces.com/$Path" }
 
 # translate: quick Google Translate lookup, auto-detects the source language
@@ -139,7 +139,7 @@ function bigfiles {
 }
 
 # zipf: zip a file or folder into a same-named .zip in the current directory.
-# The counterpart to extract in 08-community.ps1, which already unpacks a zip
+# the counterpart to extract in 08-community.ps1, which already unpacks a zip
 # among other archive formats, so there was no equivalent for creating one
 function zipf {
     param([string]$Target)

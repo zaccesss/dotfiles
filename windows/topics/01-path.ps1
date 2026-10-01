@@ -1,6 +1,6 @@
 # =============================================================================
 # PATH configuration
-# Adds user-managed tool locations to the front of PATH so my scripts take
+# Adds user-managed tool locations to the front of PATH so user scripts take
 # priority over system tools.
 # =============================================================================
 

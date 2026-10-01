@@ -5,19 +5,19 @@
 # =============================================================================
 
 # rcopy: copy a directory preserving all attributes with a progress bar.
-# I use this for large transfers where I want to see what's happening.
+# for large transfers where progress matters.
 rcopy() {
     rsync -avh --progress "${1:?Usage: rcopy <src> <dest>}" "${2:?}"
 }
 
 # rmirror: mirror src to dest - deletes files in dest that are not in src.
-# Useful for keeping a backup drive in sync. Be careful: dest files are deleted.
+# useful for keeping a backup drive in sync. Be careful: dest files are deleted.
 rmirror() {
     rsync -avh --delete --progress "${1:?Usage: rmirror <src> <dest>}" "${2:?}"
 }
 
 # rbackup: copy src to dest, skipping files that are identical.
-# I use this for incremental backups to an external drive or NAS.
+# for incremental backups to an external drive or NAS.
 rbackup() {
     rsync -avh --update --progress "${1:?}" "${2:?}"
 }

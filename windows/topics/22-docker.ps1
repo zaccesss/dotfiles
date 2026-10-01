@@ -35,7 +35,7 @@ function dcl  { docker compose logs -f $args }
 function dcps { docker compose ps }
 function dcr  { docker compose restart $args }
 
-# Spin up a throwaway named container that stays alive for N seconds (default 900), for real
+# spin up a throwaway named container that stays alive for N seconds (default 900), for real
 # cross-platform verification work, not just docker compose services
 function dtest {
     param([string]$Name, [string]$Image, [int]$Seconds = 900)
@@ -44,24 +44,24 @@ function dtest {
 
 function dcp { docker cp @args }
 
-# Exec a command in a running container without -it, for a scripted/non-interactive call
+# exec a command in a running container without -it, for a scripted/non-interactive call
 function dexec {
     param([string]$Name)
     docker exec $Name @args
 }
 
-# Build an image from the current directory and tag it in one step
+# build an image from the current directory and tag it in one step
 function dbuild {
     param([string]$Tag)
     docker build -t $Tag .
 }
 
-# Run a throwaway interactive container - drops in and cleans up itself on exit
+# run a throwaway interactive container - drops in and cleans up itself on exit
 function drun {
     docker run --rm -it @args
 }
 
-# Exec into a compose service, defaulting to sh since not every image ships bash
+# exec into a compose service, defaulting to sh since not every image ships bash
 function dcex {
     param([string]$Service, [string]$Cmd = "sh")
     docker compose exec $Service $Cmd

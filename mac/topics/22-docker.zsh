@@ -1,10 +1,10 @@
 # =============================================================================
 # Docker and Docker Compose
-# I use Docker for containerising services and running local dev environments.
-# The 'd' prefix is consistent across all container commands.
+# Docker containerises services and runs local dev environments.
+# the 'd' prefix is consistent across all container commands.
 # =============================================================================
 
-# Container management
+# container management
 alias dps="docker ps"
 alias dpa="docker ps -a"
 alias dex="docker exec -it"
@@ -29,7 +29,7 @@ alias dvol="docker volume ls"
 alias dpull="docker pull"
 alias dpush="docker push"
 
-# Docker Compose - I use these for spinning up multi-container local environments
+# Docker Compose - for spinning up multi-container local environments
 alias dcu="docker compose up"
 alias dcud="docker compose up -d"
 alias dcd="docker compose down"
@@ -38,7 +38,7 @@ alias dcl="docker compose logs -f"
 alias dcps="docker compose ps"
 alias dcr="docker compose restart"
 
-# Spin up a throwaway named container that stays alive for N seconds (default 900), for real
+# spin up a throwaway named container that stays alive for N seconds (default 900), for real
 # cross-platform verification work, not just docker compose services
 dtest() {
     local name="${1:?Usage: dtest <name> <image> [seconds]}"
@@ -49,23 +49,23 @@ dtest() {
 
 alias dcp="docker cp"
 
-# Exec a command in a running container without -it, for a scripted/non-interactive call
+# exec a command in a running container without -it, for a scripted/non-interactive call
 dexec() {
     local name="$1"; shift
     docker exec "$name" "$@"
 }
 
-# Build an image from the current directory and tag it in one step
+# build an image from the current directory and tag it in one step
 dbuild() {
     docker build -t "${1:?Usage: dbuild <tag>}" .
 }
 
-# Run a throwaway interactive container - drops in and cleans up itself on exit
+# run a throwaway interactive container - drops in and cleans up itself on exit
 drun() {
     docker run --rm -it "$@"
 }
 
-# Exec into a compose service, defaulting to sh since not every image ships bash
+# exec into a compose service, defaulting to sh since not every image ships bash
 dcex() {
     local service="$1"; shift
     docker compose exec "$service" "${@:-sh}"

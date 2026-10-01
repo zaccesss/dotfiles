@@ -1,2 +1,2 @@
-# Initialise Starship prompt
+# initialise Starship prompt
 eval "$(starship init zsh)"

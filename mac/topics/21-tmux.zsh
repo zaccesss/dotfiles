@@ -1,8 +1,8 @@
 # =============================================================================
 # tmux - terminal multiplexer
-# Essential when working on the 4-node cluster - I keep persistent sessions
-# per node so I can detach and reattach without losing context.
-# Requires: brew install tmux
+# Essential when working on the 4-node cluster - persistent sessions
+# per node mean detaching and reattaching never loses context.
+# requires: brew install tmux
 # =============================================================================
 
 # ta: attach to an existing session (or create one if it doesn't exist)
@@ -49,7 +49,7 @@ tren() { tmux rename-session "${1:?Usage: tren <new-name>}"; }
 tkillother() { tmux kill-session -a; }
 
 # cluster: open a 4-pane window pre-connected to each cluster node.
-# Adjust the node names to match your ~/.ssh/config entries.
+# adjust the node names to match your ~/.ssh/config entries.
 cluster() {
     tmux new-session -d -s cluster -x 220 -y 50
     tmux rename-window -t cluster 'nodes'

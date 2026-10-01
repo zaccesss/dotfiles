@@ -1,6 +1,6 @@
 # =============================================================================
 # PHP and Laravel
-# I use Laravel for PHP projects. All aliases use the 'pa' prefix (php artisan)
+# Laravel for PHP projects. All aliases use the 'pa' prefix (php artisan)
 # so they're instantly recognisable.
 # =============================================================================
 
@@ -27,6 +27,6 @@ alias creq="composer require"
 alias cdump="composer dump-autoload"
 alias coutdated="composer outdated"
 
-# Testing and formatting
+# testing and formatting
 alias punit="./vendor/bin/phpunit"
 alias pint="./vendor/bin/pint"          # Laravel's official formatter

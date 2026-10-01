@@ -1,7 +1,7 @@
 # =============================================================================
 # Security tools
 # Shortcuts for authorised testing, CTF work, cert management and key ops.
-# All offensive tools here are for authorised testing only.
+# all offensive tools here are for authorised testing only.
 # =============================================================================
 
 ssl-check() {

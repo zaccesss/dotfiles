@@ -1,6 +1,6 @@
 # =============================================================================
 # Go
-# I use Go for backend services and CLI tools. gfmt is named to avoid
+# Go for backend services and CLI tools. gfmt is named to avoid
 # conflicting with the actual gofmt binary - go fmt ./... is the idiomatic
 # way to format a full module anyway.
 # =============================================================================
