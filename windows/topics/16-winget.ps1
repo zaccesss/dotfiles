@@ -59,7 +59,7 @@ function wgunpin {
     winget pin remove --exact --id $Package
 }
 
-# No winget equivalent for brew's `buses` (reverse-dependency lookup) or `bservices`
+# no winget equivalent for brew's `buses` (reverse-dependency lookup) or `bservices`
 # (managing a formula's background service) - winget installs packages, it doesn't
 # track dependents or run services the way Homebrew does
 

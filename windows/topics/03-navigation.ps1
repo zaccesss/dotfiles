@@ -1,6 +1,6 @@
 # =============================================================================
 # Navigation shortcuts
-# I keep the same folder layout on Windows as on Mac and Linux so muscle
+# Windows keeps the same folder layout as Mac and Linux so muscle
 # memory works across all three. PowerShell requires functions rather than
 # aliases for navigation that passes no arguments.
 # =============================================================================

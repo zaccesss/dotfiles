@@ -66,7 +66,7 @@ function killport {
 }
 
 # notify: run a command, show a toast (or a fallback beep) with its exit status
-# when done. I use this for a build or long-running script I want to walk away from.
+# when done. Useful for a build or long-running script that does not need watching.
 function notify {
     & $args[0] $args[1..($args.Count - 1)]
     $status = $LASTEXITCODE

@@ -3,7 +3,7 @@
 # nvm install: https://github.com/nvm-sh/nvm
 # =============================================================================
 
-# Returns 1 if nvm.sh wasn't found, so nvm() below can fail loudly instead of recursing into
+# returns 1 if nvm.sh wasn't found, so nvm() below can fail loudly instead of recursing into
 # itself, a broken shell snapshot has silently dropped this function before while node()/npm()/
 # npx() kept their wrapper definitions, turning a plain `node` call into infinite self-recursion.
 _nvm_load() {

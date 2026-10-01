@@ -1,6 +1,6 @@
 # =============================================================================
 # Ruby and Rails
-# I primarily use Ruby via Rails and for scripting tasks. rbenv manages
+# Ruby mostly runs through Rails and scripting tasks. rbenv manages
 # versions. Requires: brew install rbenv ruby-build
 # =============================================================================
 

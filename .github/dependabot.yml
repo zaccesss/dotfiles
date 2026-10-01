@@ -1,5 +1,5 @@
 # Dependabot configuration.
-# Checks for outdated GitHub Actions versions weekly and opens a pull request
+# checks for outdated GitHub Actions versions weekly and opens a pull request
 # for each update so action pins stay current without manual tracking.
 
 version: 2

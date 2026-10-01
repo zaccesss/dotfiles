@@ -6,13 +6,13 @@
 # =============================================================================
 
 # mkcd: create a directory and cd into it in one step.
-# Uses 'command mkdir' to bypass the mkdir -pv alias and avoid duplicate flags.
+# uses 'command mkdir' to bypass the mkdir -pv alias and avoid duplicate flags.
 mkcd() {
     command mkdir -p "$1" && cd "$1" || return
 }
 
 # cls: hard-clear the terminal (including scrollback) and reprint the welcome banner.
-# The \033[2J\033[3J\033[H sequence clears both visible screen and scrollback buffer.
+# the \033[2J\033[3J\033[H sequence clears both visible screen and scrollback buffer.
 cls() {
     printf '\033[2J\033[3J\033[H'
     echo ""
@@ -58,7 +58,7 @@ listcmds() {
 alias lc='listcmds'
 
 # cmds: list all custom aliases and functions with short descriptions.
-# Piped through less so real scrolling works on output this long and mouse-wheel scroll is
+# piped through less so real scrolling works on output this long and mouse-wheel scroll is
 # handled by less itself instead of leaking through as arrow keys onto the shell prompt
 # underneath, the same mechanism git diff and man already use. Press q to exit.
 cmds() {

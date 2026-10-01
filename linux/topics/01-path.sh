@@ -1,13 +1,13 @@
 # =============================================================================
 # PATH configuration
 # Extends the system PATH with user-managed tool locations. ~/.local/bin is
-# first so my user-installed tools take priority over system tools.
+# first so user-installed tools take priority over system tools.
 # =============================================================================
 
 # User-installed scripts and binaries
 export PATH="$HOME/.local/bin:$PATH"
 
-# Pyenv - manages multiple Python versions
+# pyenv - manages multiple Python versions
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d "$PYENV_ROOT/bin" ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 [[ -x "$(command -v pyenv)" ]] && eval "$(pyenv init -)"

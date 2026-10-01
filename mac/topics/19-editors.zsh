@@ -30,7 +30,7 @@ extrestore() {
 }
 
 # JetBrains IDE launchers - open the current dir (or a path) in each IDE.
-# These use the Toolbox shell scripts. If Toolbox is not installed, fall back
+# these use the Toolbox shell scripts. If Toolbox is not installed, fall back
 # to 'open -a' which opens the app without passing a path argument.
 idea()     { if command -v idea     &>/dev/null; then idea "${1:-.}";     else open -a "IntelliJ IDEA" "${1:-.}"; fi }
 pycharm()  { if command -v pycharm  &>/dev/null; then pycharm "${1:-.}";  else open -a "PyCharm" "${1:-.}"; fi }

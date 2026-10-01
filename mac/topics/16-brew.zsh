@@ -1,11 +1,11 @@
 # =============================================================================
 # Homebrew package manager
-# Shortcuts for the operations I run most often. bup is the one I run weekly
+# Shortcuts for the most frequent operations. bup is the weekly one
 # to keep everything current without having to type two long commands.
 # =============================================================================
 
 # bup: update Homebrew index, upgrade all packages, then clean up old versions.
-# I run this every week to keep everything current.
+# run this every week to keep everything current.
 bup() {
     brew update && brew upgrade && brew cleanup
 }

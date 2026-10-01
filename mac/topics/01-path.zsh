@@ -1,8 +1,8 @@
 # =============================================================================
 # PATH configuration
-# These entries extend the system PATH so every tool I rely on is available
+# These entries extend the system PATH so every tool in use is available
 # without typing its full path. Order matters - entries added first take
-# priority, so my user scripts in ~/.local/bin override everything else.
+# priority, so user scripts in ~/.local/bin override everything else.
 # =============================================================================
 
 # Homebrew - must come before system tools so brew-managed binaries win

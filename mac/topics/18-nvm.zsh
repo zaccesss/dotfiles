@@ -1,14 +1,14 @@
 # =============================================================================
 # Node version manager (nvm)
-# I switch Node versions frequently between projects. nvm is loaded lazily
+# Projects often need different Node versions. nvm is loaded lazily
 # here - it only initialises when one of these commands is actually called,
 # which keeps shell startup fast.
 # nvm install: https://github.com/nvm-sh/nvm
 # =============================================================================
 
 # Lazy-load nvm - sourcing nvm.sh on every shell start adds ~200ms.
-# The first call to any nvm command triggers the real load.
-# Returns 1 if nvm.sh wasn't found, so nvm() below can fail loudly instead of recursing into
+# the first call to any nvm command triggers the real load.
+# returns 1 if nvm.sh wasn't found, so nvm() below can fail loudly instead of recursing into
 # itself, a broken shell snapshot has silently dropped this function before while node()/npm()/
 # npx() kept their wrapper definitions, turning a plain `node` call into infinite self-recursion.
 _nvm_load() {

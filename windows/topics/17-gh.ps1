@@ -44,7 +44,7 @@ function ghgist    { gh gist list }
 function ghgistc   { gh gist create @args }
 function ghwho     { gh auth status }
 
-# Labels: list, add to a PR/issue
+# labels: list, add to a PR/issue
 function ghlabels { gh label list }
 function ghaddlabel {
     param($Num, $Label)
@@ -52,13 +52,13 @@ function ghaddlabel {
     if ($LASTEXITCODE -ne 0) { gh issue edit $Num --add-label $Label }
 }
 
-# Review with a comment - use on your own repos, where self-approval is blocked anyway
+# review with a comment - use on your own repos, where self-approval is blocked anyway
 function ghreview {
     param($Num, $Body)
     gh pr review $Num --comment --body $Body
 }
 
-# Approve - only for someone else's repo or a fork, never your own
+# approve - only for someone else's repo or a fork, never your own
 function ghapprove {
     param($Num, [string]$Body = "")
     gh pr review $Num --approve --body $Body
@@ -66,14 +66,14 @@ function ghapprove {
 
 function ghprchecks { param($Num) gh pr checks $Num }
 
-# Branch protection / ruleset check for the current repo
+# branch protection / ruleset check for the current repo
 function ghrules { gh api repos/{owner}/{repo}/rulesets --jq '.[].name' }
 
 # Issues/PRs assigned to you in the current repo
 function ghmine    { gh issue list --assignee @me }
 function ghprmine  { gh pr list --assignee @me }
 
-# Full create-issue-with-label-then-branch ritual, matching the real issue -> branch -> PR flow
+# full create-issue-with-label-then-branch ritual, matching the real issue -> branch -> PR flow
 function ghstart {
     param([string]$Title, [string]$Label, [string]$Branch)
     gh issue create --title $Title --label $Label
@@ -82,16 +82,16 @@ function ghstart {
     git checkout -b $Branch
 }
 
-# Projects (v2)
+# projects (v2)
 function ghprojls   { gh project list }
 function ghprojview { param($Num) gh project view $Num }
 function ghprojadd  { param($Num, $Url) gh project item-add $Num --url $Url }
 
-# Clone a repo's wiki - GitHub CLI has no native wiki command, it's a real git repo of its own
+# clone a repo's wiki - GitHub CLI has no native wiki command, it's a real git repo of its own
 function ghwiki {
     param([string]$Repo)
     git clone "https://github.com/$Repo.wiki.git"
 }
 
-# Sync a fork with its upstream
+# sync a fork with its upstream
 function ghsync { gh repo sync @args }

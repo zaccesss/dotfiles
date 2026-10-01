@@ -1,6 +1,6 @@
 # =============================================================================
 # Java, Maven and Gradle
-# I use Maven and Gradle depending on the project. Gradle aliases use the
+# Maven or Gradle, depending on the project. Gradle aliases use the
 # wrapper script (./gradlew) so they work with the project-specific version.
 # =============================================================================
 

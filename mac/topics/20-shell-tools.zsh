@@ -1,8 +1,8 @@
 # =============================================================================
 # Shell scripting tools
-# I write a lot of shell scripts for automation, CI and dotfiles maintenance.
-# I use shellcheck and shfmt to catch common mistakes and keep style consistent.
-# Requires: brew install shellcheck shfmt
+# Plenty of shell scripts cover automation, CI and dotfiles maintenance.
+# the shellcheck and shfmt tools catch common mistakes and keep style consistent.
+# requires: brew install shellcheck shfmt
 # =============================================================================
 
 # sc: run shellcheck on a script or all scripts in the current directory
