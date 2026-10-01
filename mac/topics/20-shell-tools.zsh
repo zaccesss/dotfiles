@@ -1,7 +1,7 @@
 # =============================================================================
 # Shell scripting tools
 # Plenty of shell scripts cover automation, CI and dotfiles maintenance.
-# shellcheck and shfmt catch common mistakes and keep style consistent.
+# the shellcheck and shfmt tools catch common mistakes and keep style consistent.
 # requires: brew install shellcheck shfmt
 # =============================================================================
 
