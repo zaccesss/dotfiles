@@ -8,6 +8,10 @@ Versions increment by one patch step (0.0.1) per release.
 
 ## [Unreleased]
 
+### Changed
+
+- `ACCESSIBILITY.md`: a note that the settings are preferences and a link to the shared accessibility statement.
+
 ### Added
 
 - `ACCESSIBILITY.md`: how the colours, the prompt and the aliases support people with low or monocular vision, colour vision differences and typing fatigue, plus the known gaps.

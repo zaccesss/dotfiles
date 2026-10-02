@@ -2,6 +2,9 @@
 
 These dotfiles started from a practical need. With monocular vision, depth cues are weak and a monochrome terminal reads as one flat wall of text. Distinct colours take over the job of telling one kind of line from another. Short commands cut down how much exact typing a day needs. The [README](README.md#about) tells the full story. The same choices help anyone who scans a terminal quickly, works with a colour vision difference or finds long commands tiring to type.
 
+> [!NOTE]
+> Some of these settings are preferences rather than requirements. Change them freely in your own copy. If a change would help other people too, open an issue or a pull request so I can consider it for everyone.
+
 ## Vision
 
 | Need | What the profile does |
@@ -37,3 +40,8 @@ The terminal itself sets the final shades. A pure black background with light gr
 ## Feedback wanted
 
 If something here gets in the way, open an [issue](https://github.com/zaccesss/dotfiles/issues/new/choose) describing what happened and what would work better.
+
+## The shared statement
+
+> [!NOTE]
+> I keep one shared accessibility statement for all my projects: [zaccesss/accessibility](https://github.com/zaccesss/accessibility) or on [my site](https://isaacadjei.me/accessibility). This file takes precedence where the two differ.
