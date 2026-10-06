@@ -34,9 +34,12 @@ The profile is split into numbered topic files - one per area of concern - so ev
 **2. Clone the repo**
 
 ```bash
-git clone https://github.com/zaccesss/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+git clone https://github.com/zaccesss/dotfiles.git ~/dev/github/repos/dotfiles
+cd ~/dev/github/repos/dotfiles
 ```
+
+> [!NOTE]
+> Each platform's loader looks for the repo at `~/dev/github/repos/dotfiles` by default. To clone it somewhere else, set `DOTFILES` to that path before the profile is sourced.
 
 **3. Adapt to your machine**
 
