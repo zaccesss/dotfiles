@@ -145,3 +145,40 @@ function zipf {
     param([string]$Target)
     Compress-Archive -Path $Target -DestinationPath "$($Target.TrimEnd('\', '/')).zip"
 }
+
+# termtheme: Windows Terminal's High Contrast schemes. auto follows Windows' light and dark setting
+# through the scheme pair; dark and light pin one scheme for every profile
+function termtheme {
+    param(
+        [ValidateSet('dark', 'light', 'auto', 'status')][string]$Mode = 'status',
+        [string]$SettingsPath = (Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json')
+    )
+    $settingsPath = $SettingsPath
+    if (-not (Test-Path $settingsPath)) {
+        Write-Host 'Windows Terminal has no settings file yet; open it once first' -ForegroundColor Red
+        return
+    }
+    # the file allows // comments, which ConvertFrom-Json in Windows PowerShell 5.1 rejects
+    $settings = (Get-Content -Raw $settingsPath) -replace '(?m)^\s*//.*$', '' | ConvertFrom-Json
+    if (-not $settings.profiles.PSObject.Properties['defaults']) {
+        $settings.profiles | Add-Member -NotePropertyName defaults -NotePropertyValue ([pscustomobject]@{})
+    }
+    $defaults = $settings.profiles.defaults
+
+    if ($Mode -eq 'status') {
+        $scheme = $defaults.PSObject.Properties['colorScheme']
+        if ($scheme -and $scheme.Value -is [pscustomobject]) { 'auto: following Windows light and dark' }
+        elseif ($scheme) { "fixed: $($scheme.Value)" }
+        else { 'no High Contrast scheme set' }
+        return
+    }
+
+    $value = switch ($Mode) {
+        'dark' { 'High Contrast Dark' }
+        'light' { 'High Contrast Light' }
+        'auto' { [pscustomobject]@{ dark = 'High Contrast Dark'; light = 'High Contrast Light' } }
+    }
+    $defaults | Add-Member -Force -NotePropertyName colorScheme -NotePropertyValue $value
+    $settings | ConvertTo-Json -Depth 32 | Set-Content -Path $settingsPath -Encoding utf8
+    Write-Host "Windows Terminal set to $Mode" -ForegroundColor Green
+}

@@ -108,6 +108,7 @@ _cmds_body() {
     echo "  ${CYAN}duh${RESET}           ${WHITE}disk usage of current dir sorted by size${RESET}"
     echo "  ${CYAN}psgrep${RESET}        ${WHITE}ps aux | grep${RESET}"
     echo "  ${CYAN}battery${RESET}       ${WHITE}charge percentage and health${RESET}"
+    echo "  ${CYAN}termtheme${RESET}     ${WHITE}Terminal colours: dark, light or auto (follow macOS)${RESET}"
     echo "  ${CYAN}please${RESET}        ${WHITE}rerun the last command with sudo${RESET}"
     echo "  ${CYAN}cheat${RESET}         ${WHITE}instant command cheatsheet from cheat.sh${RESET}"
     echo "  ${CYAN}zipf${RESET}          ${WHITE}zip a file or folder into a same-named .zip${RESET}"

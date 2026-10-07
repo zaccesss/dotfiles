@@ -12,7 +12,7 @@
 | `04-git.zsh` | Git aliases and helpers | `gs`, `ga`, `gaa`, `gcmt`, `gpsh`, `gcp`, `gpul`, `glog`, `gco`, `gcb`, `gb`, `gbd`, `gd`, `gundo`, `gclean`, `automerge`, `pull-all`, `repo-status` |
 | `05-profile.zsh` | Profile management | `edit-profile`, `reload-profile` |
 | `06-functions.zsh` | Core functions and command reference | `mkcd`, `cls`, `dot`, `cmds` |
-| `07-utilities.zsh` | General utilities | `ll`, `la`, `mkdir`, `duh`, `psgrep`, `serve`, `pubip`, `weather` |
+| `07-utilities.zsh` | General utilities | `ll`, `la`, `mkdir`, `duh`, `psgrep`, `serve`, `pubip`, `weather`, `termtheme` |
 | `08-community.zsh` | Community-borrowed utilities | `extract`, `targz`, `gz`, `dataurl`, `envup`, `digga`, `dns-flush`, `cdf`, `clipcopy`, `clippaste` |
 | `09-cli-tools.zsh` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep), `col`, `replace`, `whatport`, `killport`, `notify`, `typw`, `linkcheck` |
 | `10-ssh.zsh` | SSH helpers | `keygen`, `sshcp`, `ssha`, `sshls`, `sshconf`, `sshtest` |

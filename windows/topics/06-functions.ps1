@@ -96,6 +96,7 @@ function _cmdsBody {
     "  `e[36mduh`e[0m`e[37m           disk usage sorted by size`e[0m"
     "  `e[36mpsgrep`e[0m`e[37m        search running processes by name`e[0m"
     "  `e[36mbattery`e[0m`e[37m       charge percentage and health`e[0m"
+    "  `e[36mtermtheme`e[0m`e[37m     Windows Terminal colours: dark, light or auto (follow Windows)`e[0m"
     "  `e[36mplease`e[0m`e[37m        rerun the last command elevated`e[0m"
     "  `e[36mcheat`e[0m`e[37m         instant command cheatsheet from cheat.sh`e[0m"
     "  `e[36mzipf`e[0m`e[37m          zip a file or folder into a same-named .zip`e[0m"

@@ -12,7 +12,7 @@
 | `04-git.ps1` | Git aliases and helpers | `gs`, `ga`, `gaa`, `gcmt`, `gpsh`, `gcp`, `gpul` (note: `gc`/`gp`/`gl` reserved for `Get-Content`/`Get-ItemProperty`/`Get-Location`), `glog`, `gco`, `gcb`, `gb`, `gbd`, `gd`, `gundo`, `gclean`, `automerge`, `pull-all`, `repo-status` |
 | `05-profile.ps1` | Profile management | `Edit-Profile`, `Reload-Profile` |
 | `06-functions.ps1` | Core functions and command reference | `cmds`, `mkcd`, `mkf`, `mkr`, `mkt`, `dot` |
-| `07-utilities.ps1` | General utilities | `ll`, `la`, `c`, `weather`, `temp`, `pubip`, `localip` |
+| `07-utilities.ps1` | General utilities | `ll`, `la`, `c`, `weather`, `temp`, `pubip`, `localip`, `termtheme` |
 | `08-community.ps1` | Community-borrowed utilities | `extract`, `dataurl`, `envup`, `digga`, `dns-flush`, `change-extension`, `clipcopy` (note: `copy` reserved for `Copy-Item`), `clippaste` |
 | `09-cli-tools.ps1` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep, note: named `rg2` to avoid clashing with the `rgen` binary itself), `col`, `replace`, `whatport`, `killport`, `notify`, `typw`, `linkcheck` |
 | `10-ssh.ps1` | SSH helpers | `keygen`, `sshcp`, `ssha`, `sshtest`, `sshfp`, `sshconf`, `sshls` |

@@ -141,3 +141,29 @@ zipf() {
     local target="${1:?Usage: zipf <file-or-folder>}"
     zip -r "${target%/}.zip" "$target"
 }
+
+# termtheme: Ptyxis' light or dark High Contrast palette. auto follows the desktop's light and dark
+# setting; dark and light pin one. Inside OrbStack the terminal belongs to the Mac, so it says so
+termtheme() {
+    local mode="${1:-status}"
+    if [[ -d /opt/orbstack-guest ]]; then
+        echo "This shell runs in the Mac's terminal; run termtheme on the Mac instead"
+        return 0
+    fi
+    if ! gsettings list-keys org.gnome.Ptyxis 2>/dev/null | grep -qx interface-style; then
+        echo -e "${RED}Ptyxis is not installed; termtheme sets Ptyxis, the terminal in Ubuntu 25.10 and later${RESET}"
+        return 1
+    fi
+    case "$mode" in
+        auto) gsettings set org.gnome.Ptyxis interface-style system
+              echo -e "${GREEN}Ptyxis now follows the desktop's light and dark${RESET}" ;;
+        dark|light) gsettings set org.gnome.Ptyxis interface-style "$mode"
+              echo -e "${GREEN}Ptyxis stays ${mode}${RESET}" ;;
+        status) case "$(gsettings get org.gnome.Ptyxis interface-style)" in
+                    "'system'") echo "auto: following the desktop's light and dark" ;;
+                    *) echo "fixed: $(gsettings get org.gnome.Ptyxis interface-style | tr -d "'")" ;;
+                esac ;;
+        *) echo "Usage: termtheme [dark|light|auto]  (no argument shows the current mode)"
+           return 1 ;;
+    esac
+}
