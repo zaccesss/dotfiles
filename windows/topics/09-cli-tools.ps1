@@ -11,6 +11,15 @@ if (Get-Command zoxide -ErrorAction SilentlyContinue) {
     Invoke-Expression (& { (zoxide init powershell | Out-String) })
 }
 
+# fzf colours as terminal colour names (-1 is the terminal's own text and background), the same as
+# the macOS fzf.zsh in the CLI tools config, so fzf follows Windows Terminal's light or dark scheme
+if (Get-Command rg -ErrorAction SilentlyContinue) {
+    $env:FZF_DEFAULT_COMMAND = "rg --files --hidden --glob '!.git/*'"
+}
+$env:FZF_DEFAULT_OPTS = '--height=60% --layout=reverse --border --bind=ctrl-/:toggle-preview ' +
+    '--color=bg:-1,bg+:-1,fg:-1,fg+:-1:bold:reverse --color=hl:yellow:bold,hl+:yellow:bold ' +
+    '--color=pointer:yellow,marker:yellow --color=prompt:-1,spinner:-1,info:-1'
+
 # ff: fuzzy-find a file, open the pick in $EDITOR
 function ff {
     $f = fzf --preview "bat --color=always {}"

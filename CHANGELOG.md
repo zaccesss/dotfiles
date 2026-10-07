@@ -10,11 +10,13 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Changed
 
+- `ACCESSIBILITY.md` describes the High Contrast palette in light and dark mode, the four-colour banner and fzf's colours.
 - The welcome banner's machine line is magenta on every platform, so each of its 4 lines has its own colour: cyan, green, magenta and yellow.
 - macOS and Linux set `RIPGREP_CONFIG_PATH` when `~/.ripgreprc` exists, so ripgrep picks up its defaults file.
 
 ### Fixed
 
+- fzf on Linux and Windows uses terminal colour names, so it follows the terminal's light or dark palette. Its file list uses `rg` when ripgrep is installed.
 - Inside an OrbStack machine, the Linux prompt no longer shows the user and machine name on every line, since OrbStack's shell arrives over a loopback SSH connection. A real SSH session still shows both.
 - Starship waits up to 100 ms to scan a folder, so a large folder such as the home folder no longer prints a timeout warning above the prompt.
 - `rg` runs ripgrep again on every platform. The Rails generator moved to `rgen`, the clipboard paste to `clippaste`, Elixir to `elx` and the R docs builder to `rdocs`, so none of them hide a real command. `rg2` stays as an extra name for ripgrep.
