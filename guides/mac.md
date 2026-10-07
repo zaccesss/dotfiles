@@ -74,9 +74,12 @@ Files are loaded from `01-path.zsh` to `35-secrets.zsh`. A higher-numbered file 
 `34-starship.zsh` initialises the Starship prompt. The config lives in [mac/starship.toml](../mac/starship.toml), identical content to the Linux and Windows copies. Symlink it to `~/.config/starship.toml`.
 
 > [!TIP]
-> Starship's prompt uses glyphs (branch icon, language icons) that need a Nerd Font to render
-> correctly, otherwise you get missing-glyph boxes. Install one (e.g. `brew install --cask
-> font-jetbrains-mono-nerd-font`) and set it as your terminal's font.
+> The prompt does not need a Nerd Font. Its own symbols (the `>` prompt character, jobs and git
+> status) are plain ASCII and most language modules use Starship's default emoji. The one module
+> in regular use that shows a Nerd Font glyph is Node.js, whose default symbol turns into a
+> missing-glyph box in a font without one. The terminals on my Mac use Monaco 12 in iTerm2 and
+> Warp's default font at size 13, neither of them a Nerd Font. The Brewfile still installs
+> `font-jetbrains-mono-nerd-font`: set it as the terminal's font if you want the Node.js icon.
 
 To add a new group of aliases, create a new file (e.g. `36-mytopic.zsh`) in `mac/topics/`. It is picked up automatically at the next `reload-profile`. No changes to `zshrc` needed.
 
@@ -244,6 +247,19 @@ excluded, the separate `.vscode` repo's own `extensions.txt` is the source of tr
 - **New machine**: `bbundle` installs everything listed in `mac/Brewfile`.
 - **After installing or removing something with brew**: `bdump` regenerates `mac/Brewfile` from
   what is actually installed.
+
+> [!NOTE]
+> `php@8.4` is keg-only, so Homebrew does not link it and `php` keeps resolving to the newer `php`
+> formula that `composer` depends on. To make PHP 8.4 the default, put its folders ahead of
+> Homebrew's own on `PATH`, for example in `01-path.zsh`:
+>
+> ```zsh
+> export PATH="/opt/homebrew/opt/php@8.4/bin:/opt/homebrew/opt/php@8.4/sbin:$PATH"
+> ```
+>
+> `brew unlink php && brew link --force php@8.4` also works, at the cost of hiding the newer PHP.
+> `avr-gcc@14` comes from the `osx-cross/avr` tap at the top of the Brewfile, so `bbundle` adds the
+> tap before it installs the compiler.
 
 ---
 

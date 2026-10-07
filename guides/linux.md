@@ -84,12 +84,16 @@ Files load from `01-path.sh` to `35-secrets.sh`. A higher-numbered file override
 `34-starship.sh` initialises the Starship prompt. The config lives in [linux/starship.toml](../linux/starship.toml), identical content to the Mac and Windows copies. Symlink it to `~/.config/starship.toml`.
 
 > [!TIP]
-> Starship's prompt uses glyphs (branch icon, language icons) that need a Nerd Font to render
-> correctly, otherwise you get missing-glyph boxes. Install one (e.g. via your package manager or
-> [nerdfonts.com](https://www.nerdfonts.com)) and set it as your terminal's font.
+> The prompt does not need a Nerd Font. Its own symbols (the `>` prompt character, jobs and git
+> status) are plain ASCII and most language modules use Starship's default emoji. The one module
+> in regular use that shows a Nerd Font glyph is Node.js, whose default symbol turns into a
+> missing-glyph box in a font without one. The terminals on my Mac use Monaco 12 in iTerm2 and
+> Warp's default font at size 13, neither of them a Nerd Font. If you want the Node.js icon, install
+> one (from your package manager or [nerdfonts.com](https://www.nerdfonts.com)) and set it as the
+> terminal's font.
 
 > [!TIP]
-> The welcome banner in `bashrc` uses colour emoji, a separate thing from the Nerd Font above.
+> The welcome banner in `bashrc` uses colour emoji, a separate thing from the Nerd Font note above.
 > macOS and Windows both ship a colour emoji font system-wide, so it always works there. Linux
 > has no such guarantee, most desktop distros ship one already, but if the banner shows boxes or
 > question marks instead of emoji, install one, for example on Debian/Ubuntu:
