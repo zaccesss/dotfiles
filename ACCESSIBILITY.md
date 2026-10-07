@@ -17,6 +17,12 @@ These dotfiles started from a practical need. With monocular vision, depth cues 
 
 The terminal itself sets the final shades. The High Contrast palette in [terminal-config](https://github.com/zaccesss/terminal-config) gives near-white text on black at 15.9:1 in dark mode and near-black text on white at 16.5:1 in light mode, with all 16 colours set and every light-mode colour at 7:1 or more. Terminals that support it switch between the two with the system appearance. Everything this profile prints follows, since it only uses the named colours.
 
+> [!TIP]
+> `termtheme` sets the terminal's light and dark behaviour in one command on every platform.
+> `termtheme dark` or `termtheme light` keeps the High Contrast palette on one mode whatever the
+> system does, `termtheme auto` follows the system's light and dark setting and `termtheme` on its
+> own shows which mode is on. It drives Terminal.app on macOS, Ptyxis on Linux and Windows Terminal.
+
 > [!WARNING]
 > The Starship prompt shows the same `>` symbol after every command, green after success and bright red after a failure, so that one signal relies on colour alone. With red and green hard to tell apart, change `error_symbol` in `starship.toml` to a different character, for example `[x](bold bright-red)`.
 

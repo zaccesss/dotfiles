@@ -150,3 +150,69 @@ zipf() {
     local target="${1:?Usage: zipf <file-or-folder>}"
     zip -r "${target%/}.zip" "$target"
 }
+
+# termtheme: Terminal.app's High Contrast profile. auto follows macOS light and dark through the
+# login helper the terminal config repo builds; dark and light stop the helper and pin one profile
+termtheme() {
+    local label="local.terminal-config.appearance"
+    local plist="$HOME/Library/LaunchAgents/${label}.plist"
+    local helper="$HOME/.local/bin/terminal-appearance"
+    local name
+    case "${1:-status}" in
+        auto)
+            if [[ ! -x "$helper" ]]; then
+                echo "${RED}The helper is not built yet; run mac/install.sh from the terminal config repo first${RESET}"
+                return 1
+            fi
+            mkdir -p "$(dirname "$plist")"
+            cat > "$plist" <<PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key><string>${label}</string>
+    <key>ProgramArguments</key><array><string>${helper}</string></array>
+    <key>RunAtLoad</key><true/>
+    <key>KeepAlive</key><true/>
+</dict>
+</plist>
+PLIST
+            launchctl bootout "gui/$(id -u)/${label}" 2>/dev/null
+            launchctl bootstrap "gui/$(id -u)" "$plist"
+            echo "${GREEN}Terminal now follows macOS light and dark${RESET}"
+            ;;
+        dark|light)
+            launchctl bootout "gui/$(id -u)/${label}" 2>/dev/null
+            rm -f "$plist"
+            [[ "$1" == dark ]] && name="High Contrast Dark" || name="High Contrast Light"
+            if pgrep -x Terminal >/dev/null; then
+                osascript -e "tell application \"Terminal\"
+                    set default settings to settings set \"$name\"
+                    set startup settings to settings set \"$name\"
+                    repeat with w in windows
+                        try
+                            repeat with t in tabs of w
+                                if name of current settings of t starts with \"High Contrast\" then set current settings of t to settings set \"$name\"
+                            end repeat
+                        end try
+                    end repeat
+                end tell" >/dev/null
+            else
+                defaults write com.apple.Terminal "Default Window Settings" "$name"
+                defaults write com.apple.Terminal "Startup Window Settings" "$name"
+            fi
+            echo "${GREEN}Terminal stays on ${name}${RESET}"
+            ;;
+        status)
+            if launchctl print "gui/$(id -u)/${label}" >/dev/null 2>&1; then
+                echo "auto: following macOS light and dark"
+            else
+                echo "fixed: $(defaults read com.apple.Terminal 'Default Window Settings' 2>/dev/null)"
+            fi
+            ;;
+        *)
+            echo "Usage: termtheme [dark|light|auto]  (no argument shows the current mode)"
+            return 1
+            ;;
+    esac
+}

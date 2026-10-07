@@ -106,6 +106,7 @@ _cmds_body() {
     echo -e "  ${CYAN}duh${RESET}           ${WHITE}disk usage of current dir sorted by size${RESET}"
     echo -e "  ${CYAN}psgrep${RESET}        ${WHITE}ps aux | grep${RESET}"
     echo -e "  ${CYAN}battery${RESET}       ${WHITE}charge percentage and health${RESET}"
+    echo -e "  ${CYAN}termtheme${RESET}     ${WHITE}Ptyxis colours: dark, light or auto (follow the desktop)${RESET}"
     echo -e "  ${CYAN}please${RESET}        ${WHITE}rerun the last command with sudo${RESET}"
     echo -e "  ${CYAN}cheat${RESET}         ${WHITE}instant command cheatsheet from cheat.sh${RESET}"
     echo -e "  ${CYAN}zipf${RESET}          ${WHITE}zip a file or folder into a same-named .zip${RESET}"
