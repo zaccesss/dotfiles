@@ -22,7 +22,7 @@ Write-Host ""
 Write-Host $sep -ForegroundColor Cyan
 Write-Host "  🚀 Welcome back, $env:USERNAME!" -ForegroundColor Cyan
 Write-Host "  ✅ Windows profile loaded" -ForegroundColor Green
-Write-Host "  💻 $env:COMPUTERNAME - PowerShell $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)" -ForegroundColor Green
+Write-Host "  💻 $env:COMPUTERNAME - PowerShell $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)" -ForegroundColor Magenta
 Write-Host "  📅 $(Get-Date -Format 'ddd dd MMM yyyy  HH:mm')" -ForegroundColor Yellow
 Write-Host $sep -ForegroundColor Cyan
 Write-Host ""
