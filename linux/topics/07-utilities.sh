@@ -150,6 +150,10 @@ termtheme() {
         echo "This shell runs in the Mac's terminal; run termtheme on the Mac instead"
         return 0
     fi
+    if [[ -n "${WSL_DISTRO_NAME:-}" ]]; then
+        echo "This shell runs in Windows Terminal; run termtheme in PowerShell instead"
+        return 0
+    fi
     if ! gsettings list-keys org.gnome.Ptyxis 2>/dev/null | grep -qx interface-style; then
         echo -e "${RED}Ptyxis is not installed; termtheme sets Ptyxis, the terminal in Ubuntu 25.10 and later${RESET}"
         return 1

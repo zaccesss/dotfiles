@@ -26,7 +26,7 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Added
 
-- `termtheme` on macOS, Linux and Windows switches the terminal's High Contrast colours: `dark` or `light` pins one, `auto` follows the system's light and dark setting and no argument shows the current mode. It drives Terminal.app (with the login helper for `auto`), Ptyxis and Windows Terminal.
+- `termtheme` on macOS, Linux and Windows switches the terminal's High Contrast colours: `dark` or `light` pins one, `auto` follows the system's light and dark setting and no argument shows the current mode. It drives Terminal.app (with the login helper for `auto`), Ptyxis and Windows Terminal. Inside OrbStack or WSL it points to the host's terminal instead.
 - `docker-clean` on macOS, Linux and Windows: shows Docker's disk use, asks, removes every unused container, image, volume and the build cache, then shows the space again.
 - `orbls` and `orbsh` for OrbStack on macOS.
 - `typw` to rebuild a Typst document on save, `linkcheck` to check every link under a folder with lychee and `trivyscan` to scan a folder for vulnerable dependencies, leaked secrets and misconfigurations.
