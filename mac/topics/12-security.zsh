@@ -133,3 +133,7 @@ sigcheck() {
 
 # lastlogins: show recent login history
 alias lastlogins="last | head -20"
+
+# trivyscan: scan a folder (default: here) for vulnerable dependencies, leaked secrets and
+# misconfigurations before pushing
+trivyscan() { trivy fs --scanners vuln,secret,misconfig "${1:-.}"; }

@@ -70,3 +70,19 @@ dcex() {
     local service="$1"; shift
     docker compose exec "$service" "${@:-sh}"
 }
+
+# docker-clean: removes every stopped container, unused image, network, volume and the build
+# cache, showing the space used before and after. It asks first because volumes can hold databases
+docker-clean() {
+    docker system df
+    printf 'Remove all unused containers, images, volumes and build cache? [y/N] '
+    read -r reply
+    [[ "$reply" == [yY] ]] || { echo "Cancelled"; return 1; }
+    docker system prune -af --volumes
+    docker builder prune -af >/dev/null
+    docker system df
+}
+
+# OrbStack runs Docker and the Linux machines on this Mac
+alias orbls="orb list"     # machines and their state
+alias orbsh="orb"          # shell in the default machine

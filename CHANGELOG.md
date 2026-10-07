@@ -8,6 +8,13 @@ Versions increment by one patch step (0.0.1) per release.
 
 ## [Unreleased]
 
+### Added
+
+- `docker-clean` on macOS, Linux and Windows: shows Docker's disk use, asks, removes every unused container, image, volume and the build cache, then shows the space again.
+- `orbls` and `orbsh` for OrbStack on macOS.
+- `typw` to rebuild a Typst document on save, `linkcheck` to check every link under a folder with lychee and `trivyscan` to scan a folder for vulnerable dependencies, leaked secrets and misconfigurations.
+- Linux `PATH` entries for swiftly's Swift toolchains, the Flutter SDK and .NET global tools. On WSL without wslview, links open through Windows with `BROWSER=explorer.exe`.
+
 ### Changed
 
 - The font advice in the platform guides and `ACCESSIBILITY.md` now matches the real setup: the prompt needs no Nerd Font, only the Node.js module shows a Nerd Font glyph and the Mac's terminals run Monaco 12 in iTerm2 and Warp's default font at size 13.

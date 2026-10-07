@@ -271,7 +271,7 @@ _cmds_body() {
     echo ""
 
     echo -e "${BOLD}${MAGENTA}DOCKER${RESET}"
-    echo -e "  ${CYAN}dps / dpa / dex / dlogs / dstop / drm / dimg / dprune${RESET}"
+    echo -e "  ${CYAN}dps / dpa / dex / dlogs / dstop / drm / dimg / dprune / docker-clean${RESET}"
     echo -e "  ${CYAN}dcu / dcud / dcd / dcb / dcl${RESET}   ${WHITE}Docker Compose${RESET}"
     echo -e "  ${CYAN}dip${RESET}                            ${WHITE}print a container's IP address${RESET}"
     echo ""

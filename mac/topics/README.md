@@ -14,10 +14,10 @@
 | `06-functions.zsh` | Core functions and command reference | `mkcd`, `cls`, `dot`, `cmds` |
 | `07-utilities.zsh` | General utilities | `ll`, `la`, `mkdir`, `duh`, `psgrep`, `serve`, `pubip`, `weather` |
 | `08-community.zsh` | Community-borrowed utilities | `extract`, `targz`, `gz`, `dataurl`, `envup`, `digga`, `dns-flush`, `cdf`, `clipcopy`, `paste` |
-| `09-cli-tools.zsh` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep), `col`, `replace`, `whatport`, `killport`, `notify` |
+| `09-cli-tools.zsh` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep), `col`, `replace`, `whatport`, `killport`, `notify`, `typw`, `linkcheck` |
 | `10-ssh.zsh` | SSH helpers | `keygen`, `sshcp`, `ssha`, `sshls`, `sshconf`, `sshtest` |
 | `11-network.zsh` | Network diagnostics | `myip`, `localip`, `ips`, `headers`, `scan`, `portscan`, `openports`, `dns`, `tracepath`, `speedtest`, `ping4`, `portcheck`, `nginx-test`, `nginx-reload`, `nginx-restart`, `nginx-log` |
-| `12-security.zsh` | SSL, GPG and crypto | `ssl-check`, `ssl-gen`, `ssl-view`, `gpgls`, `gpgenc`, `gpgdec`, `sha256file`, `sha512file` |
+| `12-security.zsh` | SSL, GPG and crypto | `ssl-check`, `ssl-gen`, `ssl-view`, `gpgls`, `gpgenc`, `gpgdec`, `sha256file`, `sha512file`, `trivyscan` |
 | `13-database.zsh` | Database shortcuts | `myconn`, `mydump`, `myls` (MySQL), `pgconn`, `pgdump`, `pgls` (Postgres), `rflush`, `rkeys` (Redis), `sqls` (SQLite) |
 | `14-json.zsh` | JSON helpers | `json-check`, `json-min`, `json-keys`, `json-diff`, `jqk` |
 | `15-rsync.zsh` | File sync and backup | `rcopy`, `rmirror`, `rbackup`, `rdry`, `rclonecopy`, `rclonesync`, `rcloneremotes` |
@@ -27,7 +27,7 @@
 | `19-editors.zsh` | IDE and editor launchers | `code`, `idea`, `rider`, `phpstorm`, `datagrip`, `webstorm`, `goland`, `pycharm`, `clion` |
 | `20-shell-tools.zsh` | Shell linting and formatting | `sc`, `scwatch`, `sfmt`, `sfmtdiff`, `sfmtcheck`, `zshn`, `bashn`, `sc-all` |
 | `21-tmux.zsh` | tmux shortcuts | `ta`, `tn`, `tls`, `tk`, `tka`, `tw`, `ts`, `tss`, `tconf`, `tlog`, `cluster` |
-| `22-docker.zsh` | Docker | `dps`, `dpa`, `dex`, `dlogs`, `dstop`, `drm`, `dimg`, `dprune`, `dcu`, `dcud`, `dcd`, `dcb`, `dcl` |
+| `22-docker.zsh` | Docker | `dps`, `dpa`, `dex`, `dlogs`, `dstop`, `drm`, `dimg`, `dprune`, `dcu`, `dcud`, `dcd`, `dcb`, `dcl`, `docker-clean`, `orbls`, `orbsh` |
 | `23-kubernetes.zsh` | kubectl shortcuts | `kc` (kubectl), `kg`, `ka`, `kd`, `klogs`, `kns`, `kctx`, `kpods` |
 | `24-cloud.zsh` | AWS, GCP and Azure | `awsp`, `awswho`, `awsls`, `awsec2`, `awslogs`, `awslambda`, `awsregion` (AWS), `gcfg`, `gcproj`, `gcwho`, `gcrun`, `gcbuild`, `gcvms`, `gclogs` (GCP), `azwho`, `azls`, `azsub`, `azvm`, `azweb`, `azgroup`, `azlogs` (Azure) |
 | `25-devops.zsh` | Terraform, Ansible, Helm and Vagrant | `tfi`, `tfp`, `tfa`, `tfaa`, `tfd`, `tfda`, `tfv`, `tff`, `tfo`, `tfs`, `tfst`, `tfw`, `tfwn`, `tfwsel`, `tfplan-save` (Terraform), `ap`, `apcheck`, `ai`, `aping` (Ansible), `hls`, `hlsa`, `hinst`, `hup`, `hrm`, `hrepo`, `hrepoadd`, `hrepoup`, `hsearch`, `hvals` (Helm), `vup`, `vhalt`, `vreload`, `vssh`, `vdestroy`, `vstatus`, `vsnap` (Vagrant) |
