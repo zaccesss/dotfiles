@@ -77,3 +77,9 @@ function notify {
         Write-Host "$($args -join ' ') - exit $status" -ForegroundColor Cyan
     }
 }
+
+# typw: rebuild a Typst document every time it is saved
+function typw { param([Parameter(Mandatory)][string]$File) typst watch $File }
+
+# linkcheck: check every link in the Markdown and HTML under a folder (default: here)
+function linkcheck { param([string]$Path = '.') lychee --no-progress $Path }

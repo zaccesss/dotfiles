@@ -52,3 +52,9 @@ notify() {
     osascript -e "display notification \"exit $status\" with title \"$*\""
     return $status
 }
+
+# typw: rebuild a Typst document every time it is saved
+typw() { typst watch "${1:?Usage: typw <file.typ>}"; }
+
+# linkcheck: check every link in the Markdown and HTML under a folder (default: here)
+linkcheck() { lychee --no-progress "${1:-.}"; }
