@@ -17,7 +17,8 @@ function bclean    { bundle clean --force }
 
 function rs        { bundle exec rails server }
 function rc        { bundle exec rails console }
-function rg        { bundle exec rails generate @args }
+# rgen rather than rg, which is ripgrep
+function rgen        { bundle exec rails generate @args }
 function rgm       { bundle exec rails generate model @args }
 function rgc       { bundle exec rails generate controller @args }
 function rdm       { bundle exec rails db:migrate }

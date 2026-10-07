@@ -21,7 +21,8 @@ alias bclean="bundle clean --force"
 # Rails
 alias rs="bundle exec rails server"
 alias rc="bundle exec rails console"
-alias rg="bundle exec rails generate"
+# rgen rather than rg, which is ripgrep
+alias rgen="bundle exec rails generate"
 alias rgm="bundle exec rails generate model"
 alias rgc="bundle exec rails generate controller"
 alias rds="bundle exec rails db:seed"

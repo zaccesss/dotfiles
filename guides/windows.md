@@ -177,7 +177,7 @@ Defined in [windows/topics/07-utilities.ps1](../windows/topics/07-utilities.ps1)
 | `la` | Long list with hidden files |
 | `c` | Clear the terminal |
 | `clipcopy` | Set clipboard: `$input \| Set-Clipboard` |
-| `paste` | Get clipboard: `Get-Clipboard` |
+| `clippaste` | Get clipboard: `Get-Clipboard` |
 | `pubip` | Print public IP |
 | `localip` | Print LAN IP |
 | `weather` | Print weather for current location |

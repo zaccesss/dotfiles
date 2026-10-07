@@ -88,7 +88,8 @@ dns-flush() {
 
 # clipboard shortcuts - requires xclip to be installed (sudo apt install xclip)
 alias clipcopy="xclip -selection clipboard"
-alias paste="xclip -selection clipboard -o"
+# clippaste rather than paste, which is the standard column-joining command
+alias clippaste="xclip -selection clipboard -o"
 
 # HTTP method shortcuts - quick curl calls without typing flags
 GET()    { curl -sS "$@"; }

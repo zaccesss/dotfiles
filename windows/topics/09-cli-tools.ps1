@@ -34,7 +34,8 @@ function ez  { eza @args }
 function ezl { eza -lah --git @args }
 function ezt { eza --tree --level=2 @args }
 
-# rg2: ripgrep. Named rg2, not rg, since rg is already 29-ruby.ps1's "rails generate"
+# rg2: ripgrep under its earlier name, kept so old habits still work. rg itself is ripgrep
+# again since the Rails generator moved to rgen
 function rg2 { rg @args }
 
 # col: extract a whitespace-separated column from piped text, e.g. `Get-Process | col 2`
