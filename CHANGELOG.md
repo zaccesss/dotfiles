@@ -10,10 +10,13 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Changed
 
+- The welcome banner's machine line is magenta on every platform, so each of its 4 lines has its own colour: cyan, green, magenta and yellow.
 - macOS and Linux set `RIPGREP_CONFIG_PATH` when `~/.ripgreprc` exists, so ripgrep picks up its defaults file.
 
 ### Fixed
 
+- Inside an OrbStack machine, the Linux prompt no longer shows the user and machine name on every line, since OrbStack's shell arrives over a loopback SSH connection. A real SSH session still shows both.
+- Starship waits up to 100 ms to scan a folder, so a large folder such as the home folder no longer prints a timeout warning above the prompt.
 - `rg` runs ripgrep again on every platform. The Rails generator moved to `rgen`, the clipboard paste to `clippaste`, Elixir to `elx` and the R docs builder to `rdocs`, so none of them hide a real command. `rg2` stays as an extra name for ripgrep.
 - On Linux, `ping4` keeps its real meaning (IPv4 only) while still sending four pings.
 - The Linux prompt no longer tags every line with the container type inside WSL and other containers.
