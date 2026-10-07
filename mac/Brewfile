@@ -1,4 +1,4 @@
-# produced by `brew bundle dump --describe --no-vscode`. VS Code extensions are excluded since
+# produced by `brew bundle dump --no-vscode`. VS Code extensions are excluded since
 # the separate .vscode repo's own extensions.txt is the source of truth for those.
 
 tap "osx-cross/avr", trusted: true # AVR toolchain tap, needed for avr-gcc@14 below

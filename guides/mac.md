@@ -75,11 +75,10 @@ Files are loaded from `01-path.zsh` to `35-secrets.zsh`. A higher-numbered file 
 
 > [!TIP]
 > The prompt does not need a Nerd Font. Its own symbols (the `>` prompt character, jobs and git
-> status) are plain ASCII and most language modules use Starship's default emoji. The one module
-> in regular use that shows a Nerd Font glyph is Node.js, whose default symbol turns into a
-> missing-glyph box in a font without one. The terminals on my Mac use Monaco 12 in iTerm2 and
-> Warp's default font at size 13, neither of them a Nerd Font. The Brewfile still installs
-> `font-jetbrains-mono-nerd-font`: set it as the terminal's font if you want the Node.js icon.
+> status) are plain ASCII and most language modules use Starship's default emoji. Node.js shows
+> the plain text `node` instead of Starship's default Nerd Font glyph. The terminals on my Mac use
+> Monaco 12 in iTerm2 and Warp's default font at size 13, neither of them a Nerd Font. The Brewfile still installs
+> `font-jetbrains-mono-nerd-font` for other tools that use icon glyphs.
 
 To add a new group of aliases, create a new file (e.g. `36-mytopic.zsh`) in `mac/topics/`. It is picked up automatically at the next `reload-profile`. No changes to `zshrc` needed.
 
@@ -241,7 +240,7 @@ The profile covers a wide range of tools. Here is a summary grouped by area. For
 ## Homebrew packages
 
 [mac/Brewfile](../mac/Brewfile) lists every formula, cask and global npm package installed on this
-machine via Homebrew, produced by `brew bundle dump --describe --no-vscode`. VS Code extensions are
+machine via Homebrew, produced by `brew bundle dump --no-vscode`. VS Code extensions are
 excluded, the separate `.vscode` repo's own `extensions.txt` is the source of truth there.
 
 - **New machine**: `bbundle` installs everything listed in `mac/Brewfile`.
