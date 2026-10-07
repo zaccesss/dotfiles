@@ -8,6 +8,10 @@ Versions increment by one patch step (0.0.1) per release.
 
 ## [Unreleased]
 
+### Changed
+
+- macOS and Linux set `RIPGREP_CONFIG_PATH` when `~/.ripgreprc` exists, so ripgrep picks up its defaults file.
+
 ### Fixed
 
 - `rg` runs ripgrep again on every platform. The Rails generator moved to `rgen`, the clipboard paste to `clippaste`, Elixir to `elx` and the R docs builder to `rdocs`, so none of them hide a real command. `rg2` stays as an extra name for ripgrep.
