@@ -68,4 +68,4 @@ alias bbundle='brew bundle install --file="$DOTFILES/mac/Brewfile"'
 
 # bdump: regenerate mac/Brewfile from what is actually installed right now.
 # --no-vscode skips VS Code extensions, the separate .vscode repo is the source of truth there.
-alias bdump='brew bundle dump --describe --no-vscode --force --file="$DOTFILES/mac/Brewfile"'
+alias bdump='brew bundle dump --no-vscode --force --file="$DOTFILES/mac/Brewfile"'

@@ -445,7 +445,7 @@ Defined in `16-brew`. Note: `binsc` (cask install) is macOS only. Linuxbrew does
 | `bdump` | Regenerate `mac/Brewfile` from what's actually installed right now |
 
 `mac/Brewfile` lists every formula, cask and global npm package on this machine, produced by
-`brew bundle dump --describe --no-vscode`. VS Code extensions are excluded, the separate `.vscode`
+`brew bundle dump --no-vscode`. VS Code extensions are excluded, the separate `.vscode`
 repo's own `extensions.txt` is the source of truth for those.
 
 ### winget and Chocolatey (Windows)
