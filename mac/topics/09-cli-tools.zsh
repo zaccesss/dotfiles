@@ -26,7 +26,8 @@ alias ez="eza"
 alias ezl="eza -lah --git"
 alias ezt="eza --tree --level=2"
 
-# rg2: ripgrep. Named rg2, not rg, since rg is already 29-ruby.zsh's "rails generate"
+# rg2: ripgrep under its earlier name, kept so old habits still work. rg itself is ripgrep
+# again since the Rails generator moved to rgen
 alias rg2="rg"
 
 # col: extract a whitespace-separated column from piped text, e.g. `ps aux | col 2`

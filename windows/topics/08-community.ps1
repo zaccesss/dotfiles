@@ -82,7 +82,7 @@ function dns-flush {
 
 # Clipboard shortcuts
 function clipcopy { $input | Set-Clipboard }
-function paste    { Get-Clipboard }
+function clippaste    { Get-Clipboard }
 
 # HTTP method shortcuts via Invoke-RestMethod
 function GET    { Invoke-RestMethod -Uri $args[0] -Method Get    $args[1..99] }

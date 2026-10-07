@@ -13,8 +13,8 @@
 | `05-profile.ps1` | Profile management | `Edit-Profile`, `Reload-Profile` |
 | `06-functions.ps1` | Core functions and command reference | `cmds`, `mkcd`, `mkf`, `mkr`, `mkt`, `dot` |
 | `07-utilities.ps1` | General utilities | `ll`, `la`, `c`, `weather`, `temp`, `pubip`, `localip` |
-| `08-community.ps1` | Community-borrowed utilities | `extract`, `dataurl`, `envup`, `digga`, `dns-flush`, `change-extension`, `clipcopy` (note: `copy` reserved for `Copy-Item`), `paste` |
-| `09-cli-tools.ps1` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep, note: named `rg2` to avoid clashing with the `rg` binary itself), `col`, `replace`, `whatport`, `killport`, `notify`, `typw`, `linkcheck` |
+| `08-community.ps1` | Community-borrowed utilities | `extract`, `dataurl`, `envup`, `digga`, `dns-flush`, `change-extension`, `clipcopy` (note: `copy` reserved for `Copy-Item`), `clippaste` |
+| `09-cli-tools.ps1` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep, note: named `rg2` to avoid clashing with the `rgen` binary itself), `col`, `replace`, `whatport`, `killport`, `notify`, `typw`, `linkcheck` |
 | `10-ssh.ps1` | SSH helpers | `keygen`, `sshcp`, `ssha`, `sshtest`, `sshfp`, `sshconf`, `sshls` |
 | `11-network.ps1` | Network diagnostics | `myip`, `localip`, `ping4`, `portcheck`, `openports`, `portscan`, `headers` |
 | `12-security.ps1` | SSL, GPG and crypto | `ssl-check`, `ssl-gen`, `ssl-view`, `gpgls`, `gpgenc`, `gpgdec`, `sha256file`, `sha512file`, `trivyscan` |
@@ -49,6 +49,6 @@ Create a new file with the next available number, e.g. `36-mytopic.ps1`. It is p
 ## Key Windows differences
 
 - `sc` (shellcheck) is renamed to `shck` because `sc` is the Windows `sc.exe` Service Control Manager
-- `copy`/`paste` use `Set-Clipboard`/`Get-Clipboard` instead of `pbcopy`/`xclip`
+- `copy`/`clippaste` use `Set-Clipboard`/`Get-Clipboard` instead of `pbcopy`/`xclip`
 - `16-winget.ps1` replaces `16-brew.zsh` - covers winget and Chocolatey instead of Homebrew
 - `21-tmux.ps1` adds `wt-here` and `wt-split` for Windows Terminal alongside WSL tmux shortcuts

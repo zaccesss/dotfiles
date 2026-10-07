@@ -63,7 +63,7 @@ The welcome banner confirms the profile loaded. Run `cmds` to see all available 
 This profile works inside WSL2 on Windows without modification.
 
 - The `~/dev` paths map to the Linux home inside WSL2, not `C:\dev`. This is intentional - each environment keeps its own repos folder.
-- `clipcopy`/`paste` use `xclip` - install it if you need clipboard access: `sudo apt install xclip`.
+- `clipcopy`/`clippaste` use `xclip` - install it if you need clipboard access: `sudo apt install xclip`.
 - `dns-flush` clears the Linux/WSL2 DNS cache via `systemd-resolve --flush-caches`.
 - For GUI apps via WSL2, WSLg is required. Most tool shortcuts here are CLI only.
 
@@ -178,7 +178,7 @@ Defined in [linux/topics/07-utilities.sh](../linux/topics/07-utilities.sh) and [
 | `la` | Long list with hidden files |
 | `c` | Clear the terminal |
 | `clipcopy` | Pipe to clipboard via `xclip -selection clipboard` |
-| `paste` | Paste from clipboard via `xclip -selection clipboard -o` |
+| `clippaste` | Paste from clipboard via `xclip -selection clipboard -o` |
 | `pubip` | Print public IP |
 | `localip` | Print LAN IP via `hostname -I` |
 | `weather` | Print weather for current location |
@@ -305,7 +305,7 @@ for f in linux/topics/*.sh; do bash -n "$f" && echo "OK: $f"; done
 
 **An alias is not working** - run `type myalias` to confirm it loaded. Run `reload-profile` and try again.
 
-**`copy`/`paste` not working** - install xclip:
+**`copy`/`clippaste` not working** - install xclip:
 
 ```bash
 sudo apt install xclip     # Ubuntu/Debian

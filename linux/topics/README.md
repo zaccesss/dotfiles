@@ -13,7 +13,7 @@
 | `05-profile.sh` | Profile management | `edit-profile`, `reload-profile` |
 | `06-functions.sh` | Core functions and command reference | `cmds`, `mkcd`, `mkf`, `mkr`, `mkt`, `dot` |
 | `07-utilities.sh` | General utilities | `ll`, `la`, `c`, `weather`, `temp`, `pubip`, `localip` |
-| `08-community.sh` | Community-borrowed utilities | `extract`, `dataurl`, `envup`, `digga`, `dns-flush`, `change-extension`, `clipcopy`, `paste` |
+| `08-community.sh` | Community-borrowed utilities | `extract`, `dataurl`, `envup`, `digga`, `dns-flush`, `change-extension`, `clipcopy`, `clippaste` |
 | `09-cli-tools.sh` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep), `col`, `replace`, `whatport`, `killport`, `notify`, `typw`, `linkcheck` |
 | `10-ssh.sh` | SSH helpers | `keygen`, `sshcp`, `ssha`, `sshtest`, `sshfp`, `sshconf`, `sshls` |
 | `11-network.sh` | Network diagnostics | `myip`, `localip`, `ping4`, `portcheck`, `openports`, `portscan`, `headers` |
@@ -49,6 +49,6 @@ Create a new file with the next available number, e.g. `37-mytopic.sh`. It is so
 
 ## Platform differences from macOS
 
-- `copy`/`paste` use `xclip` instead of `pbcopy`/`pbpaste`
+- `copy`/`clippaste` use `xclip` instead of `pbcopy`/`pbpaste`
 - `dns-flush` clears the Linux DNS cache (`systemd-resolve --flush-caches`)
 - `16-brew.sh` covers Linuxbrew - no `binsc` (cask) or `boutd` (macOS-specific cask update)

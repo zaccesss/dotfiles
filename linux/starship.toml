@@ -337,3 +337,8 @@ disabled = true
 format = "[$time]($style) "
 time_format = "%a %d %b  %H:%M:%S"
 style = "bold white"
+
+# OrbStack machines and WSL run as containers, so this module would tag every prompt with the
+# container type. It says nothing useful on a development machine
+[container]
+disabled = true

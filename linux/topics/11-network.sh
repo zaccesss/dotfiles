@@ -26,7 +26,7 @@ dns() {
 }
 
 alias tracepath="traceroute"
-alias ping4="ping -c 4"
+alias ping4="ping -4 -c 4"   # keeps ping4's own meaning: IPv4 only
 
 portcheck() {
     nc -zv "${1:?Usage: portcheck <host> <port>}" "${2:?}" 2>&1

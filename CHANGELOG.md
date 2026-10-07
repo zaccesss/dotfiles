@@ -8,6 +8,12 @@ Versions increment by one patch step (0.0.1) per release.
 
 ## [Unreleased]
 
+### Fixed
+
+- `rg` runs ripgrep again on every platform. The Rails generator moved to `rgen`, the clipboard paste to `clippaste`, Elixir to `elx` and the R docs builder to `rdocs`, so none of them hide a real command. `rg2` stays as an extra name for ripgrep.
+- On Linux, `ping4` keeps its real meaning (IPv4 only) while still sending four pings.
+- The Linux prompt no longer tags every line with the container type inside WSL and other containers.
+
 ### Added
 
 - `docker-clean` on macOS, Linux and Windows: shows Docker's disk use, asks, removes every unused container, image, volume and the build cache, then shows the space again.

@@ -167,7 +167,7 @@ Defined in [mac/topics/07-utilities.zsh](../mac/topics/07-utilities.zsh) and [ma
 | `la` | `ls -la` - long list with hidden files |
 | `c` | Clear the terminal |
 | `clipcopy` | Pipe to clipboard: `pbcopy` |
-| `paste` | Paste from clipboard: `pbpaste` |
+| `clippaste` | Paste from clipboard: `pbpaste` |
 | `pubip` | Print public IP via `curl ifconfig.me` |
 | `localip` | Print LAN IP via `ipconfig getifaddr en0` |
 | `weather` | Print weather for current location via `wttr.in` |
