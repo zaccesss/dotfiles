@@ -15,7 +15,7 @@ These dotfiles started from a practical need. With monocular vision, depth cues 
 | Colour vision differences | Status messages carry words as well as colour ("profile loaded", the error text itself). The colours were tested on dark and light terminal themes. Changing one colour in `02-colours` updates it across the whole profile |
 | Icon fonts | The Starship prompt's own symbols are plain ASCII (the `>` prompt character, `+` for jobs and `!`, `^` or `v` in git status), so it reads cleanly without a Nerd Font. The Node.js module shows the plain text `node` rather than Starship's default Nerd Font glyph. The terminals on my Mac use Monaco 12 in iTerm2 and Warp's default font at size 13, neither of them a Nerd Font |
 
-The terminal itself sets the final shades. A pure black background with light grey text, as used in [terminal-config](https://github.com/zaccesss/terminal-config), gives a contrast ratio of about 11:1. The starter configs there set `SF Mono`, which only macOS ships, so on Linux and Windows those apps fall back to their own default monospace font until it is swapped for one that is installed.
+The terminal itself sets the final shades. The High Contrast palette in [terminal-config](https://github.com/zaccesss/terminal-config) gives near-white text on black at 15.9:1 in dark mode and near-black text on white at 16.5:1 in light mode, with all 16 colours set and every light-mode colour at 7:1 or more. Terminals that support it switch between the two with the system appearance. Everything this profile prints follows, since it only uses the named colours.
 
 > [!WARNING]
 > The Starship prompt shows the same `>` symbol after every command, green after success and bright red after a failure, so that one signal relies on colour alone. With red and green hard to tell apart, change `error_symbol` in `starship.toml` to a different character, for example `[x](bold bright-red)`.
@@ -29,6 +29,8 @@ The terminal itself sets the final shades. A pure black background with light gr
 
 ## Colour in other tools
 
+- The welcome banner gives each of its four lines its own colour: cyan, green, magenta and yellow.
+- fzf uses the terminal's own colours with yellow matches. The current line is bold and reversed rather than shaded, so it reads in light and dark mode alike.
 - `ls` shows directories in bold cyan, symlinks in magenta and executables in bold green.
 - `grep` and `diff` highlight matches inline.
 - Man pages show headers in bold cyan, emphasis underlined in green and search hits in yellow.

@@ -16,6 +16,15 @@ if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init bash)"
 fi
 
+# fzf colours as terminal colour names (-1 is the terminal's own text and background), the same as
+# the macOS fzf.zsh in the CLI tools config, so fzf follows the terminal's light or dark palette
+if command -v rg >/dev/null 2>&1; then
+    export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git/*'"
+fi
+export FZF_DEFAULT_OPTS="--height=60% --layout=reverse --border --bind=ctrl-/:toggle-preview
+  --color=bg:-1,bg+:-1,fg:-1,fg+:-1:bold:reverse --color=hl:yellow:bold,hl+:yellow:bold
+  --color=pointer:yellow,marker:yellow --color=prompt:-1,spinner:-1,info:-1"
+
 # fzf: fuzzy-find a file, open the pick in $EDITOR
 ff() { local f; f=$(fzf --preview 'bat --color=always {}') && [ -n "$f" ] && "${EDITOR:-code}" "$f"; }
 
