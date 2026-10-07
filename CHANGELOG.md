@@ -23,6 +23,8 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Fixed
 
+- `bdump` no longer passes `--describe`, which `brew bundle dump` has dropped since descriptions are now its default.
+- The Starship Node.js module now uses the plain-text symbol `"node "` in every platform's `starship.toml`, so the whole prompt reads correctly without a Nerd Font. The font tips match.
 - The README and `guides/new-device.md` now clone to `~/dev/github/repos/dotfiles`, the path every loader defaults to, with a note on setting `DOTFILES` for any other location.
 - `mac/Brewfile` now installs `php@8.4`, `composer` and `avr-gcc@14` from the `osx-cross/avr` tap, with a `guides/mac.md` note on putting the keg-only PHP 8.4 on `PATH`.
 - Linux JetBrains launchers now support manual IDE installations under `~/dev/tools/jetbrains` while retaining JetBrains Toolbox shell-script support

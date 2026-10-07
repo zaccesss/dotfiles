@@ -197,6 +197,8 @@ style = "bold yellow"
 
 # Node - only shows when package.json is present. Node's own brand green.
 [nodejs]
+# plain-text symbol so the module reads correctly without a Nerd Font
+symbol = "node "
 detect_files = ["package.json"]
 style = "bold green"
 
