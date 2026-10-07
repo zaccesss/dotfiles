@@ -1,8 +1,11 @@
 # produced by `brew bundle dump --describe --no-vscode`. VS Code extensions are excluded since
 # the separate .vscode repo's own extensions.txt is the source of truth for those.
 
+tap "osx-cross/avr", trusted: true # AVR toolchain tap, needed for avr-gcc@14 below
+
 brew "assimp" # Portable library for importing many well-known 3D model formats
 brew "binaryen" # Compiler infrastructure and toolchain library for WebAssembly
+brew "composer" # Dependency manager for PHP
 brew "gh" # GitHub command-line tool
 brew "gifsicle" # GIF image/animation creator/editor
 brew "git" # Distributed revision control system
@@ -13,6 +16,7 @@ brew "librsvg" # Library to render SVG files using Cairo
 brew "lychee" # Fast, async, resource-friendly link checker
 brew "node" # Open-source, cross-platform JavaScript runtime environment
 brew "openjdk" # Development kit for the Java programming language
+brew "php@8.4" # PHP 8.4, keg-only so its bin folder has to go on PATH, see guides/mac.md
 brew "poppler" # PDF rendering library (based on the xpdf-3.0 code base)
 brew "postgresql@18", link: true # Object-relational database system
 brew "powershell" # Command-line shell and scripting language
@@ -21,6 +25,7 @@ brew "ruff" # Extremely fast Python linter, written in Rust
 brew "shellcheck" # Static analysis and lint tool, for (ba)sh scripts
 brew "starship" # Cross-shell prompt for astronauts
 brew "tree" # Display directories as trees (with optional colour/HTML output)
+brew "osx-cross/avr/avr-gcc@14", trusted: true # GNU compiler collection for AVR 8-bit and 32-bit microcontrollers
 
 cask "adobe-acrobat-reader" # View, print and comment on PDF documents
 cask "anaconda" # Distribution of the Python and R programming languages for scientific computing

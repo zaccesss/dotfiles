@@ -40,13 +40,16 @@ gh auth login
 
 ### 4 - Clone this repo
 
-Clone into wherever you keep your projects:
+Clone to the path the loader expects:
 
 ```bash
-# replace /path/to/your/projects with your preferred location
-git clone https://github.com/zaccesss/dotfiles /path/to/your/projects/dotfiles
-cd /path/to/your/projects/dotfiles
+git clone https://github.com/zaccesss/dotfiles ~/dev/github/repos/dotfiles
+cd ~/dev/github/repos/dotfiles
 ```
+
+> [!NOTE]
+> `mac/zshrc` and `linux/bashrc` look for the repo at `~/dev/github/repos/dotfiles` unless `DOTFILES`
+> is already set. For any other location, export `DOTFILES` with that path before sourcing the profile.
 
 ### 5 - Apply the shell profile
 
@@ -73,7 +76,7 @@ Press `Cmd+Shift+P` in VS Code, type "Shell Command: Install 'code' command in P
 ```bash
 brew install starship
 mkdir -p ~/.config
-ln -sf /path/to/your/projects/dotfiles/mac/starship.toml ~/.config/starship.toml
+ln -sf ~/dev/github/repos/dotfiles/mac/starship.toml ~/.config/starship.toml
 ```
 
 Open a new terminal tab. The prompt will show your current directory, git branch and language versions automatically.
@@ -116,8 +119,8 @@ gh auth login
 ### 3 - Clone this repo
 
 ```bash
-git clone https://github.com/zaccesss/dotfiles /path/to/your/projects/dotfiles
-cd /path/to/your/projects/dotfiles
+git clone https://github.com/zaccesss/dotfiles ~/dev/github/repos/dotfiles
+cd ~/dev/github/repos/dotfiles
 ```
 
 ### 4 - Apply the shell profile
@@ -147,7 +150,7 @@ Or download the `.deb` package from [code.visualstudio.com](https://code.visuals
 ```bash
 curl -sS https://starship.rs/install.sh | sh
 mkdir -p ~/.config
-ln -sf /path/to/your/projects/dotfiles/linux/starship.toml ~/.config/starship.toml
+ln -sf ~/dev/github/repos/dotfiles/linux/starship.toml ~/.config/starship.toml
 ```
 
 Open a new terminal tab. The prompt will show your current directory, git branch and language versions automatically.
@@ -209,8 +212,8 @@ gh auth login
 ### 3 - Clone this repo
 
 ```powershell
-git clone https://github.com/zaccesss/dotfiles C:\path\to\your\projects\dotfiles
-Set-Location C:\path\to\your\projects\dotfiles
+git clone https://github.com/zaccesss/dotfiles "$HOME\dev\github\repos\dotfiles"
+Set-Location "$HOME\dev\github\repos\dotfiles"
 ```
 
 ### 4 - Apply the PowerShell profile
@@ -240,7 +243,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```powershell
 winget install Starship.Starship
 New-Item -ItemType Directory -Force -Path "$HOME\.config"
-New-Item -ItemType SymbolicLink -Path "$HOME\.config\starship.toml" -Target "C:\path\to\your\projects\dotfiles\windows\starship.toml"
+New-Item -ItemType SymbolicLink -Path "$HOME\.config\starship.toml" -Target "$HOME\dev\github\repos\dotfiles\windows\starship.toml"
 ```
 
 > [!NOTE]

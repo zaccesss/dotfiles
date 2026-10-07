@@ -10,6 +10,7 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Changed
 
+- The font advice in the platform guides and `ACCESSIBILITY.md` now matches the real setup: the prompt needs no Nerd Font, only the Node.js module shows a Nerd Font glyph and the Mac's terminals run Monaco 12 in iTerm2 and Warp's default font at size 13.
 - `ACCESSIBILITY.md`: a note that the settings are preferences and a link to the shared accessibility statement.
 
 ### Added
@@ -22,6 +23,8 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Fixed
 
+- The README and `guides/new-device.md` now clone to `~/dev/github/repos/dotfiles`, the path every loader defaults to, with a note on setting `DOTFILES` for any other location.
+- `mac/Brewfile` now installs `php@8.4`, `composer` and `avr-gcc@14` from the `osx-cross/avr` tap, with a `guides/mac.md` note on putting the keg-only PHP 8.4 on `PATH`.
 - Linux JetBrains launchers now support manual IDE installations under `~/dev/tools/jetbrains` while retaining JetBrains Toolbox shell-script support
 
 ## [1.0.8] - 2026-09-18
