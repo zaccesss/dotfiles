@@ -5,6 +5,10 @@
 #   sudo apt install fzf zoxide bat eza ripgrep
 # =============================================================================
 
+# ripgrep: defaults such as smart-case and hidden files go in ~/.ripgreprc (see cli-tools-config).
+# rg only reads that file through this env var
+[[ -f "$HOME/.ripgreprc" ]] && export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+
 # zoxide: frecency-based cd. z <partial-name> jumps to the best match, zi is the
 # interactive picker when more than one match is close. Guarded, unlike Starship's
 # own eval line, since these 5 tools are new additions not everyone has installed yet.
