@@ -66,3 +66,14 @@ function dcex {
     param([string]$Service, [string]$Cmd = "sh")
     docker compose exec $Service $Cmd
 }
+
+# docker-clean: removes every stopped container, unused image, network, volume and the build
+# cache, showing the space used before and after. It asks first because volumes can hold databases
+function docker-clean {
+    docker system df
+    $reply = Read-Host 'Remove all unused containers, images, volumes and build cache? [y/N]'
+    if ($reply -notmatch '^[yY]$') { Write-Host 'Cancelled'; return }
+    docker system prune -af --volumes
+    docker builder prune -af | Out-Null
+    docker system df
+}

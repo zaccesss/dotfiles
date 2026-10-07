@@ -14,10 +14,10 @@
 | `06-functions.ps1` | Core functions and command reference | `cmds`, `mkcd`, `mkf`, `mkr`, `mkt`, `dot` |
 | `07-utilities.ps1` | General utilities | `ll`, `la`, `c`, `weather`, `temp`, `pubip`, `localip` |
 | `08-community.ps1` | Community-borrowed utilities | `extract`, `dataurl`, `envup`, `digga`, `dns-flush`, `change-extension`, `clipcopy` (note: `copy` reserved for `Copy-Item`), `paste` |
-| `09-cli-tools.ps1` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep, note: named `rg2` to avoid clashing with the `rg` binary itself), `col`, `replace`, `whatport`, `killport`, `notify` |
+| `09-cli-tools.ps1` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep, note: named `rg2` to avoid clashing with the `rg` binary itself), `col`, `replace`, `whatport`, `killport`, `notify`, `typw`, `linkcheck` |
 | `10-ssh.ps1` | SSH helpers | `keygen`, `sshcp`, `ssha`, `sshtest`, `sshfp`, `sshconf`, `sshls` |
 | `11-network.ps1` | Network diagnostics | `myip`, `localip`, `ping4`, `portcheck`, `openports`, `portscan`, `headers` |
-| `12-security.ps1` | SSL, GPG and crypto | `ssl-check`, `ssl-gen`, `ssl-view`, `gpgls`, `gpgenc`, `gpgdec`, `sha256file`, `sha512file` |
+| `12-security.ps1` | SSL, GPG and crypto | `ssl-check`, `ssl-gen`, `ssl-view`, `gpgls`, `gpgenc`, `gpgdec`, `sha256file`, `sha512file`, `trivyscan` |
 | `13-database.ps1` | Database shortcuts | `myconn`, `mydump`, `myls` (MySQL), `pgconn`, `pgdump`, `pgls` (Postgres), `rflush`, `rkeys` (Redis), `sqls` (SQLite) |
 | `14-json.ps1` | JSON helpers | `json-check`, `json-min`, `json-keys`, `json-diff`, `jqk` |
 | `15-rsync.ps1` | File sync - rsync via WSL and WinSCP | `rcopy`, `rmirror`, `rbackup`, `rdry` (rsync via WSL), `winscp-put`, `winscp-get`, `rclonecopy`, `rclonesync` |
@@ -27,7 +27,7 @@
 | `19-editors.ps1` | IDE and editor launchers | `code`, `idea`, `rider`, `phpstorm`, `datagrip`, `webstorm`, `goland`, `pycharm`, `clion` |
 | `20-shell-tools.ps1` | Shell linting and formatting | `shck` (shellcheck - note: `sc` reserved for `sc.exe`), `psanalyse`, `psanalysefix`, `sfmt` |
 | `21-tmux.ps1` | Windows Terminal and tmux via WSL | `wt-here`, `wt-split`, `tn`, `tls`, `tk`, `tka`, `cluster` |
-| `22-docker.ps1` | Docker | `dps`, `drun2`, `dstop`, `drm`, `dimg`, `dprune`, `dlogs`, `dex`, `dcb`, `dcu`, `dcd`, `dcl`, `dcheck` |
+| `22-docker.ps1` | Docker | `dps`, `drun2`, `dstop`, `drm`, `dimg`, `dprune`, `dlogs`, `dex`, `dcb`, `dcu`, `dcd`, `dcl`, `dcheck`, `docker-clean` |
 | `23-kubernetes.ps1` | kubectl shortcuts | `kc` (kubectl), `kg`, `ka`, `kd`, `klogs`, `kns`, `kctx`, `kpods` |
 | `24-cloud.ps1` | AWS, GCP and Azure | `awsls`, `awsp`, `awswho`, `awsec2`, `awslambda` (AWS), `gcls`, `gcwho` (GCP), `azls`, `azwho`, `azgroup` (Azure) |
 | `25-devops.ps1` | Terraform and Ansible | `tfi`, `tfp`, `tfa`, `tfd`, `tfo`, `tfst`, `tfw` (Terraform), `ap`, `apcheck`, `aping`, `ard` (Ansible) |

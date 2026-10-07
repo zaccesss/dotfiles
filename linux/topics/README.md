@@ -14,10 +14,10 @@
 | `06-functions.sh` | Core functions and command reference | `cmds`, `mkcd`, `mkf`, `mkr`, `mkt`, `dot` |
 | `07-utilities.sh` | General utilities | `ll`, `la`, `c`, `weather`, `temp`, `pubip`, `localip` |
 | `08-community.sh` | Community-borrowed utilities | `extract`, `dataurl`, `envup`, `digga`, `dns-flush`, `change-extension`, `clipcopy`, `paste` |
-| `09-cli-tools.sh` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep), `col`, `replace`, `whatport`, `killport`, `notify` |
+| `09-cli-tools.sh` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep), `col`, `replace`, `whatport`, `killport`, `notify`, `typw`, `linkcheck` |
 | `10-ssh.sh` | SSH helpers | `keygen`, `sshcp`, `ssha`, `sshtest`, `sshfp`, `sshconf`, `sshls` |
 | `11-network.sh` | Network diagnostics | `myip`, `localip`, `ping4`, `portcheck`, `openports`, `portscan`, `headers` |
-| `12-security.sh` | SSL, GPG and crypto | `ssl-check`, `ssl-gen`, `ssl-view`, `gpgls`, `gpgenc`, `gpgdec`, `sha256file`, `sha512file` |
+| `12-security.sh` | SSL, GPG and crypto | `ssl-check`, `ssl-gen`, `ssl-view`, `gpgls`, `gpgenc`, `gpgdec`, `sha256file`, `sha512file`, `trivyscan` |
 | `13-database.sh` | Database shortcuts | `myconn`, `mydump`, `myls` (MySQL), `pgconn`, `pgdump`, `pgls` (Postgres), `rflush`, `rkeys` (Redis), `sqls` (SQLite) |
 | `14-json.sh` | JSON helpers | `json-check`, `json-min`, `json-keys`, `json-diff`, `jqk` |
 | `15-rsync.sh` | File sync and backup | `rcopy`, `rmirror`, `rbackup`, `rdry`, `rclonecopy`, `rclonesync`, `rcloneremotes` |
@@ -27,7 +27,7 @@
 | `19-editors.sh` | IDE and editor launchers | `code`, `idea`, `rider`, `phpstorm`, `datagrip`, `webstorm`, `goland`, `pycharm`, `clion` |
 | `20-shell-tools.sh` | Shell linting and formatting | `sc` (shellcheck), `sfmt`, `sfmtcheck`, `sfmtdiff` |
 | `21-tmux.sh` | tmux shortcuts | `tn`, `tls`, `tk`, `tka`, `cluster` |
-| `22-docker.sh` | Docker | `dps`, `drun2`, `dstop`, `drm`, `dimg`, `dprune`, `dlogs`, `dex`, `dcb`, `dcu`, `dcd`, `dcl`, `dcheck` |
+| `22-docker.sh` | Docker | `dps`, `drun2`, `dstop`, `drm`, `dimg`, `dprune`, `dlogs`, `dex`, `dcb`, `dcu`, `dcd`, `dcl`, `dcheck`, `docker-clean` |
 | `23-kubernetes.sh` | kubectl shortcuts | `kc` (kubectl), `kg`, `ka`, `kd`, `klogs`, `kns`, `kctx`, `kpods` |
 | `24-cloud.sh` | AWS, GCP and Azure | `awsls`, `awsp`, `awswho`, `awsec2`, `awslambda` (AWS), `gcls`, `gcwho` (GCP), `azls`, `azwho`, `azgroup` (Azure) |
 | `25-devops.sh` | Terraform and Ansible | `tfi`, `tfp`, `tfa`, `tfd`, `tfo`, `tfst`, `tfw` (Terraform), `ap`, `apcheck`, `aping`, `ard` (Ansible) |

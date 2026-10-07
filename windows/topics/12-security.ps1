@@ -158,3 +158,7 @@ function sigcheck {
 function lastlogins {
     Get-WinEvent -FilterHashtable @{LogName = 'Security'; Id = 4624 } -MaxEvents 20
 }
+
+# trivyscan: scan a folder (default: here) for vulnerable dependencies, leaked secrets and
+# misconfigurations before pushing
+function trivyscan { param([string]$Path = '.') trivy fs --scanners vuln,secret,misconfig $Path }
