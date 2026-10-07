@@ -16,12 +16,12 @@ mkcd() {
 cls() {
     printf '\033[2J\033[3J\033[H'
     echo ""
-    echo -e "${BOLD}${CYAN}---------------------------------------------${RESET}"
+    echo "---------------------------------------------"
     echo -e "${BOLD}${CYAN}  🚀 Welcome back, Isaac!${RESET}"
     echo -e "${GREEN}  ✅ Linux profile loaded${RESET}"
     echo -e "${MAGENTA}  💻 $(hostname) - bash${RESET}"
     echo -e "${YELLOW}  📅 $(date '+%a %d %b %Y  %H:%M')${RESET}"
-    echo -e "${BOLD}${CYAN}---------------------------------------------${RESET}"
+    echo "---------------------------------------------"
     echo ""
 }
 

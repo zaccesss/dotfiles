@@ -10,6 +10,7 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Changed
 
+- The welcome banner's dashed top and bottom lines use the terminal's own text colour instead of bold cyan, so they no longer blend into the cyan welcome line and stay full contrast in light and dark mode.
 - `ACCESSIBILITY.md` describes the High Contrast palette in light and dark mode, the four-colour banner and fzf's colours.
 - The welcome banner's machine line is magenta on every platform, so each of its 4 lines has its own colour: cyan, green, magenta and yellow.
 - macOS and Linux set `RIPGREP_CONFIG_PATH` when `~/.ripgreprc` exists, so ripgrep picks up its defaults file.
