@@ -125,6 +125,10 @@ $character"""
 # frees up a whole line since it no longer needs its own row
 right_format = "$time"
 
+# a large folder such as the home folder can take longer than the 30 ms default to scan, which
+# prints a timeout warning above the prompt
+scan_timeout = 100
+
 # disable cloud modules that are not needed so startup stays fast
 [aws]
 disabled = true

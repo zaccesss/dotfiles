@@ -20,7 +20,7 @@ cls() {
     echo "${BOLD}${CYAN}---------------------------------------------${RESET}"
     echo "${BOLD}${CYAN}  🚀 Welcome back, Isaac!${RESET}"
     echo "${GREEN}  ✅ macOS profile loaded${RESET}"
-    echo "${GREEN}  💻 $(scutil --get ComputerName) - zsh${RESET}"
+    echo "${MAGENTA}  💻 $(scutil --get ComputerName) - zsh${RESET}"
     echo "${YELLOW}  📅 $(date '+%a %d %b %Y  %H:%M')${RESET}"
     echo "${BOLD}${CYAN}---------------------------------------------${RESET}"
     echo ""
