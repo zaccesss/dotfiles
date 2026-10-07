@@ -191,9 +191,9 @@ These are defined in `06-functions` on all platforms.
 | `clipcopy` | macOS | Pipe to clipboard: wraps `pbcopy` |
 | `clipcopy` | Linux | Pipe to clipboard: wraps `xclip -selection clipboard` |
 | `clipcopy` | Windows | Set clipboard: `Set-Clipboard` |
-| `paste` | macOS | Paste from clipboard: wraps `pbpaste` |
-| `paste` | Linux | Paste from clipboard: wraps `xclip -selection clipboard -o` |
-| `paste` | Windows | Get clipboard: `Get-Clipboard` |
+| `clippaste` | macOS | Paste from clipboard: wraps `pbpaste` |
+| `clippaste` | Linux | Paste from clipboard: wraps `xclip -selection clipboard -o` |
+| `clippaste` | Windows | Get clipboard: `Get-Clipboard` |
 | `pubip` | All | Print public IP address via `curl ifconfig.me` |
 | `localip` | macOS | Print local network IP via `ipconfig getifaddr en0` |
 | `localip` | Linux/Windows | Print local IP via `hostname -I` |
@@ -255,7 +255,7 @@ unconditional line, since not everyone has these 5 tools installed yet.
 | `ez` | eza: syntax-aware `ls` with icons and git status |
 | `ezl` | eza: long listing, hidden files, git status (`-lah --git`) |
 | `ezt` | eza: tree view, 2 levels deep |
-| `rg2` | ripgrep. Named `rg2`, not `rg`, to avoid clashing with the `rg` binary name itself |
+| `rg2` | ripgrep. Named `rg2`, not `rgen`, to avoid clashing with the `rgen` binary name itself |
 | `col <n>` | Extract column `<n>` from whitespace-separated piped text |
 | `replace <old> <new> <file>` | In-place find-and-replace in a file |
 | `whatport <port>` | Show what process is listening on a given port |
@@ -791,7 +791,7 @@ Defined in `28-ruby` on all platforms. Requires `rbenv` and `ruby-build`.
 | `bclean` | `bundle clean --force` |
 | `rs` | `bundle exec rails server` |
 | `rc` | `bundle exec rails console` |
-| `rg` | `bundle exec rails generate` |
+| `rgen` | `bundle exec rails generate` |
 | `rgm` | `bundle exec rails generate model` |
 | `rgc` | `bundle exec rails generate controller` |
 | `rds` | `bundle exec rails db:seed` |

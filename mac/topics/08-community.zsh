@@ -103,7 +103,8 @@ cdf() {
 
 # clipboard shortcuts - pipe anything into clipcopy or run paste to read the clipboard
 alias clipcopy="pbcopy"
-alias paste="pbpaste"
+# clippaste rather than paste, which is the standard column-joining command
+alias clippaste="pbpaste"
 
 # HTTP method shortcuts - quick curl calls without typing flags.
 # handy when testing APIs from the terminal during development.
