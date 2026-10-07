@@ -17,12 +17,12 @@ mkcd() {
 cls() {
     printf '\033[2J\033[3J\033[H'
     echo ""
-    echo "${BOLD}${CYAN}---------------------------------------------${RESET}"
+    echo "---------------------------------------------"
     echo "${BOLD}${CYAN}  🚀 Welcome back, Isaac!${RESET}"
     echo "${GREEN}  ✅ macOS profile loaded${RESET}"
     echo "${MAGENTA}  💻 $(scutil --get ComputerName) - zsh${RESET}"
     echo "${YELLOW}  📅 $(date '+%a %d %b %Y  %H:%M')${RESET}"
-    echo "${BOLD}${CYAN}---------------------------------------------${RESET}"
+    echo "---------------------------------------------"
     echo ""
 }
 

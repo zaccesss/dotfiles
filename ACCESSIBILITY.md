@@ -29,7 +29,7 @@ The terminal itself sets the final shades. The High Contrast palette in [termina
 
 ## Colour in other tools
 
-- The welcome banner gives each of its four lines its own colour: cyan, green, magenta and yellow.
+- The welcome banner gives each of its four lines its own colour (cyan, green, magenta and yellow) between dashed borders in the terminal's own text colour.
 - fzf uses the terminal's own colours with yellow matches. The current line is bold and reversed rather than shaded, so it reads in light and dark mode alike.
 - `ls` shows directories in bold cyan, symlinks in magenta and executables in bold green.
 - `grep` and `diff` highlight matches inline.
