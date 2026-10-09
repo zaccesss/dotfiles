@@ -8,6 +8,10 @@ Versions increment by one patch step (0.0.1) per release.
 
 ## [Unreleased]
 
+### Added
+
+- Screenshots and short animations of the config in action, dark and light, in the README's In action section.
+
 ### Changed
 
 - The welcome banner's dashed top and bottom lines use the terminal's own text colour instead of bold cyan, so they no longer blend into the cyan welcome line and stay full contrast in light and dark mode.
