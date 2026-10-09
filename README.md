@@ -8,6 +8,22 @@
 
 ---
 
+## In action
+
+Screenshots in the High Contrast palette, dark and light. Each one links to a short animation of the same scene.
+
+### macOS shell
+
+| Dark | Light |
+| --- | --- |
+| [![Dark: the dotfiles welcome banner followed by the cmds cheat-sheet of git and system aliases](docs/demo/dotfiles-dark.webp)](docs/demo/dotfiles-dark.gif) | [![Light: the dotfiles welcome banner followed by the cmds cheat-sheet of git and system aliases](docs/demo/dotfiles-light.webp)](docs/demo/dotfiles-light.gif) |
+
+### Linux (Ubuntu in OrbStack)
+
+| Dark | Light |
+| --- | --- |
+| [![Dark: the same dotfiles in bash on Ubuntu: the banner, the OS version, the numbered topic files and a git log](docs/demo/linux-dark.webp)](docs/demo/linux-dark.gif) | [![Light: the same dotfiles in bash on Ubuntu: the banner, the OS version, the numbered topic files and a git log](docs/demo/linux-light.webp)](docs/demo/linux-light.gif) |
+
 ## About
 
 I lost sight in my right eye at age two due to retinoblastoma and have worked with monocular vision my entire life. One of the practical consequences is that a monochrome wall of terminal text is genuinely harder for me to navigate. Distinct, high-contrast colours in a terminal are not an aesthetic preference - they take over the depth-cue job that binocular vision normally does. Cyan headers, green status lines, yellow timestamps - each section is a different colour so I can scan instantly without reading line by line. That is the first reason these dotfiles look the way they do. The hope is that others with similar needs find it useful too.
