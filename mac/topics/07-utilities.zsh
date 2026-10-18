@@ -216,3 +216,20 @@ PLIST
             ;;
     esac
 }
+
+# update: everything in one go (Homebrew, global npm packages and uv or pipx tools). lists what
+# is out of date first and only upgrades after a yes, since an upgrade can change a tool's
+# behaviour mid-project.
+update() {
+    echo "${CYAN}Checking for updates...${RESET}"
+    brew update >/dev/null 2>&1
+    echo "${BOLD}${MAGENTA}Homebrew${RESET}"; brew outdated --verbose
+    command -v npm >/dev/null && { echo "${BOLD}${MAGENTA}npm (global)${RESET}"; npm outdated -g --depth=0; }
+    read -q "?Upgrade all of these? [y/N] " || { echo; return; }
+    echo
+    brew upgrade && brew cleanup
+    command -v npm >/dev/null && npm update -g
+    command -v uv >/dev/null && uv tool upgrade --all
+    command -v pipx >/dev/null && pipx upgrade-all
+    echo "${GREEN}Up to date.${RESET}"
+}

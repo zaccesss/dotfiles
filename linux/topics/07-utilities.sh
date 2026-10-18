@@ -171,3 +171,25 @@ termtheme() {
            return 1 ;;
     esac
 }
+
+# update: everything in one go (apt or dnf, Homebrew if present, global npm packages and uv or
+# pipx tools). lists what is out of date first and only upgrades after a yes, since an upgrade
+# can change a tool's behaviour mid-project.
+update() {
+    echo -e "${CYAN}Checking for updates...${RESET}"
+    if command -v apt >/dev/null; then
+        sudo apt update -qq && echo -e "${BOLD}${MAGENTA}apt${RESET}" && apt list --upgradable 2>/dev/null | tail -n +2
+    elif command -v dnf >/dev/null; then
+        echo -e "${BOLD}${MAGENTA}dnf${RESET}"; dnf check-update -q
+    fi
+    command -v brew >/dev/null && { brew update >/dev/null 2>&1; echo -e "${BOLD}${MAGENTA}Homebrew${RESET}"; brew outdated --verbose; }
+    command -v npm >/dev/null && { echo -e "${BOLD}${MAGENTA}npm (global)${RESET}"; npm outdated -g --depth=0; }
+    read -r -p "Upgrade all of these? [y/N] " reply
+    [[ "$reply" =~ ^[Yy]$ ]] || return
+    if command -v apt >/dev/null; then sudo apt upgrade -y; elif command -v dnf >/dev/null; then sudo dnf upgrade -y; fi
+    command -v brew >/dev/null && brew upgrade && brew cleanup
+    command -v npm >/dev/null && npm update -g
+    command -v uv >/dev/null && uv tool upgrade --all
+    command -v pipx >/dev/null && pipx upgrade-all
+    echo -e "${GREEN}Up to date.${RESET}"
+}

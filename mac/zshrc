@@ -27,11 +27,4 @@ unset _f
 # Welcome banner - printed after all topics load so colour variables are ready
 # =============================================================================
 
-echo ""
-echo "---------------------------------------------"
-echo "${BOLD}${CYAN}  🚀 Welcome back, ${USER}!${RESET}"
-echo "${GREEN}  ✅ macOS profile loaded${RESET}"
-echo "${MAGENTA}  💻 $(scutil --get ComputerName) - zsh${RESET}"
-echo "${YELLOW}  📅 $(date '+%a %d %b %Y  %H:%M')${RESET}"
-echo "---------------------------------------------"
-echo ""
+welcome

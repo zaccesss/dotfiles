@@ -15,14 +15,7 @@ Get-ChildItem "$env:DOTFILES\windows\topics\*.ps1" | Sort-Object Name | ForEach-
 }
 
 # =============================================================================
-# Welcome banner - printed after all topics load so $sep is already defined
+# Welcome banner - printed after all topics load so welcome is defined
 # =============================================================================
 
-Write-Host ""
-Write-Host $sep
-Write-Host "  🚀 Welcome back, $env:USERNAME!" -ForegroundColor Cyan
-Write-Host "  ✅ Windows profile loaded" -ForegroundColor Green
-Write-Host "  💻 $env:COMPUTERNAME - PowerShell $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)" -ForegroundColor Magenta
-Write-Host "  📅 $(Get-Date -Format 'ddd dd MMM yyyy  HH:mm')" -ForegroundColor Yellow
-Write-Host $sep
-Write-Host ""
+welcome

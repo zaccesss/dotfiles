@@ -11,19 +11,46 @@ function mkcd {
     Set-Location $path
 }
 
+# welcome: the banner shown when a shell starts and after refresh. plain text with labels so it
+# reads the same in every terminal; normal (not bright) ansi colours because the high contrast
+# palette makes the bright variants paler. Write-Host's Cyan and Green are the bright ones.
+# DOTFILES_NO_BANNER=1 turns it off. Editor terminals skip it.
+function welcome {
+    if ($env:DOTFILES_NO_BANNER -or $env:TERM_PROGRAM -eq 'vscode') { return }
+    $e = [char]27
+    $nt = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
+    # ProductName still says Windows 10 on Windows 11, so the build number decides
+    $os = if ([int]$nt.CurrentBuild -ge 22000) { 'Windows 11' } else { 'Windows 10' }
+    $edition = @{ Professional = 'Pro'; Core = 'Home'; Enterprise = 'Enterprise'; Education = 'Education' }[$nt.EditionID]
+    if ($edition) { $os = "$os $edition" }
+    Write-Host ""
+    Write-Host "── $e[1;36mWelcome back, Isaac$e[0m ──────────────────────"
+    Write-Host "  Machine   $e[0;32m$env:COMPUTERNAME, $os$e[0m"
+    Write-Host "  Shell     $e[0;35mPowerShell $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)$e[0m"
+    Write-Host "  Session   $e[1;33m$(Get-Date -Format 'ddd dd MMM yyyy, HH:mm')$e[0m"
+    Write-Host "─────────────────────────────────────────────"
+    Write-Host ""
+}
+
 # refresh: hard-clear the terminal and reprint the welcome banner.
 # named refresh because cls is a built-in PS alias for Clear-Host.
 # [System.Console]::Clear() clears the scrollback buffer; Clear-Host only clears the visible area.
 function refresh {
     [System.Console]::Clear()
-    Write-Host ""
-    Write-Host $sep
-    Write-Host "  🚀 Welcome back, Isaac!" -ForegroundColor Cyan
-    Write-Host "  ✅ Windows profile loaded" -ForegroundColor Green
-    Write-Host "  💻 $env:COMPUTERNAME - PowerShell $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)" -ForegroundColor Magenta
-    Write-Host "  📅 $(Get-Date -Format 'ddd dd MMM yyyy  HH:mm')" -ForegroundColor Yellow
-    Write-Host $sep
-    Write-Host ""
+    welcome
+}
+
+# sysinfo: the full system summary (os, cpu, gpu, memory, disk) on demand, kept out of the
+# banner because it is slower than a new tab should be
+function sysinfo {
+    if (Get-Command fastfetch -ErrorAction SilentlyContinue) { fastfetch }
+    else { Write-Host "fastfetch is not installed: winget install --id Fastfetch-cli.Fastfetch --exact" }
+}
+
+# games: a menu of four terminal games (2048, Snake, Word, Typing test). arrows to choose,
+# Enter to play, Q or Esc to leave any game
+function games {
+    python "$env:DOTFILES\scripts\games.py" @args
 }
 
 # dot: pull the latest dotfiles and apply the Windows profile
@@ -79,6 +106,9 @@ function _cmdsBody {
     ""
 
     "`e[35mSYSTEM`e[0m"
+    "  `e[36mupdate`e[0m`e[37m          list everything out of date, then upgrade all after a yes`e[0m"
+    "  `e[36msysinfo`e[0m`e[37m         full system summary: os, cpu, gpu, memory, disk`e[0m"
+    "  `e[36mgames`e[0m`e[37m           2048, Snake, Word and a typing test (Q or Esc leaves)`e[0m"
     "  `e[36mll / la`e[0m`e[37m         Get-ChildItem -Force (table / list)`e[0m"
     "  `e[36mmkcd`e[0m`e[37m            mkdir + cd in one step`e[0m"
     "  `e[36mrefresh`e[0m`e[37m         hard-clear terminal and reprint welcome banner`e[0m"

@@ -91,13 +91,6 @@ Files load from `01-path.sh` to `35-secrets.sh`. A higher-numbered file override
 > one (from your package manager or [nerdfonts.com](https://www.nerdfonts.com)) set as the
 > terminal's font.
 
-> [!TIP]
-> The welcome banner in `bashrc` uses colour emoji, a separate thing from the Nerd Font note above.
-> macOS and Windows both ship a colour emoji font system-wide, so it always works there. Linux
-> has no such guarantee, most desktop distros ship one already, but if the banner shows boxes or
-> question marks instead of emoji, install one, for example on Debian/Ubuntu:
-> `sudo apt install fonts-noto-color-emoji`.
-
 ---
 
 ## Navigation
@@ -159,6 +152,10 @@ Defined in [linux/topics/06-functions.sh](../linux/topics/06-functions.sh). Iden
 | --- | --- |
 | `cmds` | Print all custom aliases and functions grouped by topic, piped through `less` (press q to exit) |
 | `mkcd <dir>` | Create a directory and `cd` into it |
+| `welcome` | Print the welcome banner again. `DOTFILES_NO_BANNER=1` hides it when a shell starts |
+| `update` | List everything out of date (system packages, global npm packages and uv tools), then upgrade it all after a yes |
+| `sysinfo` | Full system summary through fastfetch: OS, CPU, GPU, memory and disk (install with `sudo apt install fastfetch`) |
+| `games` | A menu of four terminal games: 2048, Snake, Word and a typing test. Arrows choose, Enter plays, Q or Esc leaves any game |
 | `mkf <file>` | Create a file and any missing parent directories |
 | `mkr <name>` | Scaffold a new Rust project |
 | `mkt <name>` | Scaffold a new TypeScript/Node project |
