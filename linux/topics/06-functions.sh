@@ -11,18 +11,40 @@ mkcd() {
     command mkdir -p "$1" && cd "$1" || return
 }
 
+# welcome: the banner shown when a shell starts and after cls. plain text with labels so it
+# reads the same in every terminal; normal (not bright) ansi colours because the high
+# contrast palette makes the bright variants paler. DOTFILES_NO_BANNER=1 turns it off. Editor
+# terminals skip it because they open many short-lived shells.
+welcome() {
+    [[ -n "$DOTFILES_NO_BANNER" || "$TERM_PROGRAM" == "vscode" ]] && return
+    local rule="─────────────────────────────────────────────"
+    echo -e ""
+    echo -e "── ${CYAN}${BOLD}Welcome back, Isaac${RESET} ──────────────────────"
+    echo -e "  Machine   ${GREEN}$(hostname), $(. /etc/os-release 2>/dev/null; echo "${NAME:-Linux} ${VERSION_ID}")${RESET}"
+    echo -e "  Shell     ${MAGENTA}bash ${BASH_VERSINFO[0]}.${BASH_VERSINFO[1]}${RESET}"
+    echo -e "  Session   ${YELLOW}$(date '+%a %d %b %Y, %H:%M')${RESET}"
+    echo -e "${rule}"
+    echo -e ""
+}
+
 # cls: hard-clear the terminal (including scrollback) and reprint the welcome banner.
-# the \033[2J\033[3J\033[H sequence clears both visible screen and scrollback buffer.
+# the \033[2J\033[3J\033[H sequence clears both the visible screen and the scrollback
+# buffer - plain 'clear' only clears the visible area.
 cls() {
     printf '\033[2J\033[3J\033[H'
-    echo ""
-    echo "---------------------------------------------"
-    echo -e "${BOLD}${CYAN}  🚀 Welcome back, Isaac!${RESET}"
-    echo -e "${GREEN}  ✅ Linux profile loaded${RESET}"
-    echo -e "${MAGENTA}  💻 $(hostname) - bash${RESET}"
-    echo -e "${YELLOW}  📅 $(date '+%a %d %b %Y  %H:%M')${RESET}"
-    echo "---------------------------------------------"
-    echo ""
+    welcome
+}
+
+# sysinfo: the full system summary (os, cpu, gpu, memory, disk) on demand, kept out of the
+# banner because it is slower than a new tab should be.
+sysinfo() {
+    if command -v fastfetch >/dev/null; then fastfetch; else echo "fastfetch is not installed: sudo apt install fastfetch (or sudo dnf install fastfetch)"; fi
+}
+
+# games: a menu of four terminal games (2048, Snake, Word, Typing test). arrows to choose,
+# Enter to play, Q or Esc to leave any game.
+games() {
+    python3 "$DOTFILES/scripts/games.py" "$@"
 }
 
 # dot: pull the latest dotfiles and apply the Linux profile.
@@ -94,6 +116,9 @@ _cmds_body() {
     echo ""
 
     echo -e "${BOLD}${MAGENTA}SYSTEM${RESET}"
+    echo -e "  ${CYAN}update${RESET}          ${WHITE}list everything out of date, then upgrade all after a yes${RESET}"
+    echo -e "  ${CYAN}sysinfo${RESET}         ${WHITE}full system summary: os, cpu, gpu, memory, disk${RESET}"
+    echo -e "  ${CYAN}games${RESET}           ${WHITE}2048, Snake, Word and a typing test (Q or Esc leaves)${RESET}"
     echo -e "  ${CYAN}ll / la${RESET}         ${WHITE}ls -lah / ls -la${RESET}"
     echo -e "  ${CYAN}mkdir${RESET}           ${WHITE}mkdir -pv (creates parent dirs, verbose)${RESET}"
     echo -e "  ${CYAN}mkcd${RESET}            ${WHITE}mkdir + cd in one step${RESET}"

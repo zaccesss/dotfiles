@@ -182,3 +182,17 @@ function termtheme {
     $settings | ConvertTo-Json -Depth 32 | Set-Content -Path $settingsPath -Encoding utf8
     Write-Host "Windows Terminal set to $Mode" -ForegroundColor Green
 }
+
+# update: everything in one go (winget, global npm packages and uv tools). lists what is out of
+# date first and only upgrades after a yes, since an upgrade can change a tool's behaviour
+# mid-project
+function update {
+    Write-Host "`e[36mChecking for updates...`e[0m"
+    Write-Host "`e[1;35mwinget`e[0m"; winget upgrade
+    if (Get-Command npm -ErrorAction SilentlyContinue) { Write-Host "`e[1;35mnpm (global)`e[0m"; npm outdated -g --depth=0 }
+    if ((Read-Host "Upgrade all of these? [y/N]") -notmatch '^[Yy]$') { return }
+    winget upgrade --all --accept-package-agreements --accept-source-agreements
+    if (Get-Command npm -ErrorAction SilentlyContinue) { npm update -g }
+    if (Get-Command uv -ErrorAction SilentlyContinue) { uv tool upgrade --all }
+    Write-Host "`e[32mUp to date.`e[0m"
+}

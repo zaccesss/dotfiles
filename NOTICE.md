@@ -17,7 +17,7 @@ folder contains utility scripts that run from any platform.
 
 ## What you must change before using these dotfiles
 
-1. **Your name in the welcome banner.** The `cls()`/`refresh()` function in
+1. **Your name in the welcome banner.** The `welcome` function in
    `06-functions.{zsh,sh,ps1}` greets "Isaac". Change this to your own name before sourcing
    any of these files.
 2. **The `DOTFILES` path variable.** The loader at the top of each platform's main profile

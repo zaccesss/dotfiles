@@ -156,6 +156,10 @@ Defined in [windows/topics/06-functions.ps1](../windows/topics/06-functions.ps1)
 | --- | --- |
 | `cmds` | Print all custom functions grouped by topic, piped through `Out-Host -Paging` (press q to exit) |
 | `mkcd <dir>` | Create a directory and `cd` into it |
+| `welcome` | Print the welcome banner again. `DOTFILES_NO_BANNER=1` hides it when a shell starts |
+| `update` | List everything out of date (system packages, global npm packages and uv tools), then upgrade it all after a yes |
+| `sysinfo` | Full system summary through fastfetch: OS, CPU, GPU, memory and disk (install with `winget install --id Fastfetch-cli.Fastfetch --exact`) |
+| `games` | A menu of four terminal games: 2048, Snake, Word and a typing test. Arrows choose, Enter plays, Q or Esc leaves any game |
 | `mkf <file>` | Create a file and any missing parent directories |
 | `mkr <name>` | Scaffold a new Rust project |
 | `mkt <name>` | Scaffold a new TypeScript/Node project |
@@ -251,11 +255,11 @@ For full descriptions of every command, see [documentation.md](documentation.md)
 
 ## Colours
 
-Defined in [windows/topics/02-colours.ps1](../windows/topics/02-colours.ps1). The welcome banner and `cmds` output use `Write-Host` with `-ForegroundColor` parameters.
+Defined in [windows/topics/02-colours.ps1](../windows/topics/02-colours.ps1). The welcome banner and `cmds` output use ANSI escape codes. The banner asks for the normal colours, the same ones the Mac and Linux banners use, because `Write-Host -ForegroundColor Cyan` and `Green` pick the bright variants, which the High Contrast palette makes paler.
 
 `cmds` uses a consistent 3-color scheme: **Magenta** for category headers, **Cyan** for command names and **White** for short descriptions. Parenthetical expansion lines are also White.
 
-To change a colour, edit [windows/topics/02-colours.ps1](../windows/topics/02-colours.ps1) or the welcome block in [windows/topics/05-profile.ps1](../windows/topics/05-profile.ps1) and run `Reload-Profile`.
+To change a colour, edit [windows/topics/02-colours.ps1](../windows/topics/02-colours.ps1) or the `welcome` function in [windows/topics/06-functions.ps1](../windows/topics/06-functions.ps1) and run `Reload-Profile`.
 
 ---
 

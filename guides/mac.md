@@ -146,6 +146,10 @@ Defined in [mac/topics/06-functions.zsh](../mac/topics/06-functions.zsh).
 | --- | --- |
 | `cmds` | Print all custom aliases and functions grouped by topic, piped through `less` (press q to exit) |
 | `mkcd <dir>` | Create a directory and `cd` into it |
+| `welcome` | Print the welcome banner again. `DOTFILES_NO_BANNER=1` hides it when a shell starts |
+| `update` | List everything out of date (system packages, global npm packages and uv tools), then upgrade it all after a yes |
+| `sysinfo` | Full system summary through fastfetch: OS, CPU, GPU, memory and disk (install with `brew install fastfetch`) |
+| `games` | A menu of four terminal games: 2048, Snake, Word and a typing test. Arrows choose, Enter plays, Q or Esc leaves any game |
 | `mkf <file>` | Create a file and any missing parent directories |
 | `mkr <name>` | Scaffold a new Rust project with `cargo new` |
 | `mkt <name>` | Scaffold a new TypeScript/Node project |
