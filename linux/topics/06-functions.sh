@@ -27,10 +27,16 @@ cls() {
 
 # dot: pull the latest dotfiles and apply the Linux profile.
 dot() {
+    # fall back to the standard clone path when DOTFILES is not set in this shell
+    local dir="${DOTFILES:-$HOME/dev/github/repos/dotfiles}"
+    if [[ ! -d "$dir/.git" ]]; then
+        echo -e "${RED}No dotfiles repo at $dir${RESET}"
+        return 1
+    fi
     echo -e "${CYAN}Pulling latest dotfiles...${RESET}"
-    git -C "$DOTFILES" pull
+    git -C "$dir" pull || return 1
     echo -e "${CYAN}Applying Linux profile...${RESET}"
-    cp "$DOTFILES/linux/bashrc" ~/.bashrc
+    cp "$dir/linux/bashrc" ~/.bashrc
     # shellcheck disable=SC1090
     source ~/.bashrc
     echo -e "${GREEN}Done - dotfiles are up to date${RESET}"
