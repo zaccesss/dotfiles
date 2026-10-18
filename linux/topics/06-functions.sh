@@ -41,7 +41,7 @@ sysinfo() {
     if command -v fastfetch >/dev/null; then fastfetch; else echo "fastfetch is not installed: sudo apt install fastfetch (or sudo dnf install fastfetch)"; fi
 }
 
-# games: a menu of four terminal games (2048, Snake, Word, Typing test). arrows to choose,
+# games: a menu of six terminal games (2048, Snake, Blocks, Meteors, Word, Typing test). arrows to choose,
 # Enter to play, Q or Esc to leave any game.
 games() {
     python3 "$DOTFILES/scripts/games.py" "$@"
@@ -58,7 +58,8 @@ dot() {
     echo -e "${CYAN}Pulling latest dotfiles...${RESET}"
     git -C "$dir" pull || return 1
     echo -e "${CYAN}Applying Linux profile...${RESET}"
-    cp "$dir/linux/bashrc" ~/.bashrc
+    # a linked ~/.bashrc already points at the repo copy. cp onto it fails as identical
+    [[ -L ~/.bashrc ]] || cp "$dir/linux/bashrc" ~/.bashrc
     # shellcheck disable=SC1090
     source ~/.bashrc
     echo -e "${GREEN}Done - dotfiles are up to date${RESET}"
@@ -118,7 +119,7 @@ _cmds_body() {
     echo -e "${BOLD}${MAGENTA}SYSTEM${RESET}"
     echo -e "  ${CYAN}update${RESET}          ${WHITE}list everything out of date, then upgrade all after a yes${RESET}"
     echo -e "  ${CYAN}sysinfo${RESET}         ${WHITE}full system summary: os, cpu, gpu, memory, disk${RESET}"
-    echo -e "  ${CYAN}games${RESET}           ${WHITE}2048, Snake, Word and a typing test (Q or Esc leaves)${RESET}"
+    echo -e "  ${CYAN}games${RESET}           ${WHITE}six terminal games, from 2048 to Meteors (Q or Esc leaves)${RESET}"
     echo -e "  ${CYAN}ll / la${RESET}         ${WHITE}ls -lah / ls -la${RESET}"
     echo -e "  ${CYAN}mkdir${RESET}           ${WHITE}mkdir -pv (creates parent dirs, verbose)${RESET}"
     echo -e "  ${CYAN}mkcd${RESET}            ${WHITE}mkdir + cd in one step${RESET}"

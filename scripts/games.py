@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Terminal games: 2048, Snake, Word and a typing test. Standard library only.
+"""Terminal games: 2048, Snake, Blocks, Meteors, Word and a typing test. Standard library only.
 
 Run `python3 games.py` to play or `python3 games.py --check` for self-tests.
 """
@@ -182,9 +182,21 @@ def record(game, score):
     return max(score, scores.get(game, 0))
 
 
-def end_prompt(lines, result, score, best, unit=""):
-    """Show the result under the final board. True means play again."""
-    screen(lines + ["", sgr(result, 1), "Score %d%s   Best %d%s" % (score, unit, best, unit),
+def stat(label, value, codes=(1,)):
+    # labels stay plain and numbers are bold, so they read at full contrast
+    return label + " " + sgr(str(value), *codes)
+
+
+def end_prompt(lines, result, score, game, unit=""):
+    """Record the score and show the result under the final board.
+    True means play again."""
+    previous = best_score(game)
+    best = record(game, score)
+    if score > previous:
+        best_text = stat("Best", "%d%s" % (best, unit), (33, 1)) + "   " + sgr("New best", 33, 1)
+    else:
+        best_text = stat("Best", "%d%s" % (best, unit))
+    screen(lines + ["", sgr(result, 1), stat("Score", "%d%s" % (score, unit)) + "   " + best_text,
                     "", "Enter to play again, Q for the menu"])
     while True:
         key = read_key()
@@ -201,7 +213,7 @@ TILE_STYLE = {2: (37,), 4: (36,), 8: (33,), 16: (32,), 32: (35,), 64: (31,),
 
 
 def merge_row(row):
-    """Slide a row to the left, merging ember pairs once. Returns (row, points)."""
+    """Slide a row to the left, merging equal pairs once. Returns (row, points)."""
     nums = [v for v in row if v]
     out, points, i = [], 0, 0
     while i < len(nums):
@@ -243,7 +255,7 @@ def add_tile(board):
 
 def draw_2048(board, score, best, msg=""):
     edge = "+" + "+".join(["------"] * 4) + "+"
-    lines = [sgr("2048", 1) + "    Score %d    Best %d" % (score, best), "", edge]
+    lines = [sgr("2048", 36, 1) + "    " + stat("Score", score) + "    " + stat("Best", best), "", edge]
     for row in board:
         cells = [sgr("%5d " % v, *TILE_STYLE.get(v, (35, 1))) if v else "   .  " for v in row]
         lines += ["|" + "|".join(cells) + "|", edge]
@@ -261,7 +273,7 @@ def play_2048():
     while True:
         lines = draw_2048(board, score, max(best, score))
         if not can_move(board):
-            return end_prompt(lines, "No moves left", score, record("2048", score))
+            return end_prompt(lines, "Game over, no moves left", score, "2048")
         screen(lines + [hint])
         key = read_key()
         if key in QUIT_KEYS:
@@ -276,7 +288,7 @@ def play_2048():
             add_tile(board)
         if not won and any(2048 in row for row in board):
             won = True
-            screen(draw_2048(board, score, max(best, score), sgr("You made 2048!", 1))
+            screen(draw_2048(board, score, max(best, score), sgr("You made 2048!", 32, 1))
                    + ["Enter to keep going, Q for the menu"])
             while True:
                 key = read_key()
@@ -309,7 +321,7 @@ def place_food(snake, w, h):
 def draw_snake(snake, food, w, h, score, best, paused):
     grid = [[" "] * w for _ in range(h)]
     if food:
-        grid[food[1]][food[0]] = sgr("*", 31, 1)
+        grid[food[1]][food[0]] = sgr("*", 33, 1)
     for x, y in snake[1:]:
         grid[y][x] = sgr("O", 32)
     hx, hy = snake[0]
@@ -320,9 +332,9 @@ def draw_snake(snake, food, w, h, score, best, paused):
         x0 = max(0, (w - len(label)) // 2)
         for i, ch in enumerate(label[:w]):
             grid[h // 2][x0 + i] = sgr(ch, 7)
-    head = sgr("Snake", 1) + "    Score %d    Best %d" % (score, best)
+    head = sgr("Snake", 36, 1) + "    " + stat("Score", score) + "    " + stat("Best", best)
     if paused:
-        head += "    " + sgr("Paused", 1)
+        head += "    " + sgr("Paused", 33, 1)
     edge = "+" + "-" * w + "+"
     return [head, edge] + ["|" + "".join(row) + "|" for row in grid] + [edge]
 
@@ -369,7 +381,7 @@ def play_snake():
         moved, ate, dead = step(snake, d, food, w, h)
         if dead:
             lines = draw_snake(snake, food, w, h, score, max(best, score), False)
-            return end_prompt(lines, "Game over", score, record("snake", score))
+            return end_prompt(lines, "Game over", score, "snake")
         snake = moved
         if ate:
             score += 1
@@ -377,8 +389,294 @@ def play_snake():
             food = place_food(snake, w, h)
             if food is None:
                 lines = draw_snake(snake, food, w, h, score, max(best, score), False)
-                return end_prompt(lines, "You filled the field!", score, record("snake", score))
+                return end_prompt(lines, "You filled the field!", score, "snake")
         due = time.monotonic() + interval
+
+
+# ------------------------------------------------------------------ blocks
+
+WELL_W, WELL_H = 10, 20
+# box size and cells (x, y) inside it; rotation turns the box clockwise
+SHAPES = {
+    "I": (4, [(0, 1), (1, 1), (2, 1), (3, 1)]),
+    "O": (2, [(0, 0), (1, 0), (0, 1), (1, 1)]),
+    "T": (3, [(1, 0), (0, 1), (1, 1), (2, 1)]),
+    "S": (3, [(1, 0), (2, 0), (0, 1), (1, 1)]),
+    "Z": (3, [(0, 0), (1, 0), (1, 1), (2, 1)]),
+    "J": (3, [(0, 0), (0, 1), (1, 1), (2, 1)]),
+    "L": (3, [(2, 0), (0, 1), (1, 1), (2, 1)]),
+}
+PIECE_STYLE = {"I": (36,), "O": (33,), "T": (35,), "S": (32,), "Z": (31,), "J": (34,), "L": (37, 1)}
+LINE_POINTS = (0, 100, 300, 500, 800)
+
+
+def rotate(cells, n):
+    return sorted((n - 1 - y, x) for x, y in cells)
+
+
+def fits(well, cells, px, py):
+    for x, y in cells:
+        cx, cy = x + px, y + py
+        if not (0 <= cx < WELL_W and cy < WELL_H) or (cy >= 0 and well[cy][cx]):
+            return False
+    return True
+
+
+def try_rotate(well, cells, n, px, py):
+    """Rotate clockwise with a basic wall kick. Returns (cells, px) or None."""
+    turned = rotate(cells, n)
+    for dx in (0, -1, 1, -2, 2):
+        if fits(well, turned, px + dx, py):
+            return turned, px + dx
+    return None
+
+
+def clear_lines(well):
+    """Remove full rows and shift the rest down. Returns (well, rows cleared)."""
+    kept = [row for row in well if not all(row)]
+    n = len(well) - len(kept)
+    return [[None] * WELL_W for _ in range(n)] + kept, n
+
+
+def line_score(n, level):
+    return LINE_POINTS[n] * level
+
+
+def bag(rng=random):
+    # every run of seven pieces holds each piece once
+    while True:
+        pieces = list(SHAPES)
+        rng.shuffle(pieces)
+        yield from pieces
+
+
+def drop_distance(well, cells, px, py):
+    d = 0
+    while fits(well, cells, px, py + d + 1):
+        d += 1
+    return d
+
+
+def draw_blocks(well, piece, nxt, score, best, lines_done, level, paused):
+    grid = [[sgr("[]", *PIECE_STYLE[c]) if c else " ." for c in row] for row in well]
+    if piece:
+        kind, cells, px, py = piece
+        g = drop_distance(well, cells, px, py)
+        for x, y in cells:  # ghost first, so the piece itself draws over it
+            if 0 <= y + py + g and not well[y + py + g][x + px]:
+                grid[y + py + g][x + px] = "::"
+        for x, y in cells:
+            if y + py >= 0:
+                grid[y + py][x + px] = sgr("[]", *PIECE_STYLE[kind])
+    rows = ["".join(r) for r in grid]
+    if paused:
+        rows[WELL_H // 2] = sgr("Paused".center(WELL_W * 2), 7, 1)
+    n, cells = SHAPES[nxt]
+    ys = sorted({y for _, y in cells})
+    preview = ["".join(sgr("[]", *PIECE_STYLE[nxt]) if (x, y) in cells else "  " for x in range(n))
+               for y in ys]
+    panel = [stat("Score", score), stat("Best", best), stat("Lines", lines_done), stat("Level", level),
+             "", sgr("Next", 33, 1)] + preview + ["", sgr("Paused", 33, 1) if paused else ""]
+    edge = "+" + "-" * (WELL_W * 2) + "+"
+    out = [sgr("Blocks", 36, 1), edge]
+    for i, row in enumerate(rows):
+        out.append("|" + row + "|" + ("   " + panel[i] if i < len(panel) else ""))
+    return out + [edge]
+
+
+def play_blocks():
+    hint = "Arrows move, Up rotates, Space drops, P pauses, Q or Esc for the menu"
+    well = [[None] * WELL_W for _ in range(WELL_H)]
+    pieces = bag()
+    nxt = next(pieces)
+    score, lines_done, paused = 0, 0, False
+    best = best_score("blocks")
+    piece = None
+
+    def spawn(kind):
+        n, cells = SHAPES[kind]
+        return [kind, list(cells), (WELL_W - n) // 2, -1 if kind == "I" else 0]
+
+    def gravity():
+        return max(0.1, 0.8 * 0.85 ** (lines_done // 10))
+
+    def view(p, pause=False):
+        return draw_blocks(well, p, nxt, score, max(best, score), lines_done,
+                           lines_done // 10 + 1, pause)
+
+    piece, nxt = spawn(nxt), next(pieces)
+    clear()
+    due = time.monotonic() + gravity()
+    while True:
+        screen(view(piece, paused) + [hint])
+        lock = False
+        if paused:
+            key = read_key()
+            if key in QUIT_KEYS:
+                record("blocks", score)
+                return False
+            if key in ("p", "P"):
+                paused = False
+                due = time.monotonic() + gravity()
+            continue
+        kind, cells, px, py = piece
+        key = read_key(max(0.0, due - time.monotonic()))
+        if key is not None:
+            d = keydir(key)
+            if key in QUIT_KEYS:
+                record("blocks", score)
+                return False
+            if key in ("p", "P"):
+                paused = True
+            elif key == " ":
+                g = drop_distance(well, cells, px, py)
+                piece[3] += g
+                score += 2 * g
+                lock = True
+            elif d in ("left", "right"):
+                dx = -1 if d == "left" else 1
+                if fits(well, cells, px + dx, py):
+                    piece[2] += dx
+            elif d == "up":
+                turned = try_rotate(well, cells, SHAPES[kind][0], px, py)
+                if turned:
+                    piece[1], piece[2] = turned
+            elif d == "down":
+                if fits(well, cells, px, py + 1):
+                    piece[3] += 1
+                    score += 1
+                    due = time.monotonic() + gravity()
+                else:
+                    lock = True
+            if not lock:
+                continue
+        elif fits(well, cells, px, py + 1):
+            piece[3] += 1
+            due = time.monotonic() + gravity()
+            continue
+        # the piece has landed: fix it in the well, clear rows and bring in the next one
+        kind, cells, px, py = piece
+        if any(y + py < 0 for _, y in cells):
+            return end_prompt(view(piece), "Game over", score, "blocks")
+        for x, y in cells:
+            well[y + py][x + px] = kind
+        well, n = clear_lines(well)
+        score += line_score(n, lines_done // 10 + 1)
+        lines_done += n
+        piece, nxt = spawn(nxt), next(pieces)
+        if not fits(well, piece[1], piece[2], piece[3]):
+            return end_prompt(view(None), "Game over", score, "blocks")
+        due = time.monotonic() + gravity()
+
+
+# ----------------------------------------------------------------- meteors
+
+FIELD_W, FIELD_H = 40, 20
+MAX_SHOTS = 3
+
+
+def collide(meteors, shots):
+    """Remove every meteor that shares a cell with a shot. Returns points."""
+    cells = {tuple(s) for s in shots}
+    hit = {(m[0], m[1]) for m in meteors} & cells
+    meteors[:] = [m for m in meteors if (m[0], m[1]) not in hit]
+    shots[:] = [s for s in shots if tuple(s) not in hit]
+    return 10 * len(hit)
+
+
+def meteor_tick(meteors, shots, ship_x, tick, h=FIELD_H):
+    """Advance one tick in place. Returns (points, ship hits).
+    Collisions are checked before and after each move, so a shot and a
+    meteor that pass each other between ticks still meet."""
+    points = collide(meteors, shots)
+    for s in shots:
+        s[1] -= 1
+    shots[:] = [s for s in shots if s[1] >= 0]
+    points += collide(meteors, shots)
+    for m in meteors:
+        if tick % m[2] == 0:  # m[2] is how many ticks each fall step takes
+            m[1] += 1
+    points += collide(meteors, shots)
+    hits = sum(1 for m in meteors if m[1] == h - 1 and m[0] == ship_x)
+    meteors[:] = [m for m in meteors if m[1] < h and not (m[1] == h - 1 and m[0] == ship_x)]
+    return points, hits
+
+
+def draw_meteors(meteors, shots, ship_x, score, best, lives, flash, paused):
+    grid = [[" "] * FIELD_W for _ in range(FIELD_H)]
+    for x, y in shots:
+        grid[y][x] = sgr("|", 33, 1)
+    for x, y, _ in meteors:
+        if 0 <= y < FIELD_H:
+            grid[y][x] = sgr("O", 31, 1)
+    grid[FIELD_H - 1][ship_x] = sgr("A", 36, 1, 7) if flash else sgr("A", 36, 1)
+    if paused:
+        label = " Paused "
+        x0 = (FIELD_W - len(label)) // 2
+        for i, ch in enumerate(label):
+            grid[FIELD_H // 2][x0 + i] = sgr(ch, 7)
+    head = "    ".join([sgr("Meteors", 36, 1), stat("Score", score), stat("Best", best),
+                        stat("Lives", lives, (31, 1) if lives == 1 else (1,))])
+    if paused:
+        head += "    " + sgr("Paused", 33, 1)
+    edge = "+" + "-" * FIELD_W + "+"
+    return [head, edge] + ["|" + "".join(row) + "|" for row in grid] + [edge]
+
+
+def play_meteors():
+    hint = "Left and Right move, Space shoots, P pauses, Q or Esc for the menu"
+    meteors, shots = [], []
+    ship_x, score, lives, tick = FIELD_W // 2, 0, 3, 0
+    safe_until, paused = 0.0, False
+    best = best_score("meteors")
+    clear()
+
+    def interval():
+        return max(0.07, 0.12 - score / 20000)
+
+    due = time.monotonic() + interval()
+    while True:
+        now = time.monotonic()
+        screen(draw_meteors(meteors, shots, ship_x, score, max(best, score), lives,
+                            now < safe_until, paused) + [hint])
+        if paused:
+            key = read_key()
+            if key in QUIT_KEYS:
+                record("meteors", score)
+                return False
+            if key in ("p", "P"):
+                paused = False
+                due = time.monotonic() + interval()
+            continue
+        key = read_key(max(0.0, due - now))
+        if key is not None:
+            d = keydir(key)
+            if key in QUIT_KEYS:
+                record("meteors", score)
+                return False
+            if key in ("p", "P"):
+                paused = True
+            elif key == " " and len(shots) < MAX_SHOTS:
+                shots.append([ship_x, FIELD_H - 2])
+            elif d == "left":
+                ship_x = max(0, ship_x - 1)
+            elif d == "right":
+                ship_x = min(FIELD_W - 1, ship_x + 1)
+            continue
+        tick += 1
+        # spawn rate and fall speed rise gently with the score
+        if random.random() < min(0.3, 0.05 + score / 3000):
+            slowest_fast = 2 if score < 150 else 1
+            meteors.append([random.randrange(FIELD_W), 0, random.randint(slowest_fast, 3)])
+        points, hits = meteor_tick(meteors, shots, ship_x, tick)
+        score += points
+        if hits and time.monotonic() >= safe_until:
+            lives -= 1
+            safe_until = time.monotonic() + 1.0
+            if lives <= 0:
+                lines = draw_meteors(meteors, shots, ship_x, score, max(best, score), 0, False, False)
+                return end_prompt(lines, "Game over", score, "meteors")
+        due = time.monotonic() + interval()
 
 
 # -------------------------------------------------------------------- word
@@ -439,7 +737,7 @@ def feedback(answer, guess):
 
 
 def draw_word(guesses, current, answer, msg):
-    lines = [sgr("Word", 1) + "    Guess the five letter word in six tries", ""]
+    lines = [sgr("Word", 36, 1) + "    Guess the five letter word in six tries", ""]
     for i in range(6):
         if i < len(guesses):
             g, marks = guesses[i], feedback(answer, guesses[i])
@@ -447,7 +745,7 @@ def draw_word(guesses, current, answer, msg):
             lines.append(" ".join(" %s " % m for m in marks))
         else:
             text = current if i == len(guesses) else ""
-            lines.append(" ".join(" %s " % (text[j].upper() if j < len(text) else "_") for j in range(5)))
+            lines.append(" ".join(sgr(" %s " % text[j].upper(), 1) if j < len(text) else " _ " for j in range(5)))
             lines.append("")
     status = {}
     for g in guesses:
@@ -458,7 +756,7 @@ def draw_word(guesses, current, answer, msg):
     lines += ["Letters used:",
               " ".join(sgr(c.upper(), *MARK_STYLE[status[c]]) if c in status else c.upper() for c in letters),
               " ".join(status.get(c, " ") for c in letters),
-              "", "Key: ^ right place (green)   ~ wrong place (yellow)   . not in the word",
+              "", "Key: " + sgr("^", 32, 1) + " right place (green)   " + sgr("~", 33, 1) + " wrong place (yellow)   . not in the word",
               msg]
     return lines
 
@@ -476,7 +774,7 @@ def play_word():
                 score, result = 7 - n, "Solved in %d %s" % (n, "guess" if n == 1 else "guesses")
             else:
                 score, result = 0, "The word was %s" % answer.upper()
-            return end_prompt(lines, result, score, record("word", score))
+            return end_prompt(lines, result, score, "word")
         screen(lines + [hint])
         key, msg = read_key(), ""
         if key in QUIT_KEYS:
@@ -539,15 +837,21 @@ def draw_typing(target, typed, keys, errors, seconds):
     out = []
     for i, ch in enumerate(typed):
         if ch == target[i]:
-            out.append(ch)
+            out.append(sgr(ch, 32))
         else:  # a wrong space would be invisible, so show it as _
             out.append(sgr(ch if ch != " " else "_", 31, 4))
     if len(typed) < len(target):
         out.append(sgr(" ", 7))
-    return [sgr("Typing test", 1), "", "Type this line:", "", target, "".join(out), "",
-            "Typed %d of %d   Mistakes %d   Accuracy %.0f%%   Time %.1f s"
-            % (len(typed), len(target), errors, accuracy(keys, errors), seconds),
-            "", "Mistakes are underlined. The timer starts on your first key."]
+    # the next letter to type, in the line above, is yellow and underlined so it is easy to find
+    n = len(typed)
+    shown = target[:n] + (sgr(target[n], 33, 1, 4) + target[n + 1:] if n < len(target) else "")
+    return [sgr("Typing test", 36, 1), "", "Type this line:", "", shown, "".join(out), "",
+            "   ".join([stat("Typed", "%d of %d" % (len(typed), len(target))),
+                        stat("Mistakes", errors, (31, 1) if errors else (1,)),
+                        stat("Accuracy", "%.0f%%" % accuracy(keys, errors)),
+                        stat("Time", "%.1f s" % seconds)]),
+            "", "Correct letters turn green. Mistakes are red and underlined.",
+            "The next letter to type is yellow and underlined. The timer starts on your first key."]
 
 
 def play_typing():
@@ -562,7 +866,7 @@ def play_typing():
             correct = sum(a == b for a, b in zip(typed, target))
             speed = wpm(correct, end - start)
             result = "%.0f words per minute, %.0f%% accuracy" % (speed, accuracy(keys, errors))
-            return end_prompt(lines, result, round(speed), record("typing", round(speed)), " wpm")
+            return end_prompt(lines, result, round(speed), "typing", " wpm")
         screen(lines + ["", hint])
         key = read_key()
         if key in QUIT_KEYS:
@@ -582,17 +886,18 @@ def play_typing():
 
 # -------------------------------------------------------------------- menu
 
-GAMES = [("2048", play_2048), ("Snake", play_snake), ("Word", play_word),
-         ("Typing test", play_typing), ("Quit", None)]
+GAMES = [("2048", play_2048), ("Snake", play_snake), ("Blocks", play_blocks),
+         ("Meteors", play_meteors), ("Word", play_word), ("Typing test", play_typing),
+         ("Quit", None)]
 
 
 def menu():
     sel = 0
     clear()
     while True:
-        lines = ["", sgr("Games", 1), ""]
+        lines = ["", sgr("Games", 36, 1), ""]
         for i, (name, _) in enumerate(GAMES):
-            lines.append("> " + sgr(name, 7, 1) if i == sel else "  " + name)
+            lines.append(sgr("> ", 36, 1) + sgr(name, 36, 7, 1) if i == sel else "  " + name)
         lines += ["", "Up and Down to choose, Enter to play, Q to quit"]
         screen(lines)
         key = read_key()
@@ -663,6 +968,47 @@ def run_checks():
     check(accuracy(0, 0) == 100.0, "accuracy with no keys")
     check(abs(wpm(250, 60) - 50.0) < 1e-9, "wpm 250 chars in 60 s")
     check(all(l.isascii() and "q" not in l.lower() for l in LINES) and len(LINES) >= 25, "typing lines")
+
+    for kind, (n, cells) in SHAPES.items():
+        turned = sorted(cells)
+        for _ in range(4):
+            turned = rotate(turned, n)
+        check(turned == sorted(cells), "four turns of %s return the original" % kind)
+    empty = [[None] * WELL_W for _ in range(WELL_H)]
+    full = ["Z"] * WELL_W
+    gap = ["T"] * (WELL_W - 1) + [None]
+    well = [[None] * WELL_W for _ in range(WELL_H - 3)] + [list(full), list(gap), list(full)]
+    cleared, n = clear_lines(well)
+    check(n == 2 and cleared[-1] == gap and len(cleared) == WELL_H, "full rows removed, rest shifted down")
+    check(all(c is None for row in cleared[:-1] for c in row), "new rows are empty")
+    o = SHAPES["O"][1]
+    check(fits(empty, o, 0, 0) and not fits(empty, o, -1, 0), "left wall")
+    check(fits(empty, o, WELL_W - 2, 0) and not fits(empty, o, WELL_W - 1, 0), "right wall")
+    check(fits(empty, o, 0, WELL_H - 2) and not fits(empty, o, 0, WELL_H - 1), "floor")
+    check(not fits(well, o, 0, WELL_H - 4), "landed blocks")
+    check(drop_distance(empty, o, 4, 0) == WELL_H - 2, "hard drop distance")
+    i_up = rotate(SHAPES["I"][1], 4)
+    kicked = try_rotate(empty, i_up, 4, -2, 5)  # upright I against the left wall
+    check(kicked is not None and kicked[1] == 0, "wall kick off the left wall")
+    check([line_score(k, 1) for k in range(5)] == [0, 100, 300, 500, 800], "line scores")
+    check(line_score(4, 3) == 2400, "line score times level")
+    rng, gen = random.Random(7), None
+    gen = bag(rng)
+    check(all(sorted(next(gen) for _ in range(7)) == sorted(SHAPES) for _ in range(5)), "seven bag")
+
+    m, s = [[5, 10, 1]], [[5, 10]]
+    check(meteor_tick(m, s, 0, 1) == (10, 0) and not m and not s, "shot and meteor in one cell")
+    m, s = [[5, 9, 1]], [[5, 10]]
+    check(meteor_tick(m, s, 0, 1) == (10, 0) and not m and not s, "shot moves into meteor")
+    m, s = [[5, 8, 1]], [[5, 10]]
+    check(meteor_tick(m, s, 0, 1) == (10, 0) and not m and not s, "shot and meteor meet after both move")
+    m, s = [[5, 3, 3]], []
+    meteor_tick(m, s, 0, 1)
+    check(m == [[5, 3, 3]], "slow meteor waits for its tick")
+    m, s = [[3, FIELD_H - 2, 1]], []
+    check(meteor_tick(m, s, 3, 1) == (0, 1) and not m, "meteor reaching the ship costs a life")
+    m, s = [[7, FIELD_H - 1, 1]], [[2, 0]]
+    check(meteor_tick(m, s, 3, 1) == (0, 0) and not m and not s, "meteor past the bottom and shot past the top removed")
 
     check(_name("\r") == "enter" and _name("\x7f") == "backspace" and _name("\x1b") == "esc", "key names")
     print("all checks pass")
