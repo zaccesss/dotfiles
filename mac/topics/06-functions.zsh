@@ -19,7 +19,7 @@ welcome() {
     [[ -n "$DOTFILES_NO_BANNER" || "$TERM_PROGRAM" == "vscode" ]] && return
     local rule="─────────────────────────────────────────────"
     echo ""
-    echo "── ${CYAN}${BOLD}Welcome back, Isaac${RESET} ──────────────────────"
+    echo "─ ${CYAN}${BOLD}Welcome back, Isaac${RESET} ───────────────────────"
     echo "  Machine   ${GREEN}$(scutil --get ComputerName), macOS $(sw_vers -productVersion)${RESET}"
     echo "  Shell     ${MAGENTA}zsh ${ZSH_VERSION}${RESET}"
     echo "  Session   ${YELLOW}$(date '+%a %d %b %Y, %H:%M')${RESET}"

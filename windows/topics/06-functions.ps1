@@ -24,7 +24,7 @@ function welcome {
     $edition = @{ Professional = 'Pro'; Core = 'Home'; Enterprise = 'Enterprise'; Education = 'Education' }[$nt.EditionID]
     if ($edition) { $os = "$os $edition" }
     Write-Host ""
-    Write-Host "── $e[1;36mWelcome back, Isaac$e[0m ──────────────────────"
+    Write-Host "─ $e[1;36mWelcome back, Isaac$e[0m ───────────────────────"
     Write-Host "  Machine   $e[0;32m$env:COMPUTERNAME, $os$e[0m"
     Write-Host "  Shell     $e[0;35mPowerShell $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)$e[0m"
     Write-Host "  Session   $e[1;33m$(Get-Date -Format 'ddd dd MMM yyyy, HH:mm')$e[0m"
