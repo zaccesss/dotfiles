@@ -47,7 +47,7 @@ function sysinfo {
     else { Write-Host "fastfetch is not installed: winget install --id Fastfetch-cli.Fastfetch --exact" }
 }
 
-# games: a menu of four terminal games (2048, Snake, Word, Typing test). arrows to choose,
+# games: a menu of six terminal games (2048, Snake, Blocks, Meteors, Word, Typing test). arrows to choose,
 # Enter to play, Q or Esc to leave any game
 function games {
     python "$env:DOTFILES\scripts\games.py" @args
@@ -108,7 +108,7 @@ function _cmdsBody {
     "`e[35mSYSTEM`e[0m"
     "  `e[36mupdate`e[0m`e[37m          list everything out of date, then upgrade all after a yes`e[0m"
     "  `e[36msysinfo`e[0m`e[37m         full system summary: os, cpu, gpu, memory, disk`e[0m"
-    "  `e[36mgames`e[0m`e[37m           2048, Snake, Word and a typing test (Q or Esc leaves)`e[0m"
+    "  `e[36mgames`e[0m`e[37m           six terminal games, from 2048 to Meteors (Q or Esc leaves)`e[0m"
     "  `e[36mll / la`e[0m`e[37m         Get-ChildItem -Force (table / list)`e[0m"
     "  `e[36mmkcd`e[0m`e[37m            mkdir + cd in one step`e[0m"
     "  `e[36mrefresh`e[0m`e[37m         hard-clear terminal and reprint welcome banner`e[0m"

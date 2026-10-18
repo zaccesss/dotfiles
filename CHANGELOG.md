@@ -10,7 +10,7 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Added
 
-- `games`: a menu of four terminal games (2048, Snake, Word and a typing test) on every platform, in `scripts/games.py`. Arrows or W and S choose, Enter plays and Q or Esc leaves any game. Best scores are kept per machine.
+- `games`: a menu of six terminal games (2048, Snake, Blocks, Meteors, Word and a typing test) on every platform, in `scripts/games.py`. Arrows or W and S choose, Enter plays and Q or Esc leaves any game. Best scores are kept per machine.
 - `update`: lists everything out of date on the machine (Homebrew, winget, apt or dnf, global npm packages and uv or pipx tools), then upgrades it all only after a yes.
 - `sysinfo`: a full system summary through fastfetch on demand, kept out of the banner so new tabs stay fast.
 - `DOTFILES_NO_BANNER=1` hides the welcome banner. Editor terminals in VS Code skip it.
@@ -18,6 +18,7 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Changed
 
+- The games share one colour scheme: titles bold cyan, good things green, the next or current thing yellow and danger or mistakes red, with borders and empty cells in the plain text colour. In the typing test, correct letters turn green and the next letter to type is yellow and underlined.
 - The welcome banner is plain text with labels and no emoji: a bold cyan heading, then Machine (with the OS), Shell (with its version) and Session (date and time) between line-drawing borders. It lives in one `welcome` function per platform that the profile and `cls` or `refresh` both call.
 - The Windows banner uses the normal green and cyan, matching the Mac and Linux, instead of the paler bright variants that `Write-Host` picks.
 - The welcome banner's dashed top and bottom lines use the terminal's own text colour instead of bold cyan, so they no longer blend into the cyan welcome line and stay full contrast in light and dark mode.
@@ -27,6 +28,7 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Fixed
 
+- `dot` on macOS and Linux no longer copies the profile onto itself when `~/.zshrc` or `~/.bashrc` is already a link to the repo copy.
 - fzf on Linux and Windows uses terminal colour names, so it follows the terminal's light or dark palette. Its file list uses `rg` when ripgrep is installed.
 - Inside an OrbStack machine, the Linux prompt no longer shows the user and machine name on every line, since OrbStack's shell arrives over a loopback SSH connection. A real SSH session still shows both.
 - Starship waits up to 100 ms to scan a folder, so a large folder such as the home folder no longer prints a timeout warning above the prompt.

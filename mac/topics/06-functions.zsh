@@ -41,7 +41,7 @@ sysinfo() {
     if command -v fastfetch >/dev/null; then fastfetch; else echo "fastfetch is not installed: brew install fastfetch"; fi
 }
 
-# games: a menu of four terminal games (2048, Snake, Word, Typing test). arrows to choose,
+# games: a menu of six terminal games (2048, Snake, Blocks, Meteors, Word, Typing test). arrows to choose,
 # Enter to play, Q or Esc to leave any game.
 games() {
     python3 "$DOTFILES/scripts/games.py" "$@"
@@ -59,7 +59,8 @@ dot() {
     echo "${CYAN}Pulling latest dotfiles...${RESET}"
     git -C "$dir" pull || return 1
     echo "${CYAN}Applying mac profile...${RESET}"
-    cp "$dir/mac/zshrc" ~/.zshrc
+    # a linked ~/.zshrc already points at the repo copy. cp onto it fails as identical
+    [[ -L ~/.zshrc ]] || cp "$dir/mac/zshrc" ~/.zshrc
     # shellcheck disable=SC1090
     source ~/.zshrc
     echo "${GREEN}Done - dotfiles are up to date${RESET}"
@@ -119,7 +120,7 @@ _cmds_body() {
     echo "${BOLD}${MAGENTA}SYSTEM${RESET}"
     echo "  ${CYAN}update${RESET}          ${WHITE}list everything out of date, then upgrade all after a yes${RESET}"
     echo "  ${CYAN}sysinfo${RESET}         ${WHITE}full system summary: os, cpu, gpu, memory, disk${RESET}"
-    echo "  ${CYAN}games${RESET}           ${WHITE}2048, Snake, Word and a typing test (Q or Esc leaves)${RESET}"
+    echo "  ${CYAN}games${RESET}           ${WHITE}six terminal games, from 2048 to Meteors (Q or Esc leaves)${RESET}"
     echo "  ${CYAN}ll / la${RESET}         ${WHITE}ls -lah / ls -la${RESET}"
     echo "  ${CYAN}mkdir${RESET}           ${WHITE}mkdir -pv (creates parent dirs, verbose)${RESET}"
     echo "  ${CYAN}mkcd${RESET}            ${WHITE}mkdir + cd in one step${RESET}"
