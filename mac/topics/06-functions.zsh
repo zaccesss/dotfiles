@@ -29,10 +29,16 @@ cls() {
 # dot: pull the latest dotfiles from the remote and apply the mac profile.
 # run this after making changes on another machine to bring them onto this one.
 dot() {
+    # fall back to the standard clone path when DOTFILES is not set in this shell
+    local dir="${DOTFILES:-$HOME/dev/github/repos/dotfiles}"
+    if [[ ! -d "$dir/.git" ]]; then
+        echo "${RED}No dotfiles repo at $dir${RESET}"
+        return 1
+    fi
     echo "${CYAN}Pulling latest dotfiles...${RESET}"
-    git -C "$DOTFILES" pull
+    git -C "$dir" pull || return 1
     echo "${CYAN}Applying mac profile...${RESET}"
-    cp "$DOTFILES/mac/zshrc" ~/.zshrc
+    cp "$dir/mac/zshrc" ~/.zshrc
     # shellcheck disable=SC1090
     source ~/.zshrc
     echo "${GREEN}Done - dotfiles are up to date${RESET}"
