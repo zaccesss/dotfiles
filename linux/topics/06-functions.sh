@@ -19,7 +19,7 @@ welcome() {
     [[ -n "$DOTFILES_NO_BANNER" || "$TERM_PROGRAM" == "vscode" ]] && return
     local rule="─────────────────────────────────────────────"
     echo -e ""
-    echo -e "── ${CYAN}${BOLD}Welcome back, Isaac${RESET} ──────────────────────"
+    echo -e "─ ${CYAN}${BOLD}Welcome back, Isaac${RESET} ───────────────────────"
     echo -e "  Machine   ${GREEN}$(hostname), $(. /etc/os-release 2>/dev/null; echo "${NAME:-Linux} ${VERSION_ID}")${RESET}"
     echo -e "  Shell     ${MAGENTA}bash ${BASH_VERSINFO[0]}.${BASH_VERSINFO[1]}${RESET}"
     echo -e "  Session   ${YELLOW}$(date '+%a %d %b %Y, %H:%M')${RESET}"
