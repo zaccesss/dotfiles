@@ -35,7 +35,9 @@ The terminal itself sets the final shades. The High Contrast palette in [termina
 
 ## Colour in other tools
 
-- The welcome banner gives each of its four lines its own colour (cyan, green, magenta and yellow) between dashed borders in the terminal's own text colour.
+- The welcome banner labels each line (Machine, Shell and Session) and gives each value its own colour (green, magenta and yellow) under a bold cyan heading, so colour is never the only signal. Its line-drawing borders use the terminal's own text colour.
+- The banner is plain text with no emoji, so it looks the same in every terminal and a screen reader does not announce pictures. It uses the normal ANSI colours rather than the bright ones, which the High Contrast palette makes paler.
+- `games` can be played without colour: 2048 tiles show their numbers, Word marks every letter with `^`, `~` or `.` and only Snake is timed, with a pause key. Q or Esc leaves any game and a key hint is always on screen.
 - fzf uses the terminal's own colours with yellow matches. The current line is bold and reversed rather than shaded, so it reads in light and dark mode alike.
 - `ls` shows directories in bold cyan, symlinks in magenta and executables in bold green.
 - `grep` and `diff` highlight matches inline.

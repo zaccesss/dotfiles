@@ -11,19 +11,40 @@ mkcd() {
     command mkdir -p "$1" && cd "$1" || return
 }
 
+# welcome: the banner shown when a shell starts and after cls. plain text with labels so it
+# reads the same in every terminal; normal (not bright) ansi colours because the high
+# contrast palette makes the bright variants paler. DOTFILES_NO_BANNER=1 turns it off. Editor
+# terminals skip it because they open many short-lived shells.
+welcome() {
+    [[ -n "$DOTFILES_NO_BANNER" || "$TERM_PROGRAM" == "vscode" ]] && return
+    local rule="─────────────────────────────────────────────"
+    echo ""
+    echo "── ${CYAN}${BOLD}Welcome back, Isaac${RESET} ──────────────────────"
+    echo "  Machine   ${GREEN}$(scutil --get ComputerName), macOS $(sw_vers -productVersion)${RESET}"
+    echo "  Shell     ${MAGENTA}zsh ${ZSH_VERSION}${RESET}"
+    echo "  Session   ${YELLOW}$(date '+%a %d %b %Y, %H:%M')${RESET}"
+    echo "${rule}"
+    echo ""
+}
+
 # cls: hard-clear the terminal (including scrollback) and reprint the welcome banner.
 # the \033[2J\033[3J\033[H sequence clears both the visible screen and the scrollback
 # buffer - plain 'clear' only clears the visible area.
 cls() {
     printf '\033[2J\033[3J\033[H'
-    echo ""
-    echo "---------------------------------------------"
-    echo "${BOLD}${CYAN}  🚀 Welcome back, Isaac!${RESET}"
-    echo "${GREEN}  ✅ macOS profile loaded${RESET}"
-    echo "${MAGENTA}  💻 $(scutil --get ComputerName) - zsh${RESET}"
-    echo "${YELLOW}  📅 $(date '+%a %d %b %Y  %H:%M')${RESET}"
-    echo "---------------------------------------------"
-    echo ""
+    welcome
+}
+
+# sysinfo: the full system summary (os, cpu, gpu, memory, disk) on demand, kept out of the
+# banner because it is slower than a new tab should be.
+sysinfo() {
+    if command -v fastfetch >/dev/null; then fastfetch; else echo "fastfetch is not installed: brew install fastfetch"; fi
+}
+
+# games: a menu of four terminal games (2048, Snake, Word, Typing test). arrows to choose,
+# Enter to play, Q or Esc to leave any game.
+games() {
+    python3 "$DOTFILES/scripts/games.py" "$@"
 }
 
 # dot: pull the latest dotfiles from the remote and apply the mac profile.
@@ -96,6 +117,9 @@ _cmds_body() {
     echo ""
 
     echo "${BOLD}${MAGENTA}SYSTEM${RESET}"
+    echo "  ${CYAN}update${RESET}          ${WHITE}list everything out of date, then upgrade all after a yes${RESET}"
+    echo "  ${CYAN}sysinfo${RESET}         ${WHITE}full system summary: os, cpu, gpu, memory, disk${RESET}"
+    echo "  ${CYAN}games${RESET}           ${WHITE}2048, Snake, Word and a typing test (Q or Esc leaves)${RESET}"
     echo "  ${CYAN}ll / la${RESET}         ${WHITE}ls -lah / ls -la${RESET}"
     echo "  ${CYAN}mkdir${RESET}           ${WHITE}mkdir -pv (creates parent dirs, verbose)${RESET}"
     echo "  ${CYAN}mkcd${RESET}            ${WHITE}mkdir + cd in one step${RESET}"

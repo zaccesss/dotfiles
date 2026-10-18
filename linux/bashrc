@@ -19,11 +19,4 @@ unset _f
 # Welcome banner - printed after all topics load so colour variables are ready
 # =============================================================================
 
-echo ""
-echo "---------------------------------------------"
-echo -e "${BOLD}${CYAN}  🚀 Welcome back, ${USER}!${RESET}"
-echo -e "${GREEN}  ✅ Linux profile loaded${RESET}"
-echo -e "${MAGENTA}  💻 $(hostname) - bash${RESET}"
-echo -e "${YELLOW}  📅 $(date '+%a %d %b %Y  %H:%M')${RESET}"
-echo "---------------------------------------------"
-echo ""
+welcome
