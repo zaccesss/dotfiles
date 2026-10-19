@@ -29,7 +29,7 @@ Repo copy: [windows/Microsoft.PowerShell_profile.ps1](../windows/Microsoft.Power
 ## Prerequisites
 
 - Windows 10 or Windows 11
-- PowerShell 7+ (recommended - install from the Microsoft Store or `winget install Microsoft.PowerShell`)
+- PowerShell 7+ (required - install from the Microsoft Store or `winget install Microsoft.PowerShell`). The topic files use PowerShell 7 syntax, so if the loader is run from the built-in Windows PowerShell 5.1 it loads nothing and prints one dim line: `dotfiles need PowerShell 7: run pwsh`. 5.1 reads its own profile under `Documents\WindowsPowerShell`, which the setup never writes, so it normally loads nothing at all.
 - git and VS Code installed
 - GitHub CLI (`gh`) for the GitHub CLI commands
 
@@ -88,6 +88,11 @@ Both can run simultaneously. Function names are identical across all three platf
 `$PROFILE` points at the repo's loader, which dot-sources every `.ps1` file in `windows/topics/` in name order from the `DOTFILES` path (`~\dev\github\repos\dotfiles` unless `DOTFILES` is already set):
 
 ```powershell
+if ($PSVersionTable.PSVersion.Major -lt 7) {
+    Write-Host "dotfiles need PowerShell 7: run pwsh" -ForegroundColor DarkGray
+    return
+}
+
 $env:DOTFILES = if ($env:DOTFILES) { $env:DOTFILES } else { "$HOME\dev\github\repos\dotfiles" }
 
 Get-ChildItem "$env:DOTFILES\windows\topics\*.ps1" | Sort-Object Name | ForEach-Object {

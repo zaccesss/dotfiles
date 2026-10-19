@@ -98,6 +98,11 @@ done
 
 **PowerShell (Microsoft.PowerShell_profile.ps1):**
 ```powershell
+if ($PSVersionTable.PSVersion.Major -lt 7) {
+    Write-Host "dotfiles need PowerShell 7: run pwsh" -ForegroundColor DarkGray
+    return
+}
+
 $env:DOTFILES = if ($env:DOTFILES) { $env:DOTFILES } else { "$HOME\dev\github\repos\dotfiles" }
 
 Get-ChildItem "$env:DOTFILES\windows\topics\*.ps1" | Sort-Object Name | ForEach-Object {
