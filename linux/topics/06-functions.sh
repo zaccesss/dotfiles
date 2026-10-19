@@ -180,6 +180,7 @@ _cmds_body() {
     echo -e "  ${CYAN}node1-4${RESET}   ${WHITE}ssh node1/node2/node3/node4 (cluster shortcuts)${RESET}"
     echo -e "  ${CYAN}sshconf${RESET}   ${WHITE}open ~/.ssh/config in VS Code${RESET}"
     echo -e "  ${CYAN}sshls${RESET}     ${WHITE}list loaded SSH keys (ssh-add -l)${RESET}"
+    echo -e "  ${CYAN}ssha${RESET}      ${WHITE}add a key to the agent every terminal shares (~/.ssh/agent.sock)${RESET}"
     echo ""
 
     echo -e "${BOLD}${MAGENTA}NETWORK${RESET}"

@@ -1,6 +1,6 @@
 # linux/topics/
 
-36 numbered `.sh` files loaded in order by `../bashrc`, the bash fallback for a machine without zsh. The default zsh profile loads the parallel files in [`../topics-zsh/`](../topics-zsh/). Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
+37 numbered `.sh` files loaded in order by `../bashrc`, the bash fallback for a machine without zsh. The default zsh profile loads the parallel files in [`../topics-zsh/`](../topics-zsh/). Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
 
 ## Topic files
 
@@ -15,7 +15,7 @@
 | `07-utilities.sh` | General utilities | `ll`, `la`, `c`, `weather`, `temp`, `pubip`, `localip`, `termtheme`, `copyout`, `logrun` |
 | `08-community.sh` | Community-borrowed utilities | `extract`, `dataurl`, `envup`, `digga` (with an install hint when `dig` is missing), `dns-flush`, `change-extension`, `clipcopy`, `clippaste` |
 | `09-cli-tools.sh` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep), `col`, `replace`, `whatport`, `killport`, `notify`, `typw`, `linkcheck` |
-| `10-ssh.sh` | SSH helpers | `keygen`, `sshcp`, `ssha`, `sshtest`, `sshfp`, `sshconf`, `sshls` |
+| `10-ssh.sh` | SSH helpers | shared `ssh-agent` on `~/.ssh/agent.sock`, `keygen`, `sshcp`, `ssha`, `sshtest`, `sshfp`, `sshconf`, `sshls` |
 | `11-network.sh` | Network diagnostics | `myip`, `localip`, `ping4`, `portcheck`, `openports`, `portscan`, `headers`, `dns`, `speedtest` |
 | `12-security.sh` | SSL, GPG and crypto | `ssl-check`, `ssl-gen`, `ssl-view`, `gpgls`, `gpgenc`, `gpgdec`, `sha256file`, `sha512file`, `trivyscan` |
 | `13-database.sh` | Database shortcuts | `myconn`, `mydump`, `myls` (MySQL), `pgconn`, `pgdump`, `pgls` (Postgres), `rflush`, `rkeys` (Redis), `sqls` (SQLite) |

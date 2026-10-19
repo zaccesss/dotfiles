@@ -12,7 +12,7 @@ macOS shell profile using zsh. The entry point is `zshrc`, which acts as a loade
 
 | Folder | Contents |
 | --- | --- |
-| [`topics/`](topics/) | 36 numbered `.zsh` files, one topic per file |
+| [`topics/`](topics/) | 37 numbered `.zsh` files, one topic per file |
 
 ## Installation
 

@@ -18,14 +18,19 @@ function mkcd {
 function welcome {
     if ($env:DOTFILES_NO_BANNER) { return }
     $e = [char]27
-    $nt = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
-    # ProductName still says Windows 10 on Windows 11, so the build number decides
-    $os = if ([int]$nt.CurrentBuild -ge 22000) { 'Windows 11' } else { 'Windows 10' }
-    $edition = @{ Professional = 'Pro'; Core = 'Home'; Enterprise = 'Enterprise'; Education = 'Education' }[$nt.EditionID]
-    if ($edition) { $os = "$os $edition" }
+    if ($IsWindows) {
+        $nt = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
+        # ProductName still says Windows 10 on Windows 11, so the build number decides
+        $os = if ([int]$nt.CurrentBuild -ge 22000) { 'Windows 11' } else { 'Windows 10' }
+        $edition = @{ Professional = 'Pro'; Core = 'Home'; Enterprise = 'Enterprise'; Education = 'Education' }[$nt.EditionID]
+        if ($edition) { $os = "$os $edition" }
+    } else {
+        # pwsh on macOS or Linux has no registry to read the edition from
+        $os = if ($IsMacOS) { 'macOS' } else { 'Linux' }
+    }
     Write-Host ""
     Write-Host "─ $e[1;36mWelcome back, Isaac$e[0m ───────────────────────"
-    Write-Host "  Machine   $e[0;32m$env:COMPUTERNAME, $os$e[0m"
+    Write-Host "  Machine   $e[0;32m$([Environment]::MachineName), $os$e[0m"
     Write-Host "  Shell     $e[0;35mPowerShell $($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)$e[0m"
     Write-Host "  Session   $e[1;33m$(Get-Date -Format 'ddd dd MMM yyyy, HH:mm')$e[0m"
     Write-Host "─────────────────────────────────────────────"
@@ -53,13 +58,19 @@ function games {
     python "$env:DOTFILES\scripts\games.py" @args
 }
 
-# dot: pull the latest dotfiles and apply the Windows profile
+# dot: pull the latest dotfiles and apply the Windows profile. a $PROFILE that is a one-line
+# pointer dot-sourcing the repo's loader already follows the pull, so it is left as it is rather
+# than overwritten with a full copy
 function dot {
     $dotfilesPath = if ($env:DOTFILES) { $env:DOTFILES } else { "$HOME\dev\github\repos\dotfiles" }
     Write-Host "Pulling latest dotfiles..." -ForegroundColor Cyan
     git -C $dotfilesPath pull
-    Write-Host "Applying Windows profile..." -ForegroundColor Cyan
-    Copy-Item "$dotfilesPath\windows\Microsoft.PowerShell_profile.ps1" $PROFILE -Force
+    $loader = Join-Path $dotfilesPath 'windows\Microsoft.PowerShell_profile.ps1'
+    $isPointer = (Test-Path $PROFILE) -and (Select-String -Path $PROFILE -SimpleMatch -Pattern $loader -Quiet)
+    if (-not $isPointer) {
+        Write-Host "Applying Windows profile..." -ForegroundColor Cyan
+        Copy-Item $loader $PROFILE -Force
+    }
     . $PROFILE
     Write-Host "Done - dotfiles are up to date" -ForegroundColor Green
 }

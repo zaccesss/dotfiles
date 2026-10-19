@@ -1,12 +1,12 @@
 # windows/topics/
 
-35 numbered `.ps1` files loaded in order by `../Microsoft.PowerShell_profile.ps1`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
+36 numbered `.ps1` files loaded in order by `../Microsoft.PowerShell_profile.ps1`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
 
 ## Topic files
 
 | File | Topic | Key commands |
 | --- | --- | --- |
-| `01-path.ps1` | PATH and environment | Language runtime paths, `$env:PATH` adjustments |
+| `01-path.ps1` | PATH and environment | Language runtime paths, `$env:PATH` adjustments, LibreOffice's `program` folder when installed |
 | `02-colours.ps1` | Colour helper function | `Write-Colour` helper used by the welcome banner |
 | `03-navigation.ps1` | Directory shortcuts | `dev`, `downloads` |
 | `04-git.ps1` | Git aliases and helpers | `gs`, `ga`, `gaa`, `gcmt`, `gpsh`, `gcp`, `gpul` (note: `gc`/`gp`/`gl` reserved for `Get-Content`/`Get-ItemProperty`/`Get-Location`), `glog`, `gco`, `gcb`, `gb`, `gbd`, `gd`, `gundo`, `gclean`, `automerge`, `pull-all`, `repo-status` |
