@@ -277,7 +277,7 @@ For full descriptions of every command, see [documentation.md](documentation.md)
 | --- | --- | --- |
 | Linuxbrew | `bup`, `bins`, `brm`, `brewclean`, `brewoutd` | [16-brew.sh](../linux/topics/16-brew.sh) |
 | GitHub CLI | `ghpr`, `ghprc`, `ghclone`, `ghissue`, `ghgist`, `ghrun` | [17-gh.sh](../linux/topics/17-gh.sh) |
-| Node/nvm | `nvminstall`, `nvmuse`, `nvmlts` (lazy-loaded) | [18-nvm.sh](../linux/topics/18-nvm.sh) |
+| Node/nvm | `nvminstall`, `nvmuse`, `nvmlts` (nvm lazy-loaded, default Node on `PATH` from the start) | [18-nvm.sh](../linux/topics/18-nvm.sh) |
 | Docker | `dps`, `drun2`, `dcb`, `dcu`, `dcd`, `dlogs`, `dex` | [22-docker.sh](../linux/topics/22-docker.sh) |
 | Kubernetes | `kc`, `kg`, `ka`, `kd`, `klogs`, `kns`, `kctx` | [23-kubernetes.sh](../linux/topics/23-kubernetes.sh) |
 | Terraform | `tfi`, `tfp`, `tfa`, `tfd`, `tfst` | [25-devops.sh](../linux/topics/25-devops.sh) |
