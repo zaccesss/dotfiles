@@ -10,7 +10,7 @@
 | `02-colours.ps1` | Colour helper function | `Write-Colour` helper used by the welcome banner |
 | `03-navigation.ps1` | Directory shortcuts | `dev`, `downloads` |
 | `04-git.ps1` | Git aliases and helpers | `gs`, `ga`, `gaa`, `gcmt`, `gpsh`, `gcp`, `gpul` (note: `gc`/`gp`/`gl` reserved for `Get-Content`/`Get-ItemProperty`/`Get-Location`), `glog`, `gco`, `gcb`, `gb`, `gbd`, `gd`, `gundo`, `gclean`, `automerge`, `pull-all`, `repo-status` |
-| `05-profile.ps1` | Profile management | `Edit-Profile`, `Reload-Profile` |
+| `05-profile.ps1` | Profile management | `Edit-Profile`, `Reload-Profile`, `Import-ProfileGlobal` (the reload helper `dot` shares) |
 | `06-functions.ps1` | Core functions and command reference | `cmds`, `mkcd`, `mkf`, `mkr`, `mkt`, `dot` |
 | `07-utilities.ps1` | General utilities | `ll`, `la`, `c`, `weather`, `temp`, `pubip`, `localip`, `termtheme`, `copyout`, `logrun` |
 | `08-community.ps1` | Community-borrowed utilities | `extract`, `dataurl`, `envup`, `digga`, `dns-flush`, `change-extension`, `clipcopy` (note: `copy` reserved for `Copy-Item`), `clippaste` |
