@@ -8,6 +8,13 @@
 # All topic files are dot-sourced in numbered order from the DOTFILES path.
 # =============================================================================
 
+# the topic files use PowerShell 7 syntax that Windows PowerShell 5.1 cannot parse, so 5.1 stops
+# here with one hint instead of a screen of parse errors. this block must stay 5.1-compatible
+if ($PSVersionTable.PSVersion.Major -lt 7) {
+    Write-Host "dotfiles need PowerShell 7: run pwsh" -ForegroundColor DarkGray
+    return
+}
+
 $env:DOTFILES = if ($env:DOTFILES) { $env:DOTFILES } else { "$HOME\dev\github\repos\dotfiles" }
 
 Get-ChildItem "$env:DOTFILES\windows\topics\*.ps1" | Sort-Object Name | ForEach-Object {
