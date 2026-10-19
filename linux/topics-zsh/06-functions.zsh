@@ -119,6 +119,8 @@ _cmds_body() {
     echo -e "${BOLD}${MAGENTA}SYSTEM${RESET}"
     echo -e "  ${CYAN}update${RESET}          ${WHITE}list everything out of date, then upgrade all after a yes${RESET}"
     echo -e "  ${CYAN}sysinfo${RESET}         ${WHITE}full system summary: os, cpu, gpu, memory, disk${RESET}"
+    echo -e "  ${CYAN}copyout${RESET}         ${WHITE}run a command, show its output and copy all of it to the clipboard${RESET}"
+    echo -e "  ${CYAN}logrun${RESET}          ${WHITE}run a command and save its output to ~/logs/<date>-<command>.log${RESET}"
     echo -e "  ${CYAN}games${RESET}           ${WHITE}six terminal games, from 2048 to Meteors (Q or Esc leaves)${RESET}"
     echo -e "  ${CYAN}ll / la${RESET}         ${WHITE}ls -lah / ls -la${RESET}"
     echo -e "  ${CYAN}mkdir${RESET}           ${WHITE}mkdir -pv (creates parent dirs, verbose)${RESET}"

@@ -69,11 +69,11 @@ for f in "$DOTFILES/mac/topics"/[0-9]*.zsh; do
 done
 ```
 
-Files are loaded from `01-path.zsh` to `36-syntax-highlighting.zsh`. A higher-numbered file overrides an alias from a lower-numbered one if they share a name. See [mac/topics/README.md](../mac/topics/README.md) for the full listing of all topic files.
+Files are loaded from `01-path.zsh` to `37-syntax-highlighting.zsh`. A higher-numbered file overrides an alias from a lower-numbered one if they share a name. See [mac/topics/README.md](../mac/topics/README.md) for the full listing of all topic files.
 
 `34-starship.zsh` initialises the Starship prompt. The config lives in [mac/starship.toml](../mac/starship.toml), identical content to the Linux and Windows copies. Symlink it to `~/.config/starship.toml`.
 
-`36-syntax-highlighting.zsh` loads zsh-syntax-highlighting last, so typed commands are coloured as you type: a known command, alias, function or builtin green, an unknown command red, quoted strings yellow and options cyan, in the normal (not bright) ANSI colours a high contrast palette reads best. It is sourced from Homebrew's `share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh` (installed by `bbundle` from the Brewfile) and is silently skipped when absent. Colour is only a second signal: an unknown command still fails to run.
+`37-syntax-highlighting.zsh` loads zsh-syntax-highlighting last, so typed commands are coloured as you type: a known command, alias, function or builtin green, an unknown command red, quoted strings yellow and options cyan, in the normal (not bright) ANSI colours a high contrast palette reads best. It is sourced from Homebrew's `share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh` (installed by `bbundle` from the Brewfile) and is silently skipped when absent. Colour is only a second signal: an unknown command still fails to run.
 
 > [!TIP]
 > The prompt does not need a Nerd Font. Its own symbols (the `>` prompt character, jobs and git
@@ -82,7 +82,19 @@ Files are loaded from `01-path.zsh` to `36-syntax-highlighting.zsh`. A higher-nu
 > Monaco 12 in iTerm2 and Warp's default font at size 13, neither of them a Nerd Font. The Brewfile still installs
 > `font-jetbrains-mono-nerd-font` for other tools that use icon glyphs.
 
-To add a new group of aliases, create a new file (e.g. `36-mytopic.zsh`) in `mac/topics/`. It is picked up automatically at the next `reload-profile`. No changes to `zshrc` needed.
+To add a new group of aliases, create a new file (e.g. `38-mytopic.zsh`) in `mac/topics/`. It is picked up automatically at the next `reload-profile`. No changes to `zshrc` needed.
+
+### Command marks
+
+`36-command-marks.zsh` marks where each prompt, command and output starts and ends (OSC 133 shell integration). A terminal that reads the marks can then jump from one command to the next and select a single command's output. It loads after Starship, so the end-of-prompt mark follows the prompt Starship builds. Syntax highlighting still loads after it and stays last.
+
+| Terminal | How to move between commands |
+| --- | --- |
+| Terminal.app | Marks are built in: `Cmd+Up` and `Cmd+Down` jump to the previous or next prompt |
+| VS Code's terminal | VS Code uses its own shell integration and the profile leaves it alone: `Cmd+Up` and `Cmd+Down` |
+| tmux and other terminals that read OSC 133 | Their own prompt-jump keys. The [Windows guide](windows.md#command-marks) has the Windows Terminal setup |
+
+The marks are skipped in a dumb terminal and in a non-interactive shell.
 
 ---
 
@@ -151,6 +163,8 @@ Defined in [mac/topics/06-functions.zsh](../mac/topics/06-functions.zsh).
 | `welcome` | Print the welcome banner again. `DOTFILES_NO_BANNER=1` hides it when a shell starts |
 | `update` | List everything out of date (system packages, global npm packages and uv tools), then upgrade it all after a yes |
 | `sysinfo` | Full system summary through fastfetch: OS, CPU, GPU, memory and disk (install with `brew install fastfetch`) |
+| `copyout <command>` | Run a command, show its output as normal and copy all of it (output and errors) to the clipboard through `pbcopy`, then say how many lines were copied. The command's exit status is kept |
+| `logrun <command>` | Run a command with its output shown live and saved to `~/logs/<YYYY-MM-DD_HHMMSS>-<command>.log`, then print the log's path. The command's exit status is kept |
 | `games` | A menu of six terminal games: 2048, Snake, Blocks, Meteors, Word and a typing test. Arrows choose, Enter plays, Q or Esc leaves any game |
 | `mkf <file>` | Create a file and any missing parent directories |
 | `mkr <name>` | Scaffold a new Rust project with `cargo new` |
@@ -296,7 +310,7 @@ To change a colour, edit the relevant variable in [mac/topics/02-colours.zsh](..
 
 To add a new group of aliases:
 
-1. Create a new file in `mac/topics/` with the next available number, e.g. `36-mytopic.zsh`
+1. Create a new file in `mac/topics/` with the next available number, e.g. `38-mytopic.zsh`
 2. Add aliases and functions to the file
 3. Run `reload-profile`
 4. Run `cmds` to confirm they appear

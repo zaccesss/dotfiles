@@ -50,6 +50,7 @@ dotfiles/
 - ...
 - mac/topics/34-starship.zsh   Starship prompt init
 - mac/topics/35-secrets.zsh    age and sops encryption
+- mac/topics/36-command-marks.zsh   command marks for the terminal (OSC 133)
 - linux/bashrc              loader for Linux and WSL2 (bash)
 - linux/topics/*.sh         same 35 topics, bash syntax
 - windows/Microsoft.PowerShell_profile.ps1   loader for Windows (PowerShell)
@@ -177,6 +178,8 @@ These are defined in `06-functions` on all platforms.
 | `welcome` | Print the welcome banner again. `DOTFILES_NO_BANNER=1` hides it when a shell starts |
 | `update` | List everything out of date (system packages, global npm packages and uv tools), then upgrade it all after a yes |
 | `sysinfo` | Full system summary through fastfetch: OS, CPU, GPU, memory and disk |
+| `copyout <command>` | Run a command, show its output as normal and copy all of it (output and errors) to the clipboard, then say how many lines were copied: `pbcopy` on macOS, `clip.exe` under WSL, `wl-copy` or `xclip` on other Linux and `Set-Clipboard` on Windows. The command's exit status is kept |
+| `logrun <command>` | Run a command with its output shown live and saved to `~/logs/<YYYY-MM-DD_HHMMSS>-<command>.log` (`~\logs` on Windows), then print the log's path. The command's exit status is kept |
 | `games` | A menu of six terminal games: 2048, Snake, Blocks, Meteors, Word and a typing test. Arrows choose, Enter plays, Q or Esc leaves any game |
 | `mkf <file>` | Create a file (and any missing parent directories) and open it in VS Code. |
 | `mkr <name>` | Scaffold a new Rust project: `cargo new <name>` then open in VS Code. |
@@ -1033,8 +1036,8 @@ committed) to stay in step.
 ### Typed-command colours
 
 Commands are coloured as you type them, in the same meanings on every platform. On macOS and
-Linux this is zsh-syntax-highlighting, loaded last by `36-syntax-highlighting.zsh` on macOS (from
-Homebrew's `share/`) and `37-syntax-highlighting.zsh` on Linux (from `/usr/share/`), silently
+Linux this is zsh-syntax-highlighting, loaded last by `37-syntax-highlighting.zsh` on macOS (from
+Homebrew's `share/`) and `38-syntax-highlighting.zsh` on Linux (from `/usr/share/`), silently
 skipped when the package is not installed. On Windows it is PSReadLine, already built into
 PowerShell, configured in `02-colours.ps1`.
 
@@ -1049,6 +1052,27 @@ PowerShell, configured in `02-colours.ps1`.
 The colours are the normal (not bright) ANSI ones, because a high contrast palette makes the
 bright variants paler. Colour is only ever a second signal: a bad command still fails to run, so
 nothing depends on seeing the red.
+
+### Command marks
+
+Every platform marks where each prompt, command and output starts and ends (OSC 133 shell
+integration), so a terminal that reads the marks can jump from one command to the next and select
+a single command's output. The marks load after Starship (`36-command-marks` on macOS and
+Windows, `37-command-marks` on Linux) and before syntax highlighting, which stays last.
+
+| Shell | How the marks are emitted |
+| --- | --- |
+| zsh (macOS and Linux) | `precmd` closes the last command with its exit status and opens the prompt, the end-of-prompt mark is added to `PROMPT` and `preexec` marks where the output starts |
+| bash (Linux fallback) | chained onto `PROMPT_COMMAND` without replacing it, with the end-of-prompt mark on `PS1` and the output mark in `PS0` |
+| PowerShell (Windows) | wraps the prompt Starship defines and adds a PSReadLine handler on Enter for the output mark |
+
+| Terminal | Keys |
+| --- | --- |
+| Terminal.app | Marks are built in: `Cmd+Up` and `Cmd+Down` |
+| VS Code's terminal | Its own shell integration, so the profile skips its marks there: `Ctrl+Up` and `Ctrl+Down` (`Cmd+Up` and `Cmd+Down` on macOS) |
+| Windows Terminal | `scrollToMark`, `selectCommand` and `selectOutput` actions set up in its own `settings.json`, which is not part of these dotfiles (see [guides/windows.md](windows.md#command-marks)) |
+
+The marks are skipped in a dumb terminal and in a non-interactive shell.
 
 ---
 
@@ -1075,7 +1099,7 @@ structured file (YAML, JSON, `.env`).
 
 To add a new group of aliases:
 
-1. Create a new file in the relevant `topics/` folder with the next available number, e.g. `36-mytopic.zsh` (macOS), `36-mytopic.sh` (Linux) or `36-mytopic.ps1` (Windows). (`34` is taken by Starship, `35` by secrets encryption.)
+1. Create a new file in the relevant `topics/` folder with the next available number, e.g. `38-mytopic.zsh` (macOS), `38-mytopic.sh` (Linux) or `37-mytopic.ps1` (Windows). (`34` is taken by Starship, `35` by secrets encryption and the numbers after it by command marks and, on zsh, syntax highlighting.)
 2. Add your aliases and functions to the file.
 3. Reload the profile: `reload-profile`.
 4. Run `cmds` to verify the new commands appear. If you want them listed there too, add a section to `06-functions` under `cmds()`.

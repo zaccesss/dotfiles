@@ -40,6 +40,19 @@ Commands are coloured as they are typed, the same meanings on every platform: a 
 - The colours are the normal (not bright) ANSI ones, since the High Contrast palette makes the bright variants paler.
 - Colour here is always a second signal, never the only one: a bad command still fails to run with its own error, so nothing depends on noticing the red. PSReadLine cannot tell a known command from an unknown one, so Windows does not colour unknown commands at all; the failure on running them is the signal there.
 
+## Finding a command's output
+
+Long output makes it hard to see where one command ended and the next began. The profile marks where each prompt, command and output starts and ends (OSC 133 shell integration), so the terminal can jump straight from one command to the next and select a single command's output without dragging across the screen.
+
+| Terminal | Keys |
+| --- | --- |
+| Terminal.app on macOS | `Cmd+Up` and `Cmd+Down` jump to the previous or next prompt. Terminal.app marks prompts by itself |
+| VS Code's terminal | VS Code's own shell integration: `Ctrl+Up` and `Ctrl+Down` (`Cmd+Up` and `Cmd+Down` on macOS) |
+| Windows Terminal | Jump and select actions bound in its own settings, which are not part of these dotfiles. The [Windows guide](guides/windows.md#command-marks) has the setup |
+
+- `copyout` runs a command and copies all of its output to the clipboard, so a long result can be pasted somewhere easier to read without selecting it by hand.
+- `logrun` saves a command's output to a dated file in `~/logs`, so it can be read later in an editor at any size and pace.
+
 ## Colour in other tools
 
 - The welcome banner labels each line (Machine, Shell and Session) and gives each value its own colour (green, magenta and yellow) under a bold cyan heading, so colour is never the only signal. Its line-drawing borders use the terminal's own text colour.

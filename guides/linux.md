@@ -106,11 +106,11 @@ for f in "$DOTFILES/linux/topics-zsh/"*.zsh; do
 done
 ```
 
-Files load from `01-path.zsh` to `37-syntax-highlighting.zsh`. A higher-numbered file overrides an alias from a lower-numbered one if they share a name. See [linux/topics-zsh/README.md](../linux/topics-zsh/README.md) for what differs from the bash topics and [linux/topics/README.md](../linux/topics/README.md) for the full command listing.
+Files load from `01-path.zsh` to `38-syntax-highlighting.zsh`. A higher-numbered file overrides an alias from a lower-numbered one if they share a name. See [linux/topics-zsh/README.md](../linux/topics-zsh/README.md) for what differs from the bash topics and [linux/topics/README.md](../linux/topics/README.md) for the full command listing.
 
 Both profiles bail out early in a non-interactive shell, so a login shell running a single command (`ssh host cmd`, `scp`, `rsync`) loads nothing and prints no banner.
 
-`37-syntax-highlighting.zsh` loads zsh-syntax-highlighting last, so typed commands are coloured as you type: a known command, alias, function or builtin green, an unknown command red, quoted strings yellow and options cyan. It is sourced from `/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh` and is silently skipped when the package is not installed. Colour is only a second signal here: an unknown command still fails to run.
+`38-syntax-highlighting.zsh` loads zsh-syntax-highlighting last, so typed commands are coloured as you type: a known command, alias, function or builtin green, an unknown command red, quoted strings yellow and options cyan. It is sourced from `/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh` and is silently skipped when the package is not installed. Colour is only a second signal here: an unknown command still fails to run.
 
 `34-starship.zsh` (and `34-starship.sh` under bash) initialises the Starship prompt. The config lives in [linux/starship.toml](../linux/starship.toml), identical content to the Mac and Windows copies. Symlink it to `~/.config/starship.toml`.
 
@@ -121,6 +121,20 @@ Both profiles bail out early in a non-interactive shell, so a login shell runnin
 > Monaco 12 in iTerm2 and Warp's default font at size 13, neither of them a Nerd Font. Other tools that use icon glyphs need
 > one (from your package manager or [nerdfonts.com](https://www.nerdfonts.com)) set as the
 > terminal's font.
+
+### Command marks
+
+`37-command-marks.zsh` (and `37-command-marks.sh` under bash) marks where each prompt, command and output starts and ends (OSC 133 shell integration). A terminal that reads the marks can then jump from one command to the next and select a single command's output. zsh uses `precmd` and `preexec` hooks; bash chains onto `PROMPT_COMMAND` without replacing it and uses `PS0`. Both load after Starship, so the end-of-prompt mark follows the prompt Starship builds. The zsh file loads before syntax highlighting, which stays last.
+
+| Terminal | How to move between commands |
+| --- | --- |
+| Windows Terminal (WSL) | Actions bound in its own `settings.json`: see the [Windows guide](windows.md#command-marks) |
+| VS Code's terminal | VS Code uses its own shell integration and the profile leaves it alone: `Ctrl+Up` and `Ctrl+Down` |
+| tmux and other terminals that read OSC 133 | Their own prompt-jump keys |
+
+The marks are skipped in a dumb terminal and in a non-interactive shell.
+
+Under WSL, `BROWSER` is set to `explorer.exe` when it is not already set (and `wslview` is not installed), so `gh` and other tools open links in the Windows browser.
 
 ---
 
@@ -186,6 +200,8 @@ Defined in [linux/topics/06-functions.sh](../linux/topics/06-functions.sh). Iden
 | `welcome` | Print the welcome banner again. `DOTFILES_NO_BANNER=1` hides it when a shell starts |
 | `update` | List everything out of date (system packages, global npm packages and uv tools), then upgrade it all after a yes |
 | `sysinfo` | Full system summary through fastfetch: OS, CPU, GPU, memory and disk (install with `sudo apt install fastfetch`) |
+| `copyout <command>` | Run a command, show its output as normal and copy all of it (output and errors) to the clipboard, then say how many lines were copied. Uses `clip.exe` under WSL, otherwise `wl-copy` (Wayland) or `xclip` (X11), with an install hint when none is available. The command's exit status is kept |
+| `logrun <command>` | Run a command with its output shown live and saved to `~/logs/<YYYY-MM-DD_HHMMSS>-<command>.log`, then print the log's path. The command's exit status is kept |
 | `games` | A menu of six terminal games: 2048, Snake, Blocks, Meteors, Word and a typing test. Arrows choose, Enter plays, Q or Esc leaves any game |
 | `mkf <file>` | Create a file and any missing parent directories |
 | `mkr <name>` | Scaffold a new Rust project |
@@ -302,7 +318,7 @@ To change a colour, edit [linux/topics/02-colours.sh](../linux/topics/02-colours
 
 ## Extending the profile
 
-Create a new file in `linux/topics/` with the next available number, e.g. `36-mytopic.sh`. It is sourced automatically. No changes to `bashrc` needed.
+Create a new file in `linux/topics/` with the next available number, e.g. `38-mytopic.sh`. It is sourced automatically. No changes to `bashrc` needed.
 
 Before naming a new alias, check it is not already taken:
 

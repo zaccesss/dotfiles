@@ -233,3 +233,47 @@ update() {
     command -v pipx >/dev/null && pipx upgrade-all
     echo "${GREEN}Up to date.${RESET}"
 }
+
+# copyout: run a command, show its output as normal and copy all of it (output and errors) to the
+# clipboard, so a whole result or error can go into an issue or a message without selecting it by
+# hand. the command's own exit status is kept, so copyout still works in a && chain
+copyout() {
+    if (( $# == 0 )); then
+        echo "Usage: copyout <command...>"
+        return 1
+    fi
+    local tmp rc lines word=lines
+    tmp="$(mktemp)"
+    "$@" 2>&1 | tee "$tmp"
+    # zsh's pipestatus holds the command's status rather than tee's, which shellcheck in bash mode cannot see
+    # shellcheck disable=SC2154
+    rc=${pipestatus[1]}
+    pbcopy < "$tmp"
+    lines=$(awk 'END { print NR }' "$tmp")
+    rm -f "$tmp"
+    (( lines == 1 )) && word=line
+    echo "${GREEN}copied ${lines} ${word} to the clipboard${RESET}" >&2
+    return "$rc"
+}
+
+# logrun: run a command with its output live on screen and saved to ~/logs, named by date, time and
+# command, so a long build or install can be read back after the terminal has scrolled past it.
+# the exit status is the command's own, not tee's
+logrun() {
+    if (( $# == 0 )); then
+        echo "Usage: logrun <command...>"
+        return 1
+    fi
+    local name log rc
+    # command skips the mkdir alias above, whose -v would print the folder on every run
+    command mkdir -p "$HOME/logs"
+    # only the command's base name, made safe for a file name, so ./build.sh or a path adds no folders
+    name="${1##*/}"
+    name="${name//[^A-Za-z0-9._-]/_}"
+    log="$HOME/logs/$(date +%Y-%m-%d_%H%M%S)-${name}.log"
+    "$@" 2>&1 | tee "$log"
+    # shellcheck disable=SC2154
+    rc=${pipestatus[1]}
+    echo "${CYAN}log saved to ${log}${RESET}" >&2
+    return "$rc"
+}

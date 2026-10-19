@@ -10,6 +10,9 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Added
 
+- `copyout <command>`: runs a command, shows its output as normal and copies all of it (output and errors) to the clipboard, then says how many lines were copied. It uses `pbcopy` on macOS, `clip.exe` under WSL, `wl-copy` or `xclip` on other Linux and `Set-Clipboard` on Windows. The command's exit status is kept.
+- `logrun <command>`: runs a command with its output shown live and saved to `~/logs/<YYYY-MM-DD_HHMMSS>-<command>.log`, then prints the log's path. The command's exit status is kept.
+- Command marks (OSC 133 shell integration) on every platform. Each prompt, command and output is marked, with the exit status of every command that ran, so Windows Terminal, tmux and other terminals that read the marks can jump between commands and select one command's output. Terminal.app keeps its own built-in marks. VS Code uses its own shell integration, so the profile's marks are skipped there. The Windows guide shows the Windows Terminal actions, which live in its own settings.
 - zsh is now the default shell on Linux, matching the macOS profile. `linux/zshrc` loads the new `linux/topics-zsh/` port of every topic, keeping the Linux specifics (apt or dnf, `/etc/os-release`, `xdg-open`, Linux paths). `linux/bashrc` stays as the fallback for a machine without zsh. The welcome banner on Linux zsh reads `Shell     zsh <version>` with the same layout and colours as the Mac.
 - Typed-command colours on macOS and Linux through zsh-syntax-highlighting, sourced last and silently skipped when the package is absent: known commands, aliases, functions and builtins green, an unknown command red, quoted strings yellow and options cyan, in the normal (not bright) ANSI colours a high contrast palette reads best. `zsh-syntax-highlighting` is now in the Mac Brewfile.
 - Windows `paste` (Get-Clipboard) plus `sha256` and `sha512`, which print the lowercase hash then the path, the same as the Mac's.
@@ -23,6 +26,8 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Changed
 
+- Under WSL, `BROWSER` is only set to `explorer.exe` when it is not already set. WSL is now recognised by `WSL_DISTRO_NAME` as well as `/proc/version`.
+- The zsh syntax highlighting topic is now `37-syntax-highlighting.zsh` on macOS and `38-syntax-highlighting.zsh` on Linux, so it still loads last after the new command marks topic.
 - The welcome banner shows in every terminal: editor terminals in VS Code and editors built on it show it too.
 - The games share one colour scheme: titles bold cyan, good things green, the next or current thing yellow and danger or mistakes red, with borders and empty cells in the plain text colour. In the typing test, correct letters turn green and the next letter to type is yellow and underlined.
 - The welcome banner is plain text with labels and no emoji: a bold cyan heading, then Machine (with the OS), Shell (with its version) and Session (date and time) between line-drawing borders. It lives in one `welcome` function per platform that the profile and `cls` or `refresh` both call.
