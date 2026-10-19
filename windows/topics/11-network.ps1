@@ -5,6 +5,19 @@
 function myip    { (Invoke-RestMethod -Uri "https://ifconfig.me").Trim() }
 function localip { (Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.IPAddress -notlike "127.*" } | Select-Object -First 1).IPAddress }
 
+# speedtest: a network speed test through the installed speedtest-cli (pip or uv) or Ookla's own
+# speedtest. PYTHONWARNINGS hides a deprecation notice speedtest-cli prints on newer Python
+function speedtest {
+    if (Get-Command speedtest-cli -ErrorAction SilentlyContinue) {
+        $env:PYTHONWARNINGS = "ignore::DeprecationWarning"
+        try { speedtest-cli @args } finally { Remove-Item Env:PYTHONWARNINGS -ErrorAction SilentlyContinue }
+    } elseif (Get-Command speedtest.exe -ErrorAction SilentlyContinue) {
+        speedtest.exe @args
+    } else {
+        Write-Host "speedtest is not installed: winget install Ookla.Speedtest.CLI (or uv tool install speedtest-cli)"
+    }
+}
+
 function headers {
     param([string]$Url)
     (Invoke-WebRequest -Uri $Url -Method Head).Headers
