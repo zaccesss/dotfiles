@@ -41,6 +41,8 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Fixed
 
+- Windows `Reload-Profile` and `dot` keep what the reload defines. Dot-sourcing the profile inside a function only reached that function's own scope, so new or changed functions, aliases and variables were lost as soon as it returned. Both now run the loader through `Import-ProfileGlobal`, which copies them into the global scope.
+- The PowerShell loader snippet in the Windows and documentation guides matches the real loader: it reads the topic files from the `DOTFILES` path, not `$PSScriptRoot`.
 - Windows `dot` leaves a `$PROFILE` that is a one-line pointer to the repo's loader in place instead of overwriting it with a full copy, matching how macOS and Linux treat a linked profile. The Windows guide shows the pointer form.
 - Loading the Windows profile in `pwsh` on macOS or Linux no longer prints registry errors from the welcome banner.
 - Windows adds LibreOffice's `program` folder to the end of `PATH` when it is installed, so `soffice` is found.

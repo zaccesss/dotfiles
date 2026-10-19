@@ -98,7 +98,9 @@ done
 
 **PowerShell (Microsoft.PowerShell_profile.ps1):**
 ```powershell
-Get-ChildItem "$PSScriptRoot\topics\[0-9]*.ps1" | Sort-Object Name | ForEach-Object {
+$env:DOTFILES = if ($env:DOTFILES) { $env:DOTFILES } else { "$HOME\dev\github\repos\dotfiles" }
+
+Get-ChildItem "$env:DOTFILES\windows\topics\*.ps1" | Sort-Object Name | ForEach-Object {
     . $_.FullName
 }
 ```
