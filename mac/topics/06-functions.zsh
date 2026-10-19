@@ -13,10 +13,9 @@ mkcd() {
 
 # welcome: the banner shown when a shell starts and after cls. plain text with labels so it
 # reads the same in every terminal; normal (not bright) ansi colours because the high
-# contrast palette makes the bright variants paler. DOTFILES_NO_BANNER=1 turns it off. Editor
-# terminals skip it because they open many short-lived shells.
+# contrast palette makes the bright variants paler. DOTFILES_NO_BANNER=1 turns it off.
 welcome() {
-    [[ -n "$DOTFILES_NO_BANNER" || "$TERM_PROGRAM" == "vscode" ]] && return
+    [[ -n "$DOTFILES_NO_BANNER" ]] && return
     local rule="─────────────────────────────────────────────"
     echo ""
     echo "─ ${CYAN}${BOLD}Welcome back, Isaac${RESET} ───────────────────────"
