@@ -85,15 +85,17 @@ Both can run simultaneously. Function names are identical across all three platf
 
 ## How the profile works
 
-`$PROFILE` dot-sources every numbered `.ps1` file in `windows/topics/` in order:
+`$PROFILE` points at the repo's loader, which dot-sources every `.ps1` file in `windows/topics/` in name order from the `DOTFILES` path (`~\dev\github\repos\dotfiles` unless `DOTFILES` is already set):
 
 ```powershell
-Get-ChildItem "$PSScriptRoot\topics\[0-9]*.ps1" | Sort-Object Name | ForEach-Object {
+$env:DOTFILES = if ($env:DOTFILES) { $env:DOTFILES } else { "$HOME\dev\github\repos\dotfiles" }
+
+Get-ChildItem "$env:DOTFILES\windows\topics\*.ps1" | Sort-Object Name | ForEach-Object {
     . $_.FullName
 }
 ```
 
-Files load from `01-path.ps1` to `36-command-marks.ps1`. A later-numbered file overrides a function from an earlier one if they share a name. See [windows/topics/README.md](../windows/topics/README.md) for the full listing.
+Files load from `01-path.ps1` to `36-command-marks.ps1`. A later-numbered file overrides a function from an earlier one if they share a name. `Reload-Profile` and `dot` run the same loader and then copy the functions, aliases and variables it defines into the global scope, so a change made in a topic file is live in the current session straight after the reload. See [windows/topics/README.md](../windows/topics/README.md) for the full listing.
 
 `01-path.ps1` adds `C:\Program Files\LibreOffice\program` to the end of `PATH` when it exists, so `soffice` works for headless document conversion. It goes last because that folder also holds LibreOffice's own `python.exe`. The welcome banner reads the Windows edition from the registry only on Windows, so loading the profile in `pwsh` on macOS or Linux prints no errors.
 

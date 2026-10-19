@@ -71,7 +71,7 @@ function dot {
         Write-Host "Applying Windows profile..." -ForegroundColor Cyan
         Copy-Item $loader $PROFILE -Force
     }
-    . $PROFILE
+    Import-ProfileGlobal
     Write-Host "Done - dotfiles are up to date" -ForegroundColor Green
 }
 
