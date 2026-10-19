@@ -83,6 +83,9 @@ function dns-flush {
 # Clipboard shortcuts
 function clipcopy { $input | Set-Clipboard }
 function clippaste    { Get-Clipboard }
+# paste: read the clipboard, the short name advertised in cmds (no conflict with a built-in on
+# Windows, unlike the unix paste(1) column-joining command)
+function paste { Get-Clipboard }
 
 # HTTP method shortcuts via Invoke-RestMethod
 function GET    { Invoke-RestMethod -Uri $args[0] -Method Get    $args[1..99] }

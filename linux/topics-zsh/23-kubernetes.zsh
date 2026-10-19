@@ -1,0 +1,75 @@
+# =============================================================================
+# Kubernetes
+# =============================================================================
+
+alias kc="kubectl"
+alias kg="kubectl get"
+alias ka="kubectl apply -f"
+alias kd="kubectl describe"
+alias klogs="kubectl logs -f"
+alias klogsp="kubectl logs --previous" # last run of a crashed/restarted container
+alias kns="kubectl get namespaces"
+alias kctx="kubectl config get-contexts"
+alias kpods="kubectl get pods -A"
+
+alias kgp="kubectl get pods"
+alias kgpw="kubectl get pods -w"
+alias kgs="kubectl get svc"
+alias kgd="kubectl get deployments"
+alias kgn="kubectl get nodes"
+alias kgall="kubectl get all"
+alias king="kubectl get ingress"
+alias ksec="kubectl get secrets"
+alias kcm="kubectl get configmaps"
+alias kevents="kubectl get events --sort-by=.lastTimestamp"
+
+alias kdel="kubectl delete"
+alias kdelf="kubectl delete -f"
+
+alias kapi="kubectl api-resources"
+alias kexplain="kubectl explain"
+alias ktop="kubectl top pods"
+alias ktopn="kubectl top nodes"
+alias krollout="kubectl rollout status"
+
+alias kcur="kubectl config current-context"
+kuse() {
+    kubectl config use-context "${1:?Usage: kuse <context>}"
+}
+
+# kn: switch the current context's default namespace, so every kubectl command that follows
+# targets it without needing -n on every call
+kn() {
+    kubectl config set-context --current --namespace="${1:?Usage: kn <namespace>}"
+}
+
+# exec into a pod, defaulting to sh since not every image ships bash
+kexec() {
+    local pod="$1"; shift
+    kubectl exec -it "$pod" -- "${@:-sh}"
+}
+
+# forward a local port to a pod or service - same syntax as kubectl itself
+kpf() {
+    kubectl port-forward "${1:?Usage: kpf <pod-or-svc> <local>:<remote>}" "${2:?Usage: kpf <pod-or-svc> <local>:<remote>}"
+}
+
+# roll a deployment - forces new pods without changing the manifest, the quick way to pick up a new secret or config
+krestart() {
+    kubectl rollout restart deployment "${1:?Usage: krestart <deployment>}"
+}
+
+kscale() {
+    kubectl scale deployment "${1:?Usage: kscale <deployment> <replicas>}" --replicas="${2:?Usage: kscale <deployment> <replicas>}"
+}
+
+# Node maintenance - cordon stops new pods scheduling, drain evicts what's already there
+kdrain() {
+    kubectl drain "${1:?Usage: kdrain <node>}" --ignore-daemonsets --delete-emptydir-data
+}
+kcordon() {
+    kubectl cordon "${1:?Usage: kcordon <node>}"
+}
+kuncordon() {
+    kubectl uncordon "${1:?Usage: kuncordon <node>}"
+}

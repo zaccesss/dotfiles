@@ -257,7 +257,7 @@ function _cmdsBody {
     "  `e[36mrb / irb`e[0m`e[37m   ruby / interactive REPL`e[0m"
     "  `e[36mbe / binst / bcheck / bupd / bclean`e[0m`e[37m   Bundler`e[0m"
     "  `e[36mrspec / rspecf / rubocop / rubofix`e[0m`e[37m   testing and linting`e[0m"
-    "  `e[36mrs / rc / rd / rg / rrout`e[0m`e[37m   Rails server/console/migrate/generate/routes`e[0m"
+    "  `e[36mrs / rc / rdm / rgen / rrout / rdreset`e[0m`e[37m   Rails server/console/migrate/generate/routes/db:reset`e[0m"
     "  `e[36mrbinstall / rbls / rbuse / rbglobal`e[0m`e[37m   rbenv`e[0m"
     ""
 
@@ -319,9 +319,24 @@ function _cmdsBody {
 }
 
 # cmds: list all custom functions with short descriptions.
-# piped through Out-Host -Paging so real scrolling works on output this long and mouse-wheel
-# scroll is handled by the pager itself instead of leaking through as arrow keys onto the
-# prompt underneath. Press q to exit.
+# piped through less -RF (Git for Windows ships it) so real scrolling works on output this long
+# and mouse-wheel scroll is handled by the pager itself instead of leaking through as arrow keys
+# onto the prompt underneath. -R keeps the ANSI colours, -F quits straight away when the output
+# fits one screen. LESSCHARSET=utf-8 so the box-drawing characters in the banner survive. Falls
+# back to plain output when less is not on PATH; pressing q to leave less is a clean exit, not an
+# error, so nothing is printed when the pager closes.
 function cmds {
-    _cmdsBody | Out-Host -Paging
+    $body = _cmdsBody
+    $less = $null
+    if (Get-Command less -ErrorAction SilentlyContinue) {
+        $less = "less"
+    } elseif (Test-Path "$env:ProgramFiles\Git\usr\bin\less.exe") {
+        $less = "$env:ProgramFiles\Git\usr\bin\less.exe"
+    }
+    if ($less) {
+        $env:LESSCHARSET = "utf-8"
+        $body | & $less -RF
+    } else {
+        $body | Out-Host
+    }
 }

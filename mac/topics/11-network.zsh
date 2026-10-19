@@ -40,8 +40,15 @@ dns() {
 # tracepath: quick traceroute
 alias tracepath="traceroute"
 
-# speedtest via fast.com
-alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -"
+# speedtest: a network speed test through the installed speedtest-cli rather than a script fetched
+# on every run. PYTHONWARNINGS hides a deprecation notice the tool prints on newer Python
+speedtest() {
+    if command -v speedtest-cli >/dev/null 2>&1; then
+        PYTHONWARNINGS=ignore::DeprecationWarning speedtest-cli "$@"
+    else
+        echo "speedtest-cli is not installed: brew install speedtest-cli"
+    fi
+}
 
 # ping shortcuts
 alias ping4="ping -c 4"

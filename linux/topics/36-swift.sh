@@ -12,6 +12,7 @@ alias sr="swift run"
 alias sb2="swift build"
 alias sb2r="swift build -c release"
 alias st2="swift test"
+alias sf2="swift format"
 alias srepl="swift repl"
 alias sflint="swiftlint"
 
