@@ -41,6 +41,7 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Fixed
 
+- Starship waits up to 500 ms to scan a folder instead of 100 ms, so the home folder no longer prints a scan timeout warning above the prompt.
 - Windows gains the `speedtest` command its `cmds` help already listed, through `speedtest-cli` or Ookla's `speedtest`. It prints an install hint when neither is present.
 - `dot` on macOS and Linux no longer copies the profile onto itself when `~/.zshrc` or `~/.bashrc` is already a link to the repo copy.
 - fzf on Linux and Windows uses terminal colour names, so it follows the terminal's light or dark palette. Its file list uses `rg` when ripgrep is installed.
