@@ -60,7 +60,7 @@ management (`16-brew.zsh`).
 
 **Linux only:** `xdg-open` equivalents (`19-editors.sh`).
 
-**All platforms:** each platform's own `starship.toml` covers all 35 topic files, identical
+**All platforms:** each platform's own `starship.toml` covers every topic file, identical
 content on all three. One symlink per device is all that is needed.
 
 > [!NOTE]

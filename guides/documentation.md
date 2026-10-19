@@ -40,7 +40,7 @@ Detailed technical reference for this dotfiles repo. This covers how the loader 
 
 ## Architecture
 
-The profile is split across 35 numbered topic files rather than kept in a single monolithic profile. I did this because a single file past a few hundred lines becomes hard to navigate and topic files make it easy to find, add or remove a section without touching anything else.
+The profile is split across numbered topic files rather than kept in a single monolithic profile: 37 on macOS, 38 on Linux zsh, 37 on Linux bash and 36 on Windows. I did this because a single file past a few hundred lines becomes hard to navigate and topic files make it easy to find, add or remove a section without touching anything else.
 
 ```
 dotfiles/
@@ -51,10 +51,13 @@ dotfiles/
 - mac/topics/34-starship.zsh   Starship prompt init
 - mac/topics/35-secrets.zsh    age and sops encryption
 - mac/topics/36-command-marks.zsh   command marks for the terminal (OSC 133)
-- linux/bashrc              loader for Linux and WSL2 (bash)
-- linux/topics/*.sh         same 35 topics, bash syntax
+- mac/topics/37-syntax-highlighting.zsh   typed-command colours, loaded last
+- linux/zshrc               loader for Linux and WSL2 (zsh, the default)
+- linux/topics-zsh/*.zsh    38 topics, zsh syntax (the macOS set plus Swift)
+- linux/bashrc              fallback loader for Linux and WSL2 (bash)
+- linux/topics/*.sh         37 topics, bash syntax (no syntax highlighting)
 - windows/Microsoft.PowerShell_profile.ps1   loader for Windows (PowerShell)
-- windows/topics/*.ps1      same 35 topics, PowerShell syntax
+- windows/topics/*.ps1      36 topics, PowerShell syntax
 - mac/starship.toml         Starship prompt config for macOS
 - linux/starship.toml       Starship prompt config for Linux and WSL2
 - windows/starship.toml     Starship prompt config for Windows
@@ -184,7 +187,7 @@ These are defined in `06-functions` on all platforms.
 | `mkf <file>` | Create a file (and any missing parent directories) and open it in VS Code. |
 | `mkr <name>` | Scaffold a new Rust project: `cargo new <name>` then open in VS Code. |
 | `mkt <name>` | Scaffold a new TypeScript/Node project with `package.json` and `tsconfig.json`. |
-| `dot` | Change to the dotfiles repo directory. |
+| `dot` | Pull the latest dotfiles and reload the profile. A linked `~/.zshrc` or `~/.bashrc` is left as it is. On Windows a `$PROFILE` that is a one-line pointer to the repo's loader is left as it is too; any other profile is replaced with a copy of the loader |
 
 ---
 
@@ -280,11 +283,13 @@ Defined in `10-ssh` on all platforms. Requires OpenSSH.
 | --- | --- |
 | `keygen <name>` | Generate an ed25519 SSH key pair at `~/.ssh/<name>` with a comment |
 | `sshcp <host>` | Copy the default public key to a remote host via `ssh-copy-id` |
-| `ssha <host>` | Add the host to `~/.ssh/config` with a basic entry block |
+| `ssha [key]` | Add a key (default `~/.ssh/id_ed25519`) to the SSH agent, asking for its passphrase once |
 | `sshtest <host>` | Test SSH connectivity to a host verbosely |
 | `sshfp <host>` | Print the SSH fingerprint of a remote host |
 | `sshconf` | Open `~/.ssh/config` in VS Code |
-| `sshls` | List all hosts defined in `~/.ssh/config` |
+| `sshls` | List the keys loaded in the SSH agent (`ssh-add -l`) |
+
+On Linux (zsh and bash) every shell shares one `ssh-agent` on `~/.ssh/agent.sock`. It is started only when no agent answers there and skipped when `SSH_AUTH_SOCK` already points at a live agent, such as one forwarded over SSH or a desktop keyring. Keys are never added automatically. After `ssha` (or with `AddKeysToAgent yes` in `~/.ssh/config`) the passphrase is not asked for again until the agent stops, after a WSL shutdown for example. macOS uses its own launchd agent and Windows the OpenSSH Authentication Agent service.
 
 ---
 

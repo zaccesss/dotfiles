@@ -49,6 +49,12 @@ if (!(Test-Path $dir)) { New-Item -ItemType Directory -Path $dir -Force }
 Copy-Item windows\Microsoft.PowerShell_profile.ps1 $PROFILE -Force
 ```
 
+A one-line pointer profile works too and follows every `git pull` with nothing to copy. `dot` leaves a pointer like this in place:
+
+```powershell
+Set-Content $PROFILE ". `"$HOME\dev\github\repos\dotfiles\windows\Microsoft.PowerShell_profile.ps1`""
+```
+
 Restart PowerShell. The welcome banner confirms the profile loaded. Run `cmds` to see all available commands. Use `Edit-Profile` to open the profile in VS Code and `Reload-Profile` to apply changes without restarting.
 
 > [!WARNING]
@@ -88,6 +94,8 @@ Get-ChildItem "$PSScriptRoot\topics\[0-9]*.ps1" | Sort-Object Name | ForEach-Obj
 ```
 
 Files load from `01-path.ps1` to `36-command-marks.ps1`. A later-numbered file overrides a function from an earlier one if they share a name. See [windows/topics/README.md](../windows/topics/README.md) for the full listing.
+
+`01-path.ps1` adds `C:\Program Files\LibreOffice\program` to the end of `PATH` when it exists, so `soffice` works for headless document conversion. It goes last because that folder also holds LibreOffice's own `python.exe`. The welcome banner reads the Windows edition from the registry only on Windows, so loading the profile in `pwsh` on macOS or Linux prints no errors.
 
 `34-starship.ps1` initialises the Starship prompt. The config lives in [windows/starship.toml](../windows/starship.toml), identical content to the Mac and Linux copies. Symlink it to `~/.config/starship.toml`.
 

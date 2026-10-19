@@ -5,6 +5,29 @@
 # edit the node aliases below to match your own ~/.ssh/config host names.
 # =============================================================================
 
+# one ssh-agent shared by every shell on a fixed socket, so a key added once (with ssha, ssh-add or
+# AddKeysToAgent in ~/.ssh/config) is not asked for again in the next terminal. WSL and a plain
+# server start no agent of their own. an agent that already answers, such as one forwarded over SSH
+# or a desktop keyring, is used as it is. keys are never added here, since adding one may need the
+# passphrase
+_ssh_agent_ensure() {
+    local sock="$HOME/.ssh/agent.sock" rc
+    # ssh-add -l exits 0 with keys loaded, 1 with none and 2 when no agent answers
+    if [[ -n "${SSH_AUTH_SOCK:-}" ]]; then
+        ssh-add -l >/dev/null 2>&1; rc=$?
+        [[ $rc -ne 2 ]] && return 0
+    fi
+    command -v ssh-agent >/dev/null 2>&1 || return 0
+    export SSH_AUTH_SOCK="$sock"
+    ssh-add -l >/dev/null 2>&1; rc=$?
+    [[ $rc -ne 2 ]] && return 0
+    [[ -d "$HOME/.ssh" ]] || mkdir -m 700 "$HOME/.ssh"
+    # a socket left by an agent that has gone (after a WSL shutdown, say) blocks ssh-agent -a
+    [[ -S "$sock" ]] && rm -f "$sock"
+    ssh-agent -a "$sock" >/dev/null 2>&1
+}
+_ssh_agent_ensure
+
 # keygen: generate a modern Ed25519 key with a comment matching the git email.
 # run this on every new machine before adding the key to GitHub and servers.
 keygen() {
@@ -19,10 +42,10 @@ sshcp() {
     ssh-copy-id -i "$key" "$target"
 }
 
-# ssha: add a key to the agent so the passphrase is not asked for again.
+# ssha: add a key to the shared agent so the passphrase is not asked for again in any terminal.
 ssha() {
     local key="${1:-$HOME/.ssh/id_ed25519}"
-    eval "$(ssh-agent -s)" 2>/dev/null
+    _ssh_agent_ensure
     ssh-add "$key"
 }
 

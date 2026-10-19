@@ -130,7 +130,7 @@ dotfiles/
 | [linux/topics-zsh/README.md](linux/topics-zsh/README.md) | The Linux zsh topic files and what differs from the bash ones |
 | [linux/topics/README.md](linux/topics/README.md) | All Linux bash topic files listed with descriptions and key commands |
 | [windows/topics/README.md](windows/topics/README.md) | All Windows topic files listed with descriptions and key commands |
-| [mac/starship.toml](mac/starship.toml), [linux/starship.toml](linux/starship.toml), [windows/starship.toml](windows/starship.toml) | Starship prompt config, identical content per platform, covering git and the 35 topic files, plus Starship's own module-based language detection |
+| [mac/starship.toml](mac/starship.toml), [linux/starship.toml](linux/starship.toml), [windows/starship.toml](windows/starship.toml) | Starship prompt config, identical content per platform, covering git and every topic file, plus Starship's own module-based language detection |
 | [mac/Brewfile](mac/Brewfile) | Every Homebrew formula, cask and global npm package on this machine, `bbundle`/`bdump` install and regenerate it |
 | [journal/008-starship-prompt.md](journal/008-starship-prompt.md) | Why Starship was added, module choices and how to disable it |
 
