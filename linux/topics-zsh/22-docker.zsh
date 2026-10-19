@@ -1,0 +1,80 @@
+# =============================================================================
+# Docker and Docker Compose
+# =============================================================================
+
+alias dps="docker ps"
+alias dpa="docker ps -a"
+alias dex="docker exec -it"
+alias dlogs="docker logs -f"
+alias dstart="docker start"
+alias dstop="docker stop"
+alias drm="docker rm"
+alias drmf="docker rm -f"
+alias dimg="docker images"
+alias dprune="docker system prune -f"
+alias dprunea="docker system prune -af --volumes" # aggressive - also drops unused images and volumes
+alias dstats="docker stats"
+alias dinspect="docker inspect"
+
+# dip: print a container's IP address in one step, for reaching it directly rather than
+# through a published port
+dip() {
+    docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "${1:?Usage: dip <container>}"
+}
+alias dnet="docker network ls"
+alias dvol="docker volume ls"
+alias dpull="docker pull"
+alias dpush="docker push"
+
+alias dcu="docker compose up"
+alias dcud="docker compose up -d"
+alias dcd="docker compose down"
+alias dcb="docker compose build"
+alias dcl="docker compose logs -f"
+alias dcps="docker compose ps"
+alias dcr="docker compose restart"
+
+# spin up a throwaway named container that stays alive for N seconds (default 900), for real
+# cross-platform verification work, not just docker compose services
+dtest() {
+    local name="${1:?Usage: dtest <name> <image> [seconds]}"
+    local image="${2:?Usage: dtest <name> <image> [seconds]}"
+    local seconds="${3:-900}"
+    docker run --rm -d --name "$name" "$image" sleep "$seconds"
+}
+
+alias dcp="docker cp"
+
+# exec a command in a running container without -it, for a scripted/non-interactive call
+dexec() {
+    local name="$1"; shift
+    docker exec "$name" "$@"
+}
+
+# build an image from the current directory and tag it in one step
+dbuild() {
+    docker build -t "${1:?Usage: dbuild <tag>}" .
+}
+
+# run a throwaway interactive container - drops in and cleans up itself on exit
+drun() {
+    docker run --rm -it "$@"
+}
+
+# exec into a compose service, defaulting to sh since not every image ships bash
+dcex() {
+    local service="$1"; shift
+    docker compose exec "$service" "${@:-sh}"
+}
+
+# docker-clean: removes every stopped container, unused image, network, volume and the build
+# cache, showing the space used before and after. It asks first because volumes can hold databases
+docker-clean() {
+    docker system df
+    printf 'Remove all unused containers, images, volumes and build cache? [y/N] '
+    read -r reply
+    [[ "$reply" == [yY] ]] || { echo "Cancelled"; return 1; }
+    docker system prune -af --volumes
+    docker builder prune -af >/dev/null
+    docker system df
+}

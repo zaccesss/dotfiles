@@ -172,7 +172,7 @@ These are defined in `06-functions` on all platforms.
 
 | Command | What it does |
 | --- | --- |
-| `cmds` | Print all custom aliases and functions grouped by topic, piped through `less` (Windows: `Out-Host -Paging`), press q to exit. Output uses a 3-colour scheme: **MAGENTA (bold)** for section headers, **CYAN** for command names, **WHITE** for short descriptions. Parenthetical expansion lines (e.g. `(list / split / kill)`) are also WHITE. The legend line at the top explains the scheme. |
+| `cmds` | Print all custom aliases and functions grouped by topic, paged through `less -RF` on every platform (Windows uses the `less` that Git for Windows ships and falls back to plain output when none is on `PATH`), press q to exit. Output uses a 3-colour scheme: **MAGENTA (bold)** for section headers, **CYAN** for command names, **WHITE** for short descriptions. Parenthetical expansion lines (e.g. `(list / split / kill)`) are also WHITE. The legend line at the top explains the scheme. |
 | `mkcd <dir>` | Create a directory and `cd` into it in one step. |
 | `welcome` | Print the welcome banner again. `DOTFILES_NO_BANNER=1` hides it when a shell starts |
 | `update` | List everything out of date (system packages, global npm packages and uv tools), then upgrade it all after a yes |
@@ -198,6 +198,7 @@ These are defined in `06-functions` on all platforms.
 | `clippaste` | macOS | Paste from clipboard: wraps `pbpaste` |
 | `clippaste` | Linux | Paste from clipboard: wraps `xclip -selection clipboard -o` |
 | `clippaste` | Windows | Get clipboard: `Get-Clipboard` |
+| `paste` | Windows | Get clipboard: `Get-Clipboard`. On macOS and Linux `paste` is the standard column-joining command, so the clipboard shortcut there is `clippaste` |
 | `pubip` | All | Print public IP address via `curl ifconfig.me` |
 | `localip` | macOS | Print local network IP via `ipconfig getifaddr en0` |
 | `localip` | Linux/Windows | Print local IP via `hostname -I` |
@@ -298,6 +299,8 @@ Defined in `11-network` on all platforms.
 | `portscan <host>` | Run a quick nmap port scan |
 | `headers <url>` | Print HTTP response headers via `curl -I` |
 | `flushdns` | Clear the DNS resolver cache |
+| `dns <domain>` / `digga <domain>` | Look up a domain's DNS records. On Linux both print a friendly install hint when `dig` is missing (`sudo apt install dnsutils` on Debian and Ubuntu; `sudo dnf install bind-utils` on Fedora) |
+| `speedtest` | Run a network speed test through the installed `speedtest-cli`, with an install hint when it is missing |
 
 ---
 
@@ -310,8 +313,10 @@ Defined in `12-security` on all platforms. Requires OpenSSL and GPG.
 | `ssl-check <host:port>` | Check the SSL certificate for a host - prints subject, issuer and expiry dates |
 | `ssl-gen [name]` | Generate a self-signed certificate and key. Defaults to `localhost`. Outputs `<name>.crt` and `<name>.key`. |
 | `ssl-view <file.crt>` | Print the full text of a certificate file |
-| `sha256file <file>` | Print the SHA-256 hash of a file |
-| `sha512file <file>` | Print the SHA-512 hash of a file |
+| `sha256file <file>` | Print the SHA-256 hash of a file (on Windows, the full `Get-FileHash` object) |
+| `sha512file <file>` | Print the SHA-512 hash of a file (on Windows, the full `Get-FileHash` object) |
+| `sha256 <file>` | Print the lowercase SHA-256 hash then the path, matching the Mac's `shasum -a 256` layout |
+| `sha512 <file>` | Print the lowercase SHA-512 hash then the path, matching the Mac's `shasum -a 512` layout |
 | `md5file <file>` | Print the MD5 hash of a file |
 | `gpgls` | List public GPG keys |
 | `gpglss` | List secret GPG keys |
@@ -1024,6 +1029,26 @@ To hide a specific module: add `disabled = true` under its section in that platf
 Each platform keeps its own copy of `starship.toml`, not one shared file, so a config change made
 on one device needs applying to the other two platform copies by hand (or via `git pull` once
 committed) to stay in step.
+
+### Typed-command colours
+
+Commands are coloured as you type them, in the same meanings on every platform. On macOS and
+Linux this is zsh-syntax-highlighting, loaded last by `36-syntax-highlighting.zsh` on macOS (from
+Homebrew's `share/`) and `37-syntax-highlighting.zsh` on Linux (from `/usr/share/`), silently
+skipped when the package is not installed. On Windows it is PSReadLine, already built into
+PowerShell, configured in `02-colours.ps1`.
+
+| What you type | Colour | macOS and Linux | Windows |
+| --- | --- | --- | --- |
+| A known command, alias, function or builtin | green | yes | yes (Command) |
+| An unknown command | red | yes | PSReadLine cannot tell known from unknown, so this one case is not coloured |
+| A quoted string | yellow | yes | yes (String) |
+| An option (`-x`, `--long`) | cyan | yes | yes (Parameter) |
+| Everything else | terminal default | yes | yes |
+
+The colours are the normal (not bright) ANSI ones, because a high contrast palette makes the
+bright variants paler. Colour is only ever a second signal: a bad command still fails to run, so
+nothing depends on seeing the red.
 
 ---
 

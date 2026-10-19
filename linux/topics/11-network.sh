@@ -22,11 +22,28 @@ portscan() {
 alias openports="ss -tulnp"
 
 dns() {
+    if ! command -v dig >/dev/null 2>&1; then
+        echo "dig is not installed: sudo apt install dnsutils (or sudo dnf install bind-utils)"
+        return 1
+    fi
     dig +nocmd "${1:?Usage: dns <domain>}" any +multiline +noall +answer
 }
 
 alias tracepath="traceroute"
 alias ping4="ping -4 -c 4"   # keeps ping4's own meaning: IPv4 only
+
+# speedtest: a network speed test through the packaged speedtest-cli, with an install hint
+# otherwise. PYTHONWARNINGS hides a deprecation notice the tool prints on newer Python
+speedtest() {
+    if command -v speedtest-cli >/dev/null 2>&1; then
+        PYTHONWARNINGS=ignore::DeprecationWarning speedtest-cli "$@"
+    elif command -v speedtest >/dev/null 2>&1; then
+        command speedtest "$@"
+    else
+        echo "speedtest-cli is not installed: sudo apt install speedtest-cli (or pipx install speedtest-cli)"
+        return 1
+    fi
+}
 
 portcheck() {
     nc -zv "${1:?Usage: portcheck <host> <port>}" "${2:?}" 2>&1

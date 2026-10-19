@@ -1,0 +1,37 @@
+# =============================================================================
+# dotfiles - Linux zsh profile
+# github.com/zaccesss/dotfiles - MIT licence
+#
+# The zsh profile for Linux, matching the macOS profile. Each group of aliases
+# and functions lives in its own file under linux/topics-zsh/. The numbered
+# prefix guarantees load order: colours load before anything that uses colour
+# variables, PATH loads before any tool that depends on it being set.
+#
+# bash stays available as a fallback: linux/bashrc loads the parallel .sh topics
+# for a machine where zsh is not installed. See guides/linux.md to install zsh
+# and make it the default shell.
+#
+# to deploy on a new machine, copy this file to ~/.zshrc:
+#   cp ~/dev/github/repos/dotfiles/linux/zshrc ~/.zshrc
+# All topic files are sourced relative to DOTFILES so they're found automatically
+# as long as the repo is cloned to the standard path.
+# =============================================================================
+
+# only run for an interactive shell - a non-interactive zsh (ssh host cmd, a
+# script) never needs the banner or the aliases. zsh reads this file only
+# for interactive shells anyway, so this is belt and braces
+[[ -o interactive ]] || return
+
+DOTFILES="${DOTFILES:-$HOME/dev/github/repos/dotfiles}"
+
+for _f in "$DOTFILES/linux/topics-zsh/"*.zsh; do
+    # shellcheck disable=SC1090
+    [[ -f "$_f" ]] && source "$_f"
+done
+unset _f
+
+# =============================================================================
+# Welcome banner - printed after all topics load so colour variables are ready
+# =============================================================================
+
+welcome

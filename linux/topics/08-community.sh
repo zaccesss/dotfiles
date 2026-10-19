@@ -70,6 +70,10 @@ envup() {
 
 # digga: show all DNS records for a domain in a readable format
 digga() {
+    if ! command -v dig >/dev/null 2>&1; then
+        echo "dig is not installed: sudo apt install dnsutils (or sudo dnf install bind-utils)"
+        return 1
+    fi
     dig +nocmd "$1" any +multiline +noall +answer
 }
 

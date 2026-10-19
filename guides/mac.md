@@ -69,9 +69,11 @@ for f in "$DOTFILES/mac/topics"/[0-9]*.zsh; do
 done
 ```
 
-Files are loaded from `01-path.zsh` to `35-secrets.zsh`. A higher-numbered file overrides an alias from a lower-numbered one if they share a name. See [mac/topics/README.md](../mac/topics/README.md) for the full listing of all topic files.
+Files are loaded from `01-path.zsh` to `36-syntax-highlighting.zsh`. A higher-numbered file overrides an alias from a lower-numbered one if they share a name. See [mac/topics/README.md](../mac/topics/README.md) for the full listing of all topic files.
 
 `34-starship.zsh` initialises the Starship prompt. The config lives in [mac/starship.toml](../mac/starship.toml), identical content to the Linux and Windows copies. Symlink it to `~/.config/starship.toml`.
+
+`36-syntax-highlighting.zsh` loads zsh-syntax-highlighting last, so typed commands are coloured as you type: a known command, alias, function or builtin green, an unknown command red, quoted strings yellow and options cyan, in the normal (not bright) ANSI colours a high contrast palette reads best. It is sourced from Homebrew's `share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh` (installed by `bbundle` from the Brewfile) and is silently skipped when absent. Colour is only a second signal: an unknown command still fails to run.
 
 > [!TIP]
 > The prompt does not need a Nerd Font. Its own symbols (the `>` prompt character, jobs and git

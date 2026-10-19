@@ -1,6 +1,6 @@
 # linux/topics/
 
-36 numbered `.sh` files loaded in order by `../bashrc`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
+36 numbered `.sh` files loaded in order by `../bashrc`, the bash fallback for a machine without zsh. The default zsh profile loads the parallel files in [`../topics-zsh/`](../topics-zsh/). Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
 
 ## Topic files
 
@@ -13,10 +13,10 @@
 | `05-profile.sh` | Profile management | `edit-profile`, `reload-profile` |
 | `06-functions.sh` | Core functions and command reference | `cmds`, `mkcd`, `mkf`, `mkr`, `mkt`, `dot` |
 | `07-utilities.sh` | General utilities | `ll`, `la`, `c`, `weather`, `temp`, `pubip`, `localip`, `termtheme` |
-| `08-community.sh` | Community-borrowed utilities | `extract`, `dataurl`, `envup`, `digga`, `dns-flush`, `change-extension`, `clipcopy`, `clippaste` |
+| `08-community.sh` | Community-borrowed utilities | `extract`, `dataurl`, `envup`, `digga` (with an install hint when `dig` is missing), `dns-flush`, `change-extension`, `clipcopy`, `clippaste` |
 | `09-cli-tools.sh` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep), `col`, `replace`, `whatport`, `killport`, `notify`, `typw`, `linkcheck` |
 | `10-ssh.sh` | SSH helpers | `keygen`, `sshcp`, `ssha`, `sshtest`, `sshfp`, `sshconf`, `sshls` |
-| `11-network.sh` | Network diagnostics | `myip`, `localip`, `ping4`, `portcheck`, `openports`, `portscan`, `headers` |
+| `11-network.sh` | Network diagnostics | `myip`, `localip`, `ping4`, `portcheck`, `openports`, `portscan`, `headers`, `dns`, `speedtest` |
 | `12-security.sh` | SSL, GPG and crypto | `ssl-check`, `ssl-gen`, `ssl-view`, `gpgls`, `gpgenc`, `gpgdec`, `sha256file`, `sha512file`, `trivyscan` |
 | `13-database.sh` | Database shortcuts | `myconn`, `mydump`, `myls` (MySQL), `pgconn`, `pgdump`, `pgls` (Postgres), `rflush`, `rkeys` (Redis), `sqls` (SQLite) |
 | `14-json.sh` | JSON helpers | `json-check`, `json-min`, `json-keys`, `json-diff`, `jqk` |
@@ -41,7 +41,7 @@
 | `33-c-cpp.sh` | GCC, Clang, LLDB, binary inspection | `cc2`, `ccrun`, `ccdbg`, `ccsan`, `cfmt2`, `ctidy`, `symbols` |
 | `34-starship.sh` | Starship prompt | Initialises the Starship cross-shell prompt (config in `linux/starship.toml`) |
 | `35-secrets.sh` | age and sops secrets encryption | `agenew`, `agenc`, `agedec`, `sopsenc`, `sopsdec`, `sopsedit`, `sopsview` |
-| `36-swift.sh` | Swift on Linux | `sr`, `sb2`, `sb2r`, `st2`, `srepl`, `spinit`, `spup`, `spres`, `spls`, `spclean` |
+| `36-swift.sh` | Swift on Linux | `sr`, `sb2`, `sb2r`, `st2`, `sf2`, `srepl`, `spinit`, `spup`, `spres`, `spls`, `spclean` |
 
 ## Adding a topic
 

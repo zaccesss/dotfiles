@@ -37,6 +37,19 @@ function sha256file { param([string]$File) Get-FileHash $File -Algorithm SHA256 
 function sha512file { param([string]$File) Get-FileHash $File -Algorithm SHA512 }
 function md5file    { param([string]$File) Get-FileHash $File -Algorithm MD5 }
 
+# sha256 / sha512: print the lowercase hash then the path, the same single-line layout as the
+# mac's shasum wrappers, so output reads the same across machines
+function sha256 {
+    param([string]$File)
+    $h = Get-FileHash $File -Algorithm SHA256
+    "$($h.Hash.ToLower())  $($h.Path)"
+}
+function sha512 {
+    param([string]$File)
+    $h = Get-FileHash $File -Algorithm SHA512
+    "$($h.Hash.ToLower())  $($h.Path)"
+}
+
 # GPG shortcuts (requires gpg4win or winget install GnuPG.GnuPG)
 function gpgls     { gpg --list-keys }
 function gpglss    { gpg --list-secret-keys }
