@@ -108,6 +108,8 @@ function _cmdsBody {
     "`e[35mSYSTEM`e[0m"
     "  `e[36mupdate`e[0m`e[37m          list everything out of date, then upgrade all after a yes`e[0m"
     "  `e[36msysinfo`e[0m`e[37m         full system summary: os, cpu, gpu, memory, disk`e[0m"
+    "  `e[36mcopyout`e[0m`e[37m         run a command, show its output and copy all of it to the clipboard`e[0m"
+    "  `e[36mlogrun`e[0m`e[37m          run a command and save its output to ~\logs\<date>-<command>.log`e[0m"
     "  `e[36mgames`e[0m`e[37m           six terminal games, from 2048 to Meteors (Q or Esc leaves)`e[0m"
     "  `e[36mll / la`e[0m`e[37m         Get-ChildItem -Force (table / list)`e[0m"
     "  `e[36mmkcd`e[0m`e[37m            mkdir + cd in one step`e[0m"

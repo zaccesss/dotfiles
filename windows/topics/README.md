@@ -12,7 +12,7 @@
 | `04-git.ps1` | Git aliases and helpers | `gs`, `ga`, `gaa`, `gcmt`, `gpsh`, `gcp`, `gpul` (note: `gc`/`gp`/`gl` reserved for `Get-Content`/`Get-ItemProperty`/`Get-Location`), `glog`, `gco`, `gcb`, `gb`, `gbd`, `gd`, `gundo`, `gclean`, `automerge`, `pull-all`, `repo-status` |
 | `05-profile.ps1` | Profile management | `Edit-Profile`, `Reload-Profile` |
 | `06-functions.ps1` | Core functions and command reference | `cmds`, `mkcd`, `mkf`, `mkr`, `mkt`, `dot` |
-| `07-utilities.ps1` | General utilities | `ll`, `la`, `c`, `weather`, `temp`, `pubip`, `localip`, `termtheme` |
+| `07-utilities.ps1` | General utilities | `ll`, `la`, `c`, `weather`, `temp`, `pubip`, `localip`, `termtheme`, `copyout`, `logrun` |
 | `08-community.ps1` | Community-borrowed utilities | `extract`, `dataurl`, `envup`, `digga`, `dns-flush`, `change-extension`, `clipcopy` (note: `copy` reserved for `Copy-Item`), `clippaste` |
 | `09-cli-tools.ps1` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep, note: named `rg2` to avoid clashing with the `rgen` binary itself), `col`, `replace`, `whatport`, `killport`, `notify`, `typw`, `linkcheck` |
 | `10-ssh.ps1` | SSH helpers | `keygen`, `sshcp`, `ssha`, `sshtest`, `sshfp`, `sshconf`, `sshls` |
@@ -41,10 +41,11 @@
 | `33-c-cpp.ps1` | GCC, Clang, LLDB, binary inspection | `cc2`, `ccrun`, `ccdbg`, `ccsan`, `cfmt2`, `ctidy`, `symbols` |
 | `34-starship.ps1` | Starship prompt | Initialises the Starship cross-shell prompt (config in `windows/starship.toml`) |
 | `35-secrets.ps1` | age and sops secrets encryption | `agenew`, `agenc`, `agedec`, `sopsenc`, `sopsdec`, `sopsedit`, `sopsview` |
+| `36-command-marks.ps1` | Command marks | OSC 133 marks around each prompt, command and output: wraps the Starship prompt and handles Enter through PSReadLine (skipped in VS Code and dumb terminals) |
 
 ## Adding a topic
 
-Create a new file with the next available number, e.g. `36-mytopic.ps1`. It is picked up automatically. There is no need to edit the profile.
+Create a new file with the next available number, e.g. `37-mytopic.ps1`. It is picked up automatically. There is no need to edit the profile.
 
 ## Key Windows differences
 

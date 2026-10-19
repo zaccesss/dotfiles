@@ -75,8 +75,8 @@ system package manager installed it and carries on without it when it is absent.
 - **Starship** is initialised by `34-starship.{zsh,sh,ps1}` and installed per platform (see
   `guides/new-device.md`).
 - **zsh-syntax-highlighting** colours typed commands on macOS and Linux. On macOS
-  `mac/topics/36-syntax-highlighting.zsh` sources it from Homebrew's `share/`; on Linux
-  `linux/topics-zsh/37-syntax-highlighting.zsh` sources it from `/usr/share/`. Both are silently
+  `mac/topics/37-syntax-highlighting.zsh` sources it from Homebrew's `share/`; on Linux
+  `linux/topics-zsh/38-syntax-highlighting.zsh` sources it from `/usr/share/`. Both are silently
   skipped when the package is not installed. Install it with `brew install zsh-syntax-highlighting`
   (it is in `mac/Brewfile`) or `sudo apt install zsh-syntax-highlighting` (the `dnf` name is the
   same). Windows uses PowerShell's own built-in PSReadLine instead, which needs nothing extra.

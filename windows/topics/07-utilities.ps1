@@ -196,3 +196,44 @@ function update {
     if (Get-Command uv -ErrorAction SilentlyContinue) { uv tool upgrade --all }
     Write-Host "`e[32mUp to date.`e[0m"
 }
+
+# copyout: run a command, show its output as normal and copy all of it (output and errors) to the
+# clipboard, so a whole result or error can go into an issue or a message without selecting it by
+# hand. $LASTEXITCODE is left as the command set it, so a script can still check it
+function copyout {
+    if ($args.Count -eq 0) { Write-Host 'Usage: copyout <command...>'; return }
+    $command = $args[0]
+    $rest = @($args | Select-Object -Skip 1)
+    $global:LASTEXITCODE = 0
+    # "$_" turns each error record into its message text, so errors land in the clipboard as read
+    & $command @rest 2>&1 | ForEach-Object { "$_" } | Tee-Object -Variable copied
+    $code = $global:LASTEXITCODE
+    $lines = @($copied)
+    if ($lines.Count -gt 0) {
+        Set-Clipboard -Value ($lines -join [Environment]::NewLine)
+        $word = if ($lines.Count -eq 1) { 'line' } else { 'lines' }
+        Write-Host "copied $($lines.Count) $word to the clipboard" -ForegroundColor Green
+    } else {
+        Write-Host 'nothing to copy: the command printed no output' -ForegroundColor Yellow
+    }
+    $global:LASTEXITCODE = $code
+}
+
+# logrun: run a command with its output live on screen and saved to ~\logs, named by date, time and
+# command, so a long build or install can be read back after the terminal has scrolled past it.
+# $LASTEXITCODE is left as the command set it
+function logrun {
+    if ($args.Count -eq 0) { Write-Host 'Usage: logrun <command...>'; return }
+    $command = $args[0]
+    $rest = @($args | Select-Object -Skip 1)
+    $dir = Join-Path $HOME 'logs'
+    New-Item -ItemType Directory -Force -Path $dir | Out-Null
+    # only the command's base name, made safe for a file name, so .\build.ps1 or a path adds no folders
+    $name = (Split-Path -Leaf "$command") -replace '[^A-Za-z0-9._-]', '_'
+    $log = Join-Path $dir ('{0}-{1}.log' -f (Get-Date -Format 'yyyy-MM-dd_HHmmss'), $name)
+    $global:LASTEXITCODE = 0
+    & $command @rest 2>&1 | ForEach-Object { "$_" } | Tee-Object -FilePath $log
+    $code = $global:LASTEXITCODE
+    Write-Host "log saved to $log" -ForegroundColor Cyan
+    $global:LASTEXITCODE = $code
+}
