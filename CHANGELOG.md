@@ -8,6 +8,8 @@ Versions increment by one patch step (0.0.1) per release.
 
 ## [Unreleased]
 
+## [1.0.9] - 2026-10-19
+
 ### Added
 
 - `copyout <command>`: runs a command, shows its output as normal and copies all of it (output and errors) to the clipboard, then says how many lines were copied. It uses `pbcopy` on macOS, `clip.exe` under WSL, `wl-copy` or `xclip` on other Linux and `Set-Clipboard` on Windows. The command's exit status is kept.
@@ -23,6 +25,12 @@ Versions increment by one patch step (0.0.1) per release.
 - `sysinfo`: a full system summary through fastfetch on demand, kept out of the banner so new tabs stay fast.
 - `DOTFILES_NO_BANNER=1` hides the welcome banner.
 - Screenshots and short animations of the config in action, dark and light, in the README's In action section.
+- `termtheme` on macOS, Linux and Windows switches the terminal's High Contrast colours: `dark` or `light` pins one, `auto` follows the system's light and dark setting and no argument shows the current mode. It drives Terminal.app (with the login helper for `auto`), Ptyxis and Windows Terminal. Inside OrbStack or WSL it points to the host's terminal instead.
+- `docker-clean` on macOS, Linux and Windows: shows Docker's disk use, asks, removes every unused container, image, volume and the build cache, then shows the space again.
+- `orbls` and `orbsh` for OrbStack on macOS.
+- `typw` to rebuild a Typst document on save, `linkcheck` to check every link under a folder with lychee and `trivyscan` to scan a folder for vulnerable dependencies, leaked secrets and misconfigurations.
+- Linux `PATH` entries for swiftly's Swift toolchains, the Flutter SDK and .NET global tools. On WSL without wslview, links open through Windows with `BROWSER=explorer.exe`.
+- `ACCESSIBILITY.md`: how the colours, the prompt and the aliases support people with low or monocular vision, colour vision differences and typing fatigue, plus the known gaps.
 
 ### Changed
 
@@ -38,6 +46,9 @@ Versions increment by one patch step (0.0.1) per release.
 - macOS and Linux set `RIPGREP_CONFIG_PATH` when `~/.ripgreprc` exists, so ripgrep picks up its defaults file.
 - Windows `cmds` pages through `less -RF` (from Git for Windows) when `less` is available, with `LESSCHARSET=utf-8` so the banner's box characters survive. It falls back to plain output otherwise.
 - `linux/bashrc` returns early in a non-interactive shell, so a login shell running a single command (`ssh host cmd`, `scp` or `rsync`) no longer loads the profile or prints the banner. `linux/zshrc` only runs for interactive shells.
+- The font advice in the platform guides and `ACCESSIBILITY.md` now matches the real setup: the prompt needs no Nerd Font, only the Node.js module shows a Nerd Font glyph and the Mac's terminals run Monaco 12 in iTerm2 and Warp's default font at size 13.
+- `ACCESSIBILITY.md`: a note that the settings are preferences and a link to the shared accessibility statement.
+- Tidied code comments and the contributor guide.
 
 ### Fixed
 
@@ -64,30 +75,6 @@ Versions increment by one patch step (0.0.1) per release.
 - The `cmds` reference lists the real Rails aliases (`rdm`, `rgen`, `rdreset`) on macOS, Linux and Windows, in place of names that no longer existed.
 - Leaving the Windows `cmds` pager with Q no longer prints an error.
 - Linux `digga` and `dns` give a friendly install hint when `dig` is missing, matching `sysinfo`'s fastfetch hint.
-
-### Added
-
-- `termtheme` on macOS, Linux and Windows switches the terminal's High Contrast colours: `dark` or `light` pins one, `auto` follows the system's light and dark setting and no argument shows the current mode. It drives Terminal.app (with the login helper for `auto`), Ptyxis and Windows Terminal. Inside OrbStack or WSL it points to the host's terminal instead.
-- `docker-clean` on macOS, Linux and Windows: shows Docker's disk use, asks, removes every unused container, image, volume and the build cache, then shows the space again.
-- `orbls` and `orbsh` for OrbStack on macOS.
-- `typw` to rebuild a Typst document on save, `linkcheck` to check every link under a folder with lychee and `trivyscan` to scan a folder for vulnerable dependencies, leaked secrets and misconfigurations.
-- Linux `PATH` entries for swiftly's Swift toolchains, the Flutter SDK and .NET global tools. On WSL without wslview, links open through Windows with `BROWSER=explorer.exe`.
-
-### Changed
-
-- The font advice in the platform guides and `ACCESSIBILITY.md` now matches the real setup: the prompt needs no Nerd Font, only the Node.js module shows a Nerd Font glyph and the Mac's terminals run Monaco 12 in iTerm2 and Warp's default font at size 13.
-- `ACCESSIBILITY.md`: a note that the settings are preferences and a link to the shared accessibility statement.
-
-### Added
-
-- `ACCESSIBILITY.md`: how the colours, the prompt and the aliases support people with low or monocular vision, colour vision differences and typing fatigue, plus the known gaps.
-
-### Changed
-
-- Tidied code comments and the contributor guide.
-
-### Fixed
-
 - `bdump` no longer passes `--describe`, which `brew bundle dump` has dropped since descriptions are now its default.
 - The Starship Node.js module now uses the plain-text symbol `"node "` in every platform's `starship.toml`, so the whole prompt reads correctly without a Nerd Font. The font tips match.
 - The README and `guides/new-device.md` now clone to `~/dev/github/repos/dotfiles`, the path every loader defaults to, with a note on setting `DOTFILES` for any other location.
