@@ -1,6 +1,6 @@
 # mac/topics/
 
-36 numbered `.zsh` files loaded in order by `../zshrc`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
+37 numbered `.zsh` files loaded in order by `../zshrc`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
 
 ## Topic files
 

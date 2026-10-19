@@ -1,6 +1,6 @@
 # guides/
 
-Platform setup walkthroughs and the full command reference for each platform. Each guide covers installation, all 35 topic areas with every alias and function described and instructions for adding or removing commands safely.
+Platform setup walkthroughs and the full command reference for each platform. Each guide covers installation, every topic area with every alias and function described and instructions for adding or removing commands safely.
 
 ## Files
 

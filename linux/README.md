@@ -18,8 +18,8 @@ Both loaders return straight away in a non-interactive shell, so a single remote
 
 | Folder | Contents |
 | --- | --- |
-| [`topics-zsh/`](topics-zsh/) | 37 numbered `.zsh` files for the zsh profile, one topic per file |
-| [`topics/`](topics/) | 36 numbered `.sh` files for the bash fallback, one topic per file |
+| [`topics-zsh/`](topics-zsh/) | 38 numbered `.zsh` files for the zsh profile, one topic per file |
+| [`topics/`](topics/) | 37 numbered `.sh` files for the bash fallback, one topic per file |
 
 ## Installation
 

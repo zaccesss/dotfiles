@@ -12,7 +12,7 @@ PowerShell profile for Windows. The entry point is `Microsoft.PowerShell_profile
 
 | Folder | Contents |
 | --- | --- |
-| [`topics/`](topics/) | 35 numbered `.ps1` files, one topic per file |
+| [`topics/`](topics/) | 36 numbered `.ps1` files, one topic per file |
 
 ## Installation
 

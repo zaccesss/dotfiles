@@ -41,6 +41,11 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Fixed
 
+- Windows `dot` leaves a `$PROFILE` that is a one-line pointer to the repo's loader in place instead of overwriting it with a full copy, matching how macOS and Linux treat a linked profile. The Windows guide shows the pointer form.
+- Loading the Windows profile in `pwsh` on macOS or Linux no longer prints registry errors from the welcome banner.
+- Windows adds LibreOffice's `program` folder to the end of `PATH` when it is installed, so `soffice` is found.
+- Linux zsh and bash share one `ssh-agent` on `~/.ssh/agent.sock` instead of `ssha` starting a new agent each time. It starts only when no agent answers there and is skipped when `SSH_AUTH_SOCK` already reaches a live agent. A key added once stays loaded for every terminal. Keys are never added automatically.
+- The topic file counts in the guides and READMEs match the real files. The SSH and `dot` rows in the command reference describe what the commands really do.
 - Starship waits up to 500 ms to scan a folder instead of 100 ms, so the home folder no longer prints a scan timeout warning above the prompt.
 - Windows gains the `speedtest` command its `cmds` help already listed, through `speedtest-cli` or Ookla's `speedtest`. It prints an install hint when neither is present.
 - `dot` on macOS and Linux no longer copies the profile onto itself when `~/.zshrc` or `~/.bashrc` is already a link to the repo copy.
