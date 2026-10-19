@@ -14,9 +14,9 @@ function mkcd {
 # welcome: the banner shown when a shell starts and after refresh. plain text with labels so it
 # reads the same in every terminal; normal (not bright) ansi colours because the high contrast
 # palette makes the bright variants paler. Write-Host's Cyan and Green are the bright ones.
-# DOTFILES_NO_BANNER=1 turns it off. Editor terminals skip it.
+# DOTFILES_NO_BANNER=1 turns it off.
 function welcome {
-    if ($env:DOTFILES_NO_BANNER -or $env:TERM_PROGRAM -eq 'vscode') { return }
+    if ($env:DOTFILES_NO_BANNER) { return }
     $e = [char]27
     $nt = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
     # ProductName still says Windows 10 on Windows 11, so the build number decides
