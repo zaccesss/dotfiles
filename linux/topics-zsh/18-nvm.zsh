@@ -61,9 +61,11 @@ _nvm_load() {
 
 # with the default Node already on PATH, node/npm/npx stay real binaries so child processes and
 # `command -v` see the same thing as the shell. the wrappers are only a fallback for a machine
-# with no resolvable default; they call the real binary via `command`, never their own bare name,
-# so a call is safe even when _nvm_load fails.
-if ! _nvm_default_bin; then
+# with nvm installed but no resolvable default; they call the real binary via `command`, never
+# their own bare name, so a call is safe even when _nvm_load fails. with no nvm.sh at all (Node
+# from apt, dnf or another manager) no wrappers are defined, otherwise every node/npm/npx call
+# would print the install hint first. only nvm() and its helpers remain then to print the hint.
+if ! _nvm_default_bin && [[ -s "${NVM_DIR:-$HOME/.nvm}/nvm.sh" ]]; then
     node()     { _nvm_load; command node "$@"; }
     npm()      { _nvm_load; command npm "$@"; }
     npx()      { _nvm_load; command npx "$@"; }
