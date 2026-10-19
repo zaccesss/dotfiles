@@ -5,7 +5,15 @@
 # topic loader - all aliases and functions live in linux/topics/*.sh.
 # deploy on a new machine by appending a source line to ~/.bashrc:
 #   echo "source $HOME/dev/github/repos/dotfiles/linux/bashrc" >> ~/.bashrc
+#
+# zsh is the default shell on Linux now (see linux/zshrc); this bash profile stays
+# as the fallback for a machine without zsh installed.
 # =============================================================================
+
+# bail out early for a non-interactive shell - a login shell running a single remote
+# command (ssh host cmd, scp, rsync) has no terminal to print the banner to and needs
+# none of the aliases, so loading the profile there only adds noise and cost
+[[ $- == *i* ]] || return
 
 DOTFILES="${DOTFILES:-$HOME/dev/github/repos/dotfiles}"
 

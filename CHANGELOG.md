@@ -10,6 +10,11 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Added
 
+- zsh is now the default shell on Linux, matching the macOS profile. `linux/zshrc` loads the new `linux/topics-zsh/` port of every topic, keeping the Linux specifics (apt or dnf, `/etc/os-release`, `xdg-open`, Linux paths). `linux/bashrc` stays as the fallback for a machine without zsh. The welcome banner on Linux zsh reads `Shell     zsh <version>` with the same layout and colours as the Mac.
+- Typed-command colours on macOS and Linux through zsh-syntax-highlighting, sourced last and silently skipped when the package is absent: known commands, aliases, functions and builtins green, an unknown command red, quoted strings yellow and options cyan, in the normal (not bright) ANSI colours a high contrast palette reads best. `zsh-syntax-highlighting` is now in the Mac Brewfile.
+- Windows `paste` (Get-Clipboard) plus `sha256` and `sha512`, which print the lowercase hash then the path, the same as the Mac's.
+- Linux `speedtest` and the Swift `sf2` alias (`swift format`).
+- `speedtest` runs the installed `speedtest-cli` on macOS and Linux instead of downloading a script on each run. It also hides the tool's Python deprecation notice. The Brewfile installs it on the Mac.
 - `games`: a menu of six terminal games (2048, Snake, Blocks, Meteors, Word and a typing test) on every platform, in `scripts/games.py`. Arrows or W and S choose, Enter plays and Q or Esc leaves any game. Best scores are kept per machine.
 - `update`: lists everything out of date on the machine (Homebrew, winget, apt or dnf, global npm packages and uv or pipx tools), then upgrades it all only after a yes.
 - `sysinfo`: a full system summary through fastfetch on demand, kept out of the banner so new tabs stay fast.
@@ -26,6 +31,8 @@ Versions increment by one patch step (0.0.1) per release.
 - `ACCESSIBILITY.md` describes the High Contrast palette in light and dark mode, the four-colour banner and fzf's colours.
 - The welcome banner's machine line is magenta on every platform, so each of its 4 lines has its own colour: cyan, green, magenta and yellow.
 - macOS and Linux set `RIPGREP_CONFIG_PATH` when `~/.ripgreprc` exists, so ripgrep picks up its defaults file.
+- Windows `cmds` pages through `less -RF` (from Git for Windows) when `less` is available, with `LESSCHARSET=utf-8` so the banner's box characters survive. It falls back to plain output otherwise.
+- `linux/bashrc` returns early in a non-interactive shell, so a login shell running a single command (`ssh host cmd`, `scp` or `rsync`) no longer loads the profile or prints the banner. `linux/zshrc` only runs for interactive shells.
 
 ### Fixed
 
@@ -36,6 +43,9 @@ Versions increment by one patch step (0.0.1) per release.
 - `rg` runs ripgrep again on every platform. The Rails generator moved to `rgen`, the clipboard paste to `clippaste`, Elixir to `elx` and the R docs builder to `rdocs`, so none of them hide a real command. `rg2` stays as an extra name for ripgrep.
 - On Linux, `ping4` keeps its real meaning (IPv4 only) while still sending four pings.
 - The Linux prompt no longer tags every line with the container type inside WSL and other containers.
+- The `cmds` reference lists the real Rails aliases (`rdm`, `rgen`, `rdreset`) on macOS, Linux and Windows, in place of names that no longer existed.
+- Leaving the Windows `cmds` pager with Q no longer prints an error.
+- Linux `digga` and `dns` give a friendly install hint when `dig` is missing, matching `sysinfo`'s fastfetch hint.
 
 ### Added
 

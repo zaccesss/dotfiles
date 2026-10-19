@@ -1,6 +1,6 @@
 # mac/topics/
 
-35 numbered `.zsh` files loaded in order by `../zshrc`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
+36 numbered `.zsh` files loaded in order by `../zshrc`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
 
 ## Topic files
 
@@ -41,10 +41,11 @@
 | `33-c-cpp.zsh` | GCC, Clang, LLDB, binary inspection | `cc2`, `ccrun`, `ccdbg`, `ccsan`, `cfmt2`, `ctidy`, `symbols` |
 | `34-starship.zsh` | Starship prompt | Initialises the Starship cross-shell prompt (config in `mac/starship.toml`) |
 | `35-secrets.zsh` | age and sops secrets encryption | `agenew`, `agenc`, `agedec`, `sopsenc`, `sopsdec`, `sopsedit`, `sopsview` |
+| `36-syntax-highlighting.zsh` | Typed-command colours | Loads zsh-syntax-highlighting last (from Homebrew, skipped when absent): commands green, unknown commands red, strings yellow, options cyan |
 
 ## Adding a topic
 
-Create a new file with the next available number, e.g. `36-mytopic.zsh`. It is sourced automatically. There is no need to edit `zshrc`.
+Create a new file with the next available number, e.g. `37-mytopic.zsh`. It is sourced automatically. There is no need to edit `zshrc`.
 
 ## Naming conflicts
 

@@ -154,7 +154,7 @@ Defined in [windows/topics/06-functions.ps1](../windows/topics/06-functions.ps1)
 
 | Command | What it does |
 | --- | --- |
-| `cmds` | Print all custom functions grouped by topic, piped through `Out-Host -Paging` (press q to exit) |
+| `cmds` | Print all custom functions grouped by topic, paged through `less -RF` (press q to exit) |
 | `mkcd <dir>` | Create a directory and `cd` into it |
 | `welcome` | Print the welcome banner again. `DOTFILES_NO_BANNER=1` hides it when a shell starts |
 | `update` | List everything out of date (system packages, global npm packages and uv tools), then upgrade it all after a yes |
@@ -167,7 +167,7 @@ Defined in [windows/topics/06-functions.ps1](../windows/topics/06-functions.ps1)
 | `Edit-Profile` | Open `$PROFILE` in VS Code |
 | `Reload-Profile` | Hard-clear the terminal then re-source the profile without restarting PowerShell |
 
-`cmds` pipes its output through `Out-Host -Paging`, PowerShell's native pager, so real scrolling and a clean q-to-exit work regardless of output length. Colour is preserved because `cmds` builds each line as a plain string with raw ANSI codes rather than `Write-Host -ForegroundColor`, since `Write-Host` output cannot be piped.
+`cmds` pages its output through `less -RF`, the same pager the Mac and Linux profiles use, so real scrolling and a clean q-to-exit work regardless of output length. It uses `less` when it is on `PATH`, else the copy Git for Windows ships at `%ProgramFiles%\Git\usr\bin\less.exe`. It sets `LESSCHARSET=utf-8` so the banner's box-drawing characters survive. `-R` keeps the ANSI colours while `-F` quits straight away when the output fits one screen. When `less` is not found it falls back to plain output with no pager. Colour is preserved because `cmds` builds each line as a plain string with raw ANSI codes rather than `Write-Host -ForegroundColor`, since `Write-Host` output cannot be piped.
 
 ---
 
@@ -259,6 +259,8 @@ Defined in [windows/topics/02-colours.ps1](../windows/topics/02-colours.ps1). Th
 
 `cmds` uses a consistent 3-color scheme: **Magenta** for category headers, **Cyan** for command names and **White** for short descriptions. Parenthetical expansion lines are also White.
 
+PSReadLine colours typed commands as you type, sharing the one scheme used on macOS and Linux: commands green, parameters cyan, strings yellow and errors red. PSReadLine cannot tell a known command from an unknown one, so it does not colour an unknown command red the way zsh-syntax-highlighting does on the other platforms; a bad command still fails to run.
+
 To change a colour, edit [windows/topics/02-colours.ps1](../windows/topics/02-colours.ps1) or the `welcome` function in [windows/topics/06-functions.ps1](../windows/topics/06-functions.ps1) and run `Reload-Profile`.
 
 ---
@@ -303,4 +305,4 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 **`sc` (shellcheck) not working** - use `shck`. `sc` is Windows `sc.exe`.
 
-**`cmds` not paging correctly** - `Out-Host -Paging` needs a real interactive console. Upgrade from the legacy Windows Console Host (`conhost.exe`) to Windows Terminal for full support.
+**`cmds` not paging correctly** - `cmds` pages through `less`. Install Git for Windows (which ships `less`) or put another `less` on `PATH`. Without one, `cmds` prints its output in full with no pager, which still works.

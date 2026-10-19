@@ -269,8 +269,8 @@ _cmds_body() {
     echo -e "  ${CYAN}rb / irb${RESET}   ${WHITE}ruby / interactive REPL${RESET}"
     echo -e "  ${CYAN}be / binst / bcheck / bupd / bclean${RESET}   ${WHITE}Bundler${RESET}"
     echo -e "  ${CYAN}rspec / rspecf / rubocop / rubofix${RESET}   ${WHITE}testing and linting${RESET}"
-    echo -e "  ${CYAN}rs / rc / rd / rg / rrout${RESET}   ${WHITE}Rails server/console/migrate/generate/routes${RESET}"
-    echo -e "  ${CYAN}rdc / rdd / rdr / rds${RESET}   ${WHITE}Rails db:create/drop/reset/seed${RESET}"
+    echo -e "  ${CYAN}rs / rc / rdm / rgen / rrout${RESET}   ${WHITE}Rails server/console/migrate/generate/routes${RESET}"
+    echo -e "  ${CYAN}rdc / rdd / rdreset / rds${RESET}   ${WHITE}Rails db:create/drop/reset/seed${RESET}"
     echo -e "  ${CYAN}rbinstall / rbls / rbuse / rbglobal${RESET}   ${WHITE}rbenv version management${RESET}"
     echo ""
 

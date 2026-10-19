@@ -7,7 +7,7 @@ not mix files across platforms.
 | Folder | Platform |
 | --- | --- |
 | `mac/` | macOS only (zsh, Homebrew, macOS-specific paths and tools) |
-| `linux/` | Linux only (bash, apt/pacman, Linux-specific paths and tools) |
+| `linux/` | Linux only (zsh by default via `zshrc` and `topics-zsh/`, bash as a fallback via `bashrc` and `topics/`, apt/dnf, Linux-specific paths and tools) |
 | `windows/` | Windows only (PowerShell, winget/choco, Windows-specific paths) |
 
 Each platform's own folder holds its own `starship.toml`, the Starship prompt config, identical
@@ -66,6 +66,20 @@ content on all three. One symlink per device is all that is needed.
 > [!NOTE]
 > If a command listed in `cmds()` does not exist on your platform, it will simply not be
 > defined, the loader will source the file without error.
+
+## Third-party tools loaded from the system, not bundled here
+
+These tools are not vendored in this repository. The profile loads each one from wherever the
+system package manager installed it and carries on without it when it is absent.
+
+- **Starship** is initialised by `34-starship.{zsh,sh,ps1}` and installed per platform (see
+  `guides/new-device.md`).
+- **zsh-syntax-highlighting** colours typed commands on macOS and Linux. On macOS
+  `mac/topics/36-syntax-highlighting.zsh` sources it from Homebrew's `share/`; on Linux
+  `linux/topics-zsh/37-syntax-highlighting.zsh` sources it from `/usr/share/`. Both are silently
+  skipped when the package is not installed. Install it with `brew install zsh-syntax-highlighting`
+  (it is in `mac/Brewfile`) or `sudo apt install zsh-syntax-highlighting` (the `dnf` name is the
+  same). Windows uses PowerShell's own built-in PSReadLine instead, which needs nothing extra.
 
 ## Licence
 

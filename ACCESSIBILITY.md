@@ -33,6 +33,13 @@ The terminal itself sets the final shades. The High Contrast palette in [termina
 - Helpers remove flags that are hard to remember: `extract` unpacks any archive, `please` reruns the last command with `sudo` (elevated on Windows).
 - `cmds` prints every alias and function with a one-line description, grouped by topic and paged so it can be scrolled at any pace. Press `q` to leave. `listcmds` lists everything actually loaded.
 
+## Typed-command colours
+
+Commands are coloured as they are typed, the same meanings on every platform: a known command, alias, function or builtin in green, an unknown command in red, a quoted string in yellow and an option (`-x` or `--long`) in cyan, with everything else in the terminal's default colour. macOS and Linux use zsh-syntax-highlighting (installed with the profile, silently skipped when absent); Windows uses PowerShell's built-in PSReadLine with the same colours.
+
+- The colours are the normal (not bright) ANSI ones, since the High Contrast palette makes the bright variants paler.
+- Colour here is always a second signal, never the only one: a bad command still fails to run with its own error, so nothing depends on noticing the red. PSReadLine cannot tell a known command from an unknown one, so Windows does not colour unknown commands at all; the failure on running them is the signal there.
+
 ## Colour in other tools
 
 - The welcome banner labels each line (Machine, Shell and Session) and gives each value its own colour (green, magenta and yellow) under a bold cyan heading, so colour is never the only signal. Its line-drawing borders use the terminal's own text colour.

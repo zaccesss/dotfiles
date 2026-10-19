@@ -70,7 +70,13 @@ macOS:
 cp mac/zshrc ~/.zshrc && source ~/.zshrc
 ```
 
-Linux and WSL2:
+Linux and WSL2 (zsh is the default; install it first with `sudo apt install zsh zsh-syntax-highlighting`):
+
+```bash
+cp linux/zshrc ~/.zshrc && source ~/.zshrc
+```
+
+Linux and WSL2, bash fallback (for a machine without zsh):
 
 ```bash
 cp linux/bashrc ~/.bashrc && source ~/.bashrc
@@ -93,10 +99,12 @@ dotfiles/
   - starship.toml              Starship prompt config for macOS
   - Brewfile                   every Homebrew formula, cask and npm global on this machine
   - topics/                    numbered .zsh topic files, one per area
-- linux/                       bash profile for Linux and WSL2
-  - bashrc                     loader
+- linux/                       Linux and WSL2 profile: zsh by default, bash as a fallback
+  - zshrc                      zsh loader (the default)
+  - bashrc                     bash loader (the fallback)
   - starship.toml              Starship prompt config for Linux and WSL2
-  - topics/                    numbered .sh topic files
+  - topics-zsh/                numbered .zsh topic files for the zsh profile
+  - topics/                    numbered .sh topic files for the bash fallback
 - windows/                     PowerShell profile for Windows
   - Microsoft.PowerShell_profile.ps1   loader
   - starship.toml              Starship prompt config for Windows
@@ -119,7 +127,8 @@ dotfiles/
 | [guides/windows.md](guides/windows.md) | Windows installation, PowerShell specifics and command reference |
 | [guides/new-device.md](guides/new-device.md) | Step-by-step setup guide for a brand new machine on any platform |
 | [mac/topics/README.md](mac/topics/README.md) | All macOS topic files listed with descriptions and key commands |
-| [linux/topics/README.md](linux/topics/README.md) | All Linux topic files listed with descriptions and key commands |
+| [linux/topics-zsh/README.md](linux/topics-zsh/README.md) | The Linux zsh topic files and what differs from the bash ones |
+| [linux/topics/README.md](linux/topics/README.md) | All Linux bash topic files listed with descriptions and key commands |
 | [windows/topics/README.md](windows/topics/README.md) | All Windows topic files listed with descriptions and key commands |
 | [mac/starship.toml](mac/starship.toml), [linux/starship.toml](linux/starship.toml), [windows/starship.toml](windows/starship.toml) | Starship prompt config, identical content per platform, covering git and the 35 topic files, plus Starship's own module-based language detection |
 | [mac/Brewfile](mac/Brewfile) | Every Homebrew formula, cask and global npm package on this machine, `bbundle`/`bdump` install and regenerate it |

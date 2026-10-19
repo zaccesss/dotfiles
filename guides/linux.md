@@ -1,8 +1,11 @@
 # Linux Profile Guide
 
-Setup and command reference for the bash profile on Linux and WSL2. The profile uses a modular topic system - each area of tools and aliases lives in its own numbered file under [linux/topics/](../linux/topics/), loaded in order at shell startup. The command names are intentionally identical to the macOS profile so muscle memory carries across with no adjustment.
+Setup and command reference for the Linux and WSL2 profile. zsh is the default, matching the macOS profile; bash stays as a fallback for a machine without zsh. Each area of tools and aliases lives in its own numbered file, loaded in order at shell startup: the zsh topics under [linux/topics-zsh/](../linux/topics-zsh/) and the parallel bash topics under [linux/topics/](../linux/topics/). The command names are intentionally identical to the macOS profile so muscle memory carries across with no adjustment.
 
-Profile file: `~/.bashrc`
+Default profile file: `~/.zshrc`
+Repo copy: [linux/zshrc](../linux/zshrc)
+
+Fallback profile file: `~/.bashrc`
 Repo copy: [linux/bashrc](../linux/bashrc)
 
 > [!NOTE]
@@ -32,7 +35,7 @@ Repo copy: [linux/bashrc](../linux/bashrc)
 ## Prerequisites
 
 - Any modern Linux distro (Ubuntu, Fedora, Arch and derivatives all work) or WSL2 on Windows
-- bash 4+ (default on most distros)
+- zsh 5.8+ for the default profile. The bash fallback needs bash 4+, which is the default on most distros
 - git, curl and jq installed
 - VS Code with the `code` command available (optional but used by `edit-profile`)
 - GitHub CLI (`gh`) for the GitHub CLI commands
@@ -42,9 +45,33 @@ Repo copy: [linux/bashrc](../linux/bashrc)
 sudo apt install -y git curl jq
 ```
 
+Install zsh and the syntax-highlighting plugin that colours typed commands:
+
+```bash
+# Ubuntu/Debian
+sudo apt install -y zsh zsh-syntax-highlighting
+# Fedora
+sudo dnf install -y zsh zsh-syntax-highlighting
+```
+
+Make zsh the login shell (it takes effect at the next login):
+
+```bash
+chsh -s "$(command -v zsh)"
+```
+
 ---
 
 ## Installation
+
+zsh (the default):
+
+```bash
+cp linux/zshrc ~/.zshrc
+source ~/.zshrc
+```
+
+bash (the fallback, for a machine without zsh):
 
 ```bash
 cp linux/bashrc ~/.bashrc
@@ -71,17 +98,21 @@ This profile works inside WSL2 on Windows without modification.
 
 ## How the profile works
 
-`~/.bashrc` sources every numbered `.sh` file in `linux/topics/` in order:
+`~/.zshrc` sources every numbered `.zsh` file in `linux/topics-zsh/` in order (and `~/.bashrc` does the same for the `.sh` files in `linux/topics/`):
 
-```bash
-for f in "$DOTFILES/linux/topics"/[0-9]*.sh; do
-    [[ -r "$f" ]] && source "$f"
+```zsh
+for f in "$DOTFILES/linux/topics-zsh/"*.zsh; do
+    [[ -f "$f" ]] && source "$f"
 done
 ```
 
-Files load from `01-path.sh` to `35-secrets.sh`. A higher-numbered file overrides an alias from a lower-numbered one if they share a name. See [linux/topics/README.md](../linux/topics/README.md) for the full listing.
+Files load from `01-path.zsh` to `37-syntax-highlighting.zsh`. A higher-numbered file overrides an alias from a lower-numbered one if they share a name. See [linux/topics-zsh/README.md](../linux/topics-zsh/README.md) for what differs from the bash topics and [linux/topics/README.md](../linux/topics/README.md) for the full command listing.
 
-`34-starship.sh` initialises the Starship prompt. The config lives in [linux/starship.toml](../linux/starship.toml), identical content to the Mac and Windows copies. Symlink it to `~/.config/starship.toml`.
+Both profiles bail out early in a non-interactive shell, so a login shell running a single command (`ssh host cmd`, `scp`, `rsync`) loads nothing and prints no banner.
+
+`37-syntax-highlighting.zsh` loads zsh-syntax-highlighting last, so typed commands are coloured as you type: a known command, alias, function or builtin green, an unknown command red, quoted strings yellow and options cyan. It is sourced from `/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh` and is silently skipped when the package is not installed. Colour is only a second signal here: an unknown command still fails to run.
+
+`34-starship.zsh` (and `34-starship.sh` under bash) initialises the Starship prompt. The config lives in [linux/starship.toml](../linux/starship.toml), identical content to the Mac and Windows copies. Symlink it to `~/.config/starship.toml`.
 
 > [!TIP]
 > The prompt does not need a Nerd Font. Its own symbols (the `>` prompt character, jobs and git
@@ -160,7 +191,7 @@ Defined in [linux/topics/06-functions.sh](../linux/topics/06-functions.sh). Iden
 | `mkr <name>` | Scaffold a new Rust project |
 | `mkt <name>` | Scaffold a new TypeScript/Node project |
 | `dot` | `cd` to the dotfiles repo |
-| `edit-profile` | Open `~/.bashrc` in VS Code |
+| `edit-profile` | Open the profile in VS Code (`~/.zshrc` by default; `~/.bashrc` under the bash fallback) |
 | `reload-profile` | Hard-clear the terminal then re-source the profile without restarting it |
 
 ---
@@ -215,8 +246,10 @@ Defined in [linux/topics/07-utilities.sh](../linux/topics/07-utilities.sh) and [
 | `extract <archive>` | Extract any archive format |
 | `dataurl <file>` | Convert a file to a base64 data URL |
 | `envup [file]` | Load a `.env` file into the current session |
-| `digga <domain>` | DNS lookup with common record types |
+| `digga <domain>` | DNS lookup with common record types. Prints an install hint when `dig` is missing |
+| `dns <domain>` | Quick DNS lookup with all record types. Prints the same hint when `dig` is missing |
 | `dns-flush` | Flush Linux DNS cache via `systemd-resolve --flush-caches` |
+| `speedtest` | Run a network speed test (prefers the installed `speedtest-cli`, with an install hint otherwise) |
 
 ---
 
@@ -247,7 +280,7 @@ For full descriptions of every command, see [documentation.md](documentation.md)
 
 ## Colours
 
-Defined in [linux/topics/02-colours.sh](../linux/topics/02-colours.sh). Variables are identical to macOS but the welcome banner uses `echo -e` to parse escape codes in bash.
+Defined in [linux/topics-zsh/02-colours.zsh](../linux/topics-zsh/02-colours.zsh) for zsh and [linux/topics/02-colours.sh](../linux/topics/02-colours.sh) for bash. Variables are identical to macOS; the welcome banner uses `echo -e` to parse the escape codes, which both bash and zsh honour.
 
 | Variable | Code | Effect |
 | --- | --- | --- |
@@ -297,7 +330,8 @@ alias | grep myalias
 **Profile did not load** - check for syntax errors:
 
 ```bash
-for f in linux/topics/*.sh; do bash -n "$f" && echo "OK: $f"; done
+for f in linux/topics-zsh/*.zsh; do zsh -n "$f" && echo "OK: $f"; done   # zsh profile
+for f in linux/topics/*.sh;        do bash -n "$f" && echo "OK: $f"; done  # bash fallback
 ```
 
 **An alias is not working** - run `type myalias` to confirm it loaded. Run `reload-profile` and try again.
