@@ -184,6 +184,7 @@ Defined in [windows/topics/07-utilities.ps1](../windows/topics/07-utilities.ps1)
 | `clippaste` | Get clipboard: `Get-Clipboard` |
 | `pubip` | Print public IP |
 | `localip` | Print LAN IP |
+| `speedtest` | Run a network speed test through `speedtest-cli` or Ookla's `speedtest`, with an install hint when neither is installed |
 | `weather` | Print weather for current location |
 | `temp` | Print temperature only |
 | `battery` | Print charge percentage and status |
