@@ -41,6 +41,7 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Fixed
 
+- Opening Windows PowerShell 5.1 with the profile no longer prints a screen of parse errors. The topic files use PowerShell 7 syntax (the backtick-e escape and `&&`), so the loader now stops before loading any topic when the major version is below 7 and prints one dim line: `dotfiles need PowerShell 7: run pwsh`.
 - Windows `Reload-Profile` and `dot` keep what the reload defines. Dot-sourcing the profile inside a function only reached that function's own scope, so new or changed functions, aliases and variables were lost as soon as it returned. Both now run the loader through `Import-ProfileGlobal`, which copies them into the global scope.
 - The PowerShell loader snippet in the Windows and documentation guides matches the real loader: it reads the topic files from the `DOTFILES` path, not `$PSScriptRoot`.
 - Windows `dot` leaves a `$PROFILE` that is a one-line pointer to the repo's loader in place instead of overwriting it with a full copy, matching how macOS and Linux treat a linked profile. The Windows guide shows the pointer form.
