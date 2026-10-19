@@ -6,50 +6,82 @@
 # nvm install: https://github.com/nvm-sh/nvm
 # =============================================================================
 
-# Lazy-load nvm - sourcing nvm.sh on every shell start adds ~200ms.
-# the first call to any nvm command triggers the real load.
+# puts nvm's default Node on PATH at shell start without loading nvm. a lazy `node` function is
+# invisible to child processes, so anything started through sh (editor hooks, scripts, make) got
+# "node: not found". this follows nvm's own resolution: alias files can chain (lts/* names
+# lts/<codename>, which holds a version) and a partial version such as 26 means the highest
+# installed v26.x.y. file reads, globs and parameter expansion only, no subshells, so it stays
+# well under a millisecond.
+_nvm_default_bin() {
+    local dir="${NVM_DIR:-$HOME/.nvm}" v="default" hops=0 d name a b c n best="" bestn=-1
+    while [[ $hops -lt 5 && -f "$dir/alias/$v" ]]; do
+        read -r v < "$dir/alias/$v" || [[ -n "$v" ]] || return 1
+        hops=$((hops + 1))
+    done
+    [[ $hops -gt 0 ]] || return 1
+    v="${v#v}"
+    case "$v" in
+        node|stable) v="" ;;
+        ""|system|iojs*|*/*) return 1 ;;
+    esac
+    # (N) keeps a glob with no match from aborting zsh startup. the glob also catches v260 for
+    # 26, so each name is checked against the alias before use
+    for d in "$dir/versions/node/v$v"*(N); do
+        name="${d##*/v}"
+        [[ -z "$v" || "$name" == "$v" || "$name" == "$v".* ]] || continue
+        [[ "$name" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ && -x "$d/bin/node" ]] || continue
+        a="${name%%.*}"; b="${name#*.}"; c="${b#*.}"; b="${b%%.*}"
+        n=$(( a * 1000000 + b * 1000 + c ))
+        if [[ $n -gt $bestn ]]; then bestn=$n; best="$d/bin"; fi
+    done
+    [[ -n "$best" ]] || return 1
+    case ":$PATH:" in
+        *":$best:"*) ;;
+        *) export PATH="$best:$PATH" ;;
+    esac
+}
+
 # returns 1 if nvm.sh wasn't found, so nvm() below can fail loudly instead of recursing into
 # itself, a broken shell snapshot has silently dropped this function before while node()/npm()/
 # npx() kept their wrapper definitions, turning a plain `node` call into infinite self-recursion.
+# only the names nvm.sh replaces are unset: the nvmls/nvmuse style helpers go through `nvm`, so they
+# keep working after the first load instead of vanishing. the unset is silenced because node/npm/
+# npx only exist as functions when no default was found.
 _nvm_load() {
-    unset -f nvm node npm npx nvmuse nvmls nvminstall nvmuninstall nvmdefault nvmls-remote nvmlts nvmcurrent
+    unset -f nvm node npm npx 2>/dev/null
     export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
     if [[ -s "$NVM_DIR/nvm.sh" ]]; then
         source "$NVM_DIR/nvm.sh"
+        # explicit 0: a missing bash_completion leaves the test above false, which nvm() would read
+        # as a failed load
         [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
+        return 0
     else
         echo "nvm not found at $NVM_DIR, install it from https://github.com/nvm-sh/nvm" >&2
         return 1
     fi
 }
 
-# node/npm/npx call the real binary via `command`, never their own bare name, so a call is safe
-# even when _nvm_load fails, unlike nvm itself, they have a real external binary to fall back to.
-nvm()         { _nvm_load || return 1; nvm "$@"; }
-node()        { _nvm_load; command node "$@"; }
-npm()         { _nvm_load; command npm "$@"; }
-npx()         { _nvm_load; command npx "$@"; }
+# with the default Node already on PATH, node/npm/npx stay real binaries so child processes and
+# `command -v` see the same thing as the shell. the wrappers are only a fallback for a machine
+# with nvm installed but no resolvable default; they call the real binary via `command`, never
+# their own bare name, so a call is safe even when _nvm_load fails. with no nvm.sh at all (Node
+# from Homebrew) no wrappers are defined, otherwise every node/npm/npx call would print the
+# install hint first and a shell snapshot that dropped _nvm_load would print a command not found
+# error. only nvm() and its helpers remain then to print the install hint.
+if ! _nvm_default_bin && [[ -s "${NVM_DIR:-$HOME/.nvm}/nvm.sh" ]]; then
+    node()     { _nvm_load; command node "$@"; }
+    npm()      { _nvm_load; command npm "$@"; }
+    npx()      { _nvm_load; command npx "$@"; }
+fi
+unset -f _nvm_default_bin
 
-# nvmuse: switch to a specific node version (installs if not present)
-nvmuse()      { _nvm_load; nvm use "$@"; }
-
-# nvmls: list all locally installed node versions
-nvmls()       { _nvm_load; nvm ls; }
-
-# nvmls-remote: list all available LTS versions on the nvm registry
-nvmls-remote(){ _nvm_load; nvm ls-remote --lts; }
-
-# nvminstall: install a specific node version
-nvminstall()  { _nvm_load; nvm install "$@"; }
-
-# nvmuninstall: remove a specific node version
-nvmuninstall() { _nvm_load; nvm uninstall "$@"; }
-
-# nvmcurrent: show the node version active in this shell
-nvmcurrent()  { _nvm_load; nvm current; }
-
-# nvmdefault: set the default node version for new shells
-nvmdefault()  { _nvm_load; nvm alias default "$@"; }
-
-# nvmlts: install and use the latest LTS release
-nvmlts()      { _nvm_load; nvm install --lts && nvm use --lts; }
+nvm()          { _nvm_load || return 1; nvm "$@"; }
+nvmuse()       { nvm use "$@"; }
+nvmls()        { nvm ls; }
+nvmls-remote() { nvm ls-remote --lts; }
+nvminstall()   { nvm install "$@"; }
+nvmuninstall() { nvm uninstall "$@"; }
+nvmcurrent()   { nvm current; }
+nvmdefault()   { nvm alias default "$@"; }
+nvmlts()       { nvm install --lts && nvm use --lts; }
