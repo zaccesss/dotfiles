@@ -27,7 +27,9 @@ export PYENV_ROOT="$HOME/.pyenv"
 # .NET global tools (dotnet tool install -g)
 [[ -d "$HOME/.dotnet/tools" ]] && export PATH="$HOME/.dotnet/tools:$PATH"
 
-# WSL on Ubuntu 26.04 has no wslview, so links open through Windows' own file handler instead
-if grep -qsi microsoft /proc/version && ! command -v wslview >/dev/null 2>&1; then
+# WSL has no browser of its own and Ubuntu 26.04 no wslview, so links from gh and other tools open
+# in the Windows browser through Windows' own file handler. a BROWSER set by hand is left alone
+if [[ -z "${BROWSER:-}" ]] && ! command -v wslview >/dev/null 2>&1 \
+    && { [[ -n "${WSL_DISTRO_NAME:-}" ]] || grep -qsi microsoft /proc/version; }; then
     export BROWSER="explorer.exe"
 fi

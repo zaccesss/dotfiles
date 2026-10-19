@@ -87,7 +87,7 @@ Get-ChildItem "$PSScriptRoot\topics\[0-9]*.ps1" | Sort-Object Name | ForEach-Obj
 }
 ```
 
-Files load from `01-path.ps1` to `35-secrets.ps1`. A later-numbered file overrides a function from an earlier one if they share a name. See [windows/topics/README.md](../windows/topics/README.md) for the full listing.
+Files load from `01-path.ps1` to `36-command-marks.ps1`. A later-numbered file overrides a function from an earlier one if they share a name. See [windows/topics/README.md](../windows/topics/README.md) for the full listing.
 
 `34-starship.ps1` initialises the Starship prompt. The config lives in [windows/starship.toml](../windows/starship.toml), identical content to the Mac and Linux copies. Symlink it to `~/.config/starship.toml`.
 
@@ -97,6 +97,25 @@ Files load from `01-path.ps1` to `35-secrets.ps1`. A later-numbered file overrid
 > the plain text `node` instead of Starship's default Nerd Font glyph. The terminals on my Mac use
 > Monaco 12 in iTerm2 and Warp's default font at size 13, neither of them a Nerd Font. Other tools that use icon glyphs need
 > one (for example `winget install DEVCOM.JetBrainsMonoNerdFont`) set as the terminal's font.
+
+### Command marks
+
+`36-command-marks.ps1` marks where each prompt, command and output starts and ends (OSC 133 shell integration). It loads after Starship and wraps the prompt Starship defines: the start and end of the prompt, then the exit status of the command that just finished (its own exit code when it was a native command that failed, otherwise 0 or 1 from `$?`). A PSReadLine handler on Enter marks where the output starts. The marks are skipped in a dumb terminal, a non-interactive session and VS Code, which has its own shell integration (`Ctrl+Up` and `Ctrl+Down` there).
+
+Windows Terminal reads the marks through its `scrollToMark`, `selectCommand` and `selectOutput` actions. They are set up in the Windows Terminal settings (`settings.json`), which are not part of these dotfiles. For example, in its `actions` list:
+
+```json
+"actions": [
+    { "keys": "ctrl+up", "command": { "action": "scrollToMark", "direction": "previous" } },
+    { "keys": "ctrl+down", "command": { "action": "scrollToMark", "direction": "next" } },
+    { "keys": "ctrl+shift+up", "command": { "action": "selectCommand", "direction": "prev" } },
+    { "keys": "ctrl+shift+down", "command": { "action": "selectCommand", "direction": "next" } },
+    { "keys": "ctrl+shift+alt+up", "command": { "action": "selectOutput", "direction": "prev" } },
+    { "keys": "ctrl+shift+alt+down", "command": { "action": "selectOutput", "direction": "next" } }
+]
+```
+
+With these, `Ctrl+Up` and `Ctrl+Down` jump to the previous or next command, `Ctrl+Shift+Up` and `Ctrl+Shift+Down` select a whole command and `Ctrl+Shift+Alt+Up` and `Ctrl+Shift+Alt+Down` select just its output. Setting `"showMarksOnScrollbar": true` under `profiles.defaults` also shows each command as a tick on the scrollbar (Windows Terminal 1.21 or later).
 
 ---
 
@@ -159,6 +178,8 @@ Defined in [windows/topics/06-functions.ps1](../windows/topics/06-functions.ps1)
 | `welcome` | Print the welcome banner again. `DOTFILES_NO_BANNER=1` hides it when a shell starts |
 | `update` | List everything out of date (system packages, global npm packages and uv tools), then upgrade it all after a yes |
 | `sysinfo` | Full system summary through fastfetch: OS, CPU, GPU, memory and disk (install with `winget install --id Fastfetch-cli.Fastfetch --exact`) |
+| `copyout <command>` | Run a command, show its output as normal and copy all of it (output and errors) to the clipboard with `Set-Clipboard`, then say how many lines were copied. `$LASTEXITCODE` is kept |
+| `logrun <command>` | Run a command with its output shown live and saved to `~\logs\<YYYY-MM-DD_HHMMSS>-<command>.log` through `Tee-Object`, then print the log's path. `$LASTEXITCODE` is kept |
 | `games` | A menu of six terminal games: 2048, Snake, Blocks, Meteors, Word and a typing test. Arrows choose, Enter plays, Q or Esc leaves any game |
 | `mkf <file>` | Create a file and any missing parent directories |
 | `mkr <name>` | Scaffold a new Rust project |
@@ -268,7 +289,7 @@ To change a colour, edit [windows/topics/02-colours.ps1](../windows/topics/02-co
 
 ## Extending the profile
 
-Create a new file in `windows/topics/` with the next available number, e.g. `36-mytopic.ps1`. It is dot-sourced automatically. No changes to the profile loader needed.
+Create a new file in `windows/topics/` with the next available number, e.g. `37-mytopic.ps1`. It is dot-sourced automatically. No changes to the profile loader needed.
 
 Before naming a new function, check it is not already taken:
 

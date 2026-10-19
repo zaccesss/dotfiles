@@ -12,7 +12,7 @@
 | `04-git.sh` | Git aliases and helpers | `gs`, `ga`, `gaa`, `gcmt`, `gpsh`, `gcp`, `gpul`, `glog`, `gco`, `gcb`, `gb`, `gbd`, `gd`, `gundo`, `gclean`, `automerge`, `pull-all`, `repo-status` |
 | `05-profile.sh` | Profile management | `edit-profile`, `reload-profile` |
 | `06-functions.sh` | Core functions and command reference | `cmds`, `mkcd`, `mkf`, `mkr`, `mkt`, `dot` |
-| `07-utilities.sh` | General utilities | `ll`, `la`, `c`, `weather`, `temp`, `pubip`, `localip`, `termtheme` |
+| `07-utilities.sh` | General utilities | `ll`, `la`, `c`, `weather`, `temp`, `pubip`, `localip`, `termtheme`, `copyout`, `logrun` |
 | `08-community.sh` | Community-borrowed utilities | `extract`, `dataurl`, `envup`, `digga` (with an install hint when `dig` is missing), `dns-flush`, `change-extension`, `clipcopy`, `clippaste` |
 | `09-cli-tools.sh` | Modern CLI tools, text processing and process/port utilities | `z`, `zi` (zoxide), `ff`, `fcd`, `fh` (fzf), `ez`, `ezl`, `ezt` (eza), `rg2` (ripgrep), `col`, `replace`, `whatport`, `killport`, `notify`, `typw`, `linkcheck` |
 | `10-ssh.sh` | SSH helpers | `keygen`, `sshcp`, `ssha`, `sshtest`, `sshfp`, `sshconf`, `sshls` |
@@ -42,10 +42,11 @@
 | `34-starship.sh` | Starship prompt | Initialises the Starship cross-shell prompt (config in `linux/starship.toml`) |
 | `35-secrets.sh` | age and sops secrets encryption | `agenew`, `agenc`, `agedec`, `sopsenc`, `sopsdec`, `sopsedit`, `sopsview` |
 | `36-swift.sh` | Swift on Linux | `sr`, `sb2`, `sb2r`, `st2`, `sf2`, `srepl`, `spinit`, `spup`, `spres`, `spls`, `spclean` |
+| `37-command-marks.sh` | Command marks | OSC 133 marks around each prompt, command and output, chained onto `PROMPT_COMMAND` and `PS0` (skipped in VS Code and dumb terminals) |
 
 ## Adding a topic
 
-Create a new file with the next available number, e.g. `37-mytopic.sh`. It is sourced automatically. There is no need to edit `bashrc`.
+Create a new file with the next available number, e.g. `38-mytopic.sh`. It is sourced automatically. There is no need to edit `bashrc`.
 
 ## Platform differences from macOS
 
