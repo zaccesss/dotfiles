@@ -13,11 +13,12 @@ Versions increment by one patch step (0.0.1) per release.
 - `games`: a menu of six terminal games (2048, Snake, Blocks, Meteors, Word and a typing test) on every platform, in `scripts/games.py`. Arrows or W and S choose, Enter plays and Q or Esc leaves any game. Best scores are kept per machine.
 - `update`: lists everything out of date on the machine (Homebrew, winget, apt or dnf, global npm packages and uv or pipx tools), then upgrades it all only after a yes.
 - `sysinfo`: a full system summary through fastfetch on demand, kept out of the banner so new tabs stay fast.
-- `DOTFILES_NO_BANNER=1` hides the welcome banner. Editor terminals in VS Code skip it.
+- `DOTFILES_NO_BANNER=1` hides the welcome banner.
 - Screenshots and short animations of the config in action, dark and light, in the README's In action section.
 
 ### Changed
 
+- The welcome banner shows in every terminal: editor terminals in VS Code and editors built on it show it too.
 - The games share one colour scheme: titles bold cyan, good things green, the next or current thing yellow and danger or mistakes red, with borders and empty cells in the plain text colour. In the typing test, correct letters turn green and the next letter to type is yellow and underlined.
 - The welcome banner is plain text with labels and no emoji: a bold cyan heading, then Machine (with the OS), Shell (with its version) and Session (date and time) between line-drawing borders. It lives in one `welcome` function per platform that the profile and `cls` or `refresh` both call.
 - The Windows banner uses the normal green and cyan, matching the Mac and Linux, instead of the paler bright variants that `Write-Host` picks.
