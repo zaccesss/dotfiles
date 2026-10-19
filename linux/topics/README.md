@@ -23,7 +23,7 @@
 | `15-rsync.sh` | File sync and backup | `rcopy`, `rmirror`, `rbackup`, `rdry`, `rclonecopy`, `rclonesync`, `rcloneremotes` |
 | `16-brew.sh` | Linuxbrew | `bup`, `bls`, `bins`, `brm`, `binfo`, `brewclean`, `brewoutd`, `bpin`, `bunpin` |
 | `17-gh.sh` | GitHub CLI shortcuts | `ghpr`, `ghprc`, `ghclone`, `ghfork`, `ghissue`, `ghgist`, `ghrun`, `ghwatch`, `ghwho` |
-| `18-nvm.sh` | Node version manager (lazy-loaded) | `nvminstall`, `nvmuse`, `nvmlts`, `nvmdefault`, `nvmls`, `nvmls-remote` |
+| `18-nvm.sh` | Node version manager (lazy-loaded, with the default Node put on `PATH` at start) | `nvminstall`, `nvmuse`, `nvmlts`, `nvmdefault`, `nvmls`, `nvmls-remote` |
 | `19-editors.sh` | IDE and editor launchers | `code`, `idea`, `rider`, `phpstorm`, `datagrip`, `webstorm`, `goland`, `pycharm`, `clion` |
 | `20-shell-tools.sh` | Shell linting and formatting | `sc` (shellcheck), `sfmt`, `sfmtcheck`, `sfmtdiff` |
 | `21-tmux.sh` | tmux shortcuts | `tn`, `tls`, `tk`, `tka`, `cluster` |
