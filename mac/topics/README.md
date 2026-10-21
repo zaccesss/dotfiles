@@ -1,6 +1,6 @@
 # mac/topics/
 
-37 numbered `.zsh` files loaded in order by `../zshrc`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
+38 numbered `.zsh` files loaded in order by `../zshrc`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
 
 ## Topic files
 
@@ -43,6 +43,7 @@
 | `35-secrets.zsh` | age and sops secrets encryption | `agenew`, `agenc`, `agedec`, `sopsenc`, `sopsdec`, `sopsedit`, `sopsview` |
 | `36-command-marks.zsh` | Command marks | OSC 133 marks around each prompt, command and output, so the terminal can jump between commands (skipped in VS Code and dumb terminals) |
 | `37-syntax-highlighting.zsh` | Typed-command colours | Loads zsh-syntax-highlighting last (from Homebrew, skipped when absent): commands green, unknown commands red, strings yellow, options cyan |
+| `38-zacess-theme.zsh` | Zacess theme switching | `zt`, `zacess-theme`: every editor and terminal to one Zacess theme. `zt auto` follows the system |
 
 ## Adding a topic
 

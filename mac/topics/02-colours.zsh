@@ -29,10 +29,13 @@ PROMPT='%F{cyan}%n@%m%f %F{yellow}%~%f %F{green}%%%f '
 # CLICOLOR=1 enables colour in BSD ls (macOS default) without needing -G flag.
 # LSCOLORS controls the colour scheme: directories bold cyan, symlinks magenta,
 # executables bold green. grep --color=auto highlights matches inline.
+# the last two pairs are other-writable directories (with and without the sticky bit). BSD ls
+# draws those as black or blue text on a yellow or cyan background, which is unreadable in both
+# light and dark themes, so they are drawn as ordinary bold cyan directories instead.
 # =============================================================================
 
 export CLICOLOR=1
-export LSCOLORS=GxFxCxDxBxegedabagaced
+export LSCOLORS=GxFxCxDxBxegedabagGxGx
 
 alias diff='diff --color=auto'
 

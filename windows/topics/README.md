@@ -1,6 +1,6 @@
 # windows/topics/
 
-36 numbered `.ps1` files loaded in order by `../Microsoft.PowerShell_profile.ps1`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
+37 numbered `.ps1` files loaded in order by `../Microsoft.PowerShell_profile.ps1`. Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
 
 ## Topic files
 
@@ -42,6 +42,7 @@
 | `34-starship.ps1` | Starship prompt | Initialises the Starship cross-shell prompt (config in `windows/starship.toml`) |
 | `35-secrets.ps1` | age and sops secrets encryption | `agenew`, `agenc`, `agedec`, `sopsenc`, `sopsdec`, `sopsedit`, `sopsview` |
 | `36-command-marks.ps1` | Command marks | OSC 133 marks around each prompt, command and output: wraps the Starship prompt and handles Enter through PSReadLine (skipped in VS Code and dumb terminals) |
+| `37-zacess-theme.ps1` | Zacess theme switching | `zt`, `zacess-theme`: every editor and terminal to one Zacess theme. `zt auto` follows the system |
 
 ## Adding a topic
 
