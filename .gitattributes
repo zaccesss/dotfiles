@@ -1,0 +1,3 @@
+# Command Prompt reads batch files and doskey macro files most reliably with Windows line endings
+*.cmd text eol=crlf
+*.doskey text eol=crlf

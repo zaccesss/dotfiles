@@ -315,6 +315,10 @@ Get-Alias myfunction -ErrorAction SilentlyContinue
 
 ---
 
+## Command Prompt
+
+Command Prompt gets the same banner, a coloured prompt and the PowerShell aliases and short functions as doskey macros. No add-on is installed. The bootstrap points the `AutoRun` value under `HKCU\Software\Microsoft\Command Processor` at [`windows/cmd/autorun.cmd`](../windows/cmd/autorun.cmd), keeping any earlier value. It also puts `windows\scripts` on the user `PATH` so `zt` works there too. The prompt and banner use the terminal's 16 colour slots, so they follow any terminal theme. Interactive windows only: a `cmd /c` or `cmd /k` started by a script skips all of it. Details, the uninstall step and the functions that stay PowerShell-only are in [`windows/cmd/README.md`](../windows/cmd/README.md).
+
 ## Key Windows differences
 
 | Area | macOS / Linux | Windows |
