@@ -120,7 +120,7 @@ Quick directory shortcuts. All three platforms define the same command names.
 
 | Command | Destination |
 | --- | --- |
-| `dev` | `~/dev` (macOS/Linux) or `C:\dev` (Windows) |
+| `dev` | `~/dev` (macOS/Linux) or `~\dev` (Windows, in the user folder) |
 | `downloads` | `~/Downloads` |
 | `dot` | dotfiles repo directory |
 

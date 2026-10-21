@@ -77,9 +77,9 @@ function gdone {
 # enable squash auto-merge on the current branch's PR and delete the branch after it lands
 function automerge { gh pr merge --squash --delete-branch --auto $args }
 
-# pull latest in every repo under C:\dev\github\repos
+# pull latest in every repo under ~\dev\github\repos
 function pull-all {
-    $reposDir = "C:\dev\github\repos"
+    $reposDir = "$HOME\dev\github\repos"
     Write-Host "Pulling all repos in $reposDir..." -ForegroundColor Cyan
     Get-ChildItem -Path $reposDir -Directory | ForEach-Object {
         if (Test-Path "$($_.FullName)\.git") {
@@ -100,7 +100,7 @@ function pull-all {
 
 # show clean/dirty status and current branch for every repo
 function repo-status {
-    $reposDir = "C:\dev\github\repos"
+    $reposDir = "$HOME\dev\github\repos"
     Write-Host "Repo status:" -ForegroundColor Cyan
     Write-Host ""
     Get-ChildItem -Path $reposDir -Directory | ForEach-Object {
