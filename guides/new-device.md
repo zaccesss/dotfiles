@@ -234,7 +234,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
 > [!NOTE]
-> The profile uses `C:\dev` as a convention for the base dev folder. Review [windows/topics/03-navigation.ps1](../windows/topics/03-navigation.ps1) and adjust the directory shortcuts to match your own folder layout before applying.
+> The profile uses `~\dev` (the user folder) as a convention for the base dev folder. Review [windows/topics/03-navigation.ps1](../windows/topics/03-navigation.ps1) and adjust the directory shortcuts to match your own folder layout before applying.
 
 ### 5 - Set up the Starship prompt
 

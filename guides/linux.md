@@ -89,7 +89,7 @@ The welcome banner confirms the profile loaded. Run `cmds` to see all available 
 
 This profile works inside WSL2 on Windows without modification.
 
-- The `~/dev` paths map to the Linux home inside WSL2, not `C:\dev`. This is intentional - each environment keeps its own repos folder.
+- The `~/dev` paths map to the Linux home inside WSL2, not the Windows `~\dev`. This is intentional - each environment keeps its own repos folder.
 - `clipcopy`/`clippaste` use `xclip` - install it if you need clipboard access: `sudo apt install xclip`.
 - `dns-flush` clears the Linux/WSL2 DNS cache via `systemd-resolve --flush-caches`.
 - For GUI apps via WSL2, WSLg is required. Most tool shortcuts here are CLI only.
