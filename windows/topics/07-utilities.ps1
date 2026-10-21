@@ -146,8 +146,9 @@ function zipf {
     Compress-Archive -Path $Target -DestinationPath "$($Target.TrimEnd('\', '/')).zip"
 }
 
-# termtheme: Windows Terminal's High Contrast schemes. auto follows Windows' light and dark setting
-# through the scheme pair; dark and light pin one scheme for every profile
+# termtheme: Windows Terminal alone, between the Zacess Deep Contrast schemes. auto follows Windows' light
+# and dark setting through the scheme pair; dark and light pin one scheme. zt switches every tool
+# at once, Windows Terminal included
 function termtheme {
     param(
         [ValidateSet('dark', 'light', 'auto', 'status')][string]$Mode = 'status',
@@ -169,14 +170,14 @@ function termtheme {
         $scheme = $defaults.PSObject.Properties['colorScheme']
         if ($scheme -and $scheme.Value -is [pscustomobject]) { 'auto: following Windows light and dark' }
         elseif ($scheme) { "fixed: $($scheme.Value)" }
-        else { 'no High Contrast scheme set' }
+        else { 'no Zacess scheme set' }
         return
     }
 
     $value = switch ($Mode) {
-        'dark' { 'High Contrast Dark' }
-        'light' { 'High Contrast Light' }
-        'auto' { [pscustomobject]@{ dark = 'High Contrast Dark'; light = 'High Contrast Light' } }
+        'dark' { 'Zacess Deep Contrast Dark' }
+        'light' { 'Zacess Deep Contrast Light' }
+        'auto' { [pscustomobject]@{ dark = 'Zacess Deep Contrast Dark'; light = 'Zacess Deep Contrast Light' } }
     }
     $defaults | Add-Member -Force -NotePropertyName colorScheme -NotePropertyValue $value
     $settings | ConvertTo-Json -Depth 32 | Set-Content -Path $settingsPath -Encoding utf8

@@ -1,6 +1,6 @@
 # linux/topics-zsh/
 
-38 numbered `.zsh` files loaded in order by `../zshrc`. This is the zsh port of [`linux/topics/`](../topics/) and is the default Linux profile, matching the macOS profile. Each file covers the same topic area as its `.sh` counterpart, so the command reference in [`linux/topics/README.md`](../topics/README.md) applies here too - only the shell dialect differs.
+39 numbered `.zsh` files loaded in order by `../zshrc`. This is the zsh port of [`linux/topics/`](../topics/) and is the default Linux profile, matching the macOS profile. Each file covers the same topic area as its `.sh` counterpart, so the command reference in [`linux/topics/README.md`](../topics/README.md) applies here too - only the shell dialect differs.
 
 The parallel `.sh` files under [`topics/`](../topics/) stay as the bash fallback for a machine without zsh.
 

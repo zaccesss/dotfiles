@@ -109,6 +109,9 @@ dotfiles/
   - Microsoft.PowerShell_profile.ps1   loader
   - starship.toml              Starship prompt config for Windows
   - topics/                    numbered .ps1 topic files
+  - scripts/                   zt.ps1, the Windows theme switcher, with zt.cmd for Command Prompt
+  - cmd/                       Command Prompt start-up: prompt, banner and doskey macros
+- scripts/                     zt.py (theme switcher), build-cmd-macros.py and games.py
 - guides/                      platform setup walkthroughs and command reference
   - documentation.md           full technical reference for every command
 - journal/                     engineering journal: decisions, refactors, architecture notes

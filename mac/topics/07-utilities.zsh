@@ -151,8 +151,9 @@ zipf() {
     zip -r "${target%/}.zip" "$target"
 }
 
-# termtheme: Terminal.app's High Contrast profile. auto follows macOS light and dark through the
-# login helper the terminal config repo builds; dark and light stop the helper and pin one profile
+# termtheme: Terminal.app alone, between the Zacess Deep Contrast profiles. auto follows macOS light
+# and dark through the login helper the terminal config repo builds; dark and light stop the helper
+# and pin one profile. zt in 38-zacess-theme.zsh switches every tool at once, this terminal included
 termtheme() {
     local label="local.terminal-config.appearance"
     local plist="$HOME/Library/LaunchAgents/${label}.plist"
@@ -184,7 +185,7 @@ PLIST
         dark|light)
             launchctl bootout "gui/$(id -u)/${label}" 2>/dev/null
             rm -f "$plist"
-            [[ "$1" == dark ]] && name="High Contrast Dark" || name="High Contrast Light"
+            [[ "$1" == dark ]] && name="Zacess Deep Contrast Dark" || name="Zacess Deep Contrast Light"
             if pgrep -x Terminal >/dev/null; then
                 osascript -e "tell application \"Terminal\"
                     set default settings to settings set \"$name\"
@@ -192,7 +193,7 @@ PLIST
                     repeat with w in windows
                         try
                             repeat with t in tabs of w
-                                if name of current settings of t starts with \"High Contrast\" then set current settings of t to settings set \"$name\"
+                                if name of current settings of t starts with \"High Contrast\" or name of current settings of t starts with \"Zacess\" then set current settings of t to settings set \"$name\"
                             end repeat
                         end try
                     end repeat

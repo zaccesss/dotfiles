@@ -15,11 +15,22 @@ These dotfiles started from a practical need. With monocular vision, depth cues 
 | Colour vision differences | Status messages carry words as well as colour ("profile loaded", the error text itself). The colours were tested on dark and light terminal themes. Changing one colour in `02-colours` updates it across the whole profile |
 | Icon fonts | The Starship prompt's own symbols are plain ASCII (the `>` prompt character, `+` for jobs and `!`, `^` or `v` in git status), so it reads cleanly without a Nerd Font. The Node.js module shows the plain text `node` rather than Starship's default Nerd Font glyph. The terminals on my Mac use Monaco 12 in iTerm2 and Warp's default font at size 13, neither of them a Nerd Font |
 
-The terminal itself sets the final shades. The High Contrast palette in [terminal-config](https://github.com/zaccesss/terminal-config) gives near-white text on black at 15.9:1 in dark mode and near-black text on white at 16.5:1 in light mode, with all 16 colours set and every light-mode colour at 7:1 or more. Terminals that support it switch between the two with the system appearance. Everything this profile prints follows, since it only uses the named colours.
+The terminal itself sets the final shades. [terminal-config](https://github.com/zaccesss/terminal-config) installs the eight Zacess themes with Zacess Deep Contrast Dark as the default: white text on pure black with deep, fully saturated colours at 7:1 or more. Everything this profile prints follows whichever theme is on, since it only uses the named colours. The Command Prompt prompt and banner do the same.
 
 > [!TIP]
-> `termtheme` sets the terminal's light and dark behaviour in one command on every platform.
-> `termtheme dark` or `termtheme light` keeps the High Contrast palette on one mode whatever the
+> `zt` switches every editor and terminal to one Zacess theme in one command: `zt deep-light`,
+> `zt deep-dark`, `zt list`. `zt auto` follows the system's light and dark setting where a tool can
+> and `zt <theme>` fixes one theme again. The full table is in
+> [scripts/README.md](scripts/README.md#theme-switching).
+
+> [!NOTE]
+> `ls` shows other-writable folders (such as a shared `/tmp`) in the same colour as any other
+> folder. The usual black or blue text on a yellow or green background was unreadable in every
+> theme.
+
+> [!TIP]
+> `termtheme` sets only the terminal's light and dark behaviour, on every platform.
+> `termtheme dark` or `termtheme light` keeps the Zacess Deep Contrast pair on one mode whatever the
 > system does, `termtheme auto` follows the system's light and dark setting and `termtheme` on its
 > own shows which mode is on. It drives Terminal.app on macOS, Ptyxis on Linux and Windows Terminal.
 
@@ -37,7 +48,7 @@ The terminal itself sets the final shades. The High Contrast palette in [termina
 
 Commands are coloured as they are typed, the same meanings on every platform: a known command, alias, function or builtin in green, an unknown command in red, a quoted string in yellow and an option (`-x` or `--long`) in cyan, with everything else in the terminal's default colour. macOS and Linux use zsh-syntax-highlighting (installed with the profile, silently skipped when absent); Windows uses PowerShell's built-in PSReadLine with the same colours.
 
-- The colours are the normal (not bright) ANSI ones, since the High Contrast palette makes the bright variants paler.
+- The colours are the normal (not bright) ANSI ones, so they stay as deep as the theme's main colours.
 - Colour here is always a second signal, never the only one: a bad command still fails to run with its own error, so nothing depends on noticing the red. PSReadLine cannot tell a known command from an unknown one, so Windows does not colour unknown commands at all; the failure on running them is the signal there.
 
 ## Finding a command's output

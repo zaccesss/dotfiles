@@ -1,6 +1,6 @@
 # linux/topics/
 
-37 numbered `.sh` files loaded in order by `../bashrc`, the bash fallback for a machine without zsh. The default zsh profile loads the parallel files in [`../topics-zsh/`](../topics-zsh/). Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
+38 numbered `.sh` files loaded in order by `../bashrc`, the bash fallback for a machine without zsh. The default zsh profile loads the parallel files in [`../topics-zsh/`](../topics-zsh/). Each file covers one topic area. Add a new file with the next available number to extend the profile - it is picked up automatically at the next shell start.
 
 ## Topic files
 
@@ -43,6 +43,7 @@
 | `35-secrets.sh` | age and sops secrets encryption | `agenew`, `agenc`, `agedec`, `sopsenc`, `sopsdec`, `sopsedit`, `sopsview` |
 | `36-swift.sh` | Swift on Linux | `sr`, `sb2`, `sb2r`, `st2`, `sf2`, `srepl`, `spinit`, `spup`, `spres`, `spls`, `spclean` |
 | `37-command-marks.sh` | Command marks | OSC 133 marks around each prompt, command and output, chained onto `PROMPT_COMMAND` and `PS0` (skipped in VS Code and dumb terminals) |
+| `38-zacess-theme.sh` | Zacess theme switching | `zt`, `zacess-theme`: every editor and terminal to one Zacess theme. `zt auto` follows the system |
 
 ## Adding a topic
 

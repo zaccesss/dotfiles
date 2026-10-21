@@ -32,6 +32,13 @@ PS1="\[\033[0;36m\]\u@\h\[\033[0m\] \[\033[1;33m\]\w\[\033[0m\] \[\033[0;32m\]\$
 # =============================================================================
 
 alias ls='ls --color=auto'
+
+# GNU ls draws other-writable directories (ow, plus tw with the sticky bit) as blue or black text
+# on a green background, which is unreadable in both light and dark themes. they take the same
+# colour as an ordinary directory instead, whatever this machine's LS_COLORS gives di
+_di="$(printf '%s' "${LS_COLORS:-}" | tr ':' '\n' | sed -n 's/^di=//p' | tail -n 1)"
+export LS_COLORS="${LS_COLORS:+${LS_COLORS}:}ow=${_di:-01;34}:tw=${_di:-01;34}"
+unset _di
 alias diff='diff --color=auto'
 
 # coloured man pages via less TERMCAP variables.
