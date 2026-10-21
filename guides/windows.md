@@ -140,7 +140,7 @@ Defined in [windows/topics/03-navigation.ps1](../windows/topics/03-navigation.ps
 
 | Command | Destination |
 | --- | --- |
-| `dev` | `C:\dev` |
+| `dev` | `~\dev` |
 | `downloads` | `$HOME\Downloads` |
 | `dot` | dotfiles repo directory |
 

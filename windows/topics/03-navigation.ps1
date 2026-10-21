@@ -5,5 +5,5 @@
 # aliases for navigation that passes no arguments.
 # =============================================================================
 
-function dev       { Set-Location C:\dev }
+function dev       { Set-Location $HOME\dev }
 function downloads { Set-Location $HOME\Downloads }

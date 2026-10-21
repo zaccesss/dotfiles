@@ -112,7 +112,7 @@ function _cmdsBody {
     ""
 
     "`e[35mREPOS`e[0m"
-    "  `e[36mpull-all`e[0m`e[37m      pull all repos in C:\dev\github\repos`e[0m"
+    "  `e[36mpull-all`e[0m`e[37m      pull all repos in ~\dev\github\repos`e[0m"
     "  `e[36mrepo-status`e[0m`e[37m   show branch and clean/dirty state for every repo`e[0m"
     ""
 
