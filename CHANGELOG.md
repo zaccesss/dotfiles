@@ -10,6 +10,7 @@ Versions increment by one patch step (0.0.1) per release.
 
 ### Added
 
+- The screenshots and clips are recorded again in Zacess Deep Contrast Dark and Light from VHS scripts in `docs/demo`, using the real config in a throwaway demo project. `docs/demo/record.sh` makes them all again with one command.
 - `zt` (and `zacess-theme`) on macOS, Linux and Windows switches every installed editor and terminal to one of the eight Zacess themes at once: VS Code, Zed, the JetBrains IDEs, Neovim, Eclipse, Terminal.app, iTerm2, Kitty, Alacritty, Ghostty and Windows Terminal. `zt <theme>` fixes one theme and stops following the system, `zt auto [dark] [light]` follows the system light and dark appearance where a tool can, `zt list` lists the themes and `zt current` reads each tool's setting back. `scripts/zt.py` does the work on macOS and Linux and `windows/scripts/zt.ps1` on Windows, with `zt.cmd` and `zacess-theme.cmd` for Command Prompt.
 - Command Prompt setup in `windows/cmd/`: `autorun.cmd` runs from the `AutoRun` value for interactive windows only, sets a prompt and prints the banner in the terminal's 16 colour slots and loads doskey macros made from the PowerShell aliases and short functions by `scripts/build-cmd-macros.py`. `windows/cmd/README.md` lists the functions that stay PowerShell-only and why. `.gitattributes` keeps `.cmd` and `.doskey` files on Windows line endings.
 

@@ -10,19 +10,35 @@
 
 ## In action
 
-Screenshots in the High Contrast palette, dark and light. Each one links to a short animation of the same scene.
+Screenshots in Zacess Deep Contrast Dark and Light, recorded in a demo project. Each one links
+to a short animation of the same scene.
 
 ### macOS shell
 
 | Dark | Light |
 | --- | --- |
-| [![Dark: the dotfiles welcome banner followed by the cmds cheat-sheet of git and system aliases](docs/demo/dotfiles-dark.webp)](docs/demo/dotfiles-dark.gif) | [![Light: the dotfiles welcome banner followed by the cmds cheat-sheet of git and system aliases](docs/demo/dotfiles-light.webp)](docs/demo/dotfiles-light.gif) |
+| [![Dark: the welcome banner with a neutral machine name, then gs and glog in a demo project under the Starship prompt](docs/demo/dotfiles-dark.webp)](docs/demo/dotfiles-dark.gif) | [![Light: the welcome banner with a neutral machine name, then gs and glog in a demo project under the Starship prompt](docs/demo/dotfiles-light.webp)](docs/demo/dotfiles-light.gif) |
 
 ### Linux (Ubuntu in OrbStack)
 
 | Dark | Light |
 | --- | --- |
-| [![Dark: the same dotfiles in bash on Ubuntu: the banner, the OS version, the numbered topic files and a git log](docs/demo/linux-dark.webp)](docs/demo/linux-dark.gif) | [![Light: the same dotfiles in bash on Ubuntu: the banner, the OS version, the numbered topic files and a git log](docs/demo/linux-light.webp)](docs/demo/linux-light.gif) |
+| [![Dark: the same dotfiles in bash on Ubuntu: the banner, the numbered topic files and a git log of a demo project](docs/demo/linux-dark.webp)](docs/demo/linux-dark.gif) | [![Light: the same dotfiles in bash on Ubuntu: the banner, the numbered topic files and a git log of a demo project](docs/demo/linux-light.webp)](docs/demo/linux-light.gif) |
+
+### Re-recording
+
+Each scene is a [VHS](https://github.com/charmbracelet/vhs) script in [`docs/demo`](docs/demo),
+recorded once per theme in a throwaway demo under `/tmp/demo`, so the shots show the real config
+with nothing personal on screen. The colours come from
+[Zacess Themes](https://github.com/zacesshq/themes).
+
+```sh
+brew install vhs gifsicle webp
+docs/demo/record.sh           # every scene, dark and light
+docs/demo/record.sh linux     # one scene, by its file name
+```
+
+The Linux scene runs in the OrbStack Ubuntu machine, so OrbStack needs to be running.
 
 ## About
 
