@@ -1,0 +1,10 @@
+{
+  "name": "matlab-color-theme-extensions",
+  "repository": "https://github.com/mathworks/matlab-color-theme-extensions",
+  "commit": "4788735e47f9d957a5482d723542bf49e577553c",
+  "files": {
+    "import_scheme.p": "c10db25bea002ebb68b610c686602edb4bfc4782622276e2e47582da5efebc06",
+    "export_scheme.p": "12ebbba9619120767f51ff2a59e5b33619cfa4a45dd0d5476ae8742126b138b2",
+    "validateJsonFile.p": "d7f3a09cc4d955fad62437829393dee738ac9ad046554c377e113d056ff23e5c"
+  }
+}

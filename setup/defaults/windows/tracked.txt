@@ -1,0 +1,65 @@
+# Windows settings carried from one PC to the next, one registry value per line as
+# "<key path> <value name>". Every key is under HKEY_CURRENT_USER, so no administrator rights are
+# needed. `windows/defaults.ps1 -Capture` reads each one from the current PC and writes what is
+# actually set to defaults.tsv. Values left at the system default are not recorded, so nothing is
+# imposed that nobody chose. Add a line here, then capture again on a PC set up the right way.
+
+# Clock (common/preferences.md): 12-hour with AM/PM comes from the regional format; seconds shown
+# in the taskbar clock or not
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced ShowSecondsInSystemClock
+HKCU:\Control Panel\International sShortTime
+HKCU:\Control Panel\International sTimeFormat
+
+# File Explorer: file extensions, hidden files, where a new window opens, compact view
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced HideFileExt
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced Hidden
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced LaunchTo
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced UseCompactMode
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced ShowStatusBar
+
+# Taskbar: alignment, search box, Task View, widgets and grouping
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced TaskbarAl
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Search SearchboxTaskbarMode
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced ShowTaskViewButton
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced TaskbarDa
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced TaskbarGlomLevel
+
+# Appearance: light or dark for apps and Windows, accent colour on title bars, transparency
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize AppsUseLightTheme
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize SystemUsesLightTheme
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize EnableTransparency
+HKCU:\Software\Microsoft\Windows\DWM ColorPrevalence
+
+# Keyboard and mouse
+HKCU:\Control Panel\Keyboard KeyboardDelay
+HKCU:\Control Panel\Keyboard KeyboardSpeed
+HKCU:\Control Panel\Mouse MouseSpeed
+HKCU:\Control Panel\Mouse MouseSensitivity
+HKCU:\Control Panel\Desktop MenuShowDelay
+
+# Trash (common/preferences.md): Storage Sense empties the Recycle Bin after this many days
+HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy 01
+HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy 08
+HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy 256
+
+# Screen saver and lock: whether it runs, the wait in seconds, a password on resume and which
+# screen saver. A screen saver's own settings (such as a picture folder) are set by hand
+HKCU:\Control Panel\Desktop ScreenSaveActive
+HKCU:\Control Panel\Desktop ScreenSaveTimeOut
+HKCU:\Control Panel\Desktop ScreenSaverIsSecure
+HKCU:\Control Panel\Desktop SCRNSAVE.EXE
+
+# Screenshots folder (Win+PrtScn saves here)
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders {B7BEDE81-DF94-4682-A7D8-57A52620B86F}
+
+# Accessibility. Pointer size and colour, text scaling, animations, transparency and contrast.
+# Windows may not apply some of these until the next sign-in; the script says so when it changes one
+HKCU:\Software\Microsoft\Accessibility CursorSize
+HKCU:\Software\Microsoft\Accessibility CursorType
+HKCU:\Software\Microsoft\Accessibility CursorColor
+HKCU:\Software\Microsoft\Accessibility TextScaleFactor
+HKCU:\Control Panel\Cursors CursorBaseSize
+HKCU:\Control Panel\Desktop\WindowMetrics MinAnimate
+HKCU:\Control Panel\Accessibility\HighContrast Flags
+HKCU:\Control Panel\Accessibility\Keyboard Response Flags
+HKCU:\Control Panel\Accessibility\StickyKeys Flags

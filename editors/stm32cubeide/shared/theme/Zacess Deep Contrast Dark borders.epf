@@ -1,0 +1,6 @@
+# Zacess Deep Contrast Dark for Eclipse: tab outlines under the Dark theme
+# the selected tab is outlined in yellow and every view and editor stack in cyan
+# only takes effect while General > Appearance uses the Dark theme
+file_export_version=3.0
+/instance/org.eclipse.ui.workbench/org.eclipse.e4.ui.css.theme.e4_dark.org.eclipse.ui.workbench.ACTIVE_TAB_OUTLINE_COLOR=255,255,0
+/instance/org.eclipse.ui.workbench/org.eclipse.e4.ui.css.theme.e4_dark.org.eclipse.ui.workbench.ACTIVE_TAB_OUTER_KEYLINE_COLOR=0,255,255

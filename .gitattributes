@@ -1,3 +1,7 @@
-# Command Prompt reads batch files and doskey macro files most reliably with Windows line endings
+# shell/: Command Prompt reads batch files and doskey macro files most reliably with Windows line endings
 *.cmd text eol=crlf
 *.doskey text eol=crlf
+
+# editors/neovim/: lazy.nvim always writes its lock file with LF endings, so a CRLF checkout on Windows
+# would show it as modified after every plugin sync
+editors/neovim/nvim/lazy-lock.json text eol=lf

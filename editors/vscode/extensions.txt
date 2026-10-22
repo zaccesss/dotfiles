@@ -1,0 +1,120 @@
+// C/C++ and embedded
+llvm-vs-code-extensions.lldb-dap@0.4.1
+eclipse-cdt.memory-inspector@1.2.0
+eclipse-cdt.serial-monitor@2.0.0
+ms-vscode.cmake-tools@1.23.52
+ms-vscode.cpp-devtools@0.6.18
+ms-vscode.cpptools@1.33.8
+ms-vscode.cpptools-extension-pack@1.5.1
+ms-vscode.cpptools-themes@2.0.0
+platformio.platformio-ide@3.3.4
+wokwi.wokwi-vscode@3.7.0
+stmicroelectronics.stm32-vscode-extension@3.10.0
+stmicroelectronics.stm32cube-ide-build-analyzer@1.4.0
+stmicroelectronics.stm32cube-ide-build-cmake@1.46.0
+stmicroelectronics.stm32cube-ide-bundles-manager@1.4.0
+stmicroelectronics.stm32cube-ide-clangd@1.0.6
+stmicroelectronics.stm32cube-ide-core@1.4.0
+stmicroelectronics.stm32cube-ide-debug-core@1.4.0
+stmicroelectronics.stm32cube-ide-debug-generic-gdbserver@1.4.0
+stmicroelectronics.stm32cube-ide-debug-jlink-gdbserver@1.4.0
+stmicroelectronics.stm32cube-ide-debug-stlink-gdbserver@1.4.0
+stmicroelectronics.stm32cube-ide-project-manager@1.4.0
+stmicroelectronics.stm32cube-ide-registers@1.4.0
+stmicroelectronics.stm32cube-ide-rtos@1.4.0
+marus25.cortex-debug@1.12.1
+mcu-debug.debug-tracker-vscode@0.0.15
+mcu-debug.memory-view@0.0.29
+mcu-debug.peripheral-viewer@1.6.4
+mcu-debug.rtos-views@0.0.16
+
+// Python and Jupyter
+ms-python.black-formatter@2026.6.0
+ms-python.debugpy@2026.6.0
+ms-python.flake8@2026.6.0
+ms-python.python@2026.4.0
+ms-python.vscode-pylance@2026.3.1
+ms-python.vscode-python-envs@1.36.0
+ms-toolsai.jupyter@2025.9.1
+ms-toolsai.jupyter-keymap@1.1.2
+ms-toolsai.jupyter-renderers@1.3.0
+ms-toolsai.vscode-jupyter-cell-tags@0.1.9
+ms-toolsai.vscode-jupyter-slideshow@0.1.6
+
+// Java and JVM
+redhat.java@1.56.0
+vscjava.vscode-gradle@3.18.0
+vscjava.vscode-java-debug@0.59.0
+vscjava.vscode-java-dependency@0.27.6
+vscjava.vscode-java-pack@0.31.1
+vscjava.vscode-java-test@0.46.0
+vscjava.vscode-maven@0.45.3
+oracle.oracle-java@26.0.2
+
+// .NET and C#
+ms-dotnettools.csdevkit@3.20.199
+ms-dotnettools.csharp@2.140.9
+ms-dotnettools.vscode-dotnet-runtime@3.1.0
+
+// Web and JavaScript
+bradlc.vscode-tailwindcss@0.16.0
+dbaeumer.vscode-eslint@3.0.34
+esbenp.prettier-vscode@12.4.0
+ecmel.vscode-html-css@2.0.14
+ritwickdey.liveserver@5.7.10
+ms-vscode.vscode-typescript-next@6.0.20260416
+christian-kohler.npm-intellisense@1.4.5
+christian-kohler.path-intellisense@2.10.0
+
+// Go, PHP, Swift, PowerShell
+golang.go@0.56.1
+bmewburn.vscode-intelephense-client@1.18.5
+swiftlang.swift-vscode@2.16.7
+ms-vscode.powershell@2025.4.0
+
+// Databases
+ms-mssql.data-workspace-vscode@0.6.3
+ms-mssql.mssql@1.45.1
+ms-mssql.sql-bindings-vscode@0.4.1
+ms-mssql.sql-database-projects-vscode@1.7.0
+cweijan.dbclient-jdbc@1.4.6
+cweijan.vscode-mysql-client2@9.0.2
+mtxr.sqltools@0.28.6
+formulahendry.vscode-mysql@0.5.0
+mechatroner.rainbow-csv@3.24.1
+
+// Git and GitHub
+eamodio.gitlens@19.1.0
+github.vscode-pull-request-github@0.164.0
+github.vscode-github-actions@0.32.3
+
+// Containers and cloud
+ms-azuretools.vscode-containers@2.5.0
+ms-edgedevtools.vscode-edge-devtools@2.1.10
+
+// Themes
+zacess.zacess-themes@0.3.0
+
+// Editor quality of life
+redhat.vscode-yaml@1.24.0
+gruntfuggly.todo-tree@0.0.226
+usernamehw.errorlens@3.28.0
+streetsidesoftware.code-spell-checker@4.7.3
+editorconfig.editorconfig@0.18.2
+vscodevim.vim@1.32.4
+
+// Formatting and viewing niceties
+davidanson.vscode-markdownlint@0.62.1
+shd101wyy.markdown-preview-enhanced@0.8.34
+bierner.markdown-mermaid@1.32.1
+tomoki1207.pdf@1.2.2
+zainchen.json@2.0.2
+timheuer.jsondbg@0.2.3
+dadroit.dadroit-json-generator@1.2.2
+adpyke.codesnap@1.3.4
+tamasfe.even-better-toml@0.21.2
+
+// Presence and time tracking
+icrawl.discord-vscode@5.9.2
+leonardssh.vscord@5.3.9
+wakatime.vscode-wakatime@30.2.1

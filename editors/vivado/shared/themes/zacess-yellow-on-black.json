@@ -1,0 +1,205 @@
+{
+  "name": "Zacess Yellow on Black",
+  "appearance": "dark",
+  "general_color": {
+    "CODE_EDITOR_BACKGROUND": "0",
+    "CODE_EDITOR_FOREGROUND": "ffeb3b",
+    "CODE_EDITOR_CURSOR_COLOR": "ffffff",
+    "CODE_EDITOR_LINE_HIGHLIGHT": "141414",
+    "CODE_EDITOR_SELECTION_BACKGROUND": "a2257",
+    "CODE_EDITOR_FIND_HIGHLIGHT_BACKGROUND": "3d3000",
+    "CODE_EDITOR_MATCHING_WORD_HIGHLIGHT_BACKGROUND": "a2257",
+    "CODE_EDITOR_BREAKPOINT_BACKGROUND": "3a0e0e"
+  },
+  "syntax_styles": [
+    {
+      "style_index": "0",
+      "foreground_color": "-5317",
+      "background_color": "null",
+      "font_style": "0",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "1",
+      "foreground_color": "-7814656",
+      "background_color": "null",
+      "font_style": "2",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "2",
+      "foreground_color": "-7814656",
+      "background_color": "null",
+      "font_style": "2",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "3",
+      "foreground_color": "-12323712",
+      "background_color": "null",
+      "font_style": "0",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "4",
+      "foreground_color": "-22658",
+      "background_color": "null",
+      "font_style": "0",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "5",
+      "foreground_color": "-1",
+      "background_color": "null",
+      "font_style": "0",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "6",
+      "foreground_color": "-1",
+      "background_color": "null",
+      "font_style": "1",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "7",
+      "foreground_color": "-1718273",
+      "background_color": "null",
+      "font_style": "0",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "8",
+      "foreground_color": "-15929866",
+      "background_color": "null",
+      "font_style": "1",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "9",
+      "foreground_color": "-5317",
+      "background_color": "null",
+      "font_style": "0",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "10",
+      "foreground_color": "-23139",
+      "background_color": "null",
+      "font_style": "1",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "11",
+      "foreground_color": "null",
+      "background_color": "null",
+      "font_style": "0",
+      "effect": "2",
+      "effect_color": "-16715",
+      "stripe_color": "-16715"
+    },
+    {
+      "style_index": "12",
+      "foreground_color": "-5317",
+      "background_color": "-16113065",
+      "font_style": "0",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "-10069"
+    },
+    {
+      "style_index": "13",
+      "foreground_color": "-5317",
+      "background_color": "-15461356",
+      "font_style": "0",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "14",
+      "foreground_color": "-5317",
+      "background_color": "-16113065",
+      "font_style": "0",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "-5844225"
+    },
+    {
+      "style_index": "15",
+      "foreground_color": "-1718273",
+      "background_color": "null",
+      "font_style": "2",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "16",
+      "foreground_color": "-1",
+      "background_color": "null",
+      "font_style": "2",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "17",
+      "foreground_color": "-12323712",
+      "background_color": "null",
+      "font_style": "2",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "18",
+      "foreground_color": "-22658",
+      "background_color": "null",
+      "font_style": "2",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "19",
+      "foreground_color": "-1",
+      "background_color": "null",
+      "font_style": "2",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    },
+    {
+      "style_index": "20",
+      "foreground_color": "-15929866",
+      "background_color": "null",
+      "font_style": "2",
+      "effect": "0",
+      "effect_color": "null",
+      "stripe_color": "null"
+    }
+  ]
+}

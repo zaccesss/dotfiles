@@ -1,54 +1,66 @@
 # Contributing
 
-Thanks for taking an interest. These are personal dotfiles so contributions
-are narrowly scoped, but improvements, bug reports and platform corrections are
-welcome.
+Thanks for taking an interest. These are personal configs, so contributions are narrowly scoped,
+but bug fixes, platform corrections and clearer docs are welcome in every folder.
 
 ## What belongs here
 
-- Bug fixes for existing commands (wrong flags, broken paths, syntax errors)
-- Corrections for platform differences (e.g. a macOS command that also works on Linux)
-- Missing tool support that fits the existing category structure
-- Typo and comment fixes
+- Bug fixes for an existing command, script, setting or key binding (wrong flags, broken paths,
+  syntax errors, a setting a tool no longer reads)
+- Corrections for platform differences, such as a macOS step that also works on Linux
+- A bootstrap step that fails on a supported release
+- Missing support that fits an existing folder's structure
+- Typo, link and comment fixes
 
 ## What does not belong here
 
-- New tool categories that are highly personal or niche
-- Opiniated changes to aliases that work fine as-is
+- New tools or categories that are highly personal or niche
+- Opinionated changes to aliases, key bindings or theme colours that work fine as they are
 - Reformatting files purely for style
 
 ## How to contribute
 
-1. Fork the repository and create a branch named `fix/<short-description>` or
+1. Open an issue first with the [issue forms](https://github.com/zaccesss/dotfiles/issues/new/choose)
+   and say which folder it is about.
+2. Fork the repository and create a branch named `fix/<short-description>` or
    `feat/<short-description>`.
-2. Make your changes. Follow the style rules below.
-3. Run a syntax check before opening a pull request:
-   - macOS/Linux zsh files: `zsh -n mac/topics/<file>.zsh`
-   - Linux bash files: `bash -n linux/topics/<file>.sh`
-   - PowerShell files: `pwsh -NoProfile -Command "& { . './windows/topics/<file>.ps1' }"`
-4. Open a pull request with a clear title and a one-paragraph description of
-   what changed and why.
+3. Make the change in the folder it belongs to and keep it to that folder where you can. If a change
+   applies to macOS, Linux and Windows, update all three copies.
+4. Run the checks for the folders you touched (see below).
+5. Open a pull request. The template asks which folders it touches and what you checked.
+
+## Checks before a pull request
+
+CI runs every check below on each pull request, but only for the folders that changed. Running the
+same ones locally first saves a round trip.
+
+| Folder | Local check |
+| --- | --- |
+| shell | `zsh -n shell/mac/topics/<file>.zsh`, `bash -n shell/linux/topics/<file>.sh` and `shellcheck` on the shell files |
+| setup/mac-bootstrap | `/bin/bash setup/mac-bootstrap/tests/bootstrap-test.sh` on a Mac |
+| setup/linux-bootstrap | `setup/linux-bootstrap/tests/bootstrap-test.sh` on Ubuntu |
+| setup/windows-bootstrap | `Invoke-ScriptAnalyzer` and `Invoke-Pester` from that folder, as its README shows |
+| setup/defaults | `/bin/bash setup/defaults/tests/mac-defaults-test.sh` on a Mac and the Pester tests on Windows |
+| terminal/terminal | `python3 terminal/terminal/scripts/build-themes.py --check` |
+| every `editors/` and `apps/` folder with a validator | `python3 <folder>/scripts/validate.py` |
+| any Markdown | `npx markdownlint-cli2 "**/*.md"` from the repository root |
+
+Each folder's README and guides say more about how that folder is tested. The full list of CI jobs is
+in [.github/ABOUT.md](.github/ABOUT.md).
 
 ## Style rules
 
-- **Comments** explain why, not what. One line maximum per function.
-  Bad: `# this function lists packages`
-  Good: `# bls: audit what Homebrew has installed before a clean-up.`
-- **No secrets** - never include tokens, passwords or personal credentials.
-  See [NOTICE](NOTICE.md) for the token policy.
-- **Three platforms**: if a change applies to all three platforms, update all
-  three files (mac, linux, windows). If it is platform-specific, update only
-  the relevant file and add a comment explaining why.
-- **Numbering**: do not renumber existing files. If a new file is needed,
-  discuss the placement in the pull request before creating it.
+- **Comments** explain why, not what.
+- **No secrets.** Never include tokens, passwords, private keys or personal credentials. See
+  [SECURITY.md](SECURITY.md).
+- **Folder by folder.** Each tool keeps its own README, guides and screenshots. Do not move files
+  between folders without discussing it in the issue first.
+- **Screenshots** stay byte for byte as recorded. Add new ones rather than editing existing ones.
 
 ## Reporting bugs
 
-Open an issue with:
-- Which platform (macOS / Linux / Windows)
-- Which topic file and function name
-- What you expected vs what happened
-- Any relevant error output
+Open an issue with the bug report form. It asks which folder, which platform, what you expected and
+what happened.
 
 ## The shared guide
 

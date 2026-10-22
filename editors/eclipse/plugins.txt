@@ -1,0 +1,6 @@
+// suggested plugins, one per line as: name | update site
+// install through Help > Install New Software with the update site.
+// the name also finds it in Help > Eclipse Marketplace
+
+// time tracking
+WakaTime | https://wakatime.com/eclipse/update-site/

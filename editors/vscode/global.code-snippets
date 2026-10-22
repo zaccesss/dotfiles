@@ -1,0 +1,74 @@
+{
+	"TODO comment (C-style)": {
+		"scope": "javascript,typescript,c,cpp,csharp,java,go,swift,powershell,php",
+		"prefix": "todo",
+		"body": [
+			"// TODO: $1"
+		],
+		"description": "A TODO comment C-style languages"
+	},
+	"TODO comment (hash-style)": {
+		"scope": "python,shellscript,yaml,dockerfile",
+		"prefix": "todo",
+		"body": [
+			"# TODO: $1"
+		],
+		"description": "A TODO comment hash-comment languages"
+	},
+	"TODO comment (SQL)": {
+		"scope": "sql",
+		"prefix": "todo",
+		"body": [
+			"-- TODO: $1"
+		],
+		"description": "A TODO comment SQL"
+	},
+	"Debug print (JavaScript/TypeScript)": {
+		"scope": "javascript,typescript",
+		"prefix": "dbg",
+		"body": [
+			"console.log('$1:', $1);"
+		],
+		"description": "Log a variable with its own name as a label"
+	},
+	"Debug print (Python)": {
+		"scope": "python",
+		"prefix": "dbg",
+		"body": [
+			"print(f\"$1: {$1}\")"
+		],
+		"description": "Print a variable with its own name as a label"
+	},
+	"Debug print (C/C++)": {
+		"scope": "c,cpp",
+		"prefix": "dbg",
+		"body": [
+			"printf(\"$1: %d\\n\", $1);"
+		],
+		"description": "Print a variable with its own name as a label"
+	},
+	"Debug print (Java)": {
+		"scope": "java",
+		"prefix": "dbg",
+		"body": [
+			"System.out.println(\"$1: \" + $1);"
+		],
+		"description": "Print a variable with its own name as a label"
+	},
+	"Debug print (Go)": {
+		"scope": "go",
+		"prefix": "dbg",
+		"body": [
+			"fmt.Println(\"$1:\", $1)"
+		],
+		"description": "Print a variable with its own name as a label"
+	},
+	"Debug print (Swift)": {
+		"scope": "swift",
+		"prefix": "dbg",
+		"body": [
+			"print(\"$1: \\($1)\")"
+		],
+		"description": "Print a variable with its own name as a label"
+	}
+}

@@ -1,0 +1,39 @@
+# lazygit config. The path differs per OS, see lazygit/README.md.
+
+gui:
+  # terminal colour names rather than fixed hex values, so lazygit follows the terminal's light or
+  # dark palette; the selected line is reversed so it stands out in either mode
+  theme:
+    activeBorderColor:
+      - yellow
+      - bold
+    inactiveBorderColor:
+      - default
+    selectedLineBgColor:
+      - reverse
+    optionsTextColor:
+      - yellow
+  showFileTree: true
+  showCommandLog: true
+  mouseEvents: true
+  nerdFontsVersion: "3"
+git:
+  diffRenderers:
+    - colorArg: always
+      # terminal colour names instead of a syntax theme, so diffs follow the terminal's light or dark
+      # palette; delta cannot safely ask the terminal which mode it is in while lazygit owns the screen
+      command: delta --paging=never --syntax-theme=none --zero-style=normal --plus-style=green --minus-style=red --plus-emph-style="bold reverse green" --minus-emph-style="bold reverse red"
+  commit:
+    signOff: false
+  autoFetch: true
+# vi-style h/j/k/l navigation for tabs and list items.
+keybinding:
+  universal:
+    nextTab: "l"
+    prevTab: "h"
+    prevItem: "k"
+    nextItem: "j"
+  files:
+    commitChanges: "c"
+  commits:
+    viewResetOptions: "r"

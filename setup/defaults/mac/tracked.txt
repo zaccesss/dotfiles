@@ -1,0 +1,87 @@
+# macOS settings carried from one Mac to the next, one "domain key" per line.
+# `bash mac/defaults.sh --capture` reads each one from the current Mac and writes what is actually
+# set to defaults.tsv. Keys left at the system default are not recorded, so nothing is imposed that
+# nobody chose. Add a key here, then capture again.
+
+# Dock
+com.apple.dock autohide
+com.apple.dock tilesize
+com.apple.dock orientation
+com.apple.dock show-recents
+com.apple.dock magnification
+com.apple.dock largesize
+com.apple.dock mru-spaces
+com.apple.dock minimize-to-application
+com.apple.dock wvous-br-corner
+com.apple.dock wvous-br-corner-modifier
+
+# Finder
+com.apple.finder ShowStatusBar
+com.apple.finder ShowPathbar
+com.apple.finder FXPreferredViewStyle
+com.apple.finder FXDefaultSearchScope
+com.apple.finder AppleShowAllFiles
+com.apple.finder _FXShowPosixPathInTitle
+com.apple.finder _FXSortFoldersFirst
+com.apple.finder FXEnableExtensionChangeWarning
+com.apple.finder NewWindowTarget
+com.apple.finder FXRemoveOldTrashItems
+com.apple.desktopservices DSDontWriteNetworkStores
+com.apple.desktopservices DSDontWriteUSBStores
+
+# appearance, language and units
+NSGlobalDomain AppleInterfaceStyle
+NSGlobalDomain AppleAccentColor
+NSGlobalDomain AppleHighlightColor
+NSGlobalDomain AppleShowScrollBars
+NSGlobalDomain AppleShowAllExtensions
+NSGlobalDomain AppleLocale
+NSGlobalDomain AppleMeasurementUnits
+NSGlobalDomain AppleMetricUnits
+NSGlobalDomain AppleTemperatureUnit
+NSGlobalDomain AppleICUForce24HourTime
+
+# keyboard and text input
+NSGlobalDomain KeyRepeat
+NSGlobalDomain InitialKeyRepeat
+NSGlobalDomain ApplePressAndHoldEnabled
+NSGlobalDomain AppleKeyboardUIMode
+NSGlobalDomain NSAutomaticSpellingCorrectionEnabled
+NSGlobalDomain NSAutomaticCapitalizationEnabled
+NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled
+NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled
+NSGlobalDomain NSAutomaticDashSubstitutionEnabled
+
+# trackpad and scrolling
+NSGlobalDomain com.apple.swipescrolldirection
+com.apple.AppleMultitouchTrackpad Clicking
+com.apple.AppleMultitouchTrackpad TrackpadRightClick
+com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag
+
+# screenshots
+com.apple.screencapture location
+com.apple.screencapture type
+com.apple.screencapture disable-shadow
+com.apple.screencapture show-thumbnail
+
+# menu bar clock
+com.apple.menuextra.clock ShowSeconds
+com.apple.menuextra.clock ShowDate
+com.apple.menuextra.clock ShowDayOfWeek
+com.apple.menuextra.clock ShowAMPM
+com.apple.menuextra.clock IsAnalog
+com.apple.menuextra.clock FlashDateSeparators
+
+# accessibility. macOS may refuse writes here from a script; the script then lists each one so
+# it can be set in System Settings, Accessibility
+com.apple.universalaccess increaseContrast
+com.apple.universalaccess reduceTransparency
+com.apple.universalaccess reduceMotion
+com.apple.universalaccess differentiateWithoutColor
+com.apple.universalaccess mouseDriverCursorSize
+com.apple.universalaccess cursorIsCustomized
+com.apple.universalaccess cursorFill
+com.apple.universalaccess cursorOutline
+com.apple.universalaccess closeViewHotkeysEnabled
+com.apple.universalaccess closeViewScrollWheelToggle
+com.apple.universalaccess closeViewSmoothImages

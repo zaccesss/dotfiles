@@ -1,0 +1,35 @@
+// Testing and diagnostics
+com.jetbrains.performancePlugin@261.24374.171
+
+// C/C++ and embedded build systems
+com.intellij.cmake@262.9437.142
+com.intellij.clion.meson@262.9437.142
+com.jetbrains.rust@262.9437.161
+
+// Languages beyond C/C++
+JavaScriptDebugger@261.24374.151
+intellij.vitejs@261.25134.147
+intellij.prettierJS@262.9437.195
+org.jetbrains.plugins.vue@261.24374.154
+PythonCore@262.9437.185
+ru.adelf.idea.dotenv@262.10315.69
+
+// Containers and cloud
+Docker@262.9437.196
+com.intellij.kubernetes@262.10315.24
+
+// Tooling and integrations
+org.editorconfig.editorconfigjetbrains@262.10315.19
+
+// Editor feel and theming
+com.zacess.themes@0.4.0
+com.intellij.plugins.vscodekeymap@262.8665.258
+com.markskelton.one-dark-theme@6.2.5
+
+// Presence and time tracking
+com.almightyalpaca.intellij.plugins.discord@1.12.0
+com.wakatime.intellij.plugin@16.1.2
+
+// Learning
+org.hyperskill.academy@2026.19-2026.2
+com.jetbrains.edu@2026.5-2026.1-405

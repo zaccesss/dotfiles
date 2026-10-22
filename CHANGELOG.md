@@ -8,9 +8,70 @@ Versions increment by one patch step (0.0.1) per release.
 
 ## [Unreleased]
 
+### Added
+
+- Every public config now lives in this one repository, grouped by what it is for. Each folder keeps its own README, guides, accessibility statement and screenshots. Each came from its own repository:
+
+  | Folder | Came from |
+  | --- | --- |
+  | `setup/mac-bootstrap/` | `zaccesss/mac-bootstrap` |
+  | `setup/linux-bootstrap/` | `zaccesss/linux-bootstrap` |
+  | `setup/windows-bootstrap/` | `zaccesss/windows-bootstrap` |
+  | `setup/defaults/` | `zaccesss/system-defaults` |
+  | `terminal/terminal/` | `zaccesss/terminal-config` |
+  | `terminal/tmux/` | `zaccesss/tmux-config` |
+  | `terminal/cli-tools/` | `zaccesss/cli-tools-config` |
+  | `git/gitconfig/` | `zaccesss/git-config` |
+  | `git/git-hooks/` | `zaccesss/git-hooks` |
+  | `git/ssh/` | `zaccesss/ssh-config` |
+  | `editors/vscode/` | `zaccesss/vscode-config` |
+  | `editors/zed/` | `zaccesss/zed-config` |
+  | `editors/jetbrains/` | `zaccesss/jetbrains-config` |
+  | `editors/eclipse/` | `zaccesss/eclipse-config` |
+  | `editors/stm32cubeide/` | `zaccesss/stm32cubeide-config` |
+  | `editors/xcode/` | `zaccesss/xcode-config` |
+  | `editors/neovim/` | `zaccesss/neovim-config` |
+  | `apps/raycast/` | `zaccesss/raycast-config` |
+  | `apps/rectangle/` | `zaccesss/rectangle-config` |
+
+- A README for each group (`setup`, `shell`, `terminal`, `git`, `editors` and `apps`) and a master README at the root that links them all.
+- One CI workflow for the whole repository that runs each folder's checks only when that folder changes, including the macOS, Windows and Ubuntu test jobs. `.github/ABOUT.md` lists every job, form and template.
+- Issue forms with a "Which tool?" dropdown and a pull request template with a checklist of every folder.
+- Windows screenshots of the PowerShell banner, `cmds`, `gs` and `glog` and the Command Prompt prompt in Zacess Deep Contrast Dark and Light, in the shell README.
+- The Zacess themes for eleven more editors, each in its own folder under `editors/` with apply scripts, a validator and its own CI job: `arduino` (Arduino IDE 2), `microchip-studio` (Microchip Studio 7), `kicad`, `vivado`, `processing`, `notepad-plus-plus`, `nextpad-plus-plus`, `thonny`, `matlab`, `ltspice` and `proteus`.
+- `apps/obsidian` and `apps/zotero`: the Zacess theme in an Obsidian vault named by the caller or `OBSIDIAN_VAULT` and Zotero's mode and reader theme matched to the Zacess theme.
+- `zt` switches STM32CubeIDE and every new editor and app above by running each folder's own apply script while that app is closed. `zt current` reads each one back.
+- Temporary forwarding files at the shell profile's old paths (`mac/`, `linux/` and `windows/` at the root) keep a machine working if it pulls before its bootstrap re-runs. Each forwards to `shell/` and prints one line saying to run the bootstrap.
+- The three bootstraps end with an Apps stage that runs the apply script of every installed editor and app, printing one line per app. An app that is open, not installed or not started once is skipped and the run carries on. On macOS and Linux the stage uses the theme `zt` last set and `--apps-only` runs it again on its own; on Windows it is the `apps` stage. On macOS Rectangle is offered its config once. Obsidian is applied when `OBSIDIAN_VAULT` names its vault.
+- `editors/zed` and `editors/jetbrains` have apply scripts like every other editor folder, each with a validator in CI. Zed's installs the Zacess theme file (the 0.4.0 release, kept in `shared/themes` while the extension store still serves 0.2.1 and removed once the installed extension catches up) and sets the theme in `settings.json`, reusing `zt`'s own theme block and JSON-with-comments editing. JetBrains' installs the Zacess Themes plugin into every IDE with the IDE's own `installPlugins` command (or the pinned release when no launcher is found), copies in the colour schemes, file template, keymap and fonts, sets the theme through `zt`'s own function and points new projects at `~/dev/projects`. The Mac bootstrap's configs stage links Zed's `settings.json`.
+- One projects folder for every editor: MATLAB starts in `~/dev/projects/matlab`, Thonny in `~/dev/projects/python`, the Arduino IDE sketchbook is `~/dev/projects/arduino`, the Processing sketchbook is `~/dev/projects/processing`, Microchip Studio puts new projects in `~\dev\projects\avr` and every JetBrains IDE offers `~/dev/projects` for a new project. Each folder is made when it is missing. Moving an existing sketchbook is a step of its own, in the Arduino and Processing READMEs.
+- Thonny runs code in its own virtual environment, `~/.venvs/thonny`, made once from Python 3.15 on every OS (Homebrew's `python@3.15` on macOS, the Python install manager on Windows, `uv` or `python3.15` on Linux), so packages from **Tools > Manage packages** stay out of the system Python. The apply script makes it Thonny's interpreter and keeps earlier choices in Thonny's recent list.
+- MATLAB's dark theme gets the Zacess syntax, editor and Command Window colours from code. Each theme also has a colour scheme in `editors/matlab/shared/schemes`, applied with `import_scheme` from MathWorks' Color Theme Extensions add-on, which the apply scripts download at a pinned commit and check against its digests. The add-on's template is kept unchanged with its BSD 3-Clause licence, credited in `NOTICE.md`.
+- `zt` on Windows switches Microchip Studio too: its apply script's new `-Close` starts Studio, imports the theme and closes it so the colours are saved. `zt current` reads back its dark or light environment theme.
+- CI lints `shell/scripts` with ruff, gives the forwarding zshrc files zsh's own syntax check and parses the forwarding PowerShell files. The shell checks also run when `editors/` or `apps/` change, since `zt` calls their apply scripts.
+- The Mac Brewfile installs Nextpad++ from its Homebrew cask.
+- The `zacess-theme` shell topics name every tool `zt` switches, the shell guide has a `zt` entry and `CONTRIBUTING.md` lists the validators every `editors/` and `apps/` folder is checked with.
+
 ### Changed
 
 - The Mac moves to Python 3.15: the Brewfile installs `python@3.15` and the PATH shim points `python` and `pip` at it, so they match `python3`.
+- The shell profile, its scripts, guides, journal and screenshots move into `shell/`. `DOTFILES` now points at that folder, so the default is `~/dev/github/repos/dotfiles/shell`. `dot` now asks git whether that folder is inside a clone.
+- The three bootstraps clone only this repository and link every config from its folder, instead of cloning a repository per tool. The clone goes to `~/dev/github/repos/dotfiles` (`%USERPROFILE%\dev\github\repos\dotfiles` on Windows), the folder the shell profile already expects, instead of `~/.dotfiles`. `BOOTSTRAP_CONFIG_DIR` still changes the parent folder and every README and guide uses the new path.
+- A machine set up by an earlier release is re-pointed when its bootstrap runs again. On Windows that covers the Neovim and Git hooks junctions into an old clone in `~\.dotfiles` (only the clones earlier releases made), the old `zt` folder on the user `PATH`, the old Command Prompt `AutoRun` call and a Windows PowerShell 5.1 profile pointing at the old loader, with tests. `~/.dotfiles` can then be deleted.
+- The Processing apply scripts set the sketchbook themselves instead of reading it from `preferences.txt`. The Zotero Windows script's `-Profile` is now `-ProfileDir`, so it no longer shadows PowerShell's own `$PROFILE`.
+- `zt` reads the Eclipse themes from `editors/eclipse/theme` in the same clone unless `ZT_ECLIPSE_THEMES` says otherwise.
+- The PowerShell profile and the Command Prompt start-up treat a `DOTFILES` that names the clone's root as unset, so a window opened before the move still loads the profile. An elevated PowerShell window moves from System32 to the home folder.
+- The Windows bootstrap moves a Windows PowerShell 5.1 profile that points at the old loader to the new one, with a test.
+- Python bytecode (`__pycache__` and `*.pyc`) is ignored.
+- The root community files (contributing guide, security policy, support, accessibility statement and notice) now cover every folder. The bootstraps stay under the Apache License 2.0 with their own `LICENSE` and `NOTICE.md`; everything else is MIT.
+
+### Fixed
+
+- On macOS, `zt`, `termtheme` and every Mac apply script see an app as open when they run inside its own terminal. macOS `pgrep` leaves out its own ancestors unless given `-a`, so `zt` run from Terminal.app wrote the defaults without switching the open tabs and an apply script run from an IDE's terminal changed settings the IDE then wrote over.
+- `zt` on Linux sees a JetBrains IDE installed from a tarball as open, by the paths selector its Java process carries.
+- The Linux Thonny script finds a Thonny installed with apt or dnf when `uv`'s Python comes first on `PATH`.
+- The Command Prompt start-up only accepts a `DOTFILES` that holds the shell folder's macros, so a window opened before the move no longer loads the root's stand-in.
+- Ruff findings in `shell/scripts/games.py`, the Microchip Studio scripts and the Proteus build script.
 
 ## [1.0.10] - 2026-10-22
 

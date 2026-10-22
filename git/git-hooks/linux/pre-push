@@ -1,0 +1,44 @@
+#!/bin/sh
+# Runs before a push. Two checks:
+#   1. Blocks a force-push that would rewrite main/master's history
+#   2. Git LFS passthrough (unrelated to policy, only relevant to a repo that
+#      actually uses LFS)
+#
+# Git passes each ref being pushed on stdin as:
+#   <local ref> <local sha1> <remote ref> <remote sha1>
+# A push is a force-push exactly when the remote sha1 is not an ancestor of
+# the local sha1, i.e. history was rewritten rather than fast-forwarded.
+#
+# stdin is captured into a variable up front rather than read directly,
+# because git-lfs's own pre-push hook (invoked below) needs to read that
+# same ref list too, consuming stdin once in the check loop would leave
+# nothing for it and silently break LFS object uploads.
+
+ref_input=$(cat)
+
+# shellcheck disable=SC2034  # local_ref is unused but required to correctly parse git's 4-field pre-push stdin format
+echo "$ref_input" | while read -r local_ref local_sha remote_ref remote_sha; do
+    case "$remote_ref" in
+        refs/heads/main|refs/heads/master) ;;
+        *) continue ;;
+    esac
+
+    # A deleted branch has local_sha all zeros, nothing to check.
+    case "$local_sha" in
+        0000000000000000000000000000000000000000) continue ;;
+    esac
+    # A brand-new remote branch has remote_sha all zeros, not a rewrite.
+    case "$remote_sha" in
+        0000000000000000000000000000000000000000) continue ;;
+    esac
+
+    if ! git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
+        branch_name=$(echo "$remote_ref" | sed 's#refs/heads/##')
+        echo "Error: this push force-rewrites $branch_name's history."
+        echo "If this is genuinely intentional, push with --no-verify."
+        exit 1
+    fi
+done || exit 1
+
+command -v git-lfs >/dev/null 2>&1 || { printf >&2 "\n%s\n\n" "This repository is configured for Git LFS but 'git-lfs' was not found on your path. If you no longer wish to use Git LFS, remove this hook by deleting the 'pre-push' file in the hooks directory (set by 'core.hookspath'; usually '.git/hooks')."; exit 2; }
+echo "$ref_input" | git lfs pre-push "$@"

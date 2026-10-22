@@ -1,0 +1,12 @@
+{
+  "workbench.colorTheme": "Zacess Deep Contrast Dark",
+  "editor.fontFamily": "'GeistMono Nerd Font', 'GeistMono NF', monospace",
+  "editor.fontSize": 16,
+  "files.autoSave": "afterDelay",
+  "editor.quickSuggestions": {
+    "other": false,
+    "comments": false,
+    "strings": false
+  },
+  "window.titleBarStyle": "native"
+}

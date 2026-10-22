@@ -1,5 +1,5 @@
 name: Feature request
-description: Propose a new alias, function or a fix to an existing one
+description: Propose something new or a change to an alias, setting, key binding or bootstrap step
 title: "feat: "
 labels: ["enhancement"]
 assignees:
@@ -10,6 +10,48 @@ body:
     attributes:
       label: What
       description: A short sentence explaining what this issue covers.
+    validations:
+      required: true
+  - type: dropdown
+    id: tool
+    attributes:
+      label: Which tool?
+      description: The folder this issue is about.
+      options:
+        - shell (profiles, aliases, prompt, zt)
+        - setup/mac-bootstrap
+        - setup/linux-bootstrap
+        - setup/windows-bootstrap
+        - setup/defaults
+        - terminal/terminal
+        - terminal/tmux
+        - terminal/cli-tools
+        - git/gitconfig
+        - git/git-hooks
+        - git/ssh
+        - editors/vscode
+        - editors/zed
+        - editors/jetbrains
+        - editors/eclipse
+        - editors/stm32cubeide
+        - editors/xcode
+        - editors/neovim
+        - editors/arduino
+        - editors/microchip-studio
+        - editors/kicad
+        - editors/vivado
+        - editors/processing
+        - editors/notepad-plus-plus
+        - editors/nextpad-plus-plus
+        - editors/thonny
+        - editors/matlab
+        - editors/ltspice
+        - editors/proteus
+        - apps/raycast
+        - apps/rectangle
+        - apps/obsidian
+        - apps/zotero
+        - The repository as a whole (README, CI, templates)
     validations:
       required: true
   - type: textarea

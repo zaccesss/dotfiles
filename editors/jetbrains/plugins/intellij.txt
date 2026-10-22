@@ -1,0 +1,25 @@
+// Languages beyond the JVM
+org.jetbrains.plugins.go@262.10315.125
+com.jetbrains.php@262.10315.19
+org.jetbrains.plugins.vue@262.9437.28
+ru.adelf.idea.dotenv@262.10315.69
+PythonCore@262.10315.125
+Pythonid@262.10315.125
+
+// Version control beyond Git
+hg4idea@262.8665.173
+PerforceDirectPlugin@262.8665.176
+Subversion@262.10315.131
+
+// Editor feel and theming
+com.zacess.themes@0.4.0
+com.intellij.plugins.vscodekeymap@262.8665.258
+com.markskelton.one-dark-theme@6.2.5
+
+// Presence and time tracking
+com.almightyalpaca.intellij.plugins.discord@1.12.0
+com.wakatime.intellij.plugin@16.1.2
+
+// Learning
+org.hyperskill.academy@2026.19-2026.2
+com.jetbrains.edu@2026.8-2026.2-396

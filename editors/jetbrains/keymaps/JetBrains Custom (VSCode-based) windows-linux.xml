@@ -1,0 +1,8 @@
+<keymap version="1" name="JetBrains Custom (VSCode-based) windows-linux" parent="VSCode">
+  <action id="Console.Jdbc.Execute">
+    <keyboard-shortcut first-keystroke="ctrl alt q" />
+  </action>
+  <action id="Git.Branches">
+    <keyboard-shortcut first-keystroke="ctrl alt g" />
+  </action>
+</keymap>

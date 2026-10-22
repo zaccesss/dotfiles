@@ -1,0 +1,81 @@
+{
+  "name": "Zacess Dark",
+  "settings": {
+    "matlab.appearance.MATLABTheme": "Dark",
+    "matlab.colors.KeywordColor": [
+      211,
+      189,
+      255
+    ],
+    "matlab.colors.CommentColor": [
+      128,
+      194,
+      1
+    ],
+    "matlab.colors.StringColor": [
+      30,
+      230,
+      70
+    ],
+    "matlab.colors.SystemCommandColor": [
+      255,
+      210,
+      230
+    ],
+    "matlab.colors.ValidationSectionColor": [
+      3,
+      222,
+      221
+    ],
+    "matlab.colors.UnterminatedStringColor": [
+      255,
+      204,
+      196
+    ],
+    "matlab.colors.SyntaxErrorColor": [
+      255,
+      204,
+      196
+    ],
+    "matlab.colors.commandwindow.ErrorColor": [
+      255,
+      204,
+      196
+    ],
+    "matlab.colors.commandwindow.WarningColor": [
+      255,
+      217,
+      186
+    ],
+    "matlab.colors.commandwindow.HyperlinkColor": [
+      140,
+      188,
+      255
+    ],
+    "matlab.colors.programmingtools.CodeAnalyzerWarningColor": [
+      255,
+      217,
+      186
+    ],
+    "matlab.colors.programmingtools.CodeAnalyzerInfoColor": [
+      140,
+      188,
+      255
+    ],
+    "matlab.colors.programmingtools.VariablesWithSharedScopeColor": [
+      3,
+      222,
+      221
+    ],
+    "matlab.colors.programmingtools.VariableHighlightColor": [
+      26,
+      36,
+      54
+    ],
+    "matlab.colors.programmingtools.AutofixHighlightColor": [
+      31,
+      31,
+      31
+    ]
+  }
+}

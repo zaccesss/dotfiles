@@ -1,0 +1,173 @@
+{
+  "DesktopTheme": "Dark",
+  "TextColor": "#F5F5F5",
+  "BackgroundColor": "#121212",
+  "HighlightCurrentLine": true,
+  "HighlightCurrentLineColor": "#1F1F1F",
+  "ShowRightHandTextLimitLine": true,
+  "RightHandTextLimitLineColor": "#6B6B6B",
+  "MATLABSyntaxHighlightingColors": {
+    "KeywordsColor": "#D3BDFF",
+    "CommentsColor": "#80C201",
+    "StringsColor": "#1EE646",
+    "UnterminatedStringsColor": "#FFCCC4",
+    "SystemCommandsColor": "#FFD2E6",
+    "ValidationSectionsColor": "#03DEDD",
+    "SyntaxErrorsColor": "#FFCCC4",
+    "EnableSyntaxHighlighting": true,
+    "ApplySmartIndentWhileTyping": true
+  },
+  "MATLABOutputColors": {
+    "ErrorTextColor": "#FFCCC4",
+    "WarningTextColor": "#FFD9BA",
+    "HyperlinksInCommandWindowColor": "#8CBCFF"
+  },
+  "ProgrammingTools": {
+    "CodeAnalyzerColors": {
+      "WarningsColor": "#FFD9BA",
+      "InfoColor": "#8CBCFF",
+      "AutofixHighlight": true,
+      "AutofixHighlightColor": "#1F1F1F"
+    },
+    "VariableAndFunctionColors": {
+      "VariablesWithSharedScope": true,
+      "VariablesWithSharedScopeColor": "#03DEDD",
+      "AutomaticallyHighlight": true,
+      "AutomaticallyHighlightColor": "#1A2436"
+    }
+  },
+  "OtherLanguages": {
+    "C": {
+      "KeywordsColor": "#D3BDFF",
+      "CommentsColor": "#80C201",
+      "StringsColor": "#1EE646",
+      "PreprocessorColor": "#FFD2E6",
+      "CharactersColor": "#1EE646",
+      "EnableSyntaxHighlighting": true,
+      "ApplySmartIndentWhileTyping": true
+    },
+    "Cpp": {
+      "KeywordsColor": "#D3BDFF",
+      "CommentsColor": "#80C201",
+      "StringsColor": "#1EE646",
+      "PreprocessorColor": "#FFD2E6",
+      "CharactersColor": "#1EE646",
+      "EnableSyntaxHighlighting": true,
+      "ApplySmartIndentWhileTyping": true
+    },
+    "XML": {
+      "AttributeNameColor": "#03DEDD",
+      "AttributeValueColor": "#1EE646",
+      "CDATASectionColor": "#1EE646",
+      "CharacterColor": "#1EE646",
+      "CommentColor": "#80C201",
+      "DOCTYPEDeclarationColor": "#FFD2E6",
+      "ErrorColor": "#FFCCC4",
+      "TagColor": "#D3BDFF",
+      "ProcessingInstructionColor": "#FFD2E6",
+      "EnableSyntaxHighlighting": true,
+      "ApplySmartIndentWhileTyping": true
+    },
+    "HTML": {
+      "AttributeNameColor": "#03DEDD",
+      "AttributeValueColor": "#1EE646",
+      "CDATASectionColor": "#1EE646",
+      "CharacterColor": "#1EE646",
+      "CommentColor": "#80C201",
+      "DOCTYPEDeclarationColor": "#FFD2E6",
+      "ErrorColor": "#FFCCC4",
+      "TagColor": "#D3BDFF",
+      "ProcessingInstructionColor": "#FFD2E6",
+      "EnableSyntaxHighlighting": true,
+      "ApplySmartIndentWhileTyping": true
+    },
+    "Simscape": {
+      "KeywordsColor": "#D3BDFF",
+      "CommentsColor": "#80C201",
+      "StringsColor": "#1EE646",
+      "UnterminatedStringsColor": "#FFCCC4",
+      "EnableSyntaxHighlighting": true,
+      "ApplySmartIndentWhileTyping": true
+    },
+    "Java": {
+      "KeywordsColor": "#D3BDFF",
+      "CommentsColor": "#80C201",
+      "StringsColor": "#1EE646",
+      "CharactersColor": "#1EE646",
+      "EnableSyntaxHighlighting": true,
+      "ApplySmartIndentWhileTyping": true
+    },
+    "Javascript": {
+      "KeywordsColor": "#D3BDFF",
+      "CommentsColor": "#80C201",
+      "StringsColor": "#1EE646",
+      "EnableSyntaxHighlighting": true,
+      "ApplySmartIndentWhileTyping": true
+    },
+    "Markdown": {
+      "HeadingsColor": "#84B7FA",
+      "HorizontalRuleColor": "#FFD9BA",
+      "ListsColor": "#D3BDFF",
+      "BoldColor": "#84B7FA",
+      "ItalicColor": "#84B7FA",
+      "LinksColor": "#8CBCFF",
+      "CodeBlocksColor": "#84B7FA",
+      "CommentsColor": "#80C201",
+      "BlockQuotesColor": "#80C201",
+      "HTMLColor": "#8CBCFF",
+      "EnableSyntaxHighlighting": true
+    },
+    "Typescript": {
+      "KeywordsColor": "#D3BDFF",
+      "StringsColor": "#1EE646",
+      "CommentsColor": "#80C201",
+      "EnableSyntaxHighlighting": true,
+      "ApplySmartIndentWhileTyping": true
+    },
+    "JSON": {
+      "KeywordsColor": "#D3BDFF",
+      "StringsColor": "#1EE646",
+      "CommentsColor": "#80C201",
+      "EnableSyntaxHighlighting": true,
+      "ApplySmartIndentWhileTyping": true
+    },
+    "Python": {
+      "KeywordsColor": "#D3BDFF",
+      "StringsColor": "#1EE646",
+      "CommentsColor": "#80C201",
+      "ErrorColor": "#FFCCC4",
+      "EnableSyntaxHighlighting": true,
+      "ApplySmartIndentWhileTyping": true
+    },
+    "YAML": {
+      "KeysColor": "#D3BDFF",
+      "StringsColor": "#1EE646",
+      "CommentsColor": "#80C201",
+      "NumbersAndKeywordsColor": "#FFD9BA",
+      "EnableSyntaxHighlighting": true,
+      "ApplySmartIndentWhileTyping": true
+    },
+    "TLC": {
+      "CommandsColor": "#D3BDFF",
+      "CommentsColor": "#80C201",
+      "CStringsColor": "#1EE646",
+      "MacroColor": "#FFD2E6",
+      "EnableSyntaxHighlighting": true,
+      "ApplySmartIndentWhileTyping": true
+    },
+    "Verilog": {
+      "KeywordsColor": "#D3BDFF",
+      "CommentsColor": "#80C201",
+      "StringsColor": "#1EE646",
+      "OperatorsColor": "#FFD9BA",
+      "EnableSyntaxHighlighting": true
+    },
+    "VHDL": {
+      "KeywordsColor": "#D3BDFF",
+      "CommentsColor": "#80C201",
+      "StringsColor": "#1EE646",
+      "OperatorsColor": "#FFD9BA",
+      "EnableSyntaxHighlighting": true
+    }
+  }
+}

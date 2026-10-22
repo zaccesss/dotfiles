@@ -1,3 +1,5 @@
 @echo off
-rem runs the PowerShell version of zt, so Command Prompt switches themes the same way
-pwsh -NoLogo -NoProfile -File "%~dp0zt.ps1" %*
+rem temporary forwarding file: the real one moved to shell/. removed in a later release, once
+rem a machine has had time to re-run its bootstrap
+for %%I in ("%~dp0..\..\shell") do set "DOTFILES=%%~fI"
+call "%DOTFILES%\windows\scripts\zt.cmd" %*

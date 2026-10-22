@@ -1,0 +1,57 @@
+[
+	{
+		"key": "cmd+alt+t",
+		"command": "workbench.action.terminal.focus",
+		"comment": "Focus the integrated terminal"
+	},
+	{
+		"key": "cmd+alt+r",
+		"command": "workbench.action.tasks.test",
+		"comment": "Run the default test task"
+	},
+	{
+		"key": "cmd+alt+w",
+		"command": "editor.action.toggleWordWrap",
+		"comment": "Toggle word wrap for the current file, an override on top of the global editor.wordWrap setting"
+	},
+	{
+		"key": "cmd+alt+e",
+		"command": "revealFileInOS",
+		"comment": "Reveal the active file in Finder"
+	},
+	{
+		"key": "cmd+alt+b",
+		"command": "gitlens.toggleFileBlame",
+		"comment": "Toggle inline GitLens blame for the current file"
+	},
+	{
+		"key": "cmd+alt+d",
+		"command": "errorLens.toggleError",
+		"comment": "Toggle Error Lens inline error diagnostics"
+	},
+	{
+		"key": "cmd+alt+q",
+		"command": "sqltools.executeQuery",
+		"comment": "Run the selected query in SQLTools"
+	},
+	{
+		"key": "cmd+alt+m",
+		"command": "markdown.showPreviewToSide",
+		"comment": "Open a live markdown preview beside the editor"
+	},
+	{
+		"key": "cmd+alt+shift+b",
+		"command": "platformio-ide.build",
+		"comment": "Build the current PlatformIO project"
+	},
+	{
+		"key": "cmd+alt+shift+u",
+		"command": "platformio-ide.upload",
+		"comment": "Upload firmware to the connected board"
+	},
+	{
+		"key": "cmd+alt+shift+m",
+		"command": "platformio-ide.serialMonitor",
+		"comment": "Open the PlatformIO serial monitor"
+	}
+]

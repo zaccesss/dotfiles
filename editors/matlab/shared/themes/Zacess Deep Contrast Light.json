@@ -1,0 +1,81 @@
+{
+  "name": "Zacess Deep Contrast Light",
+  "settings": {
+    "matlab.appearance.MATLABTheme": "Light",
+    "matlab.colors.KeywordColor": [
+      0,
+      46,
+      194
+    ],
+    "matlab.colors.CommentColor": [
+      0,
+      97,
+      8
+    ],
+    "matlab.colors.StringColor": [
+      135,
+      0,
+      0
+    ],
+    "matlab.colors.SystemCommandColor": [
+      149,
+      0,
+      148
+    ],
+    "matlab.colors.ValidationSectionColor": [
+      0,
+      58,
+      57
+    ],
+    "matlab.colors.UnterminatedStringColor": [
+      170,
+      0,
+      0
+    ],
+    "matlab.colors.SyntaxErrorColor": [
+      170,
+      0,
+      0
+    ],
+    "matlab.colors.commandwindow.ErrorColor": [
+      170,
+      0,
+      0
+    ],
+    "matlab.colors.commandwindow.WarningColor": [
+      163,
+      0,
+      95
+    ],
+    "matlab.colors.commandwindow.HyperlinkColor": [
+      0,
+      61,
+      246
+    ],
+    "matlab.colors.programmingtools.CodeAnalyzerWarningColor": [
+      163,
+      0,
+      95
+    ],
+    "matlab.colors.programmingtools.CodeAnalyzerInfoColor": [
+      0,
+      61,
+      246
+    ],
+    "matlab.colors.programmingtools.VariablesWithSharedScopeColor": [
+      0,
+      58,
+      57
+    ],
+    "matlab.colors.programmingtools.VariableHighlightColor": [
+      240,
+      245,
+      255
+    ],
+    "matlab.colors.programmingtools.AutofixHighlightColor": [
+      245,
+      245,
+      245
+    ]
+  }
+}

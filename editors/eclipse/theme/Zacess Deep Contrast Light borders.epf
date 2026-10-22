@@ -1,0 +1,6 @@
+# Zacess Deep Contrast Light for Eclipse: tab outlines under the Light theme
+# the selected tab is outlined in red and every view and editor stack in navy
+# only takes effect while General > Appearance uses the Light theme
+file_export_version=3.0
+/instance/org.eclipse.ui.workbench/org.eclipse.e4.ui.css.theme.e4_default.org.eclipse.ui.workbench.ACTIVE_TAB_OUTLINE_COLOR=181,32,13
+/instance/org.eclipse.ui.workbench/org.eclipse.e4.ui.css.theme.e4_default.org.eclipse.ui.workbench.ACTIVE_TAB_OUTER_KEYLINE_COLOR=15,74,133

@@ -1,0 +1,81 @@
+{
+  "name": "Zacess Cream",
+  "settings": {
+    "matlab.appearance.MATLABTheme": "Light",
+    "matlab.colors.KeywordColor": [
+      83,
+      0,
+      147
+    ],
+    "matlab.colors.CommentColor": [
+      139,
+      1,
+      98
+    ],
+    "matlab.colors.StringColor": [
+      0,
+      68,
+      12
+    ],
+    "matlab.colors.SystemCommandColor": [
+      85,
+      0,
+      54
+    ],
+    "matlab.colors.ValidationSectionColor": [
+      0,
+      50,
+      50
+    ],
+    "matlab.colors.UnterminatedStringColor": [
+      119,
+      0,
+      4
+    ],
+    "matlab.colors.SyntaxErrorColor": [
+      119,
+      0,
+      4
+    ],
+    "matlab.colors.commandwindow.ErrorColor": [
+      119,
+      0,
+      4
+    ],
+    "matlab.colors.commandwindow.WarningColor": [
+      69,
+      23,
+      0
+    ],
+    "matlab.colors.commandwindow.HyperlinkColor": [
+      0,
+      68,
+      152
+    ],
+    "matlab.colors.programmingtools.CodeAnalyzerWarningColor": [
+      69,
+      23,
+      0
+    ],
+    "matlab.colors.programmingtools.CodeAnalyzerInfoColor": [
+      0,
+      68,
+      152
+    ],
+    "matlab.colors.programmingtools.VariablesWithSharedScopeColor": [
+      0,
+      50,
+      50
+    ],
+    "matlab.colors.programmingtools.VariableHighlightColor": [
+      249,
+      231,
+      154
+    ],
+    "matlab.colors.programmingtools.AutofixHighlightColor": [
+      243,
+      234,
+      210
+    ]
+  }
+}

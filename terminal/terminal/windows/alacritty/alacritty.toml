@@ -1,0 +1,19 @@
+# High-contrast starter config. All eight Zacess themes sit in this folder (zacess-*.toml, from
+# palette/zacess.json) and the import below picks one, Zacess Deep Contrast Dark by default.
+# Alacritty cannot follow the system light and dark setting, so change the import to switch.
+
+[general]
+import = ["zacess-deep-contrast-dark.toml"]
+
+[window]
+opacity = 1.0
+padding = { x = 10, y = 10 }
+
+[font]
+size = 13.0
+
+[font.normal]
+family = "GeistMono Nerd Font"
+
+[scrolling]
+history = 10000

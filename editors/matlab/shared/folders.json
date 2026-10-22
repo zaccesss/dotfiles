@@ -1,0 +1,6 @@
+{
+  "settings": {
+    "matlab.workingfolder.InitialWorkingFolder": "custom_folder",
+    "matlab.workingfolder.CustomFolderPath": "~/dev/projects/matlab"
+  }
+}

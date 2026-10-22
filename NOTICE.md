@@ -1,86 +1,52 @@
-# NOTICE - read this before deploying
+# Notice
 
-This repository contains shell configuration files for three separate operating systems.
-Each platform lives in its own folder. Only deploy the folder that matches your machine, do
-not mix files across platforms.
+Copyright (c) 2026 Isaac Adjei ([isaacadjei.me](https://isaacadjei.me))
 
-| Folder | Platform |
-| --- | --- |
-| `mac/` | macOS only (zsh, Homebrew, macOS-specific paths and tools) |
-| `linux/` | Linux only (zsh by default via `zshrc` and `topics-zsh/`, bash as a fallback via `bashrc` and `topics/`, apt/dnf, Linux-specific paths and tools) |
-| `windows/` | Windows only (PowerShell, winget/choco, Windows-specific paths) |
+## Licences
 
-Each platform's own folder holds its own `starship.toml`, the Starship prompt config, identical
-content on all three but not a single shared file. Symlink your platform's copy to
-`~/.config/starship.toml` (see the Starship section in `guides/new-device.md`). The `scripts/`
-folder contains utility scripts that run from any platform.
+This repository is licensed under the MIT licence. See [LICENSE](LICENSE).
 
-## What you must change before using these dotfiles
+The three bootstraps are the exception. [setup/mac-bootstrap](setup/mac-bootstrap),
+[setup/linux-bootstrap](setup/linux-bootstrap) and [setup/windows-bootstrap](setup/windows-bootstrap)
+are licensed under the Apache License 2.0, each with its own `LICENSE` and `NOTICE.md`.
 
-1. **Your name in the welcome banner.** The `welcome` function in
-   `06-functions.{zsh,sh,ps1}` greets "Isaac". Change this to your own name before sourcing
-   any of these files.
-2. **The `DOTFILES` path variable.** The loader at the top of each platform's main profile
-   sets `export DOTFILES="$HOME/dev/github/repos/dotfiles"`. Change this to wherever you have
-   cloned this repository.
-3. **Cluster node aliases in `10-ssh`.** The aliases `node1`/`node2`/`node3`/`node4` in
-   `10-ssh.{zsh,sh,ps1}` point to my four-node home lab. Replace those hostnames and
-   usernames with your own servers. Remove the block entirely if you have no cluster.
-4. **Git identity in `04-git`.** The global git name and email stubs reference my details.
-   Set your own with `git config --global user.name "Your Name"` and
-   `git config --global user.email "you@example.com"`.
-5. **Editor paths in `19-editors`.** The JetBrains Toolbox paths and IDE launcher functions
-   assume Toolbox is installed at `~/Library/Application Support/JetBrains/Toolbox` (macOS)
-   or `~/.local/share/JetBrains/Toolbox` (Linux). Adjust if you installed elsewhere.
-6. **Starship prompt in `34-starship`.** The `34-starship` topic file is already written for
-   all three platforms. After cloning, symlink your platform's own `starship.toml` to
-   `~/.config/starship.toml` and install Starship for your platform. See
-   `guides/new-device.md` for the exact commands per platform.
+## Third-party credits
 
-## API tokens and secrets, never commit these
+Nothing below is bundled in this repository. Each one is installed, downloaded or followed at run
+time and stays under its own licence. The generated theme files in the editor folders are built
+from the Zacess palette. Where a build reads an app's own file to learn which styles exist, only
+the list of style names and slots is followed.
 
-> [!CAUTION]
-> Do not paste real tokens into any of these topic files.
+| Material | Where it is used | Credit |
+| --- | --- | --- |
+| Zacess Themes | The eight colour themes in every terminal, editor and IDE folder. The KiCad, Processing, Nextpad++, Vivado, Notepad++, Thonny, MATLAB, LTspice, Proteus and Microchip Studio themes are built from its palette. Zed's theme file in `editors/zed/shared/themes` is the one Zacess Themes 0.4.0 ships for Zed, copied as released. The JetBrains IDEs get the Zacess Themes plugin from the JetBrains Marketplace. When an IDE's launcher cannot be found they get it from a pinned release checked against its digest | [zacesshq/themes](https://github.com/zacesshq/themes) |
+| Geist Mono and Nerd Fonts | The terminal and editor font; the Windows bootstrap downloads the Nerd Fonts build of Geist Mono | [Geist](https://github.com/vercel/geist-font) by Vercel and [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts), both under the SIL Open Font License |
+| Starship | The prompt in the [shell](shell) folder | [starship/starship](https://github.com/starship/starship) |
+| zsh-syntax-highlighting | Typed-command colours in the zsh profiles | [zsh-users/zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) |
+| Community dotfiles | The ideas behind the helpers in `shell/mac/topics/08-community.zsh` and its Linux and Windows twins | The dotfiles of Mathias Bynens, Zach Holman and thoughtbot |
+| lazy.nvim and the Neovim plugins | Installed by the [neovim](editors/neovim) config at the versions in `lazy-lock.json` | [folke/lazy.nvim](https://github.com/folke/lazy.nvim) and each plugin's own authors |
+| Tmux Plugin Manager | Installs the [tmux](terminal/tmux) plugins | [tmux-plugins/tpm](https://github.com/tmux-plugins/tpm) |
+| Toshy | Mac-style keys in a Linux VM, installed by the linux-bootstrap `mac-keys` extra | [RedBearAK/toshy](https://github.com/RedBearAK/toshy) |
+| Rectangle | The [rectangle](apps/rectangle) config follows the shape of Rectangle's own config file | [rxhanson/Rectangle](https://github.com/rxhanson/Rectangle) |
+| KiCad | The [kicad](editors/kicad) themes follow KiCad's own colour theme format and keep its copper colours | [KiCad](https://www.kicad.org) |
+| Processing | The [processing](editors/processing) themes follow the `theme.txt` format of Processing's built-in theme | [processing/processing4](https://github.com/processing/processing4) |
+| Notepad++ stylers model | The [notepad-plus-plus](editors/notepad-plus-plus) and [nextpad-plus-plus](editors/nextpad-plus-plus) builds read the language and style list from Notepad++'s `DarkModeDefault.xml` and the `stylers.model.xml` that ships with Nextpad++ | [notepad-plus-plus/notepad-plus-plus](https://github.com/notepad-plus-plus/notepad-plus-plus) |
+| Thonny plugin API | The [thonny](editors/thonny) plugin registers its themes through Thonny's plugin API and builds on Thonny's Clean themes | [thonny/thonny](https://github.com/thonny/thonny) |
+| Dracula for Vivado and LTspice | The published Dracula themes show which entry is a background, a line or text in the [vivado](editors/vivado) and [ltspice](editors/ltspice) themes | [dracula/vivado](https://github.com/dracula/vivado) and [Dracula for LTspice](https://draculatheme.com/ltspice) |
+| Style Settings | The [obsidian](apps/obsidian) setup picks the Zacess variant through this Obsidian plugin | [mgmeyers/obsidian-style-settings](https://github.com/mgmeyers/obsidian-style-settings) |
 
-None of the topic files in this repo require an API token or secret to work. If you add one
-that does (a custom function calling an authenticated API, for example), keep the token in
-your OS keychain or a secrets file (`chmod 600`) sourced from your profile, listed in
-`.gitignore` and never committed. See `35-secrets` for age/sops helpers if you want to
-commit an encrypted secret safely.
+## Bundled third-party file
 
-## Platform-specific tools mentioned in these files
+One file in this repository comes from someone else. `editors/matlab/shared/base/scheme-template.json`
+is the colour scheme template from MathWorks' [Color Theme Extensions](https://github.com/mathworks/matlab-color-theme-extensions)
+add-on, kept unchanged so the MATLAB build fills in the same colour names the add-on's `import_scheme`
+reads. It is Copyright (c) 2025, The MathWorks, Inc. under the BSD 3-Clause licence, whose full text
+sits beside it in [`LICENSE.txt`](editors/matlab/shared/base/LICENSE.txt). The add-on's own code is
+not bundled: the MATLAB apply scripts download it at a pinned commit and check it against its digests.
 
-Some tools appear only on one platform because they have no equivalent elsewhere.
+## Trademarks
 
-**Windows only:** WinSCP CLI shortcuts (`15-rsync.ps1`); Windows Terminal pane helpers
-(`21-tmux.ps1`).
-
-**macOS only:** `open -a` launcher shortcuts (`19-editors.zsh`); Homebrew package
-management (`16-brew.zsh`).
-
-**Linux only:** `xdg-open` equivalents (`19-editors.sh`).
-
-**All platforms:** each platform's own `starship.toml` covers every topic file, identical
-content on all three. One symlink per device is all that is needed.
-
-> [!NOTE]
-> If a command listed in `cmds()` does not exist on your platform, it will simply not be
-> defined, the loader will source the file without error.
-
-## Third-party tools loaded from the system, not bundled here
-
-These tools are not vendored in this repository. The profile loads each one from wherever the
-system package manager installed it and carries on without it when it is absent.
-
-- **Starship** is initialised by `34-starship.{zsh,sh,ps1}` and installed per platform (see
-  `guides/new-device.md`).
-- **zsh-syntax-highlighting** colours typed commands on macOS and Linux. On macOS
-  `mac/topics/37-syntax-highlighting.zsh` sources it from Homebrew's `share/`; on Linux
-  `linux/topics-zsh/38-syntax-highlighting.zsh` sources it from `/usr/share/`. Both are silently
-  skipped when the package is not installed. Install it with `brew install zsh-syntax-highlighting`
-  (it is in `mac/Brewfile`) or `sudo apt install zsh-syntax-highlighting` (the `dnf` name is the
-  same). Windows uses PowerShell's own built-in PSReadLine instead, which needs nothing extra.
-
-## Licence
-
-See [LICENSE](LICENSE) in the root of this repository.
+Product names such as macOS, Windows, Ubuntu, Visual Studio Code, JetBrains, Eclipse, STM32CubeIDE,
+Xcode, Arduino, Microchip Studio, KiCad, Vivado, Processing, Notepad++, Nextpad++, Thonny, MATLAB,
+LTspice, Proteus, Obsidian, Zotero, Raycast and GitHub belong to their respective owners. They are named here only to say which
+tool a config is for.
