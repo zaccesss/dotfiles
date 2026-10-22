@@ -8,6 +8,8 @@ Versions increment by one patch step (0.0.1) per release.
 
 ## [Unreleased]
 
+## [1.0.10] - 2026-10-22
+
 ### Added
 
 - The screenshots and clips are recorded again in Zacess Deep Contrast Dark and Light, using the real config in a throwaway demo project.
@@ -21,6 +23,8 @@ Versions increment by one patch step (0.0.1) per release.
 ### Fixed
 
 - `ls` draws other-writable folders like any other folder. On macOS the last two `LSCOLORS` pairs are now bold cyan instead of black or blue on a yellow or green background. On Linux `LS_COLORS` gets `ow` and `tw` set to the machine's own `di` colour. Both were unreadable in every theme.
+- `zt` keeps a JSON object that is already spread over several lines (such as Zed's theme setting) in its existing layout and trailing comma, so a settings file only changes where a value really changed.
+- `zt` on Linux only treats a running JetBrains IDE launcher as an open IDE, so the Toolbox app running in the background no longer makes it skip the JetBrains theme.
 
 ## [1.0.9] - 2026-10-19
 
