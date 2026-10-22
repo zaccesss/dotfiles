@@ -1,0 +1,81 @@
+{
+  "name": "Zacess Yellow on Black",
+  "settings": {
+    "matlab.appearance.MATLABTheme": "Dark",
+    "matlab.colors.KeywordColor": [
+      255,
+      255,
+      255
+    ],
+    "matlab.colors.CommentColor": [
+      136,
+      194,
+      0
+    ],
+    "matlab.colors.StringColor": [
+      67,
+      244,
+      128
+    ],
+    "matlab.colors.SystemCommandColor": [
+      12,
+      237,
+      246
+    ],
+    "matlab.colors.ValidationSectionColor": [
+      229,
+      199,
+      255
+    ],
+    "matlab.colors.UnterminatedStringColor": [
+      255,
+      190,
+      181
+    ],
+    "matlab.colors.SyntaxErrorColor": [
+      255,
+      190,
+      181
+    ],
+    "matlab.colors.commandwindow.ErrorColor": [
+      255,
+      190,
+      181
+    ],
+    "matlab.colors.commandwindow.WarningColor": [
+      255,
+      167,
+      126
+    ],
+    "matlab.colors.commandwindow.HyperlinkColor": [
+      27,
+      228,
+      237
+    ],
+    "matlab.colors.programmingtools.CodeAnalyzerWarningColor": [
+      255,
+      167,
+      126
+    ],
+    "matlab.colors.programmingtools.CodeAnalyzerInfoColor": [
+      27,
+      228,
+      237
+    ],
+    "matlab.colors.programmingtools.VariablesWithSharedScopeColor": [
+      229,
+      199,
+      255
+    ],
+    "matlab.colors.programmingtools.VariableHighlightColor": [
+      10,
+      34,
+      87
+    ],
+    "matlab.colors.programmingtools.AutofixHighlightColor": [
+      20,
+      20,
+      20
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+#!/bin/sh
+# Runs against the commit message file before a commit is written.
+#
+# One check, blocking: a subject line over 72 characters.
+#
+# Extension point: add your own message-format or content rules below, for
+# example a required conventional-commit type prefix or a project-specific
+# banned-word list. Follow the same pattern: run a check, print a clear
+# "Error: ..." line and exit 1 if it fails, or fix and re-verify if it is
+# something safe to auto-correct.
+
+subject_line=$(head -1 "$1")
+subject_length=$(printf '%s' "$subject_line" | wc -c | tr -d ' ')
+if [ "$subject_length" -gt 72 ]; then
+    echo "Error: commit subject line is $subject_length characters, over the 72-character limit."
+    echo "Keep the subject short and move detail to the commit body instead."
+    exit 1
+fi
+
+# --- Extension point -------------------------------------------------------
+# Add your own message checks here.
+
+exit 0

@@ -1,0 +1,6 @@
+# one line per signing key, in the format: email keytype public-key
+# Replace the placeholders below with your own values, then copy this file to
+# ~/.ssh/allowed_signers.
+# one line per machine you sign from, so every machine can verify the others' commits.
+you@example.com ssh-ed25519 <first-device-signing-public-key>
+you@example.com ssh-ed25519 <second-device-signing-public-key>

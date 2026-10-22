@@ -1,0 +1,15 @@
+// Store extensions, id@author, one per line under a category header.
+// Version is not tracked here since Raycast auto-updates store extensions and does not expose a
+// pinned version anywhere on disk, unlike a VS Code extension or a JetBrains plugin.
+
+// Media control
+spotify-player@mattisssa
+
+// System utilities
+kill-process@rolandleth
+
+// Browser
+google-chrome@Codely
+
+// Communication
+slack@mommertf

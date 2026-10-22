@@ -1,0 +1,95 @@
+{
+    "workbench.colorTheme": "Zacess Deep Contrast Dark",
+    "window.autoDetectColorScheme": false,
+    "workbench.preferredDarkColorTheme": "Zacess Deep Contrast Dark",
+    "workbench.preferredLightColorTheme": "Zacess Deep Contrast Light",
+    "terminal.integrated.drawBoldTextInBrightColors": false,
+    "workbench.colorCustomizations": {
+        "[Default High Contrast]": {
+            "terminal.background": "#000000",
+            "terminal.foreground": "#e0e0e0",
+            "terminalCursor.foreground": "#ffffff",
+            "terminal.selectionBackground": "#273d4c",
+            "terminal.ansiBlack": "#35424c",
+            "terminal.ansiRed": "#ff0f00",
+            "terminal.ansiGreen": "#00ff2f",
+            "terminal.ansiYellow": "#fff500",
+            "terminal.ansiBlue": "#8ac9ff",
+            "terminal.ansiMagenta": "#ff66ff",
+            "terminal.ansiCyan": "#6ff7ff",
+            "terminal.ansiWhite": "#f2f2f2",
+            "terminal.ansiBrightBlack": "#465c6d",
+            "terminal.ansiBrightRed": "#df6c5a",
+            "terminal.ansiBrightGreen": "#79be7e",
+            "terminal.ansiBrightYellow": "#ffdb20",
+            "terminal.ansiBrightBlue": "#67b5ed",
+            "terminal.ansiBrightMagenta": "#ff99ff",
+            "terminal.ansiBrightCyan": "#84dde0",
+            "terminal.ansiBrightWhite": "#ffffff"
+        },
+        "[Default High Contrast Light]": {
+            "terminal.background": "#ffffff",
+            "terminal.foreground": "#1f1f1f",
+            "terminalCursor.foreground": "#000000",
+            "terminal.selectionBackground": "#b3c9d8",
+            "terminal.ansiBlack": "#1f1f1f",
+            "terminal.ansiRed": "#b40b00",
+            "terminal.ansiGreen": "#006813",
+            "terminal.ansiYellow": "#735300",
+            "terminal.ansiBlue": "#0059a5",
+            "terminal.ansiMagenta": "#9f009f",
+            "terminal.ansiCyan": "#006369",
+            "terminal.ansiWhite": "#3c4650",
+            "terminal.ansiBrightBlack": "#4a5761",
+            "terminal.ansiBrightRed": "#961b08",
+            "terminal.ansiBrightGreen": "#05590b",
+            "terminal.ansiBrightYellow": "#6e4200",
+            "terminal.ansiBrightBlue": "#074f83",
+            "terminal.ansiBrightMagenta": "#8a008a",
+            "terminal.ansiBrightCyan": "#055558",
+            "terminal.ansiBrightWhite": "#000000"
+        }
+    },
+    "files.autoSave": "onWindowChange",
+    "editor.wordWrap": "on",
+    "editor.fontSize": 14,
+    "terminal.integrated.fontFamily": "GeistMono Nerd Font",
+    "git.autofetch": true,
+    "mssql.connectionGroups": [
+        {
+            "name": "ROOT",
+            "id": "ROOT"
+        }
+    ],
+    "mssql.autoDisableNonTSqlLanguageService": true,
+    "diffEditor.maxComputationTime": 0,
+    "debug.allowBreakpointsEverywhere": true,
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "stm32cube-ide-core.enableOfflineMode": false,
+    "terminal.integrated.persistentSessionReviveProcess": "never",
+    "terminal.integrated.enablePersistentSessions": false,
+    "terminal.integrated.profiles.windows": {
+        "PowerShell 7": {
+            "path": "${env:LOCALAPPDATA}\\Microsoft\\WindowsApps\\pwsh.exe",
+            "args": ["-NoLogo"],
+            "icon": "terminal-powershell"
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell 7",
+    "yaml.disableSchemaDetection": [
+        "**/.github/workflows/*.yml",
+        "**/.github/workflows/*.yaml",
+        "**/.gitea/workflows/*.yml",
+        "**/.gitea/workflows/*.yaml",
+        "**/.forgejo/workflows/*.yml",
+        "**/.forgejo/workflows/*.yaml"
+    ],
+    "githubPullRequests.pullBranch": "never",
+    "discord.detailsEditing": "Editing a {Lang} file",
+    "discord.detailsDebugging": "Debugging a {Lang} file",
+    "discord.removeLowerDetails": true,
+    "discord.largeImage": "Editing a {Lang} file",
+    "vscord.app.privacyMode.enable": true,
+    "vscord.status.buttons.button1.enabled": false,
+    "vscord.status.buttons.button2.enabled": false
+}

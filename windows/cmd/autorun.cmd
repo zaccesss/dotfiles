@@ -1,30 +1,10 @@
 @echo off
-rem Command Prompt start-up, run through the AutoRun value under
-rem HKCU\Software\Microsoft\Command Processor, which the Windows bootstrap sets.
-rem cmd.exe runs AutoRun for every instance, including the ones scripts and
-rem programs start with /c or /k, so everything below is skipped for those and
-rem only an interactive window gets the prompt, macros and banner.
-
-setlocal EnableDelayedExpansion
-set "interactive=1"
-set "line=!CMDCMDLINE!"
-if /i not "!line:/c =!"=="!line!" set "interactive="
-if /i not "!line:/k =!"=="!line!" set "interactive="
-endlocal & set "DOTFILES_CMD_INTERACTIVE=%interactive%"
-if not defined DOTFILES_CMD_INTERACTIVE goto :eof
-
-if not defined DOTFILES for %%I in ("%~dp0..\..") do set "DOTFILES=%%~fI"
-
-rem every PowerShell alias and short function that is a plain command line,
-rem written by scripts/build-cmd-macros.py
-doskey /macrofile="%~dp0macros.doskey"
-
-rem $E[3xm picks one of the terminal's own 16 colours rather than a fixed one,
-rem so the prompt follows whatever theme the terminal is on, dark or light:
-rem user@machine in cyan, the folder in yellow, then > in green on its own line
-prompt $E[1;36m%USERNAME%@%COMPUTERNAME%$E[0m $E[1;33m$P$E[0m$_$E[1;32m$G$E[0m$S
-
-rem the same banner as the PowerShell profile; set DOTFILES_NO_BANNER to skip it
-if not defined DOTFILES_NO_BANNER (
-    where pwsh >nul 2>nul && pwsh -NoLogo -NoProfile -File "%~dp0banner.ps1"
+rem temporary forwarding file: the real one moved to shell/. removed in a later release, once
+rem a machine has had time to re-run its bootstrap
+for %%I in ("%~dp0..\..\shell") do set "DOTFILES=%%~fI"
+call "%DOTFILES%\windows\cmd\autorun.cmd"
+rem the real start-up decides whether this window is interactive, so the notice follows it
+if defined DOTFILES_CMD_INTERACTIVE if not defined DOTFILES_MOVED_SHOWN (
+    echo dotfiles moved to shell/: run setup/windows-bootstrap to re-point
+    set "DOTFILES_MOVED_SHOWN=1"
 )

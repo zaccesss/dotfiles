@@ -1,0 +1,7 @@
+# linux only, layered over shared/prefs/org.eclipse.ui.workbench.prefs
+# Geist Mono's Nerd Font build for the plain and C editors and the Terminal, the font every editor and
+# terminal uses, so the prompt's symbols draw. the short font string has no platform part; 14 points
+# here matches the Mac's 18 on screen, since points are larger. the Terminal uses the Mono build, whose icons fill one cell
+org.eclipse.jface.textfont=1|GeistMono Nerd Font|14.0|0|
+org.eclipse.cdt.ui.editors.textfont=1|GeistMono Nerd Font|14.0|0|
+terminal.views.view.font.definition=1|GeistMono Nerd Font Mono|14.0|0|

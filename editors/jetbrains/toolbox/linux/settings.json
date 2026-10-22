@@ -1,0 +1,14 @@
+{
+  "shell_scripts": {
+    "location": "~/.local/share/JetBrains/Toolbox/scripts"
+  },
+  "tools": {
+    "update_all_automatically": true
+  },
+  "plugins": {
+    "plugins_auto_updater": true
+  },
+  "disk_usage": {
+    "notification_threshold_bytes": 10737418240
+  }
+}

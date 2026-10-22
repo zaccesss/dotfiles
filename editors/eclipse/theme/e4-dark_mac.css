@@ -1,0 +1,43 @@
+/*
+ * Zacess Deep Contrast Dark outlines for Eclipse's Dark theme on macOS.
+ *
+ * Copied to <Eclipse.app>/Contents/Eclipse/configuration/org.eclipse.e4.ui.css.swt.theme/e4-dark_mac.css,
+ * where the theme engine reads it at start-up in place of the Dark theme's own e4-dark_mac.css
+ * because the file names match. That replacement also drops every stylesheet other plugins add to the
+ * Dark theme, so each one is imported again below.
+ */
+
+@import url("platform:/plugin/org.eclipse.ui.themes/css/e4-dark_mac.css");
+@import url("platform:/plugin/org.eclipse.ui.themes/css/dark/e4-dark_preferencestyle.css");
+@import url("platform:/plugin/org.eclipse.ui.editors/css/e4-dark_preferencestyle.css");
+@import url("platform:/plugin/org.eclipse.jdt.ui/css/e4-dark_jdt_syntaxhighlighting.css");
+@import url("platform:/plugin/org.eclipse.ant.ui/css/e4-dark_ant_prefstyle.css");
+@import url("platform:/plugin/org.eclipse.buildship.ui/css/dark-theme.css");
+@import url("platform:/plugin/org.eclipse.compare/resources/css/dark.css");
+@import url("platform:/plugin/org.eclipse.debug.ui/css/e4-dark_debug_prefstyle.css");
+@import url("platform:/plugin/org.eclipse.eclemma.ui/css/dark.css");
+@import url("platform:/plugin/org.eclipse.egit.ui/css/e4-dark_egit_prefstyle.css");
+@import url("platform:/plugin/org.eclipse.epp.mpc.ui.css/css/e4-dark_mpc.css");
+@import url("platform:/plugin/org.eclipse.lsp4e/resources/css/dark.css");
+@import url("platform:/plugin/org.eclipse.mylyn.tasks.ui/css/e4-dark_mylyn_prefstyle.css");
+@import url("platform:/plugin/org.eclipse.mylyn.wikitext.ui/css/dark_prefstyle.css");
+@import url("platform:/plugin/org.eclipse.tm4e.languageconfiguration/resources/css/dark.css");
+@import url("platform:/plugin/org.eclipse.ui.genericeditor/resources/css/dark.css");
+
+/* every view and editor stack: a cyan frame and a cyan outline on the selected tab (VS Code contrastBorder) */
+CTabFolder,
+CTabFolder[style~='SWT.DOWN'][style~='SWT.BOTTOM'] {
+	swt-outer-keyline-color: #00FFFF;
+	swt-tab-outline: #00FFFF;
+}
+
+/* the stack that holds the focused view or editor: a yellow frame, tab outline and top bar
+   (VS Code contrastActiveBorder and focusBorder, orange there) */
+.MPartStack.active,
+.MPartStack.active CTabFolder[style~='SWT.DOWN'][style~='SWT.BOTTOM'],
+#org-eclipse-ui-editorss CTabFolder.active {
+	swt-outer-keyline-color: #FFFF00;
+	swt-tab-outline: #FFFF00;
+	swt-selected-tab-highlight: #FFFF00;
+	swt-selected-highlight-top: true;
+}

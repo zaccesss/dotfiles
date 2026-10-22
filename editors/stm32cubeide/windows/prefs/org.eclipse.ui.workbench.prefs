@@ -1,0 +1,9 @@
+# windows only, layered over shared/prefs/org.eclipse.ui.workbench.prefs
+# Geist Mono's Nerd Font build for the plain and C editors and the Terminal, the font every editor and
+# terminal uses, so the prompt's symbols draw. the short font string has no platform part; 14 points
+# here matches the Mac's 18 on screen, since points are larger. the Terminal uses the Mono build, whose icons fill one cell
+# windows looks fonts up by their GDI family name, which Nerd Fonts shortens to GeistMono NF and
+# GeistMono NFM. the long names that macOS and Linux use resolve to Arial here
+org.eclipse.jface.textfont=1|GeistMono NF|14.0|0|
+org.eclipse.cdt.ui.editors.textfont=1|GeistMono NF|14.0|0|
+terminal.views.view.font.definition=1|GeistMono NFM|14.0|0|

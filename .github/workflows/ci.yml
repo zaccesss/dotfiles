@@ -1,0 +1,1746 @@
+name: CI
+
+# one workflow for every folder. The changes job decides which folders a push or pull request
+# touched, so each folder's own checks run only when that folder changed. A job skipped by its
+# if condition reports as passing, so a pull request is never held open waiting for it. The
+# markdown and shell lint jobs always run, since the ruleset requires them by name.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    name: Changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      root: ${{ steps.filter.outputs.root }}
+      shell: ${{ steps.filter.outputs.shell }}
+      mac_bootstrap: ${{ steps.filter.outputs.mac_bootstrap }}
+      linux_bootstrap: ${{ steps.filter.outputs.linux_bootstrap }}
+      windows_bootstrap: ${{ steps.filter.outputs.windows_bootstrap }}
+      defaults: ${{ steps.filter.outputs.defaults }}
+      terminal: ${{ steps.filter.outputs.terminal }}
+      tmux: ${{ steps.filter.outputs.tmux }}
+      cli_tools: ${{ steps.filter.outputs.cli_tools }}
+      gitconfig: ${{ steps.filter.outputs.gitconfig }}
+      git_hooks: ${{ steps.filter.outputs.git_hooks }}
+      ssh: ${{ steps.filter.outputs.ssh }}
+      vscode: ${{ steps.filter.outputs.vscode }}
+      zed: ${{ steps.filter.outputs.zed }}
+      jetbrains: ${{ steps.filter.outputs.jetbrains }}
+      eclipse: ${{ steps.filter.outputs.eclipse }}
+      stm32cubeide: ${{ steps.filter.outputs.stm32cubeide }}
+      xcode: ${{ steps.filter.outputs.xcode }}
+      neovim: ${{ steps.filter.outputs.neovim }}
+      raycast: ${{ steps.filter.outputs.raycast }}
+      rectangle: ${{ steps.filter.outputs.rectangle }}
+      arduino: ${{ steps.filter.outputs.arduino }}
+      microchip_studio: ${{ steps.filter.outputs.microchip_studio }}
+      kicad: ${{ steps.filter.outputs.kicad }}
+      processing: ${{ steps.filter.outputs.processing }}
+      nextpad_plus_plus: ${{ steps.filter.outputs.nextpad_plus_plus }}
+      vivado: ${{ steps.filter.outputs.vivado }}
+      notepad_plus_plus: ${{ steps.filter.outputs.notepad_plus_plus }}
+      thonny: ${{ steps.filter.outputs.thonny }}
+      matlab: ${{ steps.filter.outputs.matlab }}
+      ltspice: ${{ steps.filter.outputs.ltspice }}
+      proteus: ${{ steps.filter.outputs.proteus }}
+      zotero: ${{ steps.filter.outputs.zotero }}
+      obsidian: ${{ steps.filter.outputs.obsidian }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # a change to this workflow runs every folder's checks, so a broken job never hides behind
+      # an unchanged folder
+      - name: Find the folders that changed
+        id: filter
+        uses: dorny/paths-filter@v4
+        with:
+          filters: |
+            root:
+              - '*'
+              - '.github/**'
+            # zt calls each folder's own apply script, so a renamed or moved script under
+            # editors or apps has to rerun the shell checks too
+            shell:
+              - 'shell/**'
+              - 'mac/**'
+              - 'linux/**'
+              - 'windows/**'
+              - 'editors/**'
+              - 'apps/**'
+              - '.github/workflows/ci.yml'
+            mac_bootstrap:
+              - 'setup/mac-bootstrap/**'
+              - '.github/workflows/ci.yml'
+            linux_bootstrap:
+              - 'setup/linux-bootstrap/**'
+              - '.github/workflows/ci.yml'
+            windows_bootstrap:
+              - 'setup/windows-bootstrap/**'
+              - '.github/workflows/ci.yml'
+            defaults:
+              - 'setup/defaults/**'
+              - '.github/workflows/ci.yml'
+            terminal:
+              - 'terminal/terminal/**'
+              - '.github/workflows/ci.yml'
+            tmux:
+              - 'terminal/tmux/**'
+              - '.github/workflows/ci.yml'
+            cli_tools:
+              - 'terminal/cli-tools/**'
+              - '.github/workflows/ci.yml'
+            gitconfig:
+              - 'git/gitconfig/**'
+              - '.github/workflows/ci.yml'
+            git_hooks:
+              - 'git/git-hooks/**'
+              - '.github/workflows/ci.yml'
+            ssh:
+              - 'git/ssh/**'
+              - '.github/workflows/ci.yml'
+            vscode:
+              - 'editors/vscode/**'
+              - '.github/workflows/ci.yml'
+            zed:
+              - 'editors/zed/**'
+              - '.github/workflows/ci.yml'
+            jetbrains:
+              - 'editors/jetbrains/**'
+              - '.github/workflows/ci.yml'
+            eclipse:
+              - 'editors/eclipse/**'
+              - '.github/workflows/ci.yml'
+            stm32cubeide:
+              - 'editors/stm32cubeide/**'
+              - '.github/workflows/ci.yml'
+            xcode:
+              - 'editors/xcode/**'
+              - '.github/workflows/ci.yml'
+            neovim:
+              - 'editors/neovim/**'
+              - '.github/workflows/ci.yml'
+            raycast:
+              - 'apps/raycast/**'
+              - '.github/workflows/ci.yml'
+            rectangle:
+              - 'apps/rectangle/**'
+              - '.github/workflows/ci.yml'
+            arduino:
+              - 'editors/arduino/**'
+              - '.github/workflows/ci.yml'
+            microchip_studio:
+              - 'editors/microchip-studio/**'
+              - '.github/workflows/ci.yml'
+            kicad:
+              - 'editors/kicad/**'
+              - '.github/workflows/ci.yml'
+            processing:
+              - 'editors/processing/**'
+              - '.github/workflows/ci.yml'
+            nextpad_plus_plus:
+              - 'editors/nextpad-plus-plus/**'
+              - '.github/workflows/ci.yml'
+            vivado:
+              - 'editors/vivado/**'
+              - '.github/workflows/ci.yml'
+            notepad_plus_plus:
+              - 'editors/notepad-plus-plus/**'
+              - '.github/workflows/ci.yml'
+            thonny:
+              - 'editors/thonny/**'
+              - '.github/workflows/ci.yml'
+            matlab:
+              - 'editors/matlab/**'
+              - '.github/workflows/ci.yml'
+            ltspice:
+              - 'editors/ltspice/**'
+              - '.github/workflows/ci.yml'
+            proteus:
+              - 'editors/proteus/**'
+              - '.github/workflows/ci.yml'
+            zotero:
+              - 'apps/zotero/**'
+              - '.github/workflows/ci.yml'
+            obsidian:
+              - 'apps/obsidian/**'
+              - '.github/workflows/ci.yml'
+
+  # ---------------------------------------------------------------------------------------------
+  # whole repository
+  # ---------------------------------------------------------------------------------------------
+
+  markdownlint:
+    name: Lint markdown files
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Run markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v24.2.0
+        with:
+          globs: '**/*.md'
+          config: '.markdownlint.json'
+
+  shellcheck:
+    name: Lint shell scripts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # shellcheck has no zsh mode, so the zsh profile is checked in bash compatibility mode, which
+      # still catches most syntax and logic errors
+      - name: Shell profile for macOS
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          scandir: './shell/mac'
+          additional_files: 'zshrc'
+          severity: warning
+        env:
+          SHELLCHECK_OPTS: --shell=bash
+
+      - name: Shell profile for Linux
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          scandir: './shell/linux'
+          additional_files: 'bashrc'
+          severity: warning
+        env:
+          SHELLCHECK_OPTS: --shell=bash
+
+      # the temporary forwarding files at the shell profile's old paths, removed in a later release.
+      # the zsh ones get zsh's own syntax check, which shellcheck cannot give them
+      - name: Forwarding files
+        run: |
+          command -v zsh >/dev/null || { sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=20 update && sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=20 install -y zsh; }
+          zsh -n mac/zshrc
+          zsh -n linux/zshrc
+          shellcheck linux/bashrc
+          cmp mac/starship.toml shell/mac/starship.toml
+          cmp linux/starship.toml shell/linux/starship.toml
+          cmp windows/starship.toml shell/windows/starship.toml
+
+      - name: Parse the forwarding PowerShell files
+        shell: pwsh
+        run: |
+          $failed = $false
+          foreach ($file in @(Get-Item windows/Microsoft.PowerShell_profile.ps1, windows/cmd/banner.ps1) + @(Get-ChildItem windows/scripts -Filter *.ps1)) {
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors) | Out-Null
+            if ($errors.Count) { $failed = $true; $errors | ForEach-Object { Write-Output "::error file=$($file.FullName)::$($_.Message)" } }
+            else { Write-Output "$($file.Name) parses" }
+          }
+          if ($failed) { exit 1 }
+
+      # the hooks carry a #!/bin/sh shebang, so they are held to POSIX sh
+      - name: Git hooks
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          scandir: './git/git-hooks'
+          additional_files: 'mac/commit-msg mac/pre-commit mac/pre-push mac/post-checkout mac/post-commit mac/post-merge linux/commit-msg linux/pre-commit linux/pre-push linux/post-checkout linux/post-commit linux/post-merge windows/commit-msg windows/pre-commit windows/pre-push windows/post-checkout windows/post-commit windows/post-merge'
+          severity: warning
+        env:
+          SHELLCHECK_OPTS: --shell=sh
+
+      - name: Preference scripts syntax
+        run: |
+          bash -n setup/defaults/mac/defaults.sh
+          bash -n setup/defaults/linux/defaults.sh
+
+      - name: Preference scripts
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          scandir: './setup/defaults'
+          severity: warning
+
+      # the bootstrap's source directives are relative to its own folder, so ShellCheck runs from
+      # there with every file checked together
+      - name: Linux bootstrap
+        working-directory: setup/linux-bootstrap
+        run: find bootstrap -type f -name '*.sh' -print0 | sort -z | xargs -0 shellcheck
+
+  root:
+    name: "root: Repository files"
+    needs: changes
+    if: needs.changes.outputs.root == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # yq ships on the GitHub-hosted Ubuntu image, so no install step is needed
+      - name: Parse every workflow, form and config under .github
+        run: |
+          bad=0
+          while IFS= read -r -d '' f; do
+            if yq eval '.' "$f" > /dev/null; then echo "ok $f"; else echo "::error file=$f::does not parse as YAML"; bad=1; fi
+          done < <(find .github -name '*.yml' -print0)
+          exit "$bad"
+
+  # ---------------------------------------------------------------------------------------------
+  # shell
+  # ---------------------------------------------------------------------------------------------
+
+  shell:
+    name: "shell: Syntax"
+    needs: changes
+    if: needs.changes.outputs.shell == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: shell
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install zsh
+        timeout-minutes: 5
+        run: sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=20 update && sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=20 install -y zsh
+
+      - name: Check zsh and bash syntax
+        run: |
+          for f in mac/zshrc mac/topics/*.zsh linux/zshrc linux/topics-zsh/*.zsh; do zsh -n "$f"; done
+          for f in linux/bashrc linux/topics/*.sh; do bash -n "$f"; done
+
+      - name: Parse every PowerShell file
+        shell: pwsh
+        run: |
+          $bad = 0
+          foreach ($file in Get-ChildItem -Recurse -Filter *.ps1 windows) {
+              $errors = $null
+              [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors) | Out-Null
+              if ($errors.Count) { $errors | ForEach-Object { Write-Output "::error file=$($file.FullName)::$($_.Message)" }; $bad = 1 }
+          }
+          exit $bad
+
+      - name: Compile the Python scripts
+        run: python3 -m py_compile scripts/*.py
+
+      # zt and the other helpers are run straight from the clone on every machine, so a lint
+      # error here breaks theme switching everywhere at once
+      - name: Lint the Python scripts with ruff
+        run: pipx run ruff==0.15.15 check scripts
+
+  # ---------------------------------------------------------------------------------------------
+  # setup
+  # ---------------------------------------------------------------------------------------------
+
+  # a real macOS runner with its stock bash 3.2, the same bash a brand-new Mac has before Homebrew
+  # installs anything, so a bash 4 feature slipping in fails here
+  mac-bootstrap:
+    name: "mac-bootstrap: Tests (macOS)"
+    needs: changes
+    if: needs.changes.outputs.mac_bootstrap == 'true'
+    runs-on: macos-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: setup/mac-bootstrap
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Check Bash syntax with the stock bash
+        run: |
+          set -euo pipefail
+          /bin/bash --version | head -1
+          for file in bootstrap/bootstrap.sh bootstrap/lib/*.sh bootstrap/stages/*.sh tests/*.sh; do
+            /bin/bash -n "$file"
+          done
+
+      - name: Run ShellCheck
+        run: |
+          brew list shellcheck >/dev/null 2>&1 || brew install shellcheck
+          shellcheck -x bootstrap/bootstrap.sh bootstrap/lib/*.sh bootstrap/stages/*.sh tests/*.sh
+
+      - name: Run bootstrap tests
+        run: /bin/bash tests/bootstrap-test.sh
+
+  # offline tests: apt and sudo are stubs, platforms come from fixture files
+  linux-bootstrap-tests:
+    name: "linux-bootstrap: Tests (${{ matrix.runner }})"
+    needs: changes
+    if: needs.changes.outputs.linux_bootstrap == 'true'
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        runner:
+          - ubuntu-24.04
+          - ubuntu-24.04-arm
+    defaults:
+      run:
+        working-directory: setup/linux-bootstrap
+        shell: bash
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Check Bash syntax
+        run: |
+          set -Eeuo pipefail
+          for file in bootstrap/bootstrap.sh bootstrap/lib/*.sh bootstrap/stages/*.sh tests/*.sh; do
+            bash -n "$file"
+          done
+
+      - name: Run ShellCheck
+        run: shellcheck -x bootstrap/bootstrap.sh bootstrap/lib/*.sh bootstrap/stages/*.sh tests/*.sh
+
+      - name: Run bootstrap tests
+        run: ./tests/bootstrap-test.sh
+
+  # resolves every package, vendor repositories and optional extras included, in a clean container
+  # for each supported release on each architecture. A package that disappears or is renamed on any
+  # of them fails here instead of on a real machine. It runs on pull requests only: main then holds
+  # exactly the code the pull request proved
+  linux-bootstrap-packages:
+    name: "linux-bootstrap: Packages (Ubuntu ${{ matrix.release }}, ${{ matrix.runner == 'ubuntu-24.04-arm' && 'arm64' || 'amd64' }})"
+    needs: changes
+    if: needs.changes.outputs.linux_bootstrap == 'true' && github.event_name != 'push'
+    runs-on: ${{ matrix.runner }}
+    # an unreachable Ubuntu mirror once stretched this job past 15 minutes, one slow refresh at a
+    # time; the cap stops a stall from running for hours
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        release:
+          - "24.04"
+          - "26.04"
+        runner:
+          - ubuntu-24.04
+          - ubuntu-24.04-arm
+    defaults:
+      run:
+        working-directory: setup/linux-bootstrap
+        shell: bash
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # GitHub's amd64 runners reach Ubuntu's main mirrors only intermittently, while arm64 uses
+      # ports.ubuntu.com and is unaffected, so amd64 containers use the Azure mirror the runners
+      # themselves use
+      - name: Resolve every package
+        run: |
+          set -Eeuo pipefail
+          extras="$(./bootstrap/bootstrap.sh --list | awk 'NR > 2 && NF { print $1 }' | paste -sd, -)"
+          docker run --rm \
+            --volume "$PWD:/repo" \
+            --workdir /repo \
+            --env LINUX_BOOTSTRAP_SIMULATE=1 \
+            "ubuntu:${{ matrix.release }}" \
+            bash -c 'printf "Acquire::http::Timeout \"15\";\nAcquire::https::Timeout \"15\";\n" > /etc/apt/apt.conf.d/99ci-timeout && sed -i "s#http://archive.ubuntu.com#http://azure.archive.ubuntu.com#g; s#http://security.ubuntu.com#http://azure.archive.ubuntu.com#g" /etc/apt/sources.list.d/*.sources /etc/apt/sources.list 2>/dev/null; ./bootstrap/bootstrap.sh --with "$1"' _ "$extras"
+
+  # a real Windows 11 runner: the analyzer, the Pester tests and a full plan-mode run, which reads
+  # the package list and walks every stage without installing anything
+  windows-bootstrap-tests:
+    name: "windows-bootstrap: Tests (Windows)"
+    needs: changes
+    if: needs.changes.outputs.windows_bootstrap == 'true'
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: setup/windows-bootstrap
+        shell: pwsh
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install test modules
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module PSScriptAnalyzer -Scope CurrentUser -Force
+          Install-Module Pester -MinimumVersion 5.0 -Scope CurrentUser -Force -SkipPublisherCheck
+
+      - name: Run PSScriptAnalyzer
+        run: |
+          $findings = Invoke-ScriptAnalyzer -Path ./bootstrap -Recurse -Settings ./PSScriptAnalyzerSettings.psd1
+          $findings | Format-Table -AutoSize
+          if ($findings) { exit 1 }
+
+      - name: Run Pester tests
+        run: |
+          $result = Invoke-Pester ./tests -PassThru -Output Detailed
+          if ($result.FailedCount -gt 0) { exit 1 }
+
+      - name: Plan a full run
+        env:
+          WINDOWS_BOOTSTRAP_REPOS_DIR: ${{ runner.temp }}\repos
+        run: ./bootstrap/bootstrap.ps1 -Plan
+
+  # every identifier in the package list must still exist in the winget catalogue
+  windows-bootstrap-packages:
+    name: "windows-bootstrap: Package list (winget)"
+    needs: changes
+    if: needs.changes.outputs.windows_bootstrap == 'true'
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: setup/windows-bootstrap
+        shell: pwsh
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Look up every package
+        run: |
+          $ids = (Get-Content -Raw packages/winget.json | ConvertFrom-Json).Sources.Packages.PackageIdentifier
+          $missing = foreach ($id in $ids) {
+            $found = winget show --id $id --exact --accept-source-agreements --disable-interactivity 2>$null
+            if ($LASTEXITCODE -ne 0) { $id }
+          }
+          if ($missing) { "Not in the winget catalogue: $($missing -join ', ')"; exit 1 }
+          "All $($ids.Count) packages found"
+
+  # the macOS script runs on the stock bash 3.2 a new Mac has before Homebrew installs anything
+  defaults-mac:
+    name: "defaults: Tests (macOS)"
+    needs: changes
+    if: needs.changes.outputs.defaults == 'true'
+    runs-on: macos-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: setup/defaults
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Run the macOS defaults tests
+        run: /bin/bash tests/mac-defaults-test.sh
+
+  # includes a registry round trip on a throwaway key under HKCU
+  defaults-windows:
+    name: "defaults: Tests (Windows)"
+    needs: changes
+    if: needs.changes.outputs.defaults == 'true'
+    runs-on: windows-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: setup/defaults
+        shell: pwsh
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install test modules
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module PSScriptAnalyzer -Scope CurrentUser -Force
+          Install-Module Pester -MinimumVersion 5.0 -Scope CurrentUser -Force -SkipPublisherCheck
+
+      - name: Run PSScriptAnalyzer
+        run: |
+          $findings = Invoke-ScriptAnalyzer -Path ./windows -Severity Warning,Error -ExcludeRule PSAvoidUsingWriteHost
+          $findings | Format-Table -AutoSize
+          if ($findings) { exit 1 }
+
+      - name: Run Pester tests
+        run: |
+          $result = Invoke-Pester ./tests -PassThru -Output Detailed
+          if ($result.FailedCount -gt 0) { exit 1 }
+
+  # ---------------------------------------------------------------------------------------------
+  # terminal
+  # ---------------------------------------------------------------------------------------------
+
+  terminal:
+    name: "terminal: Validate config files"
+    needs: changes
+    if: needs.changes.outputs.terminal == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: terminal/terminal
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Confirm every generated theme matches the palette and meets its contrast floor
+        run: python3 scripts/build-themes.py --check
+
+      - name: Shellcheck the macOS installer
+        run: shellcheck --severity=warning mac/install.sh
+
+      - name: Parse every TOML file
+        run: |
+          python3 - <<'PYEOF'
+          import glob, sys, tomllib
+          for f in glob.glob("*/alacritty/*.toml"):
+              tomllib.load(open(f, "rb"))
+              print("ok", f)
+          PYEOF
+
+      - name: Check every Hyper config parses
+        run: |
+          for f in */hyper/hyper.js; do
+            node --check "$f" && echo "ok $f"
+          done
+
+  tmux:
+    name: "tmux: Start a session with the config"
+    needs: changes
+    if: needs.changes.outputs.tmux == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: terminal/tmux
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install tmux
+        timeout-minutes: 5
+        run: sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=20 update && sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=20 install -y tmux
+
+      - name: Session smoke test
+        run: |
+          tmux -f tmux.conf new-session -d -s ci
+          tmux -f tmux.conf list-sessions
+          tmux kill-session -t ci
+
+  cli-tools:
+    name: "cli-tools: Smoke test ripgrep, fzf and lazygit"
+    needs: changes
+    if: needs.changes.outputs.cli_tools == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: terminal/cli-tools
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install ripgrep, fzf and lazygit
+        timeout-minutes: 5
+        run: |
+          sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=20 update
+          sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=20 install -y ripgrep fzf zsh
+          LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+          curl -Lo /tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+          tar xf /tmp/lazygit.tar.gz -C /tmp lazygit
+          sudo install /tmp/lazygit /usr/local/bin
+
+      - name: Real ripgrep smoke test
+        run: |
+          export RIPGREP_CONFIG_PATH="$PWD/ripgrep/ripgreprc"
+          echo "Hello World" > /tmp/rg-test.txt
+          rg "hello" /tmp/rg-test.txt
+
+      - name: Real fzf smoke test
+        run: |
+          cat > /tmp/fzf-smoke.zsh <<'SCRIPT'
+          source fzf/fzf.zsh
+          eval $FZF_DEFAULT_COMMAND | tee /tmp/fzf-files.txt
+          grep -q README.md /tmp/fzf-files.txt
+          fzf --filter=README < /tmp/fzf-files.txt | grep -q README.md
+          SCRIPT
+          zsh /tmp/fzf-smoke.zsh
+
+      - name: Real lazygit smoke test
+        run: |
+          mkdir -p ~/.config/lazygit
+          cp lazygit/config.yml ~/.config/lazygit/config.yml
+          lazygit --print-config-dir
+
+  # ---------------------------------------------------------------------------------------------
+  # git
+  # ---------------------------------------------------------------------------------------------
+
+  # all three platform files must parse as Git config and carry the same identity, signing and
+  # hooks settings; only the credential helper and the Windows SSH client may differ
+  gitconfig:
+    name: "gitconfig: Validate platform config files"
+    needs: changes
+    if: needs.changes.outputs.gitconfig == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: git/gitconfig
+        shell: bash
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Parse each platform file
+        run: |
+          for f in mac/gitconfig linux/gitconfig windows/gitconfig; do
+            echo "Checking $f"
+            git config --file "$f" --list > /dev/null
+          done
+
+      - name: Confirm only credential.helper and core.sshCommand differ
+        run: |
+          for pair in "mac linux" "mac windows"; do
+            # the pair is split on purpose into the two folder names
+            # shellcheck disable=SC2086
+            set -- $pair
+            diff <(grep -Ev '^\s*(helper|sshCommand) = ' "$1/gitconfig") <(grep -Ev '^\s*(helper|sshCommand) = ' "$2/gitconfig")
+          done
+
+  git-hooks:
+    name: "git-hooks: Syntax"
+    needs: changes
+    if: needs.changes.outputs.git_hooks == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: git/git-hooks
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Check every hook parses as POSIX sh
+        run: |
+          for f in mac/* linux/* windows/*; do
+            sh -n "$f" && echo "ok $f"
+          done
+
+  # UseKeychain is a macOS-only OpenSSH directive that a Linux or Windows client rejects at parse
+  # time, so each platform config is parsed on its own real OS
+  ssh-parse:
+    name: "ssh: Parse ${{ matrix.platform }}/config"
+    needs: changes
+    if: needs.changes.outputs.ssh == 'true'
+    strategy:
+      matrix:
+        include:
+          - platform: mac
+            os: macos-latest
+          - platform: linux
+            os: ubuntu-latest
+          - platform: windows
+            os: windows-latest
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: git/ssh
+        shell: bash
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Parse the config on its real platform
+        run: ssh -F "${{ matrix.platform }}/config" -G github.com > /dev/null
+
+  ssh-scan:
+    name: "ssh: Confirm the only difference and scan for private keys"
+    needs: changes
+    if: needs.changes.outputs.ssh == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: git/ssh
+        shell: bash
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Confirm only UseKeychain differs between platforms
+        run: |
+          diff <(grep -v UseKeychain mac/config) linux/config
+          diff <(grep -v UseKeychain mac/config) windows/config
+
+      - name: Hard-fail on anything shaped like a private key
+        run: |
+          hit=0
+          if grep -rl "PRIVATE KEY" .; then
+            echo "::error::a PEM private key header was found in the folder"
+            hit=1
+          fi
+          while IFS= read -r -d '' f; do
+            case "$f" in
+              */config|*/*.pub) continue ;;
+            esac
+            echo "::error file=$f::unexpected file present, only config and *.pub belong in a platform folder"
+            hit=1
+          done < <(find mac linux windows -type f -print0)
+          exit "$hit"
+
+  # ---------------------------------------------------------------------------------------------
+  # editors
+  # ---------------------------------------------------------------------------------------------
+
+  # VS Code allows comments in settings-style files, so full-line // comments are stripped first
+  vscode:
+    name: "vscode: Validate JSON config"
+    needs: changes
+    if: needs.changes.outputs.vscode == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/vscode
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Parse every JSON config file
+        run: |
+          python3 - <<'PYEOF'
+          import glob, json, re, sys
+          files = ["settings.json", "argv.json", "global.code-snippets"] + glob.glob("keybindings/*.json") + glob.glob("templates/*.json")
+          bad = 0
+          for f in files:
+              text = re.sub(r"^\s*//.*$", "", open(f).read(), flags=re.M)
+              try:
+                  json.loads(text)
+                  print("ok", f)
+              except ValueError as e:
+                  print("::error file=%s::%s" % (f, e))
+                  bad = 1
+          sys.exit(bad)
+          PYEOF
+
+      - name: Check every extension line is publisher.name@version or a // comment
+        run: |
+          hit=0
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            case "$line" in
+              //*) continue ;;
+              *.*@*) continue ;;
+              *)
+                echo "::error file=extensions.txt::malformed line: $line"
+                hit=1
+                ;;
+            esac
+          done < extensions.txt
+          exit "$hit"
+
+
+  # zed reads settings.json as JSON with comments and trailing commas, so both are stripped first
+  zed:
+    name: "zed: Validate settings and extensions"
+    needs: changes
+    if: needs.changes.outputs.zed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/zed
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Parse settings.json
+        run: |
+          python3 - <<'PYEOF'
+          import json, re, sys
+
+          path = "settings.json"
+          text = re.sub(r"(?m)^\s*//.*$", "", open(path).read())
+          text = re.sub(r",(\s*[}\]])", r"\1", text)
+          try:
+              json.loads(text)
+              print("ok", path)
+          except ValueError as e:
+              print(f"::error file={path}::{e}")
+              sys.exit(1)
+          PYEOF
+
+      - name: Check every extension line is id@version or a // comment
+        run: |
+          hit=0
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            case "$line" in
+              //*) continue ;;
+              *@*) continue ;;
+              *)
+                echo "::error file=extensions.txt::malformed line: $line"
+                hit=1
+                ;;
+            esac
+          done < extensions.txt
+          exit "$hit"
+
+      - name: Validate the theme file, the theme package and the apply scripts
+        run: python3 scripts/validate.py
+
+      - name: Shellcheck the apply scripts
+        run: shellcheck mac/apply.sh linux/apply.sh
+
+      - name: Parse the PowerShell apply script
+        shell: pwsh
+        run: |
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile("$PWD/windows/apply.ps1", [ref]$null, [ref]$errors) | Out-Null
+          if ($errors.Count) { $errors | ForEach-Object { Write-Output "::error file=windows/apply.ps1::$($_.Message)" }; exit 1 }
+          Write-Output 'windows/apply.ps1 parses'
+
+  jetbrains:
+    name: "jetbrains: Validate config and plugin lists"
+    needs: changes
+    if: needs.changes.outputs.jetbrains == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/jetbrains
+        shell: bash
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Parse every keymap XML file
+        run: |
+          hit=0
+          while IFS= read -r -d '' f; do
+            echo "Checking $f"
+            python3 -c "import sys, xml.etree.ElementTree as ET; ET.parse(sys.argv[1])" "$f" || hit=1
+          done < <(find keymaps -type f -name '*.xml' -print0)
+          exit "$hit"
+
+      - name: Parse every toolbox settings file
+        run: |
+          for f in toolbox/mac/settings.json toolbox/linux/settings.json toolbox/windows/settings.json; do
+            python3 -c "import json, sys; json.load(open(sys.argv[1]))" "$f"
+          done
+
+      - name: Confirm toolbox settings only differ in shell_scripts.location
+        run: |
+          python3 - <<'PYEOF'
+          import json
+          files = ["toolbox/mac/settings.json", "toolbox/linux/settings.json", "toolbox/windows/settings.json"]
+          docs = [json.load(open(f)) for f in files]
+          for d in docs:
+              d["shell_scripts"]["location"] = "STRIPPED"
+          assert all(d == docs[0] for d in docs), "toolbox settings differ beyond shell_scripts.location"
+          PYEOF
+
+      - name: Check every plugin list line
+        run: |
+          hit=0
+          for f in plugins/*.txt; do
+            echo "Checking $f"
+            while IFS= read -r line; do
+              [ -z "$line" ] && continue
+              case "$line" in
+                //*) continue ;;
+                *@*) continue ;;
+                *)
+                  echo "::error file=$f::line does not match id@version or // comment: $line"
+                  hit=1
+                  ;;
+              esac
+            done < "$f"
+          done
+          exit "$hit"
+
+      - name: Validate the theme package, the options, the keymaps and the apply scripts
+        run: python3 scripts/validate.py
+
+      - name: Shellcheck the apply scripts
+        run: shellcheck mac/apply.sh linux/apply.sh
+
+      - name: Parse the PowerShell apply script
+        shell: pwsh
+        run: |
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile("$PWD/windows/apply.ps1", [ref]$null, [ref]$errors) | Out-Null
+          if ($errors.Count) { $errors | ForEach-Object { Write-Output "::error file=windows/apply.ps1::$($_.Message)" }; exit 1 }
+          Write-Output 'windows/apply.ps1 parses'
+
+  # eclipse reads each .prefs file as java properties, so every fragment line must be a # note or
+  # key=value. apply.ps1 is only parsed, since it reads the same fragments as apply.sh, which is
+  # run for real
+  eclipse:
+    name: "eclipse: Validate preferences and merge scripts"
+    needs: changes
+    if: needs.changes.outputs.eclipse == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/eclipse
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Check every fragment and the key binding XML
+        run: |
+          python3 - <<'PYEOF'
+          import glob, os, re, sys
+          import xml.etree.ElementTree as ET
+
+          bad = 0
+          keys = {}
+          for path in sorted(glob.glob("prefs/*.prefs")):
+              target = os.path.basename(path)
+              for n, line in enumerate(open(path).read().splitlines(), 1):
+                  if not line.strip() or line.lstrip().startswith("#"):
+                      continue
+                  if not re.match(r"^[A-Za-z0-9_.\-/]+=", line):
+                      print(f"::error file={path},line={n}::not a # note or key=value line")
+                      bad = 1
+                      continue
+                  key = line.split("=", 1)[0]
+                  # a repeated key would make the result depend on line order
+                  seen = keys.setdefault((target, key), path)
+                  if seen != path:
+                      print(f"::error file={path},line={n}::{key} is also set in {seen}")
+                      bad = 1
+                  if key == "org.eclipse.ui.commands":
+                      xml = line.split("=", 1)[1].replace("\\n", "\n").replace("\\=", "=")
+                      root = ET.fromstring(xml)
+                      count = len(root.findall("keyBinding"))
+                      print(f"{path}: {count} key bindings")
+                      if count != 15:
+                          print(f"::error file={path},line={n}::expected 15 key bindings, found {count}")
+                          bad = 1
+          sys.exit(bad)
+          PYEOF
+
+      - name: Shellcheck the merge script
+        run: shellcheck apply.sh
+
+      - name: Check every plugins.txt line
+        run: |
+          hit=0
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            case "$line" in
+              //*) continue ;;
+              *" | https://"*) continue ;;
+              *)
+                echo "::error file=plugins.txt::malformed line: $line"
+                hit=1
+                ;;
+            esac
+          done < plugins.txt
+          exit "$hit"
+
+      - name: Run the merge twice on a throwaway workspace
+        run: |
+          ws="$RUNNER_TEMP/ws"
+          settings="$ws/.metadata/.plugins/org.eclipse.core.runtime/.settings"
+          mkdir -p "$settings"
+          printf 'eclipse.preferences.version=1\ntabWidth=8\nunrelated=kept\n' > "$settings/org.eclipse.ui.editors.prefs"
+          ./apply.sh "$ws"
+          # nothing is backed up, so the settings folder must be the only thing beside it
+          [ "$(ls -A "$ws/.metadata/.plugins/org.eclipse.core.runtime")" = .settings ] || { echo "::error::the merge left something beside .settings"; exit 1; }
+          # every fragment line must now be present verbatim, the unrelated key kept
+          # and the old tabWidth replaced rather than duplicated
+          for f in prefs/*.prefs; do
+            grep -v '^[[:space:]]*#' "$f" | grep -v '^[[:space:]]*$' | while IFS= read -r line; do
+              grep -qxF -- "$line" "$settings/$(basename "$f")" || { echo "::error::missing in $(basename "$f"): ${line%%=*}"; exit 1; }
+            done
+          done
+          grep -qx 'unrelated=kept' "$settings/org.eclipse.ui.editors.prefs"
+          [ "$(grep -c '^tabWidth=' "$settings/org.eclipse.ui.editors.prefs")" = 1 ]
+          cp -R "$settings" "$RUNNER_TEMP/after-first"
+          ./apply.sh "$ws" 2>&1 | tee "$RUNNER_TEMP/second.log"
+          diff -r "$RUNNER_TEMP/after-first" "$settings"
+          if grep -Eq '^  (added|changed) ' "$RUNNER_TEMP/second.log"; then
+            echo "::error::second run was not a no-op"
+            exit 1
+          fi
+
+      - name: Parse the PowerShell merge script
+        shell: pwsh
+        run: |
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile("$PWD/apply.ps1", [ref]$null, [ref]$errors) | Out-Null
+          if ($errors.Count) { $errors | ForEach-Object { Write-Output "::error file=apply.ps1::$($_.Message)" }; exit 1 }
+          Write-Output 'apply.ps1 parses'
+
+  # STM32CubeIDE reads each .prefs file as java properties, so every fragment line must be a # note
+  # or key=value. The merge scripts read values only from the fragments, so the mac and linux
+  # scripts stay byte-identical and the windows script is only parsed
+  stm32cubeide:
+    name: "stm32cubeide: Validate preferences and merge scripts"
+    needs: changes
+    if: needs.changes.outputs.stm32cubeide == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/stm32cubeide
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Check every fragment and the key binding XML
+        run: |
+          python3 - <<'PYEOF'
+          import glob, os, re, sys
+          import xml.etree.ElementTree as ET
+
+          bad = 0
+          keys = {}
+          for path in sorted(glob.glob("shared/prefs/*.prefs") + glob.glob("mac/prefs/*.prefs") + glob.glob("linux/prefs/*.prefs") + glob.glob("windows/prefs/*.prefs")):
+              target = os.path.basename(path)
+              for n, line in enumerate(open(path).read().splitlines(), 1):
+                  if not line.strip() or line.lstrip().startswith("#"):
+                      continue
+                  if not re.match(r"^[A-Za-z0-9_.\-/]+=", line):
+                      print(f"::error file={path},line={n}::not a # note or key=value line")
+                      bad = 1
+                      continue
+                  key = line.split("=", 1)[0]
+                  # the same key in shared and a platform overlay would make the
+                  # result depend on merge order. overlays never merge with each
+                  # other, so two platforms may each set the same key
+                  scope = path.split("/")[0]
+                  seen = keys.setdefault((target, key), {})
+                  clash = [p for s, p in seen.items() if p != path and (s == scope or "shared" in (s, scope))]
+                  if clash:
+                      print(f"::error file={path},line={n}::{key} is also set in {clash[0]}")
+                      bad = 1
+                  seen.setdefault(scope, path)
+                  if key == "org.eclipse.ui.commands":
+                      xml = line.split("=", 1)[1].replace("\\n", "\n").replace("\\=", "=")
+                      root = ET.fromstring(xml)
+                      count = len(root.findall("keyBinding"))
+                      print(f"{path}: {count} key bindings")
+                      if count != 15:
+                          print(f"::error file={path},line={n}::expected 15 key bindings, found {count}")
+                          bad = 1
+          sys.exit(bad)
+          PYEOF
+
+      - name: Shellcheck the merge script
+        run: shellcheck mac/apply.sh linux/apply.sh
+
+      - name: Check the themes carry the C colours
+        run: |
+          python3 -m py_compile scripts/build-themes.py
+          hit=0
+          for f in shared/theme/*.epf; do
+            case "$f" in *borders.epf) continue ;; esac
+            for key in c_keyword c_string c_numbers pp_directive semanticHighlighting.macroSubstitution.color; do
+              grep -q "^/instance/org.eclipse.cdt.ui/$key=" "$f" || { echo "::error file=$f::missing $key"; hit=1; }
+            done
+            if grep -Eq '^/instance/org\.eclipse\.jdt' "$f"; then
+              echo "::error file=$f::Java keys, which the C editor does not read"; hit=1
+            fi
+            # 2.2 reads the new Terminal plugin and 2.1 the old one, so both must be there
+            for plugin in org.eclipse.terminal.control org.eclipse.tm.terminal.control; do
+              grep -q "^/instance/$plugin/BACKGROUND=" "$f" || { echo "::error file=$f::no $plugin colours"; hit=1; }
+            done
+          done
+          exit "$hit"
+
+      - name: Confirm the platform copies match
+        run: diff mac/apply.sh linux/apply.sh
+
+      - name: Run the merge twice on a throwaway workspace
+        run: |
+          ws="$RUNNER_TEMP/ws"
+          settings="$ws/.metadata/.plugins/org.eclipse.core.runtime/.settings"
+          mkdir -p "$settings"
+          printf 'eclipse.preferences.version=1\ntabWidth=8\nunrelated=kept\n' > "$settings/org.eclipse.ui.editors.prefs"
+          linux/apply.sh "$ws"
+          # nothing is backed up, so the settings folder must be the only thing beside it
+          [ "$(ls -A "$ws/.metadata/.plugins/org.eclipse.core.runtime")" = .settings ] || { echo "::error::the merge left something beside .settings"; exit 1; }
+          # every shared line must now be present verbatim, the unrelated key kept
+          # and the old tabWidth replaced rather than duplicated
+          for f in shared/prefs/*.prefs; do
+            grep -v '^[[:space:]]*#' "$f" | grep -v '^[[:space:]]*$' | while IFS= read -r line; do
+              grep -qxF -- "$line" "$settings/$(basename "$f")" || { echo "::error::missing in $(basename "$f"): ${line%%=*}"; exit 1; }
+            done
+          done
+          grep -qx 'unrelated=kept' "$settings/org.eclipse.ui.editors.prefs"
+          [ "$(grep -c '^tabWidth=' "$settings/org.eclipse.ui.editors.prefs")" = 1 ]
+          cp -R "$settings" "$RUNNER_TEMP/after-first"
+          linux/apply.sh "$ws" 2>&1 | tee "$RUNNER_TEMP/second.log"
+          diff -r "$RUNNER_TEMP/after-first" "$settings"
+          if grep -Eq '^  (added|changed) ' "$RUNNER_TEMP/second.log"; then
+            echo "::error::second run was not a no-op"
+            exit 1
+          fi
+
+      - name: Find the newest default workspace
+        run: |
+          home="$RUNNER_TEMP/home"
+          mkdir -p "$home/STM32CubeIDE/workspace_1.0.0/.metadata" "$home/STM32CubeIDE/workspace_2.0.0/.metadata" "$home/STM32CubeIDE/workspace_3.0.0"
+          touch -d '2 days ago' "$home/STM32CubeIDE/workspace_1.0.0"
+          HOME="$home" linux/apply.sh --no-theme | tee "$RUNNER_TEMP/default.log"
+          grep -qx "Workspace: $home/STM32CubeIDE/workspace_2.0.0" "$RUNNER_TEMP/default.log"
+          rm -rf "$home/STM32CubeIDE"
+          if HOME="$home" linux/apply.sh 2>/dev/null; then echo "::error::ran with no workspace"; exit 1; fi
+
+      - name: Parse the PowerShell merge script
+        shell: pwsh
+        run: |
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile("$PWD/windows/apply.ps1", [ref]$null, [ref]$errors) | Out-Null
+          if ($errors.Count) { $errors | ForEach-Object { Write-Output "::error file=windows/apply.ps1::$($_.Message)" }; exit 1 }
+          Write-Output 'windows/apply.ps1 parses'
+
+  # defaults writes each prefs.txt line with the type it names, so every line must be a # note or
+  # <type> <key> <value> with a type defaults accepts. The script, the themes and the key bindings
+  # plist are checked on Linux, since they are plain text files
+  xcode:
+    name: "xcode: Validate preferences, themes and the install script"
+    needs: changes
+    if: needs.changes.outputs.xcode == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/xcode
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Check prefs.txt, the themes and the key bindings file
+        run: |
+          python3 - <<'PYEOF'
+          import glob, json, plistlib, re, sys
+
+          bad = 0
+          seen = {}
+          for n, line in enumerate(open("prefs.txt").read().splitlines(), 1):
+              if not line.strip() or line.lstrip().startswith("#"):
+                  continue
+              m = re.match(r"^(string|bool|int|data) ([A-Za-z0-9_.]+) (.+)$", line)
+              if not m:
+                  print(f"::error file=prefs.txt,line={n}::not a # note or <type> <key> <value> line")
+                  bad = 1
+                  continue
+              kind, key, value = m.groups()
+              if key in seen:
+                  print(f"::error file=prefs.txt,line={n}::{key} is also set on line {seen[key]}")
+                  bad = 1
+              seen[key] = n
+              if kind == "bool" and value not in ("true", "false"):
+                  print(f"::error file=prefs.txt,line={n}::{key} is a bool but {value} is not true or false")
+                  bad = 1
+              if kind == "int" and not re.fullmatch(r"-?\d+", value):
+                  print(f"::error file=prefs.txt,line={n}::{key} is an int but {value} is not a whole number")
+                  bad = 1
+              if kind == "data":
+                  if not re.fullmatch(r"(?:[0-9a-f]{2})+", value):
+                      print(f"::error file=prefs.txt,line={n}::{key} is data but {value[:20]} is not hex")
+                      bad = 1
+                  elif key == "DVTWorkspaceThemeSettings":
+                      # xcode stores this setting as a json document, so the hex must decode to one
+                      json.loads(bytes.fromhex(value))
+          print(f"prefs.txt: {len(seen)} preferences")
+
+          for path in sorted(glob.glob("KeyBindings/*.idekeybindings")):
+              with open(path, "rb") as f:
+                  data = plistlib.load(f)
+              if not isinstance(data, dict):
+                  print(f"::error file={path}::the root is not a dictionary")
+                  bad = 1
+              print(f"{path}: parses")
+
+          themes = sorted(glob.glob("theme/*.xccolortheme"))
+          for path in themes:
+              with open(path, "rb") as f:
+                  if not isinstance(plistlib.load(f), dict):
+                      print(f"::error file={path}::the root is not a dictionary")
+                      bad = 1
+          print(f"theme/: {len(themes)} classic themes parse")
+          if len(themes) != 8:
+              print(f"::error::expected 8 .xccolortheme files, found {len(themes)}")
+              bad = 1
+          for path in sorted(glob.glob("theme/*.xcworkspacecolortheme")):
+              json.load(open(path))
+              print(f"{path}: parses")
+          sys.exit(bad)
+          PYEOF
+
+      - name: Check the install script
+        run: |
+          bash -n apply.sh
+          shellcheck apply.sh
+
+  neovim:
+    name: "neovim: Load config headlessly"
+    needs: changes
+    if: needs.changes.outputs.neovim == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/neovim
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install Neovim
+        timeout-minutes: 5
+        run: sudo add-apt-repository ppa:neovim-ppa/unstable -y && sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=20 update && sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=20 install -y neovim
+
+      - name: Headless launch, config load only
+        run: |
+          mkdir -p ~/.config
+          cp -r nvim ~/.config/nvim
+          nvim --headless -c "lua print('OK')" -c "qa" 2>&1 | tee /tmp/nvim-out.txt
+          grep -q "OK" /tmp/nvim-out.txt
+
+  arduino:
+    name: "arduino: Validate settings and apply scripts"
+    needs: changes
+    if: needs.changes.outputs.arduino == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/arduino
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate the settings, theme package and script copies
+        run: python3 scripts/validate.py
+
+      - name: Shellcheck the apply scripts
+        run: shellcheck mac/apply.sh linux/apply.sh
+
+      - name: Parse the PowerShell apply script
+        shell: pwsh
+        run: |
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile("$PWD/windows/apply.ps1", [ref]$null, [ref]$errors) | Out-Null
+          if ($errors.Count) { $errors | ForEach-Object { Write-Output "::error file=windows/apply.ps1::$($_.Message)" }; exit 1 }
+          Write-Output 'windows/apply.ps1 parses'
+
+  microchip_studio:
+    name: "microchip-studio: Validate themes and apply script"
+    needs: changes
+    if: needs.changes.outputs.microchip_studio == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/microchip-studio
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate the themes and settings
+        run: python3 scripts/validate.py
+
+      - name: Parse the PowerShell apply script
+        shell: pwsh
+        run: |
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile("$PWD/windows/apply.ps1", [ref]$null, [ref]$errors) | Out-Null
+          if ($errors.Count) { $errors | ForEach-Object { Write-Output "::error file=windows/apply.ps1::$($_.Message)" }; exit 1 }
+          Write-Output 'windows/apply.ps1 parses'
+
+  kicad:
+    name: "kicad: Validate themes and apply scripts"
+    needs: changes
+    if: needs.changes.outputs.kicad == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/kicad
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate the themes and settings
+        run: python3 scripts/validate.py
+
+      - name: Shellcheck the apply scripts
+        run: shellcheck mac/apply.sh linux/apply.sh
+
+      - name: Parse the PowerShell apply script
+        shell: pwsh
+        run: |
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile("$PWD/windows/apply.ps1", [ref]$null, [ref]$errors) | Out-Null
+          if ($errors.Count) { $errors | ForEach-Object { Write-Output "::error file=windows/apply.ps1::$($_.Message)" }; exit 1 }
+          Write-Output 'windows/apply.ps1 parses'
+
+  processing:
+    name: "processing: Validate themes and apply scripts"
+    needs: changes
+    if: needs.changes.outputs.processing == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/processing
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate the themes and settings
+        run: python3 scripts/validate.py
+
+      - name: Shellcheck the apply scripts
+        run: shellcheck mac/apply.sh linux/apply.sh
+
+      - name: Parse the PowerShell scripts
+        shell: pwsh
+        run: |
+          $failed = $false
+          foreach ($file in Get-ChildItem windows -Filter *.ps1) {
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors) | Out-Null
+            if ($errors.Count) { $failed = $true; $errors | ForEach-Object { Write-Output "::error file=windows/$($file.Name)::$($_.Message)" } }
+            else { Write-Output "windows/$($file.Name) parses" }
+          }
+          if ($failed) { exit 1 }
+
+  nextpad_plus_plus:
+    name: "nextpad-plus-plus: Validate themes and apply script"
+    needs: changes
+    if: needs.changes.outputs.nextpad_plus_plus == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/nextpad-plus-plus
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate the themes and settings
+        run: python3 scripts/validate.py
+
+      - name: Shellcheck the apply script
+        run: shellcheck mac/apply.sh
+
+  vivado:
+    name: "vivado: Validate themes and apply scripts"
+    needs: changes
+    if: needs.changes.outputs.vivado == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/vivado
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate the themes and settings
+        run: python3 scripts/validate.py
+
+      - name: Shellcheck the apply script
+        run: shellcheck linux/apply.sh
+
+      - name: Parse the PowerShell apply script
+        shell: pwsh
+        run: |
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile("$PWD/windows/apply.ps1", [ref]$null, [ref]$errors) | Out-Null
+          if ($errors.Count) { $errors | ForEach-Object { Write-Output "::error file=windows/apply.ps1::$($_.Message)" }; exit 1 }
+          Write-Output 'windows/apply.ps1 parses'
+
+  notepad_plus_plus:
+    name: "notepad-plus-plus: Validate themes and apply script"
+    needs: changes
+    if: needs.changes.outputs.notepad_plus_plus == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/notepad-plus-plus
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate the themes and settings
+        run: python3 scripts/validate.py
+
+      - name: Parse the PowerShell scripts
+        shell: pwsh
+        run: |
+          $failed = $false
+          foreach ($file in Get-ChildItem windows -Filter *.ps1) {
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors) | Out-Null
+            if ($errors.Count) { $failed = $true; $errors | ForEach-Object { Write-Output "::error file=windows/$($file.Name)::$($_.Message)" } }
+            else { Write-Output "windows/$($file.Name) parses" }
+          }
+          if ($failed) { exit 1 }
+
+  thonny:
+    name: "thonny: Validate themes and apply scripts"
+    needs: changes
+    if: needs.changes.outputs.thonny == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/thonny
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate the themes and settings
+        run: python3 scripts/validate.py
+
+      - name: Shellcheck the apply scripts
+        run: shellcheck mac/apply.sh linux/apply.sh
+
+      - name: Parse the PowerShell scripts
+        shell: pwsh
+        run: |
+          $failed = $false
+          foreach ($file in Get-ChildItem windows -Filter *.ps1) {
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors) | Out-Null
+            if ($errors.Count) { $failed = $true; $errors | ForEach-Object { Write-Output "::error file=windows/$($file.Name)::$($_.Message)" } }
+            else { Write-Output "windows/$($file.Name) parses" }
+          }
+          if ($failed) { exit 1 }
+
+  matlab:
+    name: "matlab: Validate themes and apply scripts"
+    needs: changes
+    if: needs.changes.outputs.matlab == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/matlab
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate the themes and settings
+        run: python3 scripts/validate.py
+
+      - name: Shellcheck the apply scripts
+        run: shellcheck mac/apply.sh linux/apply.sh
+
+      - name: Parse the PowerShell scripts
+        shell: pwsh
+        run: |
+          $failed = $false
+          foreach ($file in Get-ChildItem windows -Filter *.ps1) {
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors) | Out-Null
+            if ($errors.Count) { $failed = $true; $errors | ForEach-Object { Write-Output "::error file=windows/$($file.Name)::$($_.Message)" } }
+            else { Write-Output "windows/$($file.Name) parses" }
+          }
+          if ($failed) { exit 1 }
+
+  ltspice:
+    name: "ltspice: Validate themes and apply scripts"
+    needs: changes
+    if: needs.changes.outputs.ltspice == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/ltspice
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate the themes and settings
+        run: python3 scripts/validate.py
+
+      - name: Shellcheck the apply scripts
+        run: shellcheck mac/apply.sh linux/apply.sh
+
+      - name: Parse the PowerShell scripts
+        shell: pwsh
+        run: |
+          $failed = $false
+          foreach ($file in Get-ChildItem windows -Filter *.ps1) {
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors) | Out-Null
+            if ($errors.Count) { $failed = $true; $errors | ForEach-Object { Write-Output "::error file=windows/$($file.Name)::$($_.Message)" } }
+            else { Write-Output "windows/$($file.Name) parses" }
+          }
+          if ($failed) { exit 1 }
+
+  proteus:
+    name: "proteus: Validate themes and apply scripts"
+    needs: changes
+    if: needs.changes.outputs.proteus == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: editors/proteus
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate the themes and settings
+        run: python3 scripts/validate.py
+
+      - name: Parse the PowerShell scripts
+        shell: pwsh
+        run: |
+          $failed = $false
+          foreach ($file in Get-ChildItem windows -Filter *.ps1) {
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors) | Out-Null
+            if ($errors.Count) { $failed = $true; $errors | ForEach-Object { Write-Output "::error file=windows/$($file.Name)::$($_.Message)" } }
+            else { Write-Output "windows/$($file.Name) parses" }
+          }
+          if ($failed) { exit 1 }
+
+  # ---------------------------------------------------------------------------------------------
+  # apps
+  # ---------------------------------------------------------------------------------------------
+
+  raycast:
+    name: "raycast: Check extension list format"
+    needs: changes
+    if: needs.changes.outputs.raycast == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: apps/raycast
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Check every extension line is slug@author or a // comment
+        run: |
+          hit=0
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            case "$line" in
+              //*) continue ;;
+              *@*) continue ;;
+              *)
+                echo "::error file=extensions.txt::malformed line: $line"
+                hit=1
+                ;;
+            esac
+          done < extensions.txt
+          exit "$hit"
+
+  # RectangleConfig.json must match the shape Rectangle's own Config.swift expects: bundleId,
+  # version, shortcuts (name to keyCode and modifierFlags) and defaults (key to a CodableDefault
+  # with exactly one of bool, int, float, double or string set)
+  rectangle:
+    name: "rectangle: Validate Rectangle config"
+    needs: changes
+    if: needs.changes.outputs.rectangle == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: apps/rectangle
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate RectangleConfig.json shape
+        run: |
+          python3 - <<'PYEOF'
+          import json
+
+          with open("RectangleConfig.json") as f:
+              config = json.load(f)
+
+          assert config["bundleId"] == "com.knollsoft.Rectangle"
+          assert isinstance(config["version"], str)
+
+          for name, shortcut in config["shortcuts"].items():
+              assert isinstance(shortcut["keyCode"], int), f"{name}: keyCode must be an int"
+              assert isinstance(shortcut["modifierFlags"], int), f"{name}: modifierFlags must be an int"
+              assert set(shortcut.keys()) == {"keyCode", "modifierFlags"}, f"{name}: unexpected keys"
+
+          codable_fields = {"bool", "int", "float", "double", "string"}
+          for key, value in config["defaults"].items():
+              present = [k for k in value if k in codable_fields]
+              assert len(present) == 1, f"{key}: must set exactly one of {codable_fields}"
+              assert set(value.keys()) <= codable_fields, f"{key}: unexpected keys"
+
+          print("RectangleConfig.json is valid")
+          PYEOF
+
+  zotero:
+    name: "zotero: Validate settings and apply scripts"
+    needs: changes
+    if: needs.changes.outputs.zotero == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: apps/zotero
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate the themes and settings
+        run: python3 scripts/validate.py
+
+      - name: Shellcheck the apply scripts
+        run: shellcheck mac/apply.sh linux/apply.sh
+
+      - name: Parse the PowerShell scripts
+        shell: pwsh
+        run: |
+          $failed = $false
+          foreach ($file in Get-ChildItem windows -Filter *.ps1) {
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors) | Out-Null
+            if ($errors.Count) { $failed = $true; $errors | ForEach-Object { Write-Output "::error file=windows/$($file.Name)::$($_.Message)" } }
+            else { Write-Output "windows/$($file.Name) parses" }
+          }
+          if ($failed) { exit 1 }
+
+  obsidian:
+    name: "obsidian: Validate settings and apply scripts"
+    needs: changes
+    if: needs.changes.outputs.obsidian == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: apps/obsidian
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate the themes and settings
+        run: python3 scripts/validate.py
+
+      - name: Shellcheck the apply scripts
+        run: shellcheck mac/apply.sh linux/apply.sh
+
+      - name: Parse the PowerShell scripts
+        shell: pwsh
+        run: |
+          $failed = $false
+          foreach ($file in Get-ChildItem windows -Filter *.ps1) {
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors) | Out-Null
+            if ($errors.Count) { $failed = $true; $errors | ForEach-Object { Write-Output "::error file=windows/$($file.Name)::$($_.Message)" } }
+            else { Write-Output "windows/$($file.Name) parses" }
+          }
+          if ($failed) { exit 1 }

@@ -23,6 +23,37 @@ ehthumbs.db
 # Logs
 *.log
 
+# Python bytecode, written whenever a script or validator runs
+__pycache__/
+*.pyc
+
 # Local idea notes - private scratchpad, never publish
 will-do/
 __pycache__/
+
+# setup/: the three bootstraps' local environment files and generated state
+setup/*-bootstrap/**/.env
+setup/*-bootstrap/**/.env.*
+setup/*-bootstrap/**/*.local
+setup/*-bootstrap/**/.bootstrap-state/
+
+# git/ssh/: never commit a private key. Only config files, *.example files and public keys
+# (*.pub) belong in this folder
+git/ssh/**/id_ed25519
+git/ssh/**/id_ed25519.ppk
+git/ssh/**/id_rsa
+git/ssh/**/id_ecdsa
+git/ssh/**/*_ed25519
+!git/ssh/**/*_ed25519.pub
+git/ssh/**/*_rsa
+!git/ssh/**/*_rsa.pub
+git/ssh/**/*_ecdsa
+!git/ssh/**/*_ecdsa.pub
+git/ssh/**/known_hosts
+git/ssh/**/known_hosts.old
+git/ssh/**/agent/
+
+# terminal/terminal/: written by zt auto, so Kitty follows the system only while that is on
+terminal/terminal/*/kitty/dark-theme.auto.conf
+terminal/terminal/*/kitty/light-theme.auto.conf
+terminal/terminal/*/kitty/no-preference-theme.auto.conf

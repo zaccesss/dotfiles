@@ -1,0 +1,41 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Python: Current File",
+			"type": "debugpy",
+			"request": "launch",
+			"program": "${file}",
+			"console": "integratedTerminal"
+		},
+		{
+			"name": "Node: Current File",
+			"type": "node",
+			"request": "launch",
+			"program": "${file}",
+			"console": "integratedTerminal"
+		},
+		{
+			"name": "C/C++: Debug (lldb)",
+			"type": "lldb-dap",
+			"request": "launch",
+			"program": "${workspaceFolder}/build/${workspaceFolderBasename}",
+			"args": [],
+			"cwd": "${workspaceFolder}",
+			"preLaunchTask": "build"
+		},
+		{
+			"name": "Java: Current File",
+			"type": "java",
+			"request": "launch",
+			"mainClass": "${file}"
+		},
+		{
+			"name": "Go: Current File",
+			"type": "go",
+			"request": "launch",
+			"mode": "auto",
+			"program": "${file}"
+		}
+	]
+}

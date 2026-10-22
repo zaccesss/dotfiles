@@ -1,0 +1,6 @@
+# merged into <workspace>/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs
+# java 25 is the current LTS release, so new projects compile against it with --release
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=25
+org.eclipse.jdt.core.compiler.compliance=25
+org.eclipse.jdt.core.compiler.release=enabled
+org.eclipse.jdt.core.compiler.source=25

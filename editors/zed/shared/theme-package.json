@@ -1,0 +1,16 @@
+{
+  "name": "zacess-themes",
+  "version": "0.4.0",
+  "source": "https://github.com/zacesshq/themes/blob/v0.4.0/editors/zed/themes/zacess.json",
+  "file": "zacess.json",
+  "themes": [
+    "Zacess Deep Contrast Dark",
+    "Zacess Deep Contrast Light",
+    "Zacess High Contrast Dark",
+    "Zacess High Contrast Light",
+    "Zacess Dark",
+    "Zacess Light",
+    "Zacess Cream",
+    "Zacess Yellow on Black"
+  ]
+}

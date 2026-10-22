@@ -1,0 +1,110 @@
+-- the High Contrast colour scheme: every colour is one of the terminal's own 16 (by number, with termguicolors off), so
+-- Neovim shows exactly the palette the terminal shows. That palette lives in the terminal config, vivid on black in dark
+-- mode and darkened to 7:1 on white in light mode, so Neovim follows it and switches with it with nothing to keep in step.
+-- Backgrounds are left to the terminal. Emphasis uses bold and reverse as well as colour, so no meaning rests on hue alone.
+vim.cmd("highlight clear")
+if vim.fn.exists("syntax_on") == 1 then
+  vim.cmd("syntax reset")
+end
+vim.o.termguicolors = false
+vim.g.colors_name = "high-contrast"
+
+-- terminal colour numbers: 0 black, 1 red, 2 green, 3 yellow, 4 blue, 5 magenta, 6 cyan, 7 white, 8 to 15 bright
+local hi = function(group, spec)
+  vim.api.nvim_set_hl(0, group, spec)
+end
+
+-- text
+hi("Normal", {})
+hi("NormalFloat", {})
+hi("Comment", { ctermfg = 4, italic = true })
+hi("String", { ctermfg = 2 })
+hi("Character", { ctermfg = 2 })
+hi("Number", { ctermfg = 3 })
+hi("Boolean", { ctermfg = 3, bold = true })
+hi("Float", { ctermfg = 3 })
+hi("Constant", { ctermfg = 3 })
+hi("Identifier", {})
+hi("Function", { ctermfg = 6 })
+hi("Statement", { ctermfg = 5, bold = true })
+hi("Keyword", { ctermfg = 5, bold = true })
+hi("Conditional", { ctermfg = 5, bold = true })
+hi("Repeat", { ctermfg = 5, bold = true })
+hi("Exception", { ctermfg = 5, bold = true })
+hi("Operator", {})
+hi("PreProc", { ctermfg = 5 })
+hi("Include", { ctermfg = 5 })
+hi("Type", { ctermfg = 3 })
+hi("StorageClass", { ctermfg = 5 })
+hi("Special", { ctermfg = 6 })
+hi("Delimiter", {})
+hi("Todo", { ctermfg = 3, bold = true, reverse = true })
+hi("Underlined", { underline = true })
+hi("Title", { ctermfg = 6, bold = true })
+hi("Directory", { ctermfg = 4, bold = true })
+hi("@variable", {})
+hi("@property", {})
+
+-- editor chrome
+hi("LineNr", { ctermfg = 4 })
+hi("CursorLineNr", { ctermfg = 3, bold = true })
+hi("CursorLine", {})
+hi("SignColumn", {})
+hi("Visual", { reverse = true })
+hi("Search", { ctermfg = 0, ctermbg = 3 })
+hi("IncSearch", { ctermfg = 0, ctermbg = 6, bold = true })
+hi("CurSearch", { ctermfg = 0, ctermbg = 6, bold = true })
+hi("MatchParen", { ctermfg = 6, bold = true, underline = true })
+hi("StatusLine", { reverse = true, bold = true })
+hi("StatusLineNC", { underline = true })
+hi("WinSeparator", { ctermfg = 4 })
+hi("VertSplit", { ctermfg = 4 })
+hi("FloatBorder", { ctermfg = 4 })
+hi("Pmenu", {})
+hi("PmenuSel", { reverse = true, bold = true })
+hi("PmenuSbar", { reverse = true })
+hi("PmenuThumb", { ctermfg = 4, reverse = true })
+hi("TabLine", { underline = true })
+hi("TabLineSel", { reverse = true, bold = true })
+hi("TabLineFill", {})
+hi("Folded", { ctermfg = 4, italic = true })
+hi("NonText", { ctermfg = 4 })
+hi("Whitespace", { ctermfg = 4 })
+hi("EndOfBuffer", { ctermfg = 4 })
+hi("ModeMsg", { bold = true })
+hi("MoreMsg", { ctermfg = 2, bold = true })
+hi("Question", { ctermfg = 2, bold = true })
+hi("ErrorMsg", { ctermfg = 1, bold = true })
+hi("WarningMsg", { ctermfg = 3, bold = true })
+hi("Error", { ctermfg = 1, bold = true, underline = true })
+
+-- diffs and git signs: colour plus the sign itself, so a change is never shown by hue alone
+hi("DiffAdd", { ctermfg = 2, bold = true })
+hi("DiffDelete", { ctermfg = 1, bold = true })
+hi("DiffChange", { ctermfg = 3 })
+hi("DiffText", { ctermfg = 3, bold = true, reverse = true })
+hi("Added", { ctermfg = 2 })
+hi("Removed", { ctermfg = 1 })
+hi("Changed", { ctermfg = 3 })
+hi("GitSignsAdd", { ctermfg = 2 })
+hi("GitSignsDelete", { ctermfg = 1 })
+hi("GitSignsChange", { ctermfg = 3 })
+
+-- diagnostics: underlined in the text as well as coloured in the gutter
+hi("DiagnosticError", { ctermfg = 1, bold = true })
+hi("DiagnosticWarn", { ctermfg = 3, bold = true })
+hi("DiagnosticInfo", { ctermfg = 4 })
+hi("DiagnosticHint", { ctermfg = 6 })
+hi("DiagnosticOk", { ctermfg = 2 })
+hi("DiagnosticUnderlineError", { underline = true, ctermfg = 1 })
+hi("DiagnosticUnderlineWarn", { underline = true, ctermfg = 3 })
+hi("DiagnosticUnderlineInfo", { underline = true })
+hi("DiagnosticUnderlineHint", { underline = true })
+
+-- telescope and completion follow the same rules
+hi("TelescopeSelection", { reverse = true, bold = true })
+hi("TelescopeMatching", { ctermfg = 3, bold = true })
+hi("TelescopeBorder", { ctermfg = 4 })
+hi("CmpItemAbbrMatch", { ctermfg = 3, bold = true })
+hi("CmpItemAbbrMatchFuzzy", { ctermfg = 3, bold = true })
+hi("CmpItemKind", { ctermfg = 6 })

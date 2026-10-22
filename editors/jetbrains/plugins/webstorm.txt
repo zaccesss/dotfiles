@@ -1,0 +1,20 @@
+// Languages beyond JavaScript
+org.jetbrains.plugins.vue@261.24374.154
+PythonCore@262.10315.125
+ru.adelf.idea.dotenv@262.10315.69
+JavaScriptDebugger@261.24374.151
+
+// Editor feel and theming
+com.zacess.themes@0.4.0
+com.intellij.plugins.vscodekeymap@262.8665.258
+
+// Cloud and containers
+com.intellij.kubernetes@262.10315.24
+
+// Presence and time tracking
+com.almightyalpaca.intellij.plugins.discord@1.12.0
+com.wakatime.intellij.plugin@16.1.2
+
+// Learning
+org.hyperskill.academy@2026.19-2026.2
+com.jetbrains.edu@2026.5-2026.1-405

@@ -1,0 +1,10 @@
+{
+  "Zacess Deep Contrast Dark": { "base": "obsidian", "contrast": "zacess-deep-contrast-dark" },
+  "Zacess Deep Contrast Light": { "base": "moonstone", "contrast": "zacess-deep-contrast-light" },
+  "Zacess High Contrast Dark": { "base": "obsidian", "contrast": "zacess-high-contrast-dark" },
+  "Zacess High Contrast Light": { "base": "moonstone", "contrast": "zacess-high-contrast-light" },
+  "Zacess Dark": { "base": "obsidian", "contrast": "zacess-follow" },
+  "Zacess Light": { "base": "moonstone", "contrast": "zacess-follow" },
+  "Zacess Cream": { "base": "moonstone", "contrast": "zacess-cream" },
+  "Zacess Yellow on Black": { "base": "obsidian", "contrast": "zacess-yellow-on-black" }
+}

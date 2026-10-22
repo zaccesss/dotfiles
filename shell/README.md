@@ -1,0 +1,166 @@
+# shell
+
+> Shell profiles, aliases and developer environment configuration for macOS, Windows and Linux.
+
+[![CI](https://github.com/zaccesss/dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/zaccesss/dotfiles/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](../LICENSE)
+
+---
+
+## In action
+
+Screenshots in four Zacess themes, Deep Contrast Dark and Light, Yellow on Black and Cream,
+recorded in a demo project. Each macOS and Linux shot links to a short animation of the same scene.
+
+### macOS shell
+
+| Deep Contrast Dark | Deep Contrast Light |
+| --- | --- |
+| [![Dark: the welcome banner with a neutral machine name, then gs and glog in a demo project under the Starship prompt](docs/demo/dotfiles-dark.webp)](docs/demo/dotfiles-dark.gif) | [![Light: the welcome banner with a neutral machine name, then gs and glog in a demo project under the Starship prompt](docs/demo/dotfiles-light.webp)](docs/demo/dotfiles-light.gif) |
+
+| Yellow on Black | Cream |
+| --- | --- |
+| [![Yellow on Black: the welcome banner with a neutral machine name, then gs and glog in a demo project under the Starship prompt](docs/demo/dotfiles-yellow-on-black.webp)](docs/demo/dotfiles-yellow-on-black.gif) | [![Cream: the welcome banner with a neutral machine name, then gs and glog in a demo project under the Starship prompt](docs/demo/dotfiles-cream.webp)](docs/demo/dotfiles-cream.gif) |
+
+### Linux (Ubuntu in OrbStack)
+
+| Deep Contrast Dark | Deep Contrast Light |
+| --- | --- |
+| [![Dark: the same dotfiles in bash on Ubuntu: the banner, the numbered topic files and a git log of a demo project](docs/demo/linux-dark.webp)](docs/demo/linux-dark.gif) | [![Light: the same dotfiles in bash on Ubuntu: the banner, the numbered topic files and a git log of a demo project](docs/demo/linux-light.webp)](docs/demo/linux-light.gif) |
+
+| Yellow on Black | Cream |
+| --- | --- |
+| [![Yellow on Black: the same dotfiles in bash on Ubuntu: the banner, the numbered topic files and a git log of a demo project](docs/demo/linux-yellow-on-black.webp)](docs/demo/linux-yellow-on-black.gif) | [![Cream: the same dotfiles in bash on Ubuntu: the banner, the numbered topic files and a git log of a demo project](docs/demo/linux-cream.webp)](docs/demo/linux-cream.gif) |
+
+### Windows (PowerShell 7 and Command Prompt in Windows Terminal)
+
+| Deep Contrast Dark | Deep Contrast Light |
+| --- | --- |
+| ![Dark: the PowerShell welcome banner with a neutral machine name, the shell version and the session time](docs/demo/windows-banner-dark.webp) | ![Light: the PowerShell welcome banner with a neutral machine name, the shell version and the session time](docs/demo/windows-banner-light.webp) |
+| ![Dark: the cmds reference in PowerShell, with categories in magenta, commands in cyan and descriptions in white](docs/demo/windows-cmds-dark.webp) | ![Light: the cmds reference in PowerShell, with categories in magenta, commands in cyan and descriptions in white](docs/demo/windows-cmds-light.webp) |
+| ![Dark: gs and glog in a demo project under the Starship prompt in PowerShell, showing a modified file, an untracked file and a branch graph](docs/demo/windows-git-dark.webp) | ![Light: gs and glog in a demo project under the Starship prompt in PowerShell, showing a modified file, an untracked file and a branch graph](docs/demo/windows-git-light.webp) |
+| ![Dark: Command Prompt with the coloured user, machine and folder prompt running the gs macro in a demo project](docs/demo/windows-cmd-dark.webp) | ![Light: Command Prompt with the coloured user, machine and folder prompt running the gs macro in a demo project](docs/demo/windows-cmd-light.webp) |
+
+The shots show the real config in a throwaway demo project, in
+[Zacess Themes](https://github.com/zacesshq/themes) Deep Contrast Dark and Light, Yellow on Black
+and Cream.
+
+## About
+
+I lost sight in my right eye at age two due to retinoblastoma and have worked with monocular vision my entire life. One of the practical consequences is that a monochrome wall of terminal text is genuinely harder for me to navigate. Distinct, high-contrast colours in a terminal are not an aesthetic preference - they take over the depth-cue job that binocular vision normally does. Cyan headers, green status lines, yellow timestamps - each section is a different colour so I can scan instantly without reading line by line. That is the first reason these dotfiles look the way they do. The hope is that others with similar needs find it useful too.
+
+The second reason is that I work and build across multiple devices - a MacBook Air, a Lenovo laptop on Linux/WSL2 and a Windows desktop PC. Typing long commands that break the moment you leave out a letter, a hyphen or the wrong word was getting in the way. A mistyped `git commit --amend --no-edit` or a forgotten flag in a Docker command meant stopping to look it up or retype it. Small friction that adds up across a day.
+
+These dotfiles solve that by replacing the commands I run most often with short, memorable aliases that are identical on every machine. `gs` instead of `git status`. `dcu` instead of `docker-compose up -d`. The goal is the same muscle memory on macOS, Linux and Windows, no mental context switch between environments.
+
+The profile is split into numbered topic files - one per area of concern - so everything stays organised and easy to find. Adding a new tool means creating one new file, not inserting into a monolithic profile. Run `cmds` at any time for the full command reference, press q to exit.
+
+---
+
+## Quick setup
+
+> [!WARNING]
+> These are personal dotfiles configured for a specific set of machines, tools and workflows. Before cloning, read [NOTICE](NOTICE.md) for the full personalisation checklist. Then read the [platform guide](#documentation) for your OS. Remove any topic files you do not need, update paths and usernames to match your own machine and only then source the profile. Running it unchanged on your own machine will not work correctly.
+
+**1. Read first**
+
+> [!IMPORTANT]
+> - [NOTICE](NOTICE.md) - personalisation checklist, what to change before use
+> - [guides/new-device.md](guides/new-device.md) - prerequisites, Homebrew, language runtimes, token setup
+
+**2. Clone the repo**
+
+```bash
+git clone https://github.com/zaccesss/dotfiles.git ~/dev/github/repos/dotfiles
+cd ~/dev/github/repos/dotfiles/shell
+```
+
+> [!NOTE]
+> Each platform's loader looks for this folder at `~/dev/github/repos/dotfiles/shell` by default. To clone the repo somewhere else, set `DOTFILES` to its `shell` folder before the profile is sourced.
+
+**3. Adapt to your machine**
+
+> [!CAUTION]
+> Go through each topic file in your platform's `topics/` folder. Remove files for tools you do not use. Update any hardcoded paths, usernames or tokens to match your setup.
+
+**4. Copy the profile for your platform**
+
+macOS:
+
+```bash
+cp mac/zshrc ~/.zshrc && source ~/.zshrc
+```
+
+Linux and WSL2 (zsh is the default; install it first with `sudo apt install zsh zsh-syntax-highlighting`):
+
+```bash
+cp linux/zshrc ~/.zshrc && source ~/.zshrc
+```
+
+Linux and WSL2, bash fallback (for a machine without zsh):
+
+```bash
+cp linux/bashrc ~/.bashrc && source ~/.bashrc
+```
+
+Windows:
+
+```powershell
+Copy-Item windows\Microsoft.PowerShell_profile.ps1 $PROFILE -Force
+```
+
+---
+
+## Structure
+
+```
+shell/
+- mac/                         zsh profile for macOS
+  - zshrc                      loader: sources all topic files in order
+  - starship.toml              Starship prompt config for macOS
+  - Brewfile                   every Homebrew formula, cask and npm global on this machine
+  - topics/                    numbered .zsh topic files, one per area
+- linux/                       Linux and WSL2 profile: zsh by default, bash as a fallback
+  - zshrc                      zsh loader (the default)
+  - bashrc                     bash loader (the fallback)
+  - starship.toml              Starship prompt config for Linux and WSL2
+  - topics-zsh/                numbered .zsh topic files for the zsh profile
+  - topics/                    numbered .sh topic files for the bash fallback
+- windows/                     PowerShell profile for Windows
+  - Microsoft.PowerShell_profile.ps1   loader
+  - starship.toml              Starship prompt config for Windows
+  - topics/                    numbered .ps1 topic files
+  - scripts/                   zt.ps1, the Windows theme switcher, with zt.cmd for Command Prompt
+  - cmd/                       Command Prompt start-up: prompt, banner and doskey macros
+- scripts/                     zt.py (theme switcher), build-cmd-macros.py and games.py
+- guides/                      platform setup walkthroughs and command reference
+  - documentation.md           full technical reference for every command
+- journal/                     engineering journal: decisions, refactors, architecture notes
+```
+
+---
+
+## Documentation
+
+| Resource | What it covers |
+| --- | --- |
+| [guides/documentation.md](guides/documentation.md) | Full technical reference: architecture, loader mechanics and every command described |
+| [ACCESSIBILITY.md](ACCESSIBILITY.md) | How the colours, prompt and aliases support low or monocular vision, colour vision differences and typing fatigue |
+| [guides/mac.md](guides/mac.md) | macOS installation, modular profile walkthrough and command reference |
+| [guides/linux.md](guides/linux.md) | Linux and WSL2 installation, platform differences and command reference |
+| [guides/windows.md](guides/windows.md) | Windows installation, PowerShell specifics and command reference |
+| [guides/new-device.md](guides/new-device.md) | Step-by-step setup guide for a brand new machine on any platform |
+| [mac/topics/README.md](mac/topics/README.md) | All macOS topic files listed with descriptions and key commands |
+| [linux/topics-zsh/README.md](linux/topics-zsh/README.md) | The Linux zsh topic files and what differs from the bash ones |
+| [linux/topics/README.md](linux/topics/README.md) | All Linux bash topic files listed with descriptions and key commands |
+| [windows/topics/README.md](windows/topics/README.md) | All Windows topic files listed with descriptions and key commands |
+| [mac/starship.toml](mac/starship.toml), [linux/starship.toml](linux/starship.toml), [windows/starship.toml](windows/starship.toml) | Starship prompt config, identical content per platform, covering git and every topic file, plus Starship's own module-based language detection |
+| [mac/Brewfile](mac/Brewfile) | Every Homebrew formula, cask and global npm package on this machine, `bbundle`/`bdump` install and regenerate it |
+| [journal/008-starship-prompt.md](journal/008-starship-prompt.md) | Why Starship was added, module choices and how to disable it |
+
+---
+
+## Disclaimer
+
+> [!CAUTION]
+> These dotfiles are configured for my own machines. Paths, usernames and tokens are specific to my setup. Review scripts before running them on your own machine and make sure token files are never committed.

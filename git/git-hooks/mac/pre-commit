@@ -1,0 +1,126 @@
+#!/bin/sh
+# Runs before a commit is created. Four checks, three blocking:
+#   1. Known secret patterns in the staged diff
+#   2. A large file staged without Git LFS tracking it
+#   3. An .env-pattern file staged, even if .gitignore should have caught it
+#   4. Committing directly on main/master (warns, does not block, since some
+#      repos never use branches and a hard block here would be disruptive)
+#
+# Extension point: add your own project or personal checks below section 4,
+# for example a content-style rule, a naming convention or a licence-header
+# check. Keep the same pattern each existing check uses: print a clear
+# "Error: ..." line and set a flag, then exit 1 once every check has run so
+# a single commit attempt reports every problem at once instead of only the
+# first one found.
+#
+# The large-file size check is the one piece of this file that differs by
+# OS (stat's flags differ between BSD and GNU), so mac/pre-commit and
+# linux+windows/pre-commit exist as separate files even though the rest of
+# this logic is identical. This is a defence-in-depth layer, not a
+# replacement for a real secret scanner (gitleaks or equivalent) run in CI,
+# it only covers well-known, high-confidence token shapes.
+
+staged_files=$(git diff --cached --name-only --diff-filter=ACM)
+[ -z "$staged_files" ] && exit 0
+
+# --- 1. Secret patterns -------------------------------------------------
+secret_hit=0
+diff_content=$(git diff --cached -U0)
+
+check_pattern() {
+    if echo "$diff_content" | grep -Eq "^\+.*$1"; then
+        echo "Error: possible $2 in staged changes."
+        secret_hit=1
+    fi
+}
+
+check_pattern 'AKIA[0-9A-Z]{16}' "AWS access key ID"
+check_pattern 'aws_secret_access_key' "AWS secret access key variable"
+check_pattern 'ASIA[0-9A-Z]{16}' "AWS temporary access key ID"
+check_pattern '"type": ?"service_account"' "GCP service account JSON key"
+check_pattern 'AIza[0-9A-Za-z_-]{35}' "Google API key"
+check_pattern 'ya29\.[0-9A-Za-z_-]+' "Google OAuth access token"
+check_pattern '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.azurewebsites\.net' "Azure webapp identifier alongside credentials"
+check_pattern 'dop_v1_[0-9a-f]{64}' "DigitalOcean personal access token"
+
+check_pattern 'gh[pousr]_[A-Za-z0-9]{36,}' "GitHub token (ghp_/gho_/ghu_/ghs_/ghr_)"
+check_pattern 'github_pat_[A-Za-z0-9_]{22,}' "GitHub fine-grained personal access token"
+check_pattern 'glpat-[A-Za-z0-9_-]{20}' "GitLab personal access token"
+check_pattern 'npm_[A-Za-z0-9]{36}' "npm access token"
+check_pattern 'pypi-AgEIcHlwaS[A-Za-z0-9_-]{50,}' "PyPI upload token"
+check_pattern '_authToken\s*=\s*[A-Za-z0-9_-]{20,}' ".npmrc auth token"
+
+check_pattern '(sk|pk|rk)_live_[0-9a-zA-Z]{24,}' "Stripe live API key"
+check_pattern 'xox[baprs]-[0-9A-Za-z-]{10,}' "Slack token"
+check_pattern 'SG\.[A-Za-z0-9_-]{22}\.[A-Za-z0-9_-]{43}' "SendGrid API key"
+check_pattern 'SK[0-9a-f]{32}' "Twilio API key"
+check_pattern 'key-[0-9a-f]{32}' "Mailgun API key"
+check_pattern '[MN][A-Za-z0-9_-]{23}\.[A-Za-z0-9_-]{6}\.[A-Za-z0-9_-]{27,}' "Discord bot token"
+
+check_pattern '-----BEGIN (RSA |EC |OPENSSH |DSA |PGP )?PRIVATE KEY-----' "private key header"
+check_pattern '(postgres|postgresql|mysql|mongodb(\+srv)?)://[^:\s]+:[^@\s]+@' "database connection string with an embedded password"
+check_pattern 'eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}' "JWT-shaped token"
+check_pattern '(api[_-]?key|secret|token|password)["\x27]?\s*[:=]\s*["\x27][A-Za-z0-9/+_=-]{16,}["\x27]' "a variable named like a credential assigned a long literal value"
+
+if [ "$secret_hit" -eq 1 ]; then
+    echo "If any of these is a false positive, use 'git commit --no-verify' once you have checked the diff yourself."
+    exit 1
+fi
+
+# --- 2. Large files without LFS -----------------------------------------
+lfs_patterns=""
+if [ -f .gitattributes ]; then
+    lfs_patterns=$(grep 'filter=lfs' .gitattributes | awk '{print $1}')
+fi
+
+large_file_hit=0
+for f in $staged_files; do
+    [ -f "$f" ] || continue
+    size=$(stat -f%z "$f")
+    tracked_by_lfs=0
+    for pattern in $lfs_patterns; do
+        # shellcheck disable=SC2254  # deliberate: glob matching a .gitattributes pattern against $f
+        case "$f" in
+            $pattern) tracked_by_lfs=1 ;;
+        esac
+    done
+    [ "$tracked_by_lfs" -eq 1 ] && continue
+
+    if [ "$size" -ge 52428800 ]; then
+        echo "Error: $f is $((size / 1048576))MB, at or over the 50MB block threshold and not tracked by Git LFS."
+        echo "Track it with 'git lfs track \"$f\"' or use 'git commit --no-verify' if this is intentional."
+        large_file_hit=1
+    elif [ "$size" -ge 10485760 ]; then
+        echo "Warning: $f is $((size / 1048576))MB. Consider Git LFS if this kind of file recurs."
+    fi
+done
+
+[ "$large_file_hit" -eq 1 ] && exit 1
+
+# --- 3. .env-pattern files ------------------------------------------------
+for f in $staged_files; do
+    case "$f" in
+        .env|.env.*|*/.env|*/.env.*)
+            case "$f" in
+                *.env.example|*.env.sample|*.env.template) continue ;;
+            esac
+            echo "Error: $f matches an .env pattern and is staged for commit."
+            echo "If this is a real example/template file, rename it with an .example/.sample/.template suffix."
+            echo "Otherwise use 'git commit --no-verify' only if you are certain this file has no real secrets."
+            exit 1
+            ;;
+    esac
+done
+
+# --- 4. Direct commit to main/master (warning only, not a block) --------
+branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
+    echo "Warning: committing directly to $branch. Consider a branch + PR instead."
+fi
+
+# --- Extension point -------------------------------------------------------
+# Add your own checks here, following the same pattern: set a flag on
+# failure, print a clear "Error: ..." line, then exit 1 once every check in
+# this file has had a chance to run.
+
+exit 0

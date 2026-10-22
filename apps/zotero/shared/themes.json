@@ -1,0 +1,10 @@
+{
+  "Zacess Deep Contrast Dark": { "browser.theme.toolbar-theme": 0, "extensions.zotero.reader.darkTheme": "black" },
+  "Zacess Deep Contrast Light": { "browser.theme.toolbar-theme": 1, "extensions.zotero.reader.lightTheme": "" },
+  "Zacess High Contrast Dark": { "browser.theme.toolbar-theme": 0, "extensions.zotero.reader.darkTheme": "black" },
+  "Zacess High Contrast Light": { "browser.theme.toolbar-theme": 1, "extensions.zotero.reader.lightTheme": "" },
+  "Zacess Dark": { "browser.theme.toolbar-theme": 0, "extensions.zotero.reader.darkTheme": "dark" },
+  "Zacess Light": { "browser.theme.toolbar-theme": 1, "extensions.zotero.reader.lightTheme": "snow" },
+  "Zacess Cream": { "browser.theme.toolbar-theme": 1, "extensions.zotero.reader.lightTheme": "sepia" },
+  "Zacess Yellow on Black": { "browser.theme.toolbar-theme": 0, "extensions.zotero.reader.darkTheme": "black" }
+}

@@ -1,0 +1,18 @@
+// Languages beyond Python
+org.jetbrains.plugins.vue@261.24374.154
+ru.adelf.idea.dotenv@261.24374.154
+
+// Editor feel and theming
+com.zacess.themes@0.4.0
+com.intellij.plugins.vscodekeymap@262.8665.258
+
+// Testing and diagnostics
+com.jetbrains.performancePlugin@261.24374.171
+
+// Presence and time tracking
+com.almightyalpaca.intellij.plugins.discord@1.12.0
+com.wakatime.intellij.plugin@16.1.2
+
+// Learning
+org.hyperskill.academy@2026.19-2026.2
+com.jetbrains.edu@2026.4-2026.1-321

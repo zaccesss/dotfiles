@@ -1,0 +1,11 @@
+# ripgrep defaults. rg only reads this file when RIPGREP_CONFIG_PATH points at it.
+
+--smart-case
+--hidden
+--glob=!.git/*
+--max-columns=200
+--max-columns-preview
+--colors=match:fg:yellow
+--colors=match:style:bold
+--colors=path:fg:green
+--colors=line:fg:blue

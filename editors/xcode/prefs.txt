@@ -1,0 +1,21 @@
+# the Xcode preferences this repo tracks, read with `defaults read com.apple.dt.Xcode`
+# from Xcode 27.1. one per line: <type> <key> <value>, where the type is string, bool,
+# int or data (hex) and the value runs to the end of the line. every other editor
+# setting is still at Xcode's own default, so none is recorded here.
+
+# the editor theme Xcode 26 and earlier read for each macOS appearance
+string XCFontAndColorCurrentTheme Default (Light).xccolortheme
+string XCFontAndColorCurrentDarkTheme Default (Dark).xccolortheme
+
+# the theme Xcode 27 shows in both appearances: Zacess Deep Contrast Dark from theme/,
+# kept as Xcode writes it (a small JSON document naming the saved theme)
+data DVTWorkspaceThemeSettings 7b226461726b223a7b227361766564526563697065223a7b225f30223a2244434433354532312d334331432d353330462d383242422d374342374642364646334133227d7d2c226c69676874223a7b227361766564526563697065223a7b225f30223a2244434433354532312d334331432d353330462d383242422d374342374642364646334133227d7d7d
+
+# the key bindings set, the file in KeyBindings/
+string IDEKeyBindingCurrentPreferenceSet Default.idekeybindings
+
+# predictive code completion off
+bool DVTEnableOnDeviceCodePredictions false
+
+# no comments written automatically into string catalogs
+bool IDEStringCatalogAutomaticCommentGenerationEnabled false

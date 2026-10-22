@@ -1,0 +1,25 @@
+{
+  "bundleId": "com.knollsoft.Rectangle",
+  "version": "106",
+  "shortcuts": {
+    "reflowTodo": { "keyCode": 45, "modifierFlags": 786432 },
+    "toggleTodo": { "keyCode": 11, "modifierFlags": 786432 },
+    "centerHalf": { "keyCode": 4, "modifierFlags": 786432 },
+    "almostMaximize": { "keyCode": 46, "modifierFlags": 786432 },
+    "firstFourth": { "keyCode": 18, "modifierFlags": 917504 },
+    "secondFourth": { "keyCode": 19, "modifierFlags": 917504 },
+    "thirdFourth": { "keyCode": 20, "modifierFlags": 917504 },
+    "lastFourth": { "keyCode": 21, "modifierFlags": 917504 },
+    "moveUp": { "keyCode": 13, "modifierFlags": 917504 },
+    "moveLeft": { "keyCode": 0, "modifierFlags": 917504 },
+    "moveDown": { "keyCode": 1, "modifierFlags": 917504 },
+    "moveRight": { "keyCode": 2, "modifierFlags": 917504 }
+  },
+  "defaults": {
+    "allowAnyShortcut": { "bool": true },
+    "alternateDefaultShortcuts": { "bool": true },
+    "hideMenubarIcon": { "bool": true },
+    "subsequentExecutionMode": { "int": 1 },
+    "windowSnapping": { "int": 2 }
+  }
+}
