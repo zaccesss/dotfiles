@@ -10,23 +10,32 @@
 
 ## In action
 
-Screenshots in Zacess Deep Contrast Dark and Light, recorded in a demo project. Each one links
-to a short animation of the same scene.
+Screenshots in four Zacess themes, Deep Contrast Dark and Light, Yellow on Black and Cream,
+recorded in a demo project. Each one links to a short animation of the same scene.
 
 ### macOS shell
 
-| Dark | Light |
+| Deep Contrast Dark | Deep Contrast Light |
 | --- | --- |
 | [![Dark: the welcome banner with a neutral machine name, then gs and glog in a demo project under the Starship prompt](docs/demo/dotfiles-dark.webp)](docs/demo/dotfiles-dark.gif) | [![Light: the welcome banner with a neutral machine name, then gs and glog in a demo project under the Starship prompt](docs/demo/dotfiles-light.webp)](docs/demo/dotfiles-light.gif) |
 
+| Yellow on Black | Cream |
+| --- | --- |
+| [![Yellow on Black: the welcome banner with a neutral machine name, then gs and glog in a demo project under the Starship prompt](docs/demo/dotfiles-yellow-on-black.webp)](docs/demo/dotfiles-yellow-on-black.gif) | [![Cream: the welcome banner with a neutral machine name, then gs and glog in a demo project under the Starship prompt](docs/demo/dotfiles-cream.webp)](docs/demo/dotfiles-cream.gif) |
+
 ### Linux (Ubuntu in OrbStack)
 
-| Dark | Light |
+| Deep Contrast Dark | Deep Contrast Light |
 | --- | --- |
 | [![Dark: the same dotfiles in bash on Ubuntu: the banner, the numbered topic files and a git log of a demo project](docs/demo/linux-dark.webp)](docs/demo/linux-dark.gif) | [![Light: the same dotfiles in bash on Ubuntu: the banner, the numbered topic files and a git log of a demo project](docs/demo/linux-light.webp)](docs/demo/linux-light.gif) |
 
+| Yellow on Black | Cream |
+| --- | --- |
+| [![Yellow on Black: the same dotfiles in bash on Ubuntu: the banner, the numbered topic files and a git log of a demo project](docs/demo/linux-yellow-on-black.webp)](docs/demo/linux-yellow-on-black.gif) | [![Cream: the same dotfiles in bash on Ubuntu: the banner, the numbered topic files and a git log of a demo project](docs/demo/linux-cream.webp)](docs/demo/linux-cream.gif) |
+
 The shots show the real config in a throwaway demo project, in
-[Zacess Themes](https://github.com/zacesshq/themes) Deep Contrast Dark and Light.
+[Zacess Themes](https://github.com/zacesshq/themes) Deep Contrast Dark and Light, Yellow on Black
+and Cream.
 
 ## About
 
