@@ -2,11 +2,13 @@
 
 All notable changes to this dotfiles repository are recorded here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
-Versions increment by one patch step (0.0.1) per release.
+A patch step for fixes, a minor step for additions and a major step when the layout or the paths change.
 
 ---
 
 ## [Unreleased]
+
+## [2.0.0] - 2026-10-23
 
 ### Added
 
