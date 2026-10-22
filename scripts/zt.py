@@ -143,10 +143,15 @@ VALUE = r'(?:"(?:[^"\\]|\\.)*"|true|false|null|-?\d+(?:\.\d+)?|\{[^{}]*\})'
 
 
 def set_key(text, key, value):
-    rendered = json.dumps(value) if not isinstance(value, dict) else render_object(value)
     pattern = re.compile(r'("' + re.escape(key) + r'"\s*:\s*)' + VALUE)
-    if pattern.search(text):
-        return pattern.sub(lambda m: m.group(1) + rendered, text, count=1)
+    match = pattern.search(text)
+    if match:
+        line_start = text.rfind("\n", 0, match.start()) + 1
+        pad = re.match(r"[ \t]*", text[line_start:]).group(0)
+        old = match.group(0)[len(match.group(1)):]
+        rendered = json.dumps(value) if not isinstance(value, dict) else render_object(value, pad, old)
+        return text[:match.start()] + match.group(1) + rendered + text[match.end():]
+    rendered = json.dumps(value) if not isinstance(value, dict) else render_object(value)
     # a new key goes first, after the opening brace, with the file's own indent
     indent = re.search(r'\n([ \t]+)"', text)
     pad = indent.group(1) if indent else "    "
@@ -154,9 +159,17 @@ def set_key(text, key, value):
     return text[:brace + 1] + f'\n{pad}"{key}": {rendered},' + text[brace + 1:]
 
 
-def render_object(value):
-    inner = ", ".join(f"{json.dumps(k)}: {json.dumps(v)}" for k, v in value.items())
-    return "{ " + inner + " }"
+def render_object(value, pad="", old=""):
+    # an object that was already spread over lines keeps that shape (and its trailing comma), so a linked
+    # settings file in a config repo only changes where a value really changed
+    if "\n" not in old:
+        inner = ", ".join(f"{json.dumps(k)}: {json.dumps(v)}" for k, v in value.items())
+        return "{ " + inner + " }"
+    inside = re.search(r"\n([ \t]+)\S", old)
+    step = inside.group(1) if inside else pad + "  "
+    trailing = "," if re.search(r",\s*}\s*$", old) else ""
+    lines = [f"{step}{json.dumps(k)}: {json.dumps(v)}" for k, v in value.items()]
+    return "{\n" + ",\n".join(lines) + trailing + "\n" + pad + "}"
 
 
 def edit_jsonc(path, changes):
@@ -225,7 +238,9 @@ def jetbrains(fixed, dark, light, now):
     if not dirs:
         return report("JetBrains", "not installed, skipped", False)
     pattern = (r"/Applications/.*\.app/Contents/MacOS/(idea|pycharm|webstorm|clion|dataspell|goland|"
-               r"phpstorm|rubymine|rustrover|rider|studio)" if MAC else r"jetbrains|/idea\.sh|pycharm|webstorm|clion")
+               r"phpstorm|rubymine|rustrover|rider|studio)" if MAC else
+               # only the IDE launchers: the Toolbox app and its jetbrainsd helper run all the time
+               r"/bin/(idea|pycharm|webstorm|clion|dataspell|goland|phpstorm|rubymine|rustrover|rider|studio)(\.sh)?( |$)")
     if running(pattern):
         return report("JetBrains", "an IDE is open, skipped: close it and run zt again", False)
     shown = fixed or now
