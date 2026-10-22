@@ -8,6 +8,10 @@ Versions increment by one patch step (0.0.1) per release.
 
 ## [Unreleased]
 
+### Changed
+
+- The Mac moves to Python 3.15: the Brewfile installs `python@3.15` and the PATH shim points `python` and `pip` at it, so they match `python3`.
+
 ## [1.0.10] - 2026-10-22
 
 ### Added

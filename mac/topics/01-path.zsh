@@ -11,8 +11,8 @@ export PATH="/opt/homebrew/bin:$PATH"
 # OpenJDK installed via Homebrew (macOS ships a stale Java)
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
-# Python 3.14 shims so 'python' and 'pip' resolve to the brew-managed version
-export PATH="/opt/homebrew/opt/python@3.14/libexec/bin:$PATH"
+# Python 3.15 shims so 'python' and 'pip' resolve to the brew-managed version
+export PATH="/opt/homebrew/opt/python@3.15/libexec/bin:$PATH"
 
 # User-installed scripts and binaries
 export PATH="$HOME/.local/bin:$PATH"
