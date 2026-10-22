@@ -25,3 +25,4 @@ ehthumbs.db
 
 # Local idea notes - private scratchpad, never publish
 will-do/
+__pycache__/
