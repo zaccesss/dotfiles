@@ -60,6 +60,7 @@ Each folder says exactly what it changes and what it cannot change yet.
 | rectangle | [apps/rectangle/ACCESSIBILITY.md](apps/rectangle/ACCESSIBILITY.md) |
 | obsidian | [apps/obsidian/ACCESSIBILITY.md](apps/obsidian/ACCESSIBILITY.md) |
 | zotero | [apps/zotero/ACCESSIBILITY.md](apps/zotero/ACCESSIBILITY.md) |
+| translucenttb | [apps/translucenttb/ACCESSIBILITY.md](apps/translucenttb/ACCESSIBILITY.md) |
 
 The gitconfig, git-hooks and ssh folders change nothing about how anything looks or is operated, so
 they carry no statement of their own.

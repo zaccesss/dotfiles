@@ -1,0 +1,40 @@
+{
+  "desktop_appearance": {
+    "accent": "acrylic",
+    "color": "#1C1C1CA6",
+    "show_peek": false,
+    "show_line": true,
+    "blur_radius": 9.0
+  },
+  "visible_window_appearance": {
+    "enabled": false
+  },
+  "maximized_window_appearance": {
+    "enabled": true,
+    "accent": "opaque",
+    "color": "#1C1C1CFF",
+    "show_peek": true,
+    "show_line": true
+  },
+  "start_opened_appearance": {
+    "enabled": false
+  },
+  "search_opened_appearance": {
+    "enabled": false
+  },
+  "task_view_opened_appearance": {
+    "enabled": true,
+    "accent": "normal",
+    "show_peek": false,
+    "show_line": true
+  },
+  "battery_saver_appearance": {
+    "enabled": true,
+    "accent": "opaque",
+    "color": "#1C1C1CFF",
+    "show_peek": true,
+    "show_line": true
+  },
+  "disable_saving": false,
+  "verbosity": "warn"
+}

@@ -59,6 +59,7 @@ jobs:
       proteus: ${{ steps.filter.outputs.proteus }}
       zotero: ${{ steps.filter.outputs.zotero }}
       obsidian: ${{ steps.filter.outputs.obsidian }}
+      translucenttb: ${{ steps.filter.outputs.translucenttb }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -175,6 +176,9 @@ jobs:
               - '.github/workflows/ci.yml'
             obsidian:
               - 'apps/obsidian/**'
+              - '.github/workflows/ci.yml'
+            translucenttb:
+              - 'apps/translucenttb/**'
               - '.github/workflows/ci.yml'
 
   # ---------------------------------------------------------------------------------------------
@@ -1717,3 +1721,28 @@ jobs:
             else { Write-Output "windows/$($file.Name) parses" }
           }
           if ($failed) { exit 1 }
+
+  # ---------------------------------------------------------------------------------------------
+  translucenttb:
+    name: "translucenttb: Validate settings and apply script"
+    needs: changes
+    if: needs.changes.outputs.translucenttb == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: apps/translucenttb
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate the settings
+        run: python3 scripts/validate.py
+
+      - name: Parse the PowerShell apply script
+        shell: pwsh
+        run: |
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile("$PWD/windows/apply.ps1", [ref]$null, [ref]$errors) | Out-Null
+          if ($errors.Count) { $errors | ForEach-Object { Write-Output "::error file=windows/apply.ps1::$($_.Message)" }; exit 1 }
+          Write-Output 'windows/apply.ps1 parses'
