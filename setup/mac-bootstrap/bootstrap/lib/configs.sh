@@ -12,7 +12,6 @@ readonly CONFIG_LINKS=(
     "editors/vscode|settings.json|${HOME}/Library/Application Support/Code/User/settings.json"
     "editors/vscode|keybindings/mac.json|${HOME}/Library/Application Support/Code/User/keybindings.json"
     "editors/vscode|global.code-snippets|${HOME}/Library/Application Support/Code/User/snippets/global.code-snippets"
-    "editors/vscode|argv.json|${HOME}/.vscode/argv.json"
     "editors/zed|settings.json|${HOME}/.config/zed/settings.json"
     "terminal/cli-tools|lazygit/config.yml|${HOME}/Library/Application Support/lazygit/config.yml"
     "terminal/cli-tools|ripgrep/ripgreprc|${HOME}/.ripgreprc"

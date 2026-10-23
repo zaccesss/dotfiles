@@ -66,8 +66,8 @@ function Install-ConfigRepos {
     Set-FileLink -Source (Join-Path $dotfiles 'editors\vscode\settings.json') -Target (Join-Path $codeUser 'settings.json')
     Set-FileLink -Source (Join-Path $dotfiles 'editors\vscode\keybindings\windows-linux.json') -Target (Join-Path $codeUser 'keybindings.json')
     Set-FileLink -Source (Join-Path $dotfiles 'editors\vscode\global.code-snippets') -Target (Join-Path $codeUser 'snippets\global.code-snippets')
-    # VS Code reads its launch flags from the home folder, not the settings folder
-    Set-FileLink -Source (Join-Path $dotfiles 'editors\vscode\argv.json') -Target (Join-Path $HOME '.vscode\argv.json')
+    # argv.json stays VS Code's own file: VS Code writes each install's crash reporter id into it,
+    # which through a link would land in the repository
     Set-FileLink -Source (Join-Path $dotfiles 'terminal\cli-tools\lazygit\config.yml') -Target (Join-Path $appData 'lazygit\config.yml')
 
     # Windows Terminal loads extra colour schemes from a fragment folder, so the eight Zacess schemes

@@ -565,7 +565,14 @@ function Show-Current {
 
     $ltspice = @((Join-Path $env:APPDATA 'LTspice.ini'), (Join-Path $env:APPDATA 'LTspiceXVII.ini')) | Where-Object { Test-Path $_ } | Select-Object -First 1
     if ($ltspice) {
-        $text = [Text.Encoding]::GetEncoding(28591).GetString([IO.File]::ReadAllBytes($ltspice))
+        # LTspice 26 writes the whole ini as UTF-16; older versions write a UTF-16 start followed by
+        # plain bytes, which latin-1 reads byte for byte
+        $bytes = [IO.File]::ReadAllBytes($ltspice)
+        $text = [Text.Encoding]::GetEncoding(28591).GetString($bytes)
+        if ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE) {
+            $wide = [Text.Encoding]::Unicode.GetString($bytes)
+            if ($wide -match '(?m)^\[Colors\]\r?$') { $text = $wide }
+        }
         $match = $Themes | Where-Object {
             $file = Join-Path $RepoRoot "editors\ltspice\shared\themes\$($_.Name).ini"
             (Test-Path $file) -and -not (Get-Content $file | Where-Object { $_ -match '^\w+=\d+$' -and $text -notmatch "(?m)^$([regex]::Escape($_))\r?$" })

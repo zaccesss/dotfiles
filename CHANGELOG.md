@@ -8,6 +8,10 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+### Removed
+
+- The temporary forwarding files at the shell profile's old paths (`mac/`, `linux/` and `windows/` at the root) and their CI checks. Re-run the bootstrap on a machine set up before the grouped layout.
+
 ### Added
 
 - `editors/stm32cubeide/<os>/plugins.txt` lists the WakaTime plugin from the Eclipse update site. The Linux README gives the `p2.director` command that installs it into STM32CubeIDE 2.2.0 without opening the IDE.
@@ -18,7 +22,8 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ### Fixed
 
-- The Mac, Linux and Windows bootstraps link VS Code's `argv.json` and global snippets as well as its settings and keybindings.
+- The Mac, Linux and Windows bootstraps link VS Code's global snippets as well as its settings and keybindings. `argv.json` stays VS Code's own file, because VS Code writes each install's crash reporter id into it.
+- `zt current` on Windows reads an LTspice ini written entirely as UTF-16, which it had reported as not a Zacess theme.
 - Windows Terminal finds Geist Mono: Windows lists the Nerd Font builds as `GeistMono NF` and `GeistMono NFM`, so the long family name the Mac and Linux use made Terminal fall back to its default font.
 - The Microchip Studio apply script keeps its temporary theme file until Studio has closed. When an earlier run had already set the environment theme, the script deleted the file before Studio imported it.
 - The MATLAB apply script on Windows waits only for MATLAB itself, for at most ten minutes. It used to wait for every process MATLAB started, so a crash reporter left behind after MATLAB exited held the run indefinitely.

@@ -57,7 +57,8 @@ cheap file links for a normal user:
 | lazygit | The same, at `%APPDATA%\lazygit\config.yml` |
 | ripgrep | `RIPGREP_CONFIG_PATH` points at the [cli-tools](../../../terminal/cli-tools) folder's file |
 
-Anything replaced is moved to the Recycle Bin. VS Code's `argv.json` and global snippets are linked the same way as its settings.
+Anything replaced is moved to the Recycle Bin. VS Code's global snippets are linked the same way as its settings. `argv.json` is left to VS Code,
+which writes its own crash reporter id into it.
 
 ### 4. VS Code extensions
 
