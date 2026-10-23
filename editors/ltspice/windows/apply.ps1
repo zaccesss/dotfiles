@@ -46,9 +46,17 @@ if (Get-Process -Name 'LTspice', 'XVIIx64', 'XVIIx86' -ErrorAction SilentlyConti
 }
 Write-Output "Settings: $Ini"
 
-# latin-1 maps every byte to one character and back, so the UTF-16 part survives untouched
+# latin-1 maps every byte to one character and back, so a UTF-16 start followed by plain bytes
+# survives untouched. LTspice 26 writes the whole file as UTF-16, which is read as UTF-16 instead;
+# its byte order mark is kept as the first character, so writing it back puts the mark back
+$bytes = [IO.File]::ReadAllBytes($Ini)
 $latin = [Text.Encoding]::GetEncoding(28591)
-$text = $latin.GetString([IO.File]::ReadAllBytes($Ini))
+$encoding = $latin
+if ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE) {
+    $wide = [Text.Encoding]::Unicode.GetString($bytes)
+    if ($wide -match '(?m)^\[Colors\]\r?$') { $encoding = [Text.Encoding]::Unicode }
+}
+$text = $encoding.GetString($bytes)
 $original = $text
 if ($text -notmatch '(?m)^\[Colors\]\r?$') {
     [Console]::Error.WriteLine("$Ini has no [Colors] section yet. Open the colour settings in LTspice once, quit it, then run this again.")
@@ -68,7 +76,7 @@ foreach ($line in Get-Content (Join-Path $PSScriptRoot "..\shared\themes\$name.i
     }
     Write-Output "  $status  [Colors]  $entry"
 }
-if ($text -cne $original) { [IO.File]::WriteAllBytes($Ini, $latin.GetBytes($text)) }
+if ($text -cne $original) { [IO.File]::WriteAllBytes($Ini, $encoding.GetBytes($text)) }
 
 Write-Output "Theme: $name"
 Write-Output 'Done. Start LTspice to pick up the changes.'

@@ -28,15 +28,11 @@ The script:
    [`theme/`](../theme/) into `~/Library/Developer/Xcode/UserData/FontAndColorThemes`
 3. copies [`KeyBindings/Default.idekeybindings`](../KeyBindings/Default.idekeybindings) into
    `~/Library/Developer/Xcode/UserData/KeyBindings`
-4. reads each key in [`prefs.txt`](../prefs.txt) and writes it only when the current value differs,
-   after saving the whole domain to `~/Library/Developer/Xcode/UserData/Backups/`
+4. reads each key in [`prefs.txt`](../prefs.txt) and writes it only when the current value differs.
+   Nothing is backed up: `prefs.txt` holds every value the script writes
 5. prints `added`, `changed`, `set` or `unchanged` for every file and key
 
 Running it again changes nothing and ends with `Xcode matches the recorded setup.`
-
-> [!TIP]
-> `defaults import com.apple.dt.Xcode <backup>` puts the saved domain back, using the file the
-> script named when it made the backup.
 
 ## 4. Choose a theme
 

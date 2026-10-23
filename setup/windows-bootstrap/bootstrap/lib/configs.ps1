@@ -17,9 +17,8 @@ function Set-FileLink {
     Invoke-Step "link $Target to $Source" {
         New-Item -ItemType Directory -Force -Path (Split-Path -Parent $Target) | Out-Null
         if ($item) {
-            $backups = Join-Path $script:StateDir 'backups'
-            New-Item -ItemType Directory -Force -Path $backups | Out-Null
-            Move-Item $Target (Join-Path $backups "$(Split-Path -Leaf $Target)-$(Get-Date -Format 'yyyyMMdd-HHmmss')")
+            Move-ToRecycleBin $Target
+            Write-Warn "Moved the existing $Target to the Recycle Bin"
         }
         try {
             New-Item -ItemType SymbolicLink -Path $Target -Target $Source -ErrorAction Stop | Out-Null
@@ -66,6 +65,9 @@ function Install-ConfigRepos {
     $codeUser = Join-Path $appData 'Code\User'
     Set-FileLink -Source (Join-Path $dotfiles 'editors\vscode\settings.json') -Target (Join-Path $codeUser 'settings.json')
     Set-FileLink -Source (Join-Path $dotfiles 'editors\vscode\keybindings\windows-linux.json') -Target (Join-Path $codeUser 'keybindings.json')
+    Set-FileLink -Source (Join-Path $dotfiles 'editors\vscode\global.code-snippets') -Target (Join-Path $codeUser 'snippets\global.code-snippets')
+    # VS Code reads its launch flags from the home folder, not the settings folder
+    Set-FileLink -Source (Join-Path $dotfiles 'editors\vscode\argv.json') -Target (Join-Path $HOME '.vscode\argv.json')
     Set-FileLink -Source (Join-Path $dotfiles 'terminal\cli-tools\lazygit\config.yml') -Target (Join-Path $appData 'lazygit\config.yml')
 
     # Windows Terminal loads extra colour schemes from a fragment folder, so the eight Zacess schemes
@@ -96,7 +98,9 @@ function Install-ConfigRepos {
 # Geist Mono has no winget package, so its Nerd Font build comes from a pinned Nerd Fonts release
 # checked against the digest GitHub publishes for it. It is installed for this user only (no
 # administrator rights) and each file is registered under HKCU so it survives a restart
-$script:TerminalFont = 'GeistMono Nerd Font'
+# Windows lists the Nerd Font builds as GeistMono NF and GeistMono NFM, so the long family name
+# the Mac and Linux use is not found. The Mono build keeps prompt icons one cell wide
+$script:TerminalFont = 'GeistMono NFM'
 $script:GeistMonoZip = @{
     Url    = 'https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/GeistMono.zip'
     Sha256 = '4799A6C340F3993CEA7F59C256C723AFB3E70233471EA9042D92F153B87EF83E'
@@ -238,7 +242,6 @@ function Set-TerminalScheme {
         # the prompt's Nerd Font symbols need the Geist Mono Nerd Font build installed above
         if (-not $font) { $defaults | Add-Member -Force -NotePropertyName font -NotePropertyValue ([pscustomobject]@{}) }
         $defaults.font | Add-Member -Force -NotePropertyName face -NotePropertyValue $script:TerminalFont
-        Copy-Item $SettingsPath "$SettingsPath.backup.$((Get-Date).ToString('yyyyMMddHHmmss'))"
         $settings | ConvertTo-Json -Depth 32 | Set-Content -Path $SettingsPath -Encoding utf8
     }
 }

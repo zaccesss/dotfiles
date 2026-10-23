@@ -140,6 +140,17 @@ function Invoke-Apply {
         Write-Warn 'Some input and accessibility settings take effect after signing out and back in'
     }
 
+    # the display and sleep timeouts belong to the power plan, not the registry, so they are set
+    # with powercfg on the active plan: display off at 15 minutes on battery and 30 on mains, sleep
+    # at 20 on battery and never on mains
+    foreach ($setting in @(
+            @{ Name = 'monitor-timeout-dc'; Minutes = 15 }, @{ Name = 'monitor-timeout-ac'; Minutes = 30 },
+            @{ Name = 'standby-timeout-dc'; Minutes = 20 }, @{ Name = 'standby-timeout-ac'; Minutes = 0 })) {
+        powercfg /change $setting.Name $setting.Minutes
+        if ($LASTEXITCODE -ne 0) { Write-Warn "powercfg could not set $($setting.Name)" }
+    }
+    Write-Info 'Set the display and sleep timeouts on the active power plan'
+
     Write-Ok 'Windows settings match the captured ones'
 }
 

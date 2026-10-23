@@ -23,7 +23,7 @@ The GitHub CLI is installed straight away so the next stage can sign in.
   `~/.config/starship.toml` to its prompt
 
 Loading rather than copying means editing a topic file in the clone changes the next terminal.
-An existing `~/.zshrc` is moved into `~/.local/state/mac-bootstrap/backups`, never deleted.
+An existing `~/.zshrc` is moved to the Bin, never deleted outright.
 
 ### 3b. Configs
 
@@ -32,7 +32,7 @@ Links each tool config from its folder in the same clone into place: `~/.tmux.co
 `config.yml`, `~/.ripgreprc` and `~/.config/fzf/fzf.zsh`. `~/.gitconfig` and `~/.ssh/config` are
 copied once if missing, since they hold your own identity. It then installs the tmux plugin manager
 and runs the [terminal](../../../terminal/terminal) folder's installer for the High Contrast palette. Anything already there that is
-not a link is moved into `~/.local/state/mac-bootstrap/backups` first.
+not a link is moved to the Bin first. `~/.vscode/argv.json` and VS Code's global snippets are linked the same way.
 
 ### 4. Brewfile
 
@@ -91,7 +91,7 @@ that is already set up is never asked.
 
 ## What it never does
 
-- remove apps, packages or files (a replaced `~/.zshrc` is kept as a backup)
+- remove apps, packages or files (a replaced `~/.zshrc` goes to the Bin, where it can be restored)
 - upgrade apps that are already installed
 - create SSH keys or change Git identity, which the dotfiles' [shell](../../../shell) and [ssh](../../../git/ssh) folders own
 - change a macOS setting that is not in the captured list (the Apps stage changes only what each app's own apply script writes)

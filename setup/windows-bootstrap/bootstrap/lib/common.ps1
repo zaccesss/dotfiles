@@ -111,8 +111,26 @@ function Remove-FolderLink {
     [System.IO.Directory]::Delete($Path, $false)
 }
 
+# a replaced file goes to the Recycle Bin rather than being kept as a copy. A link holds no data of
+# its own, so it is only removed: sending a junction to the Bin would walk into what it points at
+function Move-ToRecycleBin {
+    param([string]$Path)
+
+    $item = Get-Item -Force -LiteralPath $Path
+    if ($item.LinkType) {
+        if ($item.PSIsContainer) { Remove-FolderLink $Path } else { [System.IO.File]::Delete($Path) }
+        return
+    }
+    Add-Type -AssemblyName Microsoft.VisualBasic
+    if ($item.PSIsContainer) {
+        [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteDirectory($Path, 'OnlyErrorDialogs', 'SendToRecycleBin')
+    } else {
+        [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile($Path, 'OnlyErrorDialogs', 'SendToRecycleBin')
+    }
+}
+
 # writes a file whose whole job is to point at the real one in a repository. An existing file with
-# different content is kept as a dated backup, never overwritten
+# different content goes to the Recycle Bin first, never overwritten in place
 function Set-PointerFile {
     param([string]$Path, [string]$Content)
 
@@ -123,9 +141,8 @@ function Set-PointerFile {
 
     Invoke-Step "point $Path at the dotfiles" {
         if (Test-Path $Path) {
-            $backup = "$Path.backup-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
-            Move-Item $Path $backup
-            Write-Warn "Kept the existing file as $backup"
+            Move-ToRecycleBin $Path
+            Write-Warn "Moved the existing $Path to the Recycle Bin"
         }
         New-Item -ItemType Directory -Force -Path (Split-Path -Parent $Path) | Out-Null
         Set-Content -Path $Path -Value $Content -Encoding utf8

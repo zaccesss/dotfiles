@@ -57,6 +57,9 @@ $schemeFile = Join-Path $shared "schemes\$name.json"
 $fontFile = Join-Path $PSScriptRoot 'fonts.json'
 # the start folder, ~/dev/projects/matlab on every OS, made when it is missing
 $folderFile = Join-Path $shared 'folders.json'
+# a run stopped by hand never reaches its clean-up, so any earlier work folder is cleared here
+Get-ChildItem ([IO.Path]::GetTempPath()) -Directory -Filter 'zacess-matlab-*' -ErrorAction SilentlyContinue |
+    Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
 $work = Join-Path ([IO.Path]::GetTempPath()) "zacess-matlab-$PID"
 $log = Join-Path $work 'matlab.log'
 try {
@@ -73,7 +76,12 @@ try {
     }
     $command = "addpath('$shared'); addpath('$work\tools'); zacess_apply('$themeFile', '$fontFile', '$folderFile'); " +
         "try, import_scheme('$schemeFile'); fprintf('  applied    scheme    $name\n'); catch e, fprintf('  failed     scheme    %s\n', e.message); end; exit"
-    Start-Process -FilePath $Matlab -ArgumentList '-nosplash', '-wait', '-logfile', "`"$log`"", '-r', "`"$command`"" -Wait -WindowStyle Minimized
+    # Start-Process -Wait also waits for every process MATLAB started, so a crash reporter left
+    # running after MATLAB has exited held the run for good. Only the launcher is waited on
+    $process = Start-Process -FilePath $Matlab -ArgumentList '-nosplash', '-wait', '-logfile', "`"$log`"", '-r', "`"$command`"" -PassThru -WindowStyle Minimized
+    if (-not $process.WaitForExit(600000)) {
+        [Console]::Error.WriteLine('MATLAB did not exit within ten minutes. Close it by hand; the settings in the log below were written.')
+    }
     $lines = if (Test-Path $log) { Get-Content $log | Where-Object { $_ -match '^\s+(added|changed|unchanged|applied|failed)\s' } } else { @() }
 } finally {
     Remove-Item $work -Recurse -Force -ErrorAction SilentlyContinue

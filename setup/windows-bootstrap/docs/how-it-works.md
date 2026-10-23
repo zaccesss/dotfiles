@@ -23,7 +23,7 @@ reads a filtered copy of the list.
 - signs in to GitHub with the CLI in the browser, if not already signed in
 - clones the dotfiles into `%USERPROFILE%\dev\github\repos\dotfiles`
 - writes a one-line PowerShell 7 profile that dot-sources `shell\windows\Microsoft.PowerShell_profile.ps1`
-  from the dotfiles, keeping any existing profile as a dated backup
+  from the dotfiles, sending any existing profile to the Recycle Bin first
 - sets `STARSHIP_CONFIG` for the user to the dotfiles' `shell\windows\starship.toml`
 - adds the dotfiles' `shell\windows\scripts` folder to the user `PATH`, so `zt` (and `zt.cmd` in Command
   Prompt) switches every editor and terminal to one Zacess theme
@@ -57,7 +57,7 @@ cheap file links for a normal user:
 | lazygit | The same, at `%APPDATA%\lazygit\config.yml` |
 | ripgrep | `RIPGREP_CONFIG_PATH` points at the [cli-tools](../../../terminal/cli-tools) folder's file |
 
-Anything replaced is moved into `%USERPROFILE%\.local\state\windows-bootstrap\backups`.
+Anything replaced is moved to the Recycle Bin. VS Code's `argv.json` and global snippets are linked the same way as its settings.
 
 ### 4. VS Code extensions
 
@@ -86,7 +86,7 @@ command instead. It ends with the commands that run linux-bootstrap inside Ubunt
 
 - uninstall or upgrade apps
 - create SSH keys or sign in anywhere without a browser confirmation
-- overwrite a profile written by hand (it is kept as a dated backup)
+- overwrite a profile written by hand in place (it goes to the Recycle Bin first)
 
 ## Where things live
 

@@ -1,0 +1,6 @@
+// plugins wanted in STM32CubeIDE, one per line as: name | update site
+// install through Help > Install New Software with the update site.
+// STM32CubeIDE is built on Eclipse, so Eclipse plugins install the same way.
+
+// time tracking
+WakaTime | https://wakatime.com/eclipse/update-site/
