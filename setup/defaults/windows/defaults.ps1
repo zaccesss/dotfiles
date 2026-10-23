@@ -154,11 +154,11 @@ public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint msg, UIntPtr wP
     }
 
     # the display and sleep timeouts belong to the power plan, not the registry, so they are set
-    # with powercfg on the active plan: display off at 15 minutes on battery and 30 on mains, sleep
-    # at 20 on battery and never on mains
+    # with powercfg on the active plan: display off at 60 minutes on battery and mains, sleep at 60
+    # on battery and never on mains, so a screen saver started at 15 minutes runs for a while first
     foreach ($setting in @(
-            @{ Name = 'monitor-timeout-dc'; Minutes = 15 }, @{ Name = 'monitor-timeout-ac'; Minutes = 30 },
-            @{ Name = 'standby-timeout-dc'; Minutes = 20 }, @{ Name = 'standby-timeout-ac'; Minutes = 0 })) {
+            @{ Name = 'monitor-timeout-dc'; Minutes = 60 }, @{ Name = 'monitor-timeout-ac'; Minutes = 60 },
+            @{ Name = 'standby-timeout-dc'; Minutes = 60 }, @{ Name = 'standby-timeout-ac'; Minutes = 0 })) {
         powercfg /change $setting.Name $setting.Minutes
         if ($LASTEXITCODE -ne 0) { Write-Warn "powercfg could not set $($setting.Name)" }
     }

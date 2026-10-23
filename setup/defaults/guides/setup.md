@@ -35,7 +35,8 @@ with `%USERPROFILE%` or spelt out in full, so it is not rewritten on every run.
 
 The screen saver values are in `tracked.txt`. Display and sleep timeouts belong to the power plan
 rather than the registry, so `windows/defaults.ps1` sets them with `powercfg /change`: the display
-off at 15 minutes on battery and 30 on mains, sleep at 20 on battery and never on mains. After checking the screen
+off at 60 minutes on battery and mains, sleep at 60 on battery and never on mains, so a screen saver
+started at 15 minutes runs for a while before the display goes dark. After checking the screen
 saver in Settings, close the Screen Saver window with **Cancel**. Clicking **OK** saves whatever
 the window shows, which can reset the wait and the password on resume. If it was clicked, run
 `windows/defaults.ps1` again to restore the captured values.

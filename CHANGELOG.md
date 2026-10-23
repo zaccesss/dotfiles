@@ -20,6 +20,8 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ### Changed
 
+- `setup/defaults/windows/defaults.ps1` turns the display off at 60 minutes on battery and mains and sleeps at 60 on battery (never on mains), so a screen saver started at 15 minutes runs for a while first.
+- The VS Code extension list pins Zacess Themes 0.4.0.
 - A file the Mac, Linux and Windows bootstraps replace goes to the Bin (the Recycle Bin on Windows) instead of a backups folder. The Xcode apply script no longer exports a copy of the preferences domain and the Windows Terminal settings are no longer copied before each change.
 
 ### Fixed
