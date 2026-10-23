@@ -116,8 +116,12 @@ def iterm():
         profile = {
             "Name": t["name"],
             "Guid": iterm_guid(t),
-            # everything else (font, bell, scrollback) is inherited from the profile named Default
+            # the font is set here because iTerm2's own Default profile starts on Monaco, which has
+            # none of the Nerd Font icons the prompt draws outside Terminal.app. Everything else
+            # (bell, scrollback) is still inherited from the profile named Default
             "Dynamic Profile Parent Name": "Default",
+            "Normal Font": "GeistMonoNFM 12",
+            "Non Ascii Font": "GeistMonoNFM 12",
             "Use Separate Colors for Light and Dark Mode": False,
             "Use Bright Bold": False,
         }

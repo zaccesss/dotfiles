@@ -4,6 +4,8 @@
       "Name": "Zacess Light",
       "Guid": "47996f61-0cd0-51f3-a785-d4018eea15e7",
       "Dynamic Profile Parent Name": "Default",
+      "Normal Font": "GeistMonoNFM 12",
+      "Non Ascii Font": "GeistMonoNFM 12",
       "Use Separate Colors for Light and Dark Mode": false,
       "Use Bright Bold": false,
       "Background Color": {
@@ -172,6 +174,8 @@
       "Name": "Zacess Dark",
       "Guid": "e8eeaffc-17cc-5210-9756-541bca156a87",
       "Dynamic Profile Parent Name": "Default",
+      "Normal Font": "GeistMonoNFM 12",
+      "Non Ascii Font": "GeistMonoNFM 12",
       "Use Separate Colors for Light and Dark Mode": false,
       "Use Bright Bold": false,
       "Background Color": {
@@ -340,6 +344,8 @@
       "Name": "Zacess Yellow on Black",
       "Guid": "73816c74-131c-5053-b038-f22e81c367d8",
       "Dynamic Profile Parent Name": "Default",
+      "Normal Font": "GeistMonoNFM 12",
+      "Non Ascii Font": "GeistMonoNFM 12",
       "Use Separate Colors for Light and Dark Mode": false,
       "Use Bright Bold": false,
       "Background Color": {
@@ -508,6 +514,8 @@
       "Name": "Zacess Cream",
       "Guid": "5e2ee881-3df9-52ec-aed8-d6116ade0471",
       "Dynamic Profile Parent Name": "Default",
+      "Normal Font": "GeistMonoNFM 12",
+      "Non Ascii Font": "GeistMonoNFM 12",
       "Use Separate Colors for Light and Dark Mode": false,
       "Use Bright Bold": false,
       "Background Color": {
@@ -676,6 +684,8 @@
       "Name": "Zacess High Contrast Dark",
       "Guid": "b31159b3-41a6-599f-b1cd-4ae65b5b5026",
       "Dynamic Profile Parent Name": "Default",
+      "Normal Font": "GeistMonoNFM 12",
+      "Non Ascii Font": "GeistMonoNFM 12",
       "Use Separate Colors for Light and Dark Mode": false,
       "Use Bright Bold": false,
       "Background Color": {
@@ -844,6 +854,8 @@
       "Name": "Zacess High Contrast Light",
       "Guid": "992007b5-6782-5003-a0e7-4c0d81c3a2ce",
       "Dynamic Profile Parent Name": "Default",
+      "Normal Font": "GeistMonoNFM 12",
+      "Non Ascii Font": "GeistMonoNFM 12",
       "Use Separate Colors for Light and Dark Mode": false,
       "Use Bright Bold": false,
       "Background Color": {
@@ -1012,6 +1024,8 @@
       "Name": "Zacess Deep Contrast Dark",
       "Guid": "46ccbaa2-1c30-56d1-bfa2-0e18cbd80f63",
       "Dynamic Profile Parent Name": "Default",
+      "Normal Font": "GeistMonoNFM 12",
+      "Non Ascii Font": "GeistMonoNFM 12",
       "Use Separate Colors for Light and Dark Mode": false,
       "Use Bright Bold": false,
       "Background Color": {
@@ -1180,6 +1194,8 @@
       "Name": "Zacess Deep Contrast Light",
       "Guid": "3e02d021-5d9b-5a45-9087-6d406bbda5cb",
       "Dynamic Profile Parent Name": "Default",
+      "Normal Font": "GeistMonoNFM 12",
+      "Non Ascii Font": "GeistMonoNFM 12",
       "Use Separate Colors for Light and Dark Mode": false,
       "Use Bright Bold": false,
       "Background Color": {
