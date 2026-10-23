@@ -40,6 +40,9 @@ function Get-AppScripts {
            Installed = { (Test-Path (Join-Path $localAppData 'Programs\Obsidian\Obsidian.exe')) -and $env:OBSIDIAN_VAULT -and (Test-Path (Join-Path $env:OBSIDIAN_VAULT '.obsidian')) } }
         @{ Name = 'Zotero'; Script = 'apps\zotero\windows\apply.ps1'; Process = 'zotero'
            Installed = { Test-Path (Join-Path $appData 'Zotero\Zotero\Profiles') } }
+        # TranslucentTB reloads its settings file while it runs, so it is never skipped for being open
+        @{ Name = 'TranslucentTB'; Script = 'apps\translucenttb\windows\apply.ps1'; Process = $null
+           Installed = { Test-Path (Join-Path $localAppData 'Packages\28017CharlesMilette.TranslucentTB_v826wp6bftszj') } }
         # Zed reloads its settings and themes while it runs, so it is never skipped for being open
         @{ Name = 'Zed'; Script = 'editors\zed\windows\apply.ps1'; Process = $null
            Installed = { (Test-Path (Join-Path $appData 'Zed')) -or (Test-Path (Join-Path $localAppData 'Programs\Zed\Zed.exe')) } }

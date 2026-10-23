@@ -14,6 +14,8 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ### Added
 
+- `apps/translucenttb`: TranslucentTB from winget with a dark acrylic taskbar over the desktop that turns solid with a maximised window or battery saver. The apps stage merges the tracked values into its settings file.
+- `setup/defaults/windows/defaults.ps1` tells Windows the colour set changed after a light or dark setting is applied, so the taskbar redraws without signing out.
 - `editors/stm32cubeide/<os>/plugins.txt` lists the WakaTime plugin from the Eclipse update site. The Linux README gives the `p2.director` command that installs it into STM32CubeIDE 2.2.0 without opening the IDE.
 
 ### Changed

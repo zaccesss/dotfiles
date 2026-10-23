@@ -66,7 +66,7 @@ To use one tool on its own, open its folder below and follow its setup guide.
 | [terminal](terminal/README.md) | The Zacess terminal themes, tmux and the everyday command line tools |
 | [git](git/README.md) | The gitconfig, the Git hooks and the SSH client config |
 | [editors](editors/README.md) | VS Code, Zed, the JetBrains IDEs, Eclipse, STM32CubeIDE, Xcode, Neovim, Arduino IDE, Microchip Studio, KiCad, Vivado, Processing, Notepad++, Nextpad++, Thonny, MATLAB, LTspice and Proteus |
-| [apps](apps/README.md) | Raycast and Rectangle on the Mac, plus Obsidian and Zotero |
+| [apps](apps/README.md) | Raycast and Rectangle on the Mac, Obsidian and Zotero everywhere and TranslucentTB on Windows |
 
 How the repository is checked and maintained (every workflow, issue form and template) is in
 [.github/ABOUT.md](.github/ABOUT.md).

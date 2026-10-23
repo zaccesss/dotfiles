@@ -95,6 +95,7 @@ function Invoke-Apply {
 
     $restartExplorer = $false
     $signInNeeded = $false
+    $colourSetChanged = $false
     $rows = Import-Csv -Path $script:Values -Delimiter "`t"
     foreach ($row in $rows) {
         # both string kinds carry home paths in portable form, so both turn back into this user's home
@@ -127,6 +128,7 @@ function Invoke-Apply {
         Write-Info "Set $($row.path) $($row.name) to $($row.value)"
 
         if ($row.path -like '*\Explorer*' -or $row.path -like '*\Search') { $restartExplorer = $true }
+        if ($row.path -like '*\Themes\Personalize') { $colourSetChanged = $true }
         if ($row.path -like '*Accessibility*' -or $row.path -like '*Cursors*' -or $row.path -like '*Keyboard*' -or $row.path -like '*Mouse*') { $signInNeeded = $true }
     }
 
@@ -138,6 +140,17 @@ function Invoke-Apply {
     }
     if ($signInNeeded) {
         Write-Warn 'Some input and accessibility settings take effect after signing out and back in'
+    }
+    # the taskbar only redraws its text in the new light or dark colours once Windows is told the
+    # colour set changed; without this it keeps the old colours until the next sign-in
+    if ($colourSetChanged) {
+        Add-Type -Namespace Zacess -Name ColourSet -MemberDefinition @'
+[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint msg, UIntPtr wParam, string lParam, uint flags, uint timeout, out UIntPtr result);
+'@
+        $result = [UIntPtr]::Zero
+        [void][Zacess.ColourSet]::SendMessageTimeout([IntPtr]0xffff, 0x1A, [UIntPtr]::Zero, 'ImmersiveColorSet', 2, 5000, [ref]$result)
+        Write-Info 'Told Windows the light or dark setting changed, so the taskbar redraws'
     }
 
     # the display and sleep timeouts belong to the power plan, not the registry, so they are set
