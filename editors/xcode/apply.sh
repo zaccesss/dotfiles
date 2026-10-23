@@ -70,17 +70,6 @@ for file in "$bindings"/*.idekeybindings; do
   copy_file "$file" "$userdata/KeyBindings"
 done
 
-# the domain is saved before the first write, so any change can be undone with
-# defaults import
-backup=""
-backup_domain() {
-  [ -n "$backup" ] && return
-  mkdir -p "$userdata/Backups"
-  backup="$userdata/Backups/$domain-$(date +%Y%m%d-%H%M%S).plist"
-  defaults export "$domain" "$backup" 2>/dev/null || true
-  echo "  backed up the current preferences to $backup"
-}
-
 echo "Preferences"
 while read -r type key value; do
   case "$type" in ''|'#'*) continue ;; esac
@@ -109,8 +98,7 @@ while read -r type key value; do
     continue
   fi
   if [ "$dry_run" -eq 0 ]; then
-    backup_domain
-    defaults write "$domain" "$key" "-$type" "$value"
+      defaults write "$domain" "$key" "-$type" "$value"
   fi
   if [ "$type" = data ]; then
     if [ -n "$current" ]; then was="a different value"; else was="unset"; fi

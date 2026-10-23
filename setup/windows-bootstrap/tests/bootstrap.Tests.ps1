@@ -65,12 +65,15 @@ Describe 'Set-PointerFile' {
         Get-Content -Raw $path | Should -Match 'dotfiles'
     }
 
-    It 'keeps a different existing file as a backup instead of overwriting it' {
+    It 'sends a different existing file to the Recycle Bin and keeps no copy' {
+        Mock Move-ToRecycleBin { Remove-Item -LiteralPath $Path }
         $path = Join-Path $TestDrive 'existing\profile.ps1'
         New-Item -ItemType Directory -Force -Path (Split-Path $path) | Out-Null
         Set-Content $path '# my own profile'
-        Set-PointerFile -Path $path -Content '. "C:\dotfiles\profile.ps1"'
-        (Get-ChildItem (Split-Path $path) -Filter 'profile.ps1.backup-*').Count | Should -Be 1
+        Set-PointerFile -Path $path -Content '. "C:\dotfiles\profile.ps1"' 6>$null
+        Should -Invoke Move-ToRecycleBin -Times 1
+        Get-Content -Raw $path | Should -Match 'dotfiles'
+        (Get-ChildItem (Split-Path $path)).Name | Should -Be 'profile.ps1'
     }
 
     It 'leaves a file that already points at the dotfiles untouched' {
@@ -161,7 +164,7 @@ Describe 'Windows Terminal schemes' {
         $saved.profiles.defaults.colorScheme | Should -Be 'Zacess Deep Contrast Dark'
         $saved.profiles.defaults.intenseTextStyle | Should -Be 'bold'
         $saved.theme | Should -Be 'system'
-        $saved.profiles.defaults.font.face | Should -Be 'GeistMono Nerd Font'
+        $saved.profiles.defaults.font.face | Should -Be 'GeistMono NFM'
     }
 
     It 'skips the Geist Mono download when the font is installed; plan mode changes nothing' {
@@ -222,9 +225,11 @@ Describe 'Windows Terminal schemes' {
 
     It 'leaves a file that already uses a Zacess scheme and Geist Mono untouched' {
         $path = Join-Path $TestDrive 'done.json'
-        Set-Content $path '{ "theme": "system", "profiles": { "defaults": { "colorScheme": "Zacess Deep Contrast Dark", "intenseTextStyle": "bold", "font": { "face": "GeistMono Nerd Font" } } } }'
+        Set-Content $path '{ "theme": "system", "profiles": { "defaults": { "colorScheme": "Zacess Deep Contrast Dark", "intenseTextStyle": "bold", "font": { "face": "GeistMono NFM" } } } }'
+        $written = Get-Content -Raw $path
         Set-TerminalScheme -SettingsPath $path 6>$null
-        (Get-ChildItem $TestDrive -Filter 'done.json.backup*').Count | Should -Be 0
+        Get-Content -Raw $path | Should -Be $written
+        (Get-ChildItem $TestDrive -Filter 'done.json*').Name | Should -Be 'done.json'
     }
 }
 
@@ -325,6 +330,8 @@ Describe 'Command Prompt start-up' {
 Describe 'Update-LegacyProfilePointer' {
     BeforeAll {
         . (Join-Path $script:Root 'bootstrap\lib\dotfiles.ps1')
+        # a replaced file only has to be gone; the runner's own Recycle Bin is left alone
+        Mock Move-ToRecycleBin { Remove-Item -LiteralPath $Path -Force }
     }
 
     It 'moves a pointer at the old loader and leaves any other profile alone' {

@@ -16,6 +16,9 @@ git clone https://github.com/zaccesss/dotfiles.git ~/dev/github/repos/dotfiles
 
 ## 3. Copy the files into place
 
+The Mac, Linux and Windows bootstraps link all four files rather than copying them, so an edit here
+applies straight away. The commands below are for a machine set up by hand.
+
 ```bash
 cd ~/dev/github/repos/dotfiles/editors/vscode
 cp settings.json "<settings folder>/settings.json"

@@ -257,10 +257,9 @@ optional_mac_keys() {
 # configuration is never part of the default stages. This extra clones the dotfiles repository,
 # which holds the shell profile and every tool config in its own folder, then links each Linux copy
 # into place so an edit in the repository applies straight away. Anything already there that is
-# not a link moves into the state folder's backups rather than being overwritten. The repository
+# not a link moves to the Bin rather than being kept as a copy. The repository
 # defaults to the public one this project lives in; point BOOTSTRAP_GITHUB_USER at your own
 # account to use your fork
-readonly CONFIG_BACKUP_DIR="${BOOTSTRAP_STATE_DIR}/backups"
 readonly CONFIG_REPOS_DIR="${BOOTSTRAP_CONFIG_DIR:-${HOME}/dev/github/repos}"
 readonly CONFIG_DOTFILES_DIR="${CONFIG_REPOS_DIR}/dotfiles"
 readonly CONFIG_GITHUB_USER="${BOOTSTRAP_GITHUB_USER:-zaccesss}"
@@ -281,6 +280,8 @@ readonly CONFIG_LINKS=(
 readonly DESKTOP_CONFIG_LINKS=(
     "editors/vscode|settings.json|${HOME}/.config/Code/User/settings.json"
     "editors/vscode|keybindings/windows-linux.json|${HOME}/.config/Code/User/keybindings.json"
+    "editors/vscode|global.code-snippets|${HOME}/.config/Code/User/snippets/global.code-snippets"
+    "editors/vscode|argv.json|${HOME}/.vscode/argv.json"
     "terminal/terminal|linux/ptyxis/zacess-deep-contrast-dark.palette|${HOME}/.local/share/org.gnome.Ptyxis/palettes/zacess-deep-contrast-dark.palette"
     "terminal/terminal|linux/ptyxis/zacess-deep-contrast-light.palette|${HOME}/.local/share/org.gnome.Ptyxis/palettes/zacess-deep-contrast-light.palette"
     "terminal/terminal|linux/ptyxis/zacess-high-contrast-dark.palette|${HOME}/.local/share/org.gnome.Ptyxis/palettes/zacess-high-contrast-dark.palette"
@@ -310,6 +311,22 @@ get_config_folder() {
     printf '%s\n' "${target}/${folder}"
 }
 
+# gio puts a file in the desktop's Bin. Without it (WSL, a server) the file goes into the
+# freedesktop Trash folder by hand with its info file, so a file manager still lists it
+move_to_trash() {
+    local target="$1"
+    local trash name
+
+    if command -v gio >/dev/null 2>&1 && gio trash "$target" 2>/dev/null; then
+        return 0
+    fi
+    trash="${XDG_DATA_HOME:-${HOME}/.local/share}/Trash"
+    name="$(basename "$target")-$(date +%Y%m%d-%H%M%S)"
+    mkdir -p "${trash}/files" "${trash}/info"
+    printf '[Trash Info]\nPath=%s\nDeletionDate=%s\n' "$target" "$(date +%Y-%m-%dT%H:%M:%S)" >"${trash}/info/${name}.trashinfo"
+    mv "$target" "${trash}/files/${name}"
+}
+
 link_config() {
     local source="$1"
     local target="$2"
@@ -318,9 +335,8 @@ link_config() {
         return 0
     fi
     if [[ -e "$target" && ! -L "$target" ]]; then
-        mkdir -p "$CONFIG_BACKUP_DIR"
-        mv "$target" "${CONFIG_BACKUP_DIR}/$(basename "$target")-$(date +%Y%m%d-%H%M%S)"
-        log_warn "Moved the existing ${target} into ${CONFIG_BACKUP_DIR}"
+        move_to_trash "$target"
+        log_warn "Moved the existing ${target} to the Bin"
     fi
     mkdir -p "$(dirname "$target")"
     ln -sfn "$source" "$target"
@@ -374,9 +390,8 @@ source \"\${DOTFILES}/linux/${profile}\""
         return 0
     fi
     if [[ -e "$rc_file" ]]; then
-        mkdir -p "$CONFIG_BACKUP_DIR"
-        mv "$rc_file" "${CONFIG_BACKUP_DIR}/${rc_name}-$(date +%Y%m%d-%H%M%S)"
-        log_warn "Moved the existing ~/${rc_name} into ${CONFIG_BACKUP_DIR}"
+        move_to_trash "$rc_file"
+        log_warn "Moved the existing ~/${rc_name} to the Bin"
     fi
     printf '%s\n' "$loader" > "$rc_file"
     log_success "Wrote ~/${rc_name} to load the dotfiles from ${dotfiles}"

@@ -65,6 +65,9 @@ foreach ($valueName in 'DefaultNewProjectLocation', 'VisualStudioProjectsLocatio
 }
 
 # the /Command argument cannot quote a path, so the theme goes to a temporary path with no spaces
+# the file of an earlier run is cleared here: Studio may still have been reading it when that run ended
+Get-ChildItem ([IO.Path]::GetTempPath()) -Filter 'zacess-microchip-theme-*.vssettings' -ErrorAction SilentlyContinue |
+    Remove-Item -Force -ErrorAction SilentlyContinue
 $import = Join-Path ([IO.Path]::GetTempPath()) "zacess-microchip-theme-$PID.vssettings"
 Copy-Item (Join-Path $themes "$name.vssettings") $import -Force
 try {
@@ -82,8 +85,9 @@ try {
         $value = (Get-ItemProperty -Path $themeKey -Name ColorTheme -ErrorAction SilentlyContinue).ColorTheme
         $done = "$value" -match $vsTheme
     }
-} finally {
+} catch {
     Remove-Item $import -Force -ErrorAction SilentlyContinue
+    throw
 }
 if (-not $done) {
     [Console]::Error.WriteLine("Microchip Studio started but did not report the $mode environment theme within three minutes.")
@@ -102,4 +106,5 @@ if (-not $process.WaitForExit(120000)) {
     [Console]::Error.WriteLine('Microchip Studio did not close within two minutes. Close it by hand so the theme is saved.')
     exit 1
 }
+Remove-Item $import -Force -ErrorAction SilentlyContinue
 Write-Output 'Studio closed and saved the theme.'

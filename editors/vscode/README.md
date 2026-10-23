@@ -41,9 +41,12 @@ The themes are from [Zacess Themes](https://github.com/zacesshq/themes).
 
 Full walkthrough in [guides/setup.md](guides/setup.md).
 
+The Mac, Linux and Windows bootstraps link the settings, keybindings, global snippets and
+`argv.json` rather than copying them, so a pull applies straight away on a machine they set up.
+
 > [!WARNING]
-> Pulling this folder does not update any live file by itself. The copy step has to run again for
-> each file you want to refresh.
+> On a machine set up by hand, pulling this folder does not update any live file by itself. The
+> copy step has to run again for each file you want to refresh.
 
 ## Structure
 

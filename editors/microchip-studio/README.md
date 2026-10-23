@@ -33,7 +33,7 @@ pwsh -File windows\apply.ps1                 # Zacess Deep Contrast Dark
 pwsh -File windows\apply.ps1 -Theme cream    # another Zacess theme
 ```
 
-Microchip Studio only takes colours through its own **Import and Export Settings** command. The script starts Studio with that command and the chosen theme, waits until Studio reports the matching environment theme and then removes the temporary copy it imported from. Studio stays open. The fonts and colours are saved when it exits. The import cannot take a path with spaces, which is why the theme is copied to a temporary path first. Nothing is backed up: this folder holds every value it imports.
+Microchip Studio only takes colours through its own **Import and Export Settings** command. The script starts Studio with that command and the chosen theme, waits until Studio reports the matching environment theme. Studio stays open. The fonts and colours are saved when it exits. The import cannot take a path with spaces, which is why the theme is copied to a temporary path first. That copy stays until Studio has closed, since Studio can still be reading it after it reports the theme. The next run clears any copy left behind. Nothing is backed up: this folder holds every value it imports.
 
 `-Studio` points the script at another `AtmelStudio.exe` than `C:\Program Files (x86)\Atmel\Studio\7.0\AtmelStudio.exe`.
 

@@ -16,7 +16,7 @@ sign_in_to_github() {
 }
 
 # ~/.zshrc becomes a two-line loader: the dotfiles find their topic files through DOTFILES, which
-# points at the shell folder of the clone, so the clone can live anywhere. An existing ~/.zshrc moves into the backups folder first
+# points at the shell folder of the clone, so the clone can live anywhere. An existing ~/.zshrc moves to the Bin first
 write_zshrc_loader() {
     local loader
     loader="export DOTFILES=\"${DOTFILES_DIR}/shell\"
@@ -27,9 +27,8 @@ source \"\${DOTFILES}/mac/zshrc\""
         return 0
     fi
     if [[ -e "${HOME}/.zshrc" || -L "${HOME}/.zshrc" ]]; then
-        mkdir -p "$BACKUP_DIR"
-        mv "${HOME}/.zshrc" "${BACKUP_DIR}/.zshrc-$(date +%Y%m%d-%H%M%S)"
-        log_warn "Moved the existing ~/.zshrc into ${BACKUP_DIR}"
+        move_to_trash "${HOME}/.zshrc"
+        log_warn "Moved the existing ~/.zshrc to the Bin"
     fi
     printf '%s\n' "$loader" > "${HOME}/.zshrc"
     log_success "Wrote ~/.zshrc to load the dotfiles from ${DOTFILES_DIR}"

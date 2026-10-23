@@ -73,10 +73,15 @@ clone_dotfiles() {
     clone_repository dotfiles "$DOTFILES_DIR"
 }
 
-# links a file or folder into place. An existing real one is moved into the state folder's backups
-# with a timestamp rather than overwritten, so nothing written by hand is ever lost and the home
-# folder does not fill up with backup copies
-readonly BACKUP_DIR="${BOOTSTRAP_STATE_DIR}/backups"
+# a replaced file goes to the Bin rather than being kept as a copy, so a run leaves no backups
+# behind while anything replaced by mistake can still be restored
+move_to_trash() {
+    local target="$1"
+    mkdir -p "${HOME}/.Trash"
+    mv "$target" "${HOME}/.Trash/$(basename "$target")-$(date +%Y%m%d-%H%M%S)"
+}
+
+# links a file or folder into place. An existing real one is moved to the Bin first
 
 link_file() {
     local source="$1"
@@ -88,11 +93,8 @@ link_file() {
     fi
 
     if [[ -e "$target" && ! -L "$target" ]]; then
-        local backup
-        mkdir -p "$BACKUP_DIR"
-        backup="${BACKUP_DIR}/$(basename "$target")-$(date +%Y%m%d-%H%M%S)"
-        mv "$target" "$backup"
-        log_warn "Moved the existing $target to $backup"
+        move_to_trash "$target"
+        log_warn "Moved the existing $target to the Bin"
     fi
 
     mkdir -p "$(dirname "$target")"

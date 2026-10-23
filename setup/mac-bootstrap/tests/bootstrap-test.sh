@@ -148,7 +148,8 @@ assert_contains "brew bundle install" "$calls" "calls"
 grep -q "source.*mac/zshrc" "$HOME_DIR/.zshrc" || fail "the zshrc loader was not written"
 grep -q "DOTFILES=.*/dotfiles/shell\"" "$HOME_DIR/.zshrc" || fail "the zshrc loader does not point at the shell folder"
 [[ "$(readlink "$HOME_DIR/.tmux.conf")" == "$HOME_DIR/repos/dotfiles/terminal/tmux/tmux.conf" ]] || fail "tmux.conf does not point at the terminal/tmux folder"
-ls "$HOME_DIR"/.local/state/mac-bootstrap/backups/.zshrc-* >/dev/null 2>&1 || fail "the hand-written zshrc was not kept in the backups folder"
+ls "$HOME_DIR"/.Trash/.zshrc-* >/dev/null 2>&1 || fail "the hand-written zshrc was not moved to the Bin"
+[[ ! -d "$HOME_DIR/.local/state/mac-bootstrap/backups" ]] || fail "a backups folder was made"
 for link in .tmux.conf .config/nvim .git-hooks ".config/fzf/fzf.zsh" .ripgreprc "Library/Application Support/Code/User/settings.json" .config/zed/settings.json; do
     [[ -L "$HOME_DIR/$link" ]] || fail "$link was not linked to its folder in the dotfiles"
 done

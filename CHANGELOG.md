@@ -8,6 +8,24 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+### Added
+
+- `editors/stm32cubeide/<os>/plugins.txt` lists the WakaTime plugin from the Eclipse update site. The Linux README gives the `p2.director` command that installs it into STM32CubeIDE 2.2.0 without opening the IDE.
+
+### Changed
+
+- A file the Mac, Linux and Windows bootstraps replace goes to the Bin (the Recycle Bin on Windows) instead of a backups folder. The Xcode apply script no longer exports a copy of the preferences domain and the Windows Terminal settings are no longer copied before each change.
+
+### Fixed
+
+- The Mac, Linux and Windows bootstraps link VS Code's `argv.json` and global snippets as well as its settings and keybindings.
+- Windows Terminal finds Geist Mono: Windows lists the Nerd Font builds as `GeistMono NF` and `GeistMono NFM`, so the long family name the Mac and Linux use made Terminal fall back to its default font.
+- The Microchip Studio apply script keeps its temporary theme file until Studio has closed. When an earlier run had already set the environment theme, the script deleted the file before Studio imported it.
+- The MATLAB apply script on Windows waits only for MATLAB itself, for at most ten minutes. It used to wait for every process MATLAB started, so a crash reporter left behind after MATLAB exited held the run indefinitely.
+- The LTspice apply script on Windows reads an ini that LTspice 26 wrote entirely as UTF-16, which it had reported as having no `[Colors]` section.
+- `setup/defaults/windows/defaults.ps1` sets the display and sleep timeouts with `powercfg` instead of leaving them as a step done by hand.
+- The Linux bootstrap updates a uv installed as a uv tool with `uv tool upgrade uv`, since `uv self update` only works for uv's own installer.
+
 ## [2.0.0] - 2026-10-23
 
 ### Added
