@@ -32,7 +32,8 @@ Links each tool config from its folder in the same clone into place: `~/.tmux.co
 `config.yml`, `~/.ripgreprc` and `~/.config/fzf/fzf.zsh`. `~/.gitconfig` and `~/.ssh/config` are
 copied once if missing, since they hold your own identity. It then installs the tmux plugin manager
 and runs the [terminal](../../../terminal/terminal) folder's installer for the High Contrast palette. Anything already there that is
-not a link is moved to the Bin first. `~/.vscode/argv.json` and VS Code's global snippets are linked the same way.
+not a link is moved to the Bin first. VS Code's global snippets are linked the same way. `~/.vscode/argv.json` is left to VS Code, which
+writes its own crash reporter id into it.
 
 ### 4. Brewfile
 

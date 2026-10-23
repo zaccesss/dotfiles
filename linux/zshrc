@@ -1,9 +1,0 @@
-# temporary forwarding file: the real one moved to shell/. removed in a later release, once
-# a machine has had time to re-run its bootstrap
-# the link may be ~/.zshrc, so the shim's real path is resolved to find the clone
-DOTFILES="${${(%):-%x}:A:h:h}/shell"
-if [[ -o interactive && -z "$DOTFILES_MOVED_SHOWN" ]]; then
-    print -u2 "dotfiles moved to shell/: run setup/linux-bootstrap to re-point"
-    export DOTFILES_MOVED_SHOWN=1
-fi
-source "$DOTFILES/linux/zshrc"

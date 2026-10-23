@@ -68,10 +68,6 @@ To use one tool on its own, open its folder below and follow its setup guide.
 | [editors](editors/README.md) | VS Code, Zed, the JetBrains IDEs, Eclipse, STM32CubeIDE, Xcode, Neovim, Arduino IDE, Microchip Studio, KiCad, Vivado, Processing, Notepad++, Nextpad++, Thonny, MATLAB, LTspice and Proteus |
 | [apps](apps/README.md) | Raycast and Rectangle on the Mac, plus Obsidian and Zotero |
 
-The `mac/`, `linux/` and `windows/` folders at the root are temporary forwarding files at the shell
-profile's old paths, so a machine that pulls before re-running its bootstrap keeps working. They go
-in a later release.
-
 How the repository is checked and maintained (every workflow, issue form and template) is in
 [.github/ABOUT.md](.github/ABOUT.md).
 

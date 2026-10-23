@@ -277,11 +277,12 @@ readonly CONFIG_LINKS=(
 # desktop only: VS Code and the terminal run on the host for WSL and container-style machines. The
 # Ptyxis palettes are for Ubuntu 25.10 and later's terminal; pick Zacess Deep Contrast Dark in
 # its preferences
+# argv.json stays VS Code's own file: VS Code writes each install's crash reporter id into it,
+# which through a link would land in the repository
 readonly DESKTOP_CONFIG_LINKS=(
     "editors/vscode|settings.json|${HOME}/.config/Code/User/settings.json"
     "editors/vscode|keybindings/windows-linux.json|${HOME}/.config/Code/User/keybindings.json"
     "editors/vscode|global.code-snippets|${HOME}/.config/Code/User/snippets/global.code-snippets"
-    "editors/vscode|argv.json|${HOME}/.vscode/argv.json"
     "terminal/terminal|linux/ptyxis/zacess-deep-contrast-dark.palette|${HOME}/.local/share/org.gnome.Ptyxis/palettes/zacess-deep-contrast-dark.palette"
     "terminal/terminal|linux/ptyxis/zacess-deep-contrast-light.palette|${HOME}/.local/share/org.gnome.Ptyxis/palettes/zacess-deep-contrast-light.palette"
     "terminal/terminal|linux/ptyxis/zacess-high-contrast-dark.palette|${HOME}/.local/share/org.gnome.Ptyxis/palettes/zacess-high-contrast-dark.palette"

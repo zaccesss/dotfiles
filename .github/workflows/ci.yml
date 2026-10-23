@@ -77,9 +77,6 @@ jobs:
             # editors or apps has to rerun the shell checks too
             shell:
               - 'shell/**'
-              - 'mac/**'
-              - 'linux/**'
-              - 'windows/**'
               - 'editors/**'
               - 'apps/**'
               - '.github/workflows/ci.yml'
@@ -225,30 +222,6 @@ jobs:
           severity: warning
         env:
           SHELLCHECK_OPTS: --shell=bash
-
-      # the temporary forwarding files at the shell profile's old paths, removed in a later release.
-      # the zsh ones get zsh's own syntax check, which shellcheck cannot give them
-      - name: Forwarding files
-        run: |
-          command -v zsh >/dev/null || { sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=20 update && sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=20 install -y zsh; }
-          zsh -n mac/zshrc
-          zsh -n linux/zshrc
-          shellcheck linux/bashrc
-          cmp mac/starship.toml shell/mac/starship.toml
-          cmp linux/starship.toml shell/linux/starship.toml
-          cmp windows/starship.toml shell/windows/starship.toml
-
-      - name: Parse the forwarding PowerShell files
-        shell: pwsh
-        run: |
-          $failed = $false
-          foreach ($file in @(Get-Item windows/Microsoft.PowerShell_profile.ps1, windows/cmd/banner.ps1) + @(Get-ChildItem windows/scripts -Filter *.ps1)) {
-            $errors = $null
-            [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors) | Out-Null
-            if ($errors.Count) { $failed = $true; $errors | ForEach-Object { Write-Output "::error file=$($file.FullName)::$($_.Message)" } }
-            else { Write-Output "$($file.Name) parses" }
-          }
-          if ($failed) { exit 1 }
 
       # the hooks carry a #!/bin/sh shebang, so they are held to POSIX sh
       - name: Git hooks

@@ -15,7 +15,7 @@ folder it did not touch.
 | --- | --- | --- |
 | Changes | Always | Which folders the push or pull request touched, using `dorny/paths-filter` |
 | Lint markdown files | Always | Every Markdown file against [`.markdownlint.json`](../.markdownlint.json) |
-| Lint shell scripts | Always | ShellCheck on the shell profiles (bash compatibility mode for zsh), the Git hooks (POSIX sh), the preference scripts and the Linux bootstrap, plus a syntax check of the preference scripts and a check of the temporary forwarding files at the root (zsh's own syntax check for the zshrc ones and a parse of the PowerShell ones) |
+| Lint shell scripts | Always | ShellCheck on the shell profiles (bash compatibility mode for zsh), the Git hooks (POSIX sh), the preference scripts and the Linux bootstrap, plus a syntax check of the preference scripts |
 | root: Repository files | Root or `.github/` changed | Every YAML file under `.github/` parses |
 | shell: Syntax | `shell/`, the root `mac/`, `linux/` or `windows/`, `editors/` or `apps/` changed (`zt` calls their apply scripts) | zsh and bash syntax of every profile and topic file, a parse of every PowerShell file, a compile of the Python scripts and ruff on them |
 | mac-bootstrap: Tests (macOS) | `setup/mac-bootstrap/` changed | Syntax with the stock bash 3.2, ShellCheck and the offline test suite on a real macOS runner |
