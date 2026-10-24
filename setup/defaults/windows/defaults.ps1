@@ -155,14 +155,27 @@ public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint msg, UIntPtr wP
 
     # the display and sleep timeouts belong to the power plan, not the registry, so they are set
     # with powercfg on the active plan: display off at 60 minutes on battery and mains, sleep at 60
-    # on battery and never on mains, so a screen saver started at 15 minutes runs for a while first
-    foreach ($setting in @(
-            @{ Name = 'monitor-timeout-dc'; Minutes = 60 }, @{ Name = 'monitor-timeout-ac'; Minutes = 60 },
-            @{ Name = 'standby-timeout-dc'; Minutes = 60 }, @{ Name = 'standby-timeout-ac'; Minutes = 0 })) {
-        powercfg /change $setting.Name $setting.Minutes
-        if ($LASTEXITCODE -ne 0) { Write-Warn "powercfg could not set $($setting.Name)" }
+    # on battery and never on mains, so a screen saver started at 15 minutes runs for a while first.
+    # The hidden lock screen timeout (VIDEOCONLOCK) turns the display off a minute after Win+L by
+    # default, before the screen saver could show, so it is set to 60 minutes on mains and 15 on
+    # battery, in seconds
+    if ($script:PlanMode) {
+        Write-Info 'Would set the display, sleep and lock screen timeouts on the active power plan'
+    } else {
+        foreach ($setting in @(
+                @{ Name = 'monitor-timeout-dc'; Minutes = 60 }, @{ Name = 'monitor-timeout-ac'; Minutes = 60 },
+                @{ Name = 'standby-timeout-dc'; Minutes = 60 }, @{ Name = 'standby-timeout-ac'; Minutes = 0 })) {
+            powercfg /change $setting.Name $setting.Minutes
+            if ($LASTEXITCODE -ne 0) { Write-Warn "powercfg could not set $($setting.Name)" }
+        }
+        powercfg /setacvalueindex SCHEME_CURRENT SUB_VIDEO VIDEOCONLOCK 3600
+        $ac = $LASTEXITCODE
+        powercfg /setdcvalueindex SCHEME_CURRENT SUB_VIDEO VIDEOCONLOCK 900
+        $dc = $LASTEXITCODE
+        powercfg /setactive SCHEME_CURRENT
+        if ($ac -ne 0 -or $dc -ne 0 -or $LASTEXITCODE -ne 0) { Write-Warn 'powercfg could not set the lock screen timeout' }
+        Write-Info 'Set the display, sleep and lock screen timeouts on the active power plan'
     }
-    Write-Info 'Set the display and sleep timeouts on the active power plan'
 
     Write-Ok 'Windows settings match the captured ones'
 }

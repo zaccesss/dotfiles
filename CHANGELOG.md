@@ -8,6 +8,16 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+### Changed
+
+- On Windows the bootstrap hides dot folders only and keeps dot files shown, showing again any it hid before. Node and Electron apps cannot overwrite a hidden file on Windows (EPERM), so a save to a hidden dot file failed silently.
+- Windows pointer size is no longer captured: each PC keeps its own size. The colour and style are still captured.
+- On Windows the display now stays on for 60 minutes after Win+L on mains and 15 on battery, so the lock screen and screen saver show. Windows' hidden lock screen timeout had turned it off after a minute.
+
+### Fixed
+
+- `windows/defaults.ps1 -Plan` no longer applies the power plan timeouts; it only says it would.
+
 ### Removed
 
 - The temporary forwarding files at the shell profile's old paths (`mac/`, `linux/` and `windows/` at the root) and their CI checks. Re-run the bootstrap on a machine set up before the grouped layout.

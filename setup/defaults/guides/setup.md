@@ -36,7 +36,10 @@ with `%USERPROFILE%` or spelt out in full, so it is not rewritten on every run.
 The screen saver values are in `tracked.txt`. Display and sleep timeouts belong to the power plan
 rather than the registry, so `windows/defaults.ps1` sets them with `powercfg /change`: the display
 off at 60 minutes on battery and mains, sleep at 60 on battery and never on mains, so a screen saver
-started at 15 minutes runs for a while before the display goes dark. After checking the screen
+started at 15 minutes runs for a while before the display goes dark. Windows' hidden lock screen
+timeout (`VIDEOCONLOCK`) is set to 60 minutes on mains and 15 on battery: by default it turns the
+display off a minute after Win+L. It is a hidden setting, so `powercfg /query` prints nothing for
+it; check it with `powercfg /qh SCHEME_CURRENT SUB_VIDEO VIDEOCONLOCK`. After checking the screen
 saver in Settings, close the Screen Saver window with **Cancel**. Clicking **OK** saves whatever
 the window shows, which can reset the wait and the password on resume. If it was clicked, run
 `windows/defaults.ps1` again to restore the captured values.

@@ -52,13 +52,13 @@ HKCU:\Control Panel\Desktop SCRNSAVE.EXE
 # Screenshots folder (Win+PrtScn saves here)
 HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders {B7BEDE81-DF94-4682-A7D8-57A52620B86F}
 
-# Accessibility. Pointer size and colour, text scaling, animations, transparency and contrast.
-# Windows may not apply some of these until the next sign-in; the script says so when it changes one
-HKCU:\Software\Microsoft\Accessibility CursorSize
+# Accessibility. Pointer colour, text scaling, animations, transparency and contrast.
+# Windows may not apply some of these until the next sign-in; the script says so when it changes one.
+# Pointer size (CursorSize and Cursors\CursorBaseSize) is left out on purpose: each PC keeps the size
+# set on it, since large and small screens suit different sizes
 HKCU:\Software\Microsoft\Accessibility CursorType
 HKCU:\Software\Microsoft\Accessibility CursorColor
 HKCU:\Software\Microsoft\Accessibility TextScaleFactor
-HKCU:\Control Panel\Cursors CursorBaseSize
 HKCU:\Control Panel\Desktop\WindowMetrics MinAnimate
 HKCU:\Control Panel\Accessibility\HighContrast Flags
 HKCU:\Control Panel\Accessibility\Keyboard Response Flags
