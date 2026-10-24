@@ -130,7 +130,7 @@ Describe 'Hide-HomeDotItems' {
         . (Join-Path $script:Root 'bootstrap\lib\configs.ps1')
     }
 
-    It 'hides dot folders and files only; plan mode changes nothing' {
+    It 'hides dot folders only; plan mode changes nothing' {
         $homePath = Join-Path $TestDrive 'dothome'
         New-Item -ItemType Directory -Force -Path (Join-Path $homePath '.config'), (Join-Path $homePath 'dev') | Out-Null
         Set-Content -Path (Join-Path $homePath '.gitconfig') -Value 'x'
@@ -143,9 +143,19 @@ Describe 'Hide-HomeDotItems' {
 
         Hide-HomeDotItems -HomePath $homePath 6>$null
         & $isHidden '.config' | Should -BeTrue
-        & $isHidden '.gitconfig' | Should -BeTrue
+        & $isHidden '.gitconfig' | Should -BeFalse
         & $isHidden 'dev' | Should -BeFalse
         & $isHidden 'notes.txt' | Should -BeFalse
+    }
+
+    It 'shows again a dot file an earlier version hid' {
+        $homePath = Join-Path $TestDrive 'oldhome'
+        New-Item -ItemType Directory -Force -Path $homePath | Out-Null
+        $file = Join-Path $homePath '.npmrc'
+        Set-Content -Path $file -Value 'x'
+        (Get-Item -LiteralPath $file -Force).Attributes = 'Hidden, Archive'
+        Hide-HomeDotItems -HomePath $homePath 6>$null
+        [bool]((Get-Item -LiteralPath $file -Force).Attributes -band [IO.FileAttributes]::Hidden) | Should -BeFalse
     }
 }
 

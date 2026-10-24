@@ -261,21 +261,30 @@ function Set-WindowsSettings {
 }
 
 # File Explorer hides an item only by its Hidden attribute, never by a leading dot, so the dot
-# folders and files in the home folder are marked the way macOS and Linux treat them. Tools ignore
-# the attribute; only Get-ChildItem without -Force leaves them out
+# folders in the home folder are marked the way macOS and Linux treat them. Dot files stay shown:
+# Node and Electron apps cannot overwrite a hidden file on Windows (EPERM), so a save to a hidden
+# dot file fails silently. A hidden folder does not block writes to the files inside it. Tools
+# ignore the attribute; only Get-ChildItem without -Force leaves the folders out
 function Hide-HomeDotItems {
     param([string]$HomePath = $HOME)
 
-    $shown = @(Get-ChildItem -LiteralPath $HomePath -Force |
+    # a dot file hidden by an earlier version of this step is shown again
+    $hiddenFiles = @(Get-ChildItem -LiteralPath $HomePath -Force -File |
+            Where-Object { $_.Name.StartsWith('.') -and ($_.Attributes -band [IO.FileAttributes]::Hidden) })
+    if ($hiddenFiles.Count -and -not $script:PlanMode) {
+        foreach ($item in $hiddenFiles) { $item.Attributes = $item.Attributes -band (-bnot [IO.FileAttributes]::Hidden) }
+        Write-Ok "Showed again: $($hiddenFiles.Name -join ', ')"
+    }
+    $shown = @(Get-ChildItem -LiteralPath $HomePath -Force -Directory |
             Where-Object { $_.Name.StartsWith('.') -and -not ($_.Attributes -band [IO.FileAttributes]::Hidden) })
     if ($shown.Count -eq 0) {
-        Write-Info 'Every dot folder and file in the home folder is already hidden'
+        Write-Info 'Every dot folder in the home folder is already hidden'
         return
     }
     if ($script:PlanMode) {
-        Write-Info "Would hide $($shown.Count) dot items in the home folder: $($shown.Name -join ', ')"
+        Write-Info "Would hide $($shown.Count) dot folders in the home folder: $($shown.Name -join ', ')"
         return
     }
     foreach ($item in $shown) { $item.Attributes = $item.Attributes -bor [IO.FileAttributes]::Hidden }
-    Write-Ok "Hid $($shown.Count) dot items in the home folder"
+    Write-Ok "Hid $($shown.Count) dot folders in the home folder"
 }

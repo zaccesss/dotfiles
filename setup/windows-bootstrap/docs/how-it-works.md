@@ -73,9 +73,11 @@ captured from a set-up PC (taskbar, File Explorer, appearance, input, Storage Se
 accessibility), writing only what differs. Until a PC has been captured the file is empty and this
 changes nothing. Capture with `.\windows\defaults.ps1 -Capture` in that folder.
 
-It then sets the Hidden attribute on the dot folders and files in the home folder, such as
-`.gitconfig` and `.ssh`, so File Explorer leaves them out as macOS and Linux do. File Explorer
-never hides an item by its leading dot alone. Tools ignore the attribute.
+It then sets the Hidden attribute on the dot folders in the home folder, such as `.ssh` and
+`.config`, so File Explorer leaves them out. File Explorer never hides an item by its leading dot
+alone. Dot files such as `.gitconfig` stay shown: Node and Electron apps cannot overwrite a hidden
+file on Windows, so a save to a hidden dot file fails silently. A hidden folder does not block
+writes to the files inside it. Tools ignore the attribute.
 
 ### 5. WSL2
 
