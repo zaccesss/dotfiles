@@ -5,15 +5,15 @@
 
 ## What's here
 
-- [`settings.json`](settings.json) - user settings, identical on every platform.
-- [`keybindings/`](keybindings/) - custom keybindings, one file for macOS (`cmd+alt`) and one for
+- [`settings.json`](settings.json): user settings, identical on every platform.
+- [`keybindings/`](keybindings/): custom keybindings, one file for macOS (`cmd+alt`) and one for
   Windows and Linux (`ctrl+alt`).
-- [`global.code-snippets`](global.code-snippets) - language-scoped snippets available in every
+- [`global.code-snippets`](global.code-snippets): language-scoped snippets available in every
   project.
-- [`argv.json`](argv.json) - launch-time flags.
-- [`extensions.txt`](extensions.txt) - every extension, one `publisher.name@version` per line,
+- [`argv.json`](argv.json): launch-time flags.
+- [`extensions.txt`](extensions.txt): every extension, one `publisher.name@version` per line,
   grouped under `//` category headers. See [guides/extensions.md](guides/extensions.md).
-- [`templates/`](templates/) - starting points for a project's own `launch.json` and `tasks.json`.
+- [`templates/`](templates/): starting points for a project's own `launch.json` and `tasks.json`.
 
 ## In action
 
