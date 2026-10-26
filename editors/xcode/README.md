@@ -10,15 +10,15 @@ one key at a time.
 
 ## What's here
 
-- [`prefs.txt`](prefs.txt) - the preferences, read from Xcode 27.1: the light and dark editor
+- [`prefs.txt`](prefs.txt): the preferences, read from Xcode 27.1: the light and dark editor
   themes for Xcode 26 and earlier, the Xcode 27 theme setting, the key bindings set, predictive
   code completion off and automatic string catalog comments off.
-- [`theme/`](theme/) - the ten Zacess Xcode themes from
+- [`theme/`](theme/): the ten Zacess Xcode themes from
   [Zacess Themes](https://github.com/zacesshq/themes) as `.xccolortheme` files, plus Zacess Deep
   Contrast Dark in Xcode 27's own `.xcworkspacecolortheme` format.
-- [`KeyBindings/`](KeyBindings/) - the key bindings set Xcode keeps in
+- [`KeyBindings/`](KeyBindings/): the key bindings set Xcode keeps in
   `~/Library/Developer/Xcode/UserData/KeyBindings`. It holds no custom bindings yet.
-- [`apply.sh`](apply.sh) - copies the themes and the key bindings file into Xcode's `UserData`
+- [`apply.sh`](apply.sh): copies the themes and the key bindings file into Xcode's `UserData`
   folder, writes each recorded preference that differs and prints what changed. It backs up the
   defaults domain before the first write, refuses to run while Xcode is open and takes `--dry-run`
   to show what would change without writing anything.
