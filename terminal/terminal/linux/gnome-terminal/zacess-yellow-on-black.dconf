@@ -5,7 +5,7 @@
 visible-name='Zacess Yellow on Black'
 use-theme-colors=false
 background-color='#000000'
-foreground-color='#ffffff'
+foreground-color='#ffeb3b'
 bold-is-bright=false
 cursor-colors-set=true
 cursor-background-color='#ffeb3b'

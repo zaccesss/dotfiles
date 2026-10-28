@@ -89,7 +89,7 @@ Short name `dark`, dark. Text `#f5f5f5` on `#121212` (17.2:1).
 
 ### Zacess Yellow on Black
 
-Short name `yellow`, dark. Text `#ffffff` on `#000000` (21.0:1).
+Short name `yellow`, dark. Text `#ffeb3b` on `#000000` (17.2:1).
 
 | Colour | Normal | Bright |
 | --- | --- | --- |

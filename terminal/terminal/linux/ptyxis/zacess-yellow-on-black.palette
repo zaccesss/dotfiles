@@ -3,7 +3,7 @@
 Name=Zacess Yellow on Black
 
 [Light]
-Foreground=#ffffff
+Foreground=#ffeb3b
 Background=#000000
 Cursor=#ffeb3b
 Color0=#a3a3a3
@@ -24,7 +24,7 @@ Color14=#00f7f5
 Color15=#ffffff
 
 [Dark]
-Foreground=#ffffff
+Foreground=#ffeb3b
 Background=#000000
 Cursor=#ffeb3b
 Color0=#a3a3a3
