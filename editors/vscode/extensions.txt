@@ -93,7 +93,7 @@ ms-azuretools.vscode-containers@2.5.0
 ms-edgedevtools.vscode-edge-devtools@2.1.10
 
 // Themes
-zacess.zacess-themes@0.4.0
+zacess.zacess-themes@0.5.0
 
 // Editor quality of life
 redhat.vscode-yaml@1.24.0

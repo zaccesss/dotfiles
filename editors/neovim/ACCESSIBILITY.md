@@ -11,6 +11,8 @@ The config favours a readable screen and short, consistent key sequences. Every 
 - Meaning never rests on colour alone. Selection, search matches, the status line mode block and menus use reverse video. Keywords and errors are bold. Diagnostics are underlined in the text.
 - Absolute and relative line numbers are both shown, so a motion such as `5j` needs no counting by eye.
 - The sign column is always reserved, so diagnostics never push the text sideways.
+- The current line is marked across the text and its line number (`cursorline`), so the cursor is never the only sign of where the edit is.
+- Git changes carry a sign shape as well as a colour: `+` added, `~` changed, `_` deleted (`‾` at the top of the file, `~_` for a change next to a deletion) and `┆` untracked, with the line number coloured too. gitsigns' own signs draw the same bar for an addition and a change.
 - Eight lines of context stay visible above and below the cursor. Half-page jumps keep the cursor centred.
 
 > [!IMPORTANT]

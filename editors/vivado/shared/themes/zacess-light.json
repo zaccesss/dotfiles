@@ -6,9 +6,9 @@
     "CODE_EDITOR_FOREGROUND": "111111",
     "CODE_EDITOR_CURSOR_COLOR": "111111",
     "CODE_EDITOR_LINE_HIGHLIGHT": "f0f0f0",
-    "CODE_EDITOR_SELECTION_BACKGROUND": "fff1a8",
+    "CODE_EDITOR_SELECTION_BACKGROUND": "9bc3ff",
     "CODE_EDITOR_FIND_HIGHLIGHT_BACKGROUND": "ffd400",
-    "CODE_EDITOR_MATCHING_WORD_HIGHLIGHT_BACKGROUND": "fff1a8",
+    "CODE_EDITOR_MATCHING_WORD_HIGHLIGHT_BACKGROUND": "9bc3ff",
     "CODE_EDITOR_BREAKPOINT_BACKGROUND": "fdeaea"
   },
   "syntax_styles": [
@@ -123,7 +123,7 @@
     {
       "style_index": "12",
       "foreground_color": "-15658735",
-      "background_color": "-3672",
+      "background_color": "-6568961",
       "font_style": "0",
       "effect": "0",
       "effect_color": "null",
@@ -141,7 +141,7 @@
     {
       "style_index": "14",
       "foreground_color": "-15658735",
-      "background_color": "-3672",
+      "background_color": "-6568961",
       "font_style": "0",
       "effect": "0",
       "effect_color": "null",

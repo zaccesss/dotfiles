@@ -26,7 +26,7 @@ that one line to switch theme. The eight themes and how each terminal switches a
 
 It adds a Terminal.app profile for each of the eight themes and makes Zacess Deep Contrast Dark the
 default, links the iTerm2 Dynamic Profiles and makes Zacess Deep Contrast Dark iTerm2's default,
-then links the Kitty and Alacritty theme files for either one already set up. It also builds the
+then links the Kitty, Alacritty and Ghostty theme files for any already set up. It also builds the
 helper that switches Terminal.app with the system, without starting it.
 
 > [!NOTE]
@@ -41,6 +41,8 @@ helper that switches Terminal.app with the system, without starting it.
   Preferences > Profile.
 - **GNOME Terminal** (Ubuntu 24.04): `dconf load` a theme's file in `linux/gnome-terminal/` onto a
   profile, as its first lines show.
+- **Ghostty**: copy `linux/ghostty/zacess-*` to `~/.config/ghostty/themes/` and start from
+  `linux/ghostty/config`, which picks Zacess Deep Contrast Dark and sets the contrast floor.
 
 ### Windows Terminal
 
@@ -63,6 +65,10 @@ cp mac/alacritty/*.toml ~/.config/alacritty/                         # use linux
 
 mkdir -p ~/.config/kitty
 cp mac/kitty/*.conf ~/.config/kitty/                                 # use linux/ on Linux
+
+mkdir -p ~/.config/ghostty/themes
+cp mac/ghostty/zacess-* ~/.config/ghostty/themes/                   # use linux/ on Linux
+cp mac/ghostty/config ~/.config/ghostty/config
 
 cp mac/hyper/hyper.js ~/.hyper.js                                    # use linux/ on Linux
 ```

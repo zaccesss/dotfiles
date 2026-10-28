@@ -1791,11 +1791,11 @@
         
         <WidgetStyle name="Default Style" styleID="32" fgColor="000000" bgColor="FDF6E3" fontName="GeistMono NF" fontStyle="0" fontSize="14" />
         <WidgetStyle name="Indent guideline style" styleID="37" fgColor="4A4337" bgColor="FDF6E3" fontName="" fontStyle="0" fontSize="" />
-        <WidgetStyle name="Brace highlight style" styleID="34" fgColor="000000" bgColor="F9E79A" fontName="" fontStyle="1" fontSize="" />
+        <WidgetStyle name="Brace highlight style" styleID="34" fgColor="000000" bgColor="C8A9FF" fontName="" fontStyle="1" fontSize="" />
         <WidgetStyle name="Bad brace colour" styleID="35" fgColor="F09F9F" bgColor="3F3F3F" fontName="" fontStyle="0" fontSize="" />
         <WidgetStyle name="Current line background colour" styleID="0" bgColor="F3EAD2" />
         
-        <WidgetStyle name="Selected text colour" styleID="0" bgColor="F9E79A" fgColor="000000" />
+        <WidgetStyle name="Selected text colour" styleID="0" bgColor="7401CA" fgColor="FDF6E3" />
         <WidgetStyle name="Multi-selected text color" styleID="0" bgColor="C0C0C0" />
         <WidgetStyle name="Caret colour" styleID="2069" fgColor="000000" />
         <WidgetStyle name="Multi-edit carets color" styleID="0" fgColor="808040" />

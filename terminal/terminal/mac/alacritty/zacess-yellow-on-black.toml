@@ -3,15 +3,15 @@
 
 [colors.primary]
 background = "#000000"
-foreground = "#ffeb3b"
+foreground = "#ffffff"
 
 [colors.cursor]
-cursor = "#ffffff"
+cursor = "#ffeb3b"
 text = "#000000"
 
 [colors.selection]
-background = "#0a2257"
-text = "#ffeb3b"
+background = "#09bcc4"
+text = "#000000"
 
 [colors.normal]
 black = "#a3a3a3"

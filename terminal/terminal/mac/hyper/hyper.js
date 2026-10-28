@@ -10,7 +10,7 @@ module.exports = {
     backgroundColor: "#000000",
     foregroundColor: "#ffffff",
     cursorColor: "#ffff00",
-    selectionColor: "#1c1c38",
+    selectionColor: "#ff70ff",
     colors: {
       black: "#000000",
       red: "#ff5f5f",

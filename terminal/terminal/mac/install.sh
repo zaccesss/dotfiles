@@ -2,8 +2,8 @@
 #
 # installs all eight Zacess themes in every Mac terminal this repo covers and makes Zacess Deep
 # Contrast Dark the default. Safe to run again: each step checks what is already in place first.
-# Terminal.app and iTerm2 are set up always; Kitty and Alacritty only when their config folder
-# already exists. Nothing follows the system appearance here: `zt auto` in the dotfiles turns
+# Terminal.app and iTerm2 are set up always; Kitty, Alacritty and Ghostty only when their config
+# folder already exists. Nothing follows the system appearance here: `zt auto` in the dotfiles turns
 # that on, using the helper this script builds from terminal-app/terminal-appearance.swift.
 
 set -Eeuo pipefail
@@ -108,6 +108,11 @@ optional_apps() {
     if [[ -d "${HOME}/.config/alacritty" ]]; then
         for file in "${HERE}"/alacritty/zacess-*.toml; do
             link "$file" "${HOME}/.config/alacritty/$(basename "$file")"
+        done
+    fi
+    if [[ -d "${HOME}/.config/ghostty" ]]; then
+        for file in "${HERE}"/ghostty/zacess-*; do
+            link "$file" "${HOME}/.config/ghostty/themes/$(basename "$file")"
         done
     fi
 }

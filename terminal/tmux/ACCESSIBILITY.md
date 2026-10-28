@@ -9,6 +9,8 @@ The bindings keep tmux's defaults where tutorials rely on them and shorten the a
 
 - The status bar uses the terminal's own background and text colours, so its contrast is the terminal's own in both light and dark mode. Each window name has its own colour (editor cyan, git green, search yellow, shell magenta, anything else blue). The current window is a solid block of its colour, bold and marked with `*`, so it is never told apart by colour alone.
 - True colour is forced on for every pane, so Neovim's colour scheme keeps its intended contrast inside tmux.
+- The active pane is marked by arrows in its border (`pane-border-indicators both`) and by a border colour of its own, so it is never told apart by colour alone.
+- Copy mode, search matches, the message line and the pane borders take their colours from the active Zacess theme through the theme file `zt` links in, so they keep the theme's contrast instead of tmux's defaults (black on yellow, which is unreadable on the light themes). Without the link tmux keeps the terminal's own colours.
 - Windows and panes are numbered from 1, matching how they are counted on the status bar.
 
 ## Keyboard and motor

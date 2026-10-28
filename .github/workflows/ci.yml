@@ -562,6 +562,9 @@ jobs:
       - name: Confirm every generated theme matches the palette and meets its contrast floor
         run: python3 scripts/build-themes.py --check
 
+      - name: Compile the palette sync script
+        run: python3 -m py_compile scripts/sync-palette.py
+
       - name: Shellcheck the macOS installer
         run: shellcheck --severity=warning mac/install.sh
 
@@ -602,6 +605,18 @@ jobs:
           tmux -f tmux.conf new-session -d -s ci
           tmux -f tmux.conf list-sessions
           tmux kill-session -t ci
+
+      - name: Source every theme file in a session and read its copy mode colours back
+        run: |
+          tmux -f tmux.conf new-session -d -s themes
+          for f in themes/zacess-*.conf; do
+            tmux source-file "$f"
+            wanted="$(sed -n 's/^set -g mode-style "\(.*\)"$/\1/p' "$f")"
+            got="$(tmux show -gv mode-style)"
+            [ "$got" = "$wanted" ] || { echo "$f: mode-style is $got, not $wanted"; exit 1; }
+            echo "ok $f ($got)"
+          done
+          tmux kill-session -t themes
 
   cli-tools:
     name: "cli-tools: Smoke test ripgrep, fzf and lazygit"

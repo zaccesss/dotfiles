@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Writes every terminal's theme files from palette/zacess.json.
 
-The palette holds the terminal colours of the eight Zacess themes from Zacess Themes 0.3.0, copied
-from that project's own palette. Every terminal gets all eight, so any of them can be picked, and
-Zacess Deep Contrast Dark is the default. No terminal follows the system light and dark setting:
-the theme stays fixed until it is changed by hand or with the `zt` command in the dotfiles.
-Every file this script writes is generated, so edit the palette and run the script again rather
-than editing an output by hand. `--check` exits non-zero when a committed file is out of date or a
-colour drops below its contrast floor, which CI runs.
+The palette holds the terminal colours and interface tokens of the eight Zacess themes, copied from
+the Zacess Themes release named in its `source` by scripts/sync-palette.py. Every terminal gets all
+eight, so any of them can be picked. Zacess Deep Contrast Dark is the default. No terminal
+follows the system light and dark setting: the theme stays fixed until it is changed by hand or
+with the `zt` command in the dotfiles. The tmux folder beside this one gets a theme file per
+theme too (status bar, message line, copy mode and pane borders), which `zt` links into place.
+Every file this script writes is generated, so run sync-palette.py or edit the palette and run
+this script again rather than editing an output by hand. `--check` exits non-zero when a committed
+file is out of date or a colour drops below its contrast floor, which CI runs.
 """
 
 import json
@@ -64,6 +66,39 @@ def kitty(t):
              f"selection_background {t['selection_background']}",
              f"selection_foreground {t['selection_foreground']}"]
     lines += [f"color{i} {value}" for i, value in enumerate(colours16(t))]
+    return "\n".join(lines) + "\n"
+
+
+def ghostty(t):
+    # the same shape as the files Zacess Themes ships for Ghostty, so either copy can be dropped in
+    lines = [f"# {t['name']}", f"# {HEADER}", ""]
+    lines += [f"palette = {i}={value}" for i, value in enumerate(colours16(t))]
+    lines += [f"background = {t['background']}", f"foreground = {t['foreground']}",
+              f"cursor-color = {t['cursor']}", f"cursor-text = {t['background']}",
+              f"selection-background = {t['selection_background']}",
+              f"selection-foreground = {t['selection_foreground']}"]
+    return "\n".join(lines) + "\n"
+
+
+def tmux(t):
+    # tmux has one config for every theme, so the colours that differ per theme live in a file of
+    # their own that zt links into the state folder and tmux.conf sources. The status bar keeps the
+    # terminal's own text and background, the message line takes the accent pair, copy mode the
+    # selection pair and the active pane border a different colour from the others, so the active
+    # pane is told apart by colour and by tmux's own border arrows
+    ui = t["ui"]
+    lines = [f"# {t['name']}", f"# {HEADER}",
+             f'set -g status-style "fg={t["foreground"]},bg={t["background"]}"',
+             f'set -g message-style "fg={ui["accent_foreground"]},bg={ui["accent"]},bold"',
+             f'set -g message-command-style "fg={ui["accent_foreground"]},bg={ui["accent"]},bold"',
+             f'set -g mode-style "fg={t["selection_foreground"]},bg={t["selection_background"]}"',
+             f'set -g copy-mode-match-style "fg={t["foreground"]},bg={ui["find_match"]}"',
+             f'set -g copy-mode-current-match-style "fg={t["foreground"]},bg={ui["find_match"]},bold,underscore"',
+             f'set -g pane-border-style "fg={ui["border"]}"',
+             f'set -g pane-active-border-style "fg={ui["border_active"]}"',
+             f'set -g display-panes-colour "{ui["border"]}"',
+             f'set -g display-panes-active-colour "{ui["border_active"]}"',
+             f'set -g clock-mode-colour "{ui["accent"]}"']
     return "\n".join(lines) + "\n"
 
 
@@ -124,6 +159,11 @@ def iterm():
             "Non Ascii Font": "GeistMonoNFM 12",
             "Use Separate Colors for Light and Dark Mode": False,
             "Use Bright Bold": False,
+            # iTerm2's own 0 to 1 scale, not a WCAG ratio: text too close to the cell behind it is
+            # pushed towards black or white until the perceived brightness differs by this much,
+            # which lands near 4.5:1. The palette already clears 7:1, so only a program's own colour
+            # pairs are ever changed
+            "Minimum Contrast": 0.5,
         }
         for key, value in (("Background Color", t["background"]), ("Foreground Color", t["foreground"]),
                            ("Bold Color", t["foreground"]), ("Cursor Color", t["cursor"]),
@@ -279,9 +319,20 @@ def outputs():
                 files[f"{platform}/kitty/{slug(t)}.conf"] = kitty(t)
             if (base / "warp").is_dir():
                 files[f"{platform}/warp/themes/{slug(t)}.yaml"] = warp(t)
+            if (base / "ghostty").is_dir():
+                files[f"{platform}/ghostty/{slug(t)}"] = ghostty(t)
         hyper_file = base / "hyper" / "hyper.js"
         if hyper_file.exists():
             files[f"{platform}/hyper/hyper.js"] = hyper(hyper_file.read_text())
+    # the tmux folder beside this one: a themes/ folder in each platform folder it has or one flat
+    # themes/ folder where the layout keeps a single tmux.conf
+    tmux_root = ROOT.parent / "tmux"
+    if tmux_root.is_dir():
+        folders = [tmux_root / p for p in PLATFORMS if (tmux_root / p).is_dir()] or [tmux_root]
+        for folder in folders:
+            for t in THEMES:
+                target = folder / "themes" / f"{slug(t)}.conf"
+                files[str(Path("..") / target.relative_to(ROOT.parent))] = tmux(t)
     files["mac/iterm2/zacess.json"] = iterm()
     for t in THEMES:
         files[f"mac/terminal-app/{t['name']}.terminal"] = terminal_app(t)
@@ -310,8 +361,15 @@ def low_contrast():
     # allowance that keeps light themes vivid) and the slots it marks as background shades
     problems = []
     for t in THEMES:
+        ui = t["ui"]
+        # the selection pair and the find match keep Zacess Themes' own 4.5:1 floors for text over a
+        # highlight, the accent pair is text so it keeps 7:1 and borders are non-text at 3:1
         checks = [("foreground", t["foreground"], t["background"], 7),
-                  ("selection", t["selection_foreground"], t["selection_background"], 7)]
+                  ("selection", t["selection_foreground"], t["selection_background"], 4.5),
+                  ("message line", ui["accent_foreground"], ui["accent"], 7),
+                  ("find match", t["foreground"], ui["find_match"], 4.5),
+                  ("pane border", ui["border"], t["background"], 3),
+                  ("active pane border", ui["border_active"], t["background"], 3)]
         for i, value in enumerate(colours16(t)):
             if i in t["background_role"]:
                 continue

@@ -8,6 +8,23 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+### Added
+
+- `zt doctor`: every installed theme file against the repo copy for the active theme and every tool's own setting against the state, one line per tool, exit 1 on any drift. On the Mac and Linux it covers VS Code (settings, snippets and the pinned Zacess Themes extension), Zed, the JetBrains IDEs (theme and the shared copies), Neovim (every config file), the Eclipse family and every app with an apply script, Terminal.app (profile colours decoded, since Terminal.app stores them without the alpha), iTerm2, Kitty, Alacritty, Ghostty, tmux (the config, the linked theme file and a running server's copy mode colours), Xcode against a Zacess Themes clone and the system highlight. On Windows it covers VS Code, Zed, the JetBrains IDEs, Neovim, the Windows Terminal fragment, Alacritty, every app with a reader and the registry highlight.
+- `zt <theme>` sets the system text highlight from the theme's selection colour, read from the generated terminal theme (iTerm2's profile on the Mac, Kitty's file on Linux, the Windows Terminal scheme on Windows): `AppleHighlightColor` on macOS with the colour change notification posted, `[Colors:Selection]` in the installed Zacess colour schemes on KDE Plasma and the GTK named colours on GNOME, `Hilight` and `HilightText` on Windows for the next sign in. The value found first is recorded and `zt highlight default` puts it back; `zt highlight` applies it again.
+- tmux theme files, one per Zacess theme in `terminal/tmux/themes`, generated from the terminal palette: the status bar in the theme's text and background, the message line in its accent pair, copy mode in its selection pair, search matches in its find colour and the pane borders in two colours. `zt` links the active one to `~/.local/state/zacess/tmux.conf`, which `tmux.conf` sources. A running server reloads at once. The active pane also carries border arrows.
+- `terminal/terminal/scripts/sync-palette.py` copies the palette from a pinned Zacess Themes release (`--version`, `--from <clone>` offline, `--check`), regenerates every theme file and moves the Zed theme file and zacess.nvim pins to the same release. A release without the strong selection pair keeps the selection the palette already holds.
+- Ghostty theme files for the Mac and Linux, a starter config with `minimum-contrast = 4.5` and the Mac installer linking the themes.
+
+### Changed
+
+- The selection in every terminal is the strong block with its own text colour that Zacess Themes 0.5.0 ships: Light `#0150b2` with white text, Dark `#4fbdff` with `#121212`, Yellow on Black `#09bcc4` with black, Cream `#7401ca` with `#fdf6e3`, High Contrast Dark `#bf96ff` with black, High Contrast Light `#015f5e` with white, Deep Contrast Dark `#ff70ff` with black and Deep Contrast Light `#990098` with white. The palette's selection floor is 4.5:1, Zacess Themes' own rule for text over a highlight.
+- The palette carries the interface tokens the tmux files use (borders, accent, find match) and Yellow on Black's terminal text is white with a yellow cursor, as the release's own terminal files have it.
+- A contrast floor for text a program prints on its own background: iTerm2 `Minimum Contrast` 0.5 in every Zacess profile, Kitty `text_fg_override_threshold 4.5 ratio`, Windows Terminal `adjustIndistinguishableColors` set to `always` by the bootstrap, VS Code `terminal.integrated.minimumContrastRatio` pinned at 4.5 and Zed `terminal.minimum_contrast` at 60. Terminal.app, Alacritty and the JetBrains terminal have no such setting.
+- Diff markers that do not rest on colour alone: VS Code draws `+` and `-` in the diff editor, striped gutter marks for added and modified lines and the current line across the gutter; Zed keeps its git gutter and current line highlight pinned; Neovim marks the current line and gives each kind of git change its own sign (`+`, `~`, `_`, `‾`, `~_`, `┆`) with the line number coloured.
+- The Notepad++, Nextpad++ and Microchip Studio builds read the strong selection pair for selected text from the Zacess Themes 0.5.0 package and keep the editor fill with an older one.
+- `mac/tracked.txt` no longer tracks `AppleHighlightColor`, since `zt` sets it.
+
 ### Changed
 
 - On Windows the bootstrap hides dot folders only and keeps dot files shown, showing again any it hid before. Node and Electron apps cannot overwrite a hidden file on Windows (EPERM), so a save to a hidden dot file failed silently.

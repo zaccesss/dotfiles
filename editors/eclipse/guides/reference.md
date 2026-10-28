@@ -89,7 +89,7 @@ Eclipse Temurin 25, installed with the lines in [setup.md](setup.md#1-install-th
 
 ## Colours
 
-`theme/` holds the eight Zacess Eclipse files from [Zacess Themes](https://github.com/zacesshq/themes) 0.3.0 (`Zacess <name>.epf`, editor and Terminal view colours), the tab outline files for the two Deep Contrast themes and `e4-dark_mac.css`.
+`theme/` holds the eight Zacess Eclipse files from [Zacess Themes](https://github.com/zacesshq/themes) 0.5.0 (`Zacess <name>.epf`, editor and Terminal view colours), the tab outline files for the two Deep Contrast themes and `e4-dark_mac.css`.
 
 The scripts import a theme after merging the preferences: each `/instance/<plugin>/<key>=<value>` line of the `.epf` merges into that plugin's `.prefs` file the same way. `org.eclipse.e4.ui.css.swt.theme.prefs` gets the matching workbench theme (`e4_dark` for the dark themes, `e4_default` for the light ones). Zacess Deep Contrast Dark is the default.
 

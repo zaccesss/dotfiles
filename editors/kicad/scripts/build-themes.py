@@ -19,8 +19,8 @@ import pathlib
 import sys
 import urllib.request
 
-PALETTE_URL = "https://raw.githubusercontent.com/zacesshq/themes/v0.4.0/palette/zacess.json"
-PALETTE_SHA256 = "fd45d887c54703e639fe34e83dbc146c9f56d985fcaf9a0fb3a9233db9914c9c"
+PALETTE_URL = "https://raw.githubusercontent.com/zacesshq/themes/v0.5.0/palette/zacess.json"
+PALETTE_SHA256 = "4fe26dbd819605ec5a17141eb5994ef5e0cb0eb7a2fc5fab93cdc82a21cf40cf"
 # KiCad 10's colour settings schema version (colorsSchemaVersion in color_settings.cpp)
 SCHEMA_VERSION = 5
 ORDER = ["deep-contrast-dark", "deep-contrast-light", "high-contrast-dark", "high-contrast-light",

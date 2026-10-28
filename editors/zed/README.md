@@ -80,7 +80,7 @@ in the folder yet the script installs the theme file and says the settings are n
 
 `settings.json` lists `zacess-themes` under `auto_install_extensions`, so Zed installs the Zacess
 Themes extension on its own. The store still has 0.2.1, which lacks `Zacess Deep Contrast Dark` and
-`Zacess Deep Contrast Light`; the theme file in `shared/themes` is the 0.4.0 release, which has
+`Zacess Deep Contrast Light`; the theme file in `shared/themes` is the 0.5.0 release, which has
 them, so Zed shows every theme now. The script reads the installed extension's version from Zed's
 data folder. Once it reaches the version in `theme-package.json`, the script removes the local file
 instead, so the themes never load twice.

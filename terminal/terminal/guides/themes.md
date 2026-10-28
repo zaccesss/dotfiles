@@ -1,8 +1,8 @@
 # Zacess themes
 
-All eight Zacess themes, with the terminal colours from
-[Zacess Themes](https://github.com/zacesshq/themes) 0.3.0, are installed in every terminal this folder
-covers. Zacess Deep Contrast Dark is the default. No terminal follows the system light and dark
+All eight Zacess themes, with the terminal colours from the
+[Zacess Themes](https://github.com/zacesshq/themes) release pinned in `palette/zacess.json`, are
+installed in every terminal this folder covers. Zacess Deep Contrast Dark is the default. No terminal follows the system light and dark
 setting unless that is turned on, so the theme stays where it was put.
 
 | Theme | Short name | Look |
@@ -28,6 +28,8 @@ appearance where a terminal supports it. `zt <theme>` turns it off again. By han
 | iTerm2 | Settings > Profiles, pick the theme, then Other Actions > Set as Default | `zt auto` writes a "Zacess Auto" Dynamic Profile with separate light and dark colours |
 | Kitty | The `include` line in `kitty.conf` | `zt auto` writes `dark-theme.auto.conf` and `light-theme.auto.conf`, which Kitty 0.38 and later follows |
 | Alacritty | The `import` line in `alacritty.toml` | Not supported: `zt auto` sets the theme matching the appearance at that moment |
+| Ghostty | The `theme` line in its config | `zt auto` writes `theme = light:...,dark:...`, which Ghostty follows |
+| tmux | The theme file `zt` links into `~/.local/state/zacess/tmux.conf`, which `tmux.conf` sources | Not supported: `zt auto` links the theme matching the appearance at that moment |
 | Windows Terminal | `profiles.defaults.colorScheme` set to one scheme name | `colorScheme` as a `dark` and `light` pair |
 | Ptyxis | Preferences > Profile > Palette | Each palette file carries the same colours in both halves, so it stays fixed; switch the palette by hand |
 | GNOME Terminal | `dconf load` the theme's file onto a profile | Not supported |
@@ -35,14 +37,22 @@ appearance where a terminal supports it. `zt <theme>` turns it off again. By han
 
 ## Where the colours come from
 
-[`palette/zacess.json`](../palette/zacess.json) is a copy of the terminal colours in Zacess Themes'
-own palette and the only place a colour is defined here. Every theme file is written from it by
-[`scripts/build-themes.py`](../scripts/build-themes.py), including the tables below. Edit the
-palette, run the script, commit both. CI fails when a generated file is out of date or a colour
-drops below its contrast floor: text at 7:1 on the background, every terminal colour at 7:1 except
-the slots a theme marks as dim (4.5:1, so the light themes stay vivid) and Deep Contrast
-Dark's ANSI black, which is true black for use as a background. Bold text keeps its colour in every
-terminal.
+[`palette/zacess.json`](../palette/zacess.json) is a copy of the terminal colours and the interface
+tokens (borders, accent, find match) in Zacess Themes' own palette and the only place a colour is
+defined here. [`scripts/sync-palette.py`](../scripts/sync-palette.py) copies it from the release
+named in the palette's `source` (`--version` moves the pin, `--from <clone>` reads a local clone's
+tag offline, `--check` reports a difference) and then runs
+[`scripts/build-themes.py`](../scripts/build-themes.py), which writes every theme file from it,
+the tmux theme files and the tables below. Run the sync, commit everything it wrote. CI fails when a
+generated file is out of date or a colour drops below its contrast floor: text at 7:1 on the
+background, every terminal colour at 7:1 except the slots a theme marks as dim (4.5:1, so the light
+themes stay vivid) and Deep Contrast Dark's ANSI black, which is true black for use as a background,
+the selection text and search matches at 4.5:1 over their highlight, the message line pair at 7:1
+and the pane borders at 3:1. Bold text keeps its colour in every terminal.
+
+Each theme's selection is a solid block with its own text colour, the pair Zacess Themes ships for
+terminals, so a selection is never a faint tint. `zt` reads that block from the generated terminal
+theme to give the system text highlight the same colour.
 
 ## The colours
 
@@ -79,7 +89,7 @@ Short name `dark`, dark. Text `#f5f5f5` on `#121212` (17.2:1).
 
 ### Zacess Yellow on Black
 
-Short name `yellow`, dark. Text `#ffeb3b` on `#000000` (17.2:1).
+Short name `yellow`, dark. Text `#ffffff` on `#000000` (21.0:1).
 
 | Colour | Normal | Bright |
 | --- | --- | --- |
@@ -176,6 +186,8 @@ Short name `deep-light`, light. Text `#000000` on `#ffffff` (21.0:1).
 | iTerm2 | [`mac/iterm2/zacess.json`](../mac/iterm2/zacess.json), one Dynamic Profile per theme |
 | Kitty | `<platform>/kitty/zacess-*.conf` |
 | Alacritty | `<platform>/alacritty/zacess-*.toml` |
+| Ghostty | `<platform>/ghostty/zacess-*` |
+| tmux | `../tmux/themes/zacess-*.conf`: the status bar, message line, copy mode, search matches and pane borders |
 | Hyper | `<platform>/hyper/hyper.js` |
 | Windows Terminal | [`windows/windows-terminal/zacess.json`](../windows/windows-terminal/zacess.json), a fragment with all eight schemes |
 | Ptyxis | `linux/ptyxis/zacess-*.palette` |
@@ -188,5 +200,23 @@ extension and plugin, set up in [vscode](../../../editors/vscode) and
 > [!NOTE]
 > The iTerm2 profile for Zacess Deep Contrast Dark keeps the `Guid` the earlier High Contrast
 > profile had, so a Mac that made that profile the default keeps a working default.
+
+## A floor under every colour pair
+
+The palette clears its floors, but a program can print its own colours on its own background.
+Where a terminal has a floor of its own it is set to about 4.5:1 (WCAG AA), so text can never
+vanish into the cell behind it:
+
+| Terminal | Setting |
+| --- | --- |
+| iTerm2 | `Minimum Contrast` 0.5 in every Zacess profile, iTerm2's own 0 to 1 scale, which lands near 4.5:1 |
+| Ghostty | `minimum-contrast = 4.5` in the starter config |
+| Kitty | `text_fg_override_threshold 4.5 ratio` in the starter configs (kitty 0.41 or later reads the ratio form) |
+| Windows Terminal | `adjustIndistinguishableColors` set to `always` by the Windows bootstrap's configs stage, since a fragment cannot carry it |
+| Terminal.app, Alacritty, Ptyxis, GNOME Terminal, Hyper | No such setting |
+
+VS Code's integrated terminal keeps `terminal.integrated.minimumContrastRatio` at 4.5 and Zed's
+terminal `minimum_contrast` at APCA 60, about the same level. The JetBrains terminal has no such
+setting.
 
 Setup for each terminal is in [setup.md](setup.md#zacess-themes).

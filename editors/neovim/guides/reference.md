@@ -51,7 +51,7 @@ editing a central list.
 | `mason.nvim` / `mason-lspconfig.nvim` | Installs and manages LSP servers |
 | `nvim-lspconfig` | Wires each server up via `vim.lsp.config`/`vim.lsp.enable`, the current native API (see below) |
 | `nvim-cmp` | Autocompletion, LSP and snippet sources |
-| `gitsigns.nvim` | Git status in the sign column |
+| `gitsigns.nvim` | Git status in the sign column, with one sign shape per kind of change (`+`, `~`, `_`, `‾`, `~_`, `┆`) and the line number coloured as well |
 | `lualine.nvim` | Statusline, with a theme of the terminal's text colour and a reversed mode block |
 | `which-key.nvim` | Shows the leader-key mappings as a popup |
 

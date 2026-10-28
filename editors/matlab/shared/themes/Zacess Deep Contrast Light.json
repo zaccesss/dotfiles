@@ -68,9 +68,9 @@
       57
     ],
     "matlab.colors.programmingtools.VariableHighlightColor": [
-      240,
-      245,
-      255
+      153,
+      0,
+      152
     ],
     "matlab.colors.programmingtools.AutofixHighlightColor": [
       245,

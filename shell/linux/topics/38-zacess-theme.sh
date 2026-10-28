@@ -8,6 +8,8 @@
 #   zt deep-dark          fix one theme everywhere (short name, id or full name)
 #   zt auto [dark] [light]  follow the desktop light and dark where a tool can
 #   zt list / zt current  the themes plus what each tool is on now
+#   zt doctor             every installed theme file against the repo copy, exit 1 on drift
+#   zt highlight [default]  the system text highlight from the theme or the system's own back
 # =============================================================================
 
 zt() {

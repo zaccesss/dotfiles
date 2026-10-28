@@ -48,8 +48,9 @@ and Cream.
 Every terminal gets all eight Zacess themes from [Zacess Themes](https://github.com/zacesshq/themes),
 with Zacess Deep Contrast Dark as the default: white on pure black with deep, fully saturated
 colours. The theme stays fixed whatever the system appearance until it is changed. The colours live
-in one file, [`palette/zacess.json`](palette/zacess.json), and
-[`scripts/build-themes.py`](scripts/build-themes.py) writes every theme file from it. Every theme's
+in one file, [`palette/zacess.json`](palette/zacess.json).
+[`scripts/sync-palette.py`](scripts/sync-palette.py) copies it from a pinned Zacess Themes release and
+[`scripts/build-themes.py`](scripts/build-themes.py) writes every theme file and the tmux theme files from it. Every theme's
 colours and how each terminal switches are in [guides/themes.md](guides/themes.md).
 
 | Terminal | macOS | Linux | Windows |
@@ -73,6 +74,6 @@ on each platform. Palette and font choices are explained in [guides/reference.md
 | --- | --- |
 | [`ACCESSIBILITY.md`](ACCESSIBILITY.md) | Light and dark contrast, opaque windows and font sizing |
 | [`palette/`](palette/) | The eight Zacess themes' terminal colours, the single source for every colour |
-| [`scripts/`](scripts/) | `build-themes.py`, which writes every theme file from the palette |
+| [`scripts/`](scripts/) | `build-themes.py` writes every theme file from the palette and `sync-palette.py` copies the palette from a pinned Zacess Themes release |
 | `<platform>/<terminal>/` | That terminal's config file for that platform |
 | [`guides/`](guides/) | Setup walkthrough and reference |

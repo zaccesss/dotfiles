@@ -19,7 +19,7 @@ The font size already in `vivado.xml` is kept. That `vivado.xml` holds the **Too
 
 ## The themes
 
-[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/themes/`](shared/themes/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 0.4.0, downloaded and checked against its SHA-256 digest. Each theme is a small JSON file holding the editor colours and the 21 syntax styles. The token order follows the jEdit text area Vivado's editor descends from:
+[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/themes/`](shared/themes/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 0.5.0, downloaded and checked against its SHA-256 digest. Each theme is a small JSON file holding the editor colours and the 21 syntax styles. The token order follows the jEdit text area Vivado's editor descends from:
 
 | Style | Token | Zacess colour |
 | --- | --- | --- |
@@ -74,7 +74,7 @@ If Vivado ignores or rewrites any of these entries, export its own settings from
 
 ## Validation
 
-[`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks every theme holds the eight editor colours and styles 0 to 20 in Vivado's formats and that every text style is at least 7:1 on the background, the current line and the selection in the Deep Contrast and High Contrast themes (4.5:1 in the others).
+[`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks every theme holds the eight editor colours and styles 0 to 20 in Vivado's formats and that every text style is at least 7:1 on the background and the current line in the Deep Contrast and High Contrast themes (4.5:1 in the others) and at least 4.5:1 on the selection fill in every theme.
 
 ## Sources
 

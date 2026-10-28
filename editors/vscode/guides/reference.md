@@ -12,6 +12,12 @@ deliberately not tracked here.
 | `workbench.preferredDarkColorTheme`, `workbench.preferredLightColorTheme` | `Zacess Deep Contrast Dark`, `Zacess Deep Contrast Light` | The pair used when `window.autoDetectColorScheme` is turned on. |
 | `workbench.colorCustomizations` | the earlier High Contrast terminal palette, scoped to `Default High Contrast` and `Default High Contrast Light` | Only applies if one of the built-in high contrast themes is picked again. The Zacess themes carry their own 16 terminal colours. |
 | `terminal.integrated.drawBoldTextInBrightColors` | `false` | Bold text keeps its colour rather than switching to the softer bright row. |
+| `terminal.integrated.minimumContrastRatio` | `4.5` | VS Code's own default, pinned: text in the integrated terminal is pushed towards black or white until it reaches 4.5:1 on the cell behind it, whatever a program printed. |
+| `diffEditor.renderIndicators` | `true` | The diff editor draws `+` and `-` in the gutter beside added and removed lines, so a change never rests on colour alone. |
+| `editor.renderLineHighlight` | `all` | The current line is marked across the text and the gutter. |
+| `scm.diffDecorations` | `all` | Git changes show in the gutter, the overview ruler and the minimap. |
+| `scm.diffDecorationsGutterVisibility` | `always` | The gutter marks stay visible rather than appearing on hover. |
+| `scm.diffDecorationsGutterPattern` | `added` and `modified` set to `true` | Added and modified lines get a striped gutter mark and deleted lines keep their triangle, so each kind of change has a shape as well as a colour. |
 | `files.autoSave` | `onWindowChange` | Saves the moment focus leaves VS Code, without the noisy diffs `afterDelay` produces mid-edit. |
 | `editor.wordWrap` | `on` | Long lines wrap instead of requiring horizontal scroll. |
 | `editor.fontSize` | `14` | A readability preference. |

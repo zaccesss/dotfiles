@@ -227,9 +227,10 @@ function Set-TerminalScheme {
     $named = if (-not $current) { $null } elseif ($current.Value -is [string]) { $current.Value } else { $current.Value.dark }
     $theme = $settings.PSObject.Properties['theme']
     $bold = $defaults.PSObject.Properties['intenseTextStyle']
+    $adjust = $defaults.PSObject.Properties['adjustIndistinguishableColors']
     $font = $defaults.PSObject.Properties['font']
     $face = if ($font -and $font.Value.PSObject.Properties['face']) { $font.Value.face } else { $null }
-    if ($named -is [string] -and $named.StartsWith('Zacess ') -and $theme -and $theme.Value -eq 'system' -and $bold -and $bold.Value -eq 'bold' -and $face -eq $script:TerminalFont) {
+    if ($named -is [string] -and $named.StartsWith('Zacess ') -and $theme -and $theme.Value -eq 'system' -and $bold -and $bold.Value -eq 'bold' -and $adjust -and $adjust.Value -eq 'always' -and $face -eq $script:TerminalFont) {
         Write-Info 'Windows Terminal already uses a Zacess scheme'
         return
     }
@@ -239,6 +240,9 @@ function Set-TerminalScheme {
             $defaults | Add-Member -Force -NotePropertyName colorScheme -NotePropertyValue 'Zacess Deep Contrast Dark'
         }
         $defaults | Add-Member -Force -NotePropertyName intenseTextStyle -NotePropertyValue 'bold'
+        # text too close to the cell behind it is lightened or darkened, Windows Terminal's own floor
+        # for a program's colour pairs; the Zacess schemes themselves already clear 7:1
+        $defaults | Add-Member -Force -NotePropertyName adjustIndistinguishableColors -NotePropertyValue 'always'
         # the prompt's Nerd Font symbols need the Geist Mono Nerd Font build installed above
         if (-not $font) { $defaults | Add-Member -Force -NotePropertyName font -NotePropertyValue ([pscustomobject]@{}) }
         $defaults.font | Add-Member -Force -NotePropertyName face -NotePropertyValue $script:TerminalFont

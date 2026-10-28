@@ -32,7 +32,7 @@ com.apple.desktopservices DSDontWriteUSBStores
 # appearance, language and units
 NSGlobalDomain AppleInterfaceStyle
 NSGlobalDomain AppleAccentColor
-NSGlobalDomain AppleHighlightColor
+# AppleHighlightColor is left out: zt sets it from the active Zacess theme's selection colour
 NSGlobalDomain AppleShowScrollBars
 NSGlobalDomain AppleShowAllExtensions
 NSGlobalDomain AppleLocale

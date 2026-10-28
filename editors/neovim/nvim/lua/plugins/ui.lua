@@ -27,7 +27,27 @@ return {
 	},
 	{
 		"lewis6991/gitsigns.nvim",
-		opts = {}, -- defaults show add/change/delete markers in the sign column
+		opts = {
+			-- one sign shape per kind of change, so a hunk reads in the gutter without its colour: gitsigns'
+			-- own signs draw the same bar for an addition and a change
+			signs = {
+				add = { text = "+" },
+				change = { text = "~" },
+				delete = { text = "_" },
+				topdelete = { text = "‾" },
+				changedelete = { text = "~_" },
+				untracked = { text = "┆" },
+			},
+			signs_staged = {
+				add = { text = "+" },
+				change = { text = "~" },
+				delete = { text = "_" },
+				topdelete = { text = "‾" },
+				changedelete = { text = "~_" },
+				untracked = { text = "┆" },
+			},
+			numhl = true, -- the line number takes the hunk's colour as well as the sign
+		},
 	},
 	{
 		"folke/which-key.nvim",
