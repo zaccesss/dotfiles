@@ -22,8 +22,22 @@ $env:DOTFILES = if ($env:DOTFILES -and (Test-Path (Join-Path $env:DOTFILES 'wind
 # an elevated window starts in System32 whatever the terminal profile says, so it moves home
 if ((Get-Location).Path -eq [Environment]::SystemDirectory) { Set-Location $HOME }
 
-Get-ChildItem "$env:DOTFILES\windows\topics\*.ps1" | Sort-Object Name | ForEach-Object {
-    . $_.FullName
+# the topics load as one cached file: Windows parses and virus-scans every file it opens, so dozens of
+# small files cost seconds where one costs a fraction. the first line of the bundle records which
+# topics it was made from and when, so adding, removing or editing a topic rebuilds it. a bundle
+# that cannot be parsed falls back to loading each topic on its own
+$topics = Get-ChildItem "$env:DOTFILES\windows\topics\*.ps1" | Sort-Object Name
+$bundle = Join-Path $HOME '.cache/dotfiles/topics.ps1'
+$bundleKey = '# topics: ' + (($topics | ForEach-Object { '{0}@{1}' -f $_.Name, $_.LastWriteTimeUtc.Ticks }) -join ' ')
+if (-not (Test-Path $bundle) -or (Get-Content $bundle -TotalCount 1) -ne $bundleKey) {
+    New-Item -ItemType Directory -Force -Path (Split-Path $bundle) | Out-Null
+    $parts = @($bundleKey) + ($topics | ForEach-Object { "# --- $($_.Name)"; Get-Content $_.FullName -Raw })
+    Set-Content -Path $bundle -Value $parts -Encoding utf8
+}
+try {
+    . $bundle
+} catch [System.Management.Automation.ParseException] {
+    foreach ($topic in $topics) { . $topic.FullName }
 }
 
 # =============================================================================

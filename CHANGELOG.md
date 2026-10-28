@@ -33,6 +33,9 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ### Fixed
 
+- New PowerShell windows on Windows load the topics as one cached file, rebuilt whenever a topic is added, removed or edited. A bundle that cannot be parsed falls back to the separate files.
+- Starship starts from a cached init script made again only after an upgrade or a change to `starship.toml`. The continuation prompt is written into the cache, so Starship is no longer started on every new window.
+- The pre-commit hooks split staged file lists on newlines only, so a path with a space is checked as one file instead of being skipped by every check.
 - `windows/defaults.ps1 -Plan` no longer applies the power plan timeouts; it only says it would.
 
 ### Removed
