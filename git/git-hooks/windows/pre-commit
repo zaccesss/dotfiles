@@ -20,6 +20,11 @@
 # replacement for a real secret scanner (gitleaks or equivalent) run in CI,
 # it only covers well-known, high-confidence token shapes.
 
+# file lists below are split on newlines only, so a path with a space (Zacess Cream.toml) stays
+# one path instead of being checked as two missing files or skipped by every loop
+IFS='
+'
+
 staged_files=$(git diff --cached --name-only --diff-filter=ACM)
 [ -z "$staged_files" ] && exit 0
 

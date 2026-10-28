@@ -353,3 +353,26 @@ function cmds {
         $body | Out-Host
     }
 }
+
+# _cachedInit: the path of a tool's saved init script, made by running the tool once and kept in
+# ~/.cache/dotfiles. starting zoxide and starship on every new terminal costs more than the rest of
+# the profile, so the script is only made again when the tool's executable is newer than it (after
+# an upgrade) or than any file in DependsOn (a config the script bakes in). Transform edits the
+# script before it is saved. the caller dot-sources the returned path so the init runs in the
+# profile's own scope
+function _cachedInit {
+    param([string]$Name, [string]$Exe, [string[]]$InitArgs, [string[]]$DependsOn = @(), [scriptblock]$Transform)
+    $dir = Join-Path $HOME '.cache/dotfiles'
+    $file = Join-Path $dir "$Name-init.ps1"
+    $sources = @($Exe) + @($DependsOn | Where-Object { Test-Path $_ })
+    $newest = ($sources | ForEach-Object { (Get-Item $_).LastWriteTime } | Measure-Object -Maximum).Maximum
+    if (-not (Test-Path $file) -or (Get-Item $file).LastWriteTime -lt $newest) {
+        $script = & $Exe @InitArgs | Out-String
+        # an empty result (the tool failed) is never saved, so the next start tries again
+        if (-not $script.Trim()) { return }
+        if ($Transform) { $script = & $Transform $script }
+        New-Item -ItemType Directory -Force -Path $dir | Out-Null
+        Set-Content -Path $file -Value $script -Encoding utf8
+    }
+    $file
+}
