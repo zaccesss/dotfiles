@@ -360,15 +360,15 @@
       },
       "Foreground Color": {
         "Red Component": 1.0,
-        "Green Component": 1.0,
-        "Blue Component": 1.0,
+        "Green Component": 0.9215686274509803,
+        "Blue Component": 0.23137254901960785,
         "Alpha Component": 1,
         "Color Space": "sRGB"
       },
       "Bold Color": {
         "Red Component": 1.0,
-        "Green Component": 1.0,
-        "Blue Component": 1.0,
+        "Green Component": 0.9215686274509803,
+        "Blue Component": 0.23137254901960785,
         "Alpha Component": 1,
         "Color Space": "sRGB"
       },

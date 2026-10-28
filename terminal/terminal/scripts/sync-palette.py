@@ -57,9 +57,9 @@ def convert(upstream, version, current):
     previous = {t["id"]: t for t in current.get("themes", [])} if current else {}
     for theme in upstream["themes"]:
         ui, terminal = theme["ui"], theme["terminal"]
-        # the terminal text and cursor can differ from the editor's (Yellow on Black prints white text
-        # with a yellow cursor), as the release's own terminal files do
-        foreground = terminal.get("foreground", ui["foreground"])
+        # terminal text follows the editor's text so Yellow on Black keeps yellow text (less glare than
+        # white on black), even where a release gives the terminal its own colour
+        foreground = ui["foreground"]
         old = previous.get(theme["id"], {})
         if "selectionStrong" in ui:
             selection = (ui["selectionStrong"], ui.get("selectionForeground", foreground))

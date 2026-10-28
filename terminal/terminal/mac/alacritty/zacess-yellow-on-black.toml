@@ -3,7 +3,7 @@
 
 [colors.primary]
 background = "#000000"
-foreground = "#ffffff"
+foreground = "#ffeb3b"
 
 [colors.cursor]
 cursor = "#ffeb3b"

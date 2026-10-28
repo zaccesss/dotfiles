@@ -116,7 +116,7 @@
       "name": "Zacess Yellow on Black",
       "appearance": "dark",
       "background": "#000000",
-      "foreground": "#ffffff",
+      "foreground": "#ffeb3b",
       "cursor": "#ffeb3b",
       "selection_background": "#09bcc4",
       "selection_foreground": "#000000",
