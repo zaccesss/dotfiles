@@ -4,6 +4,12 @@
     "workbench.preferredDarkColorTheme": "Zacess Deep Contrast Dark",
     "workbench.preferredLightColorTheme": "Zacess Deep Contrast Light",
     "terminal.integrated.drawBoldTextInBrightColors": false,
+    "terminal.integrated.minimumContrastRatio": 4.5,
+    "diffEditor.renderIndicators": true,
+    "editor.renderLineHighlight": "all",
+    "scm.diffDecorations": "all",
+    "scm.diffDecorationsGutterVisibility": "always",
+    "scm.diffDecorationsGutterPattern": { "added": true, "modified": true },
     "workbench.colorCustomizations": {
         "[Default High Contrast]": {
             "terminal.background": "#000000",

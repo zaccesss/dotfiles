@@ -4,13 +4,17 @@
 #   zt auto [dark] [light]     follow the Windows light and dark setting, Deep Contrast by default
 #   zt list                    the eight themes and their short names
 #   zt current                 the mode zt last set and what each tool is on now
+#   zt doctor                  every installed theme file against the repo copy, exit 1 on drift
+#   zt highlight [default]     the Windows text highlight again from the theme or Windows' own back
 #
 # each tool is edited in place and only for its theme setting; a tool that is not installed is
 # skipped. the JetBrains IDEs, Eclipse, STM32CubeIDE and the apps with their own apply script
 # (Arduino IDE, Notepad++, Thonny, LTspice, Proteus, Zotero, Obsidian, MATLAB, KiCad, Vivado,
 # Processing and Microchip Studio) are only changed while they are closed, since they write their
 # settings back on exit. MATLAB and Microchip Studio are started briefly to apply a theme and
-# closed again. scripts/zt.py is the macOS and Linux version; both keep the same state file
+# closed again. the Windows text highlight (Hilight and HilightText under Control Panel\Colors)
+# takes the theme's selection colour from the generated Windows Terminal scheme and applies at the
+# next sign in. scripts/zt.py is the macOS and Linux version; both keep the same state file
 # format, which Neovim reads. zt.cmd and zacess-theme.cmd run this from Command Prompt.
 
 $ErrorActionPreference = 'Stop'
@@ -361,7 +365,10 @@ function Read-Prefs([string]$Path) {
     return $map
 }
 
-# each reader returns what the tool is on now, in the same words zt prints when it sets it
+# each reader adds what a tool is on now, in the same words zt prints when it sets it
+$script:Current = [Collections.Generic.List[object]]::new()
+function Add-Current([string]$Tool, [string]$Text) { $script:Current.Add([pscustomobject]@{ Tool = $Tool; Text = $Text }) }
+
 function Get-CurrentEclipse {
     return Get-CurrentEclipseLike $EclipseWorkspace $EclipseThemes
 }
@@ -465,14 +472,19 @@ function Get-CurrentProcessing {
     return 'fixed: a theme.txt that is not a Zacess theme'
 }
 
-function Show-Current {
-    $state =@(if (Test-Path $StateFile) { ([IO.File]::ReadAllText($StateFile)).Trim() -split '\s+' } else { @('deep-contrast-dark') })
-    $neovim = if ($state[0] -eq 'auto') {
+function Get-StateText {
+    $state = @(if (Test-Path $StateFile) { ([IO.File]::ReadAllText($StateFile)).Trim() -split '\s+' } else { @('deep-contrast-dark') })
+    if ($state[0] -eq 'auto') {
         $dark = if ($state.Count -gt 1) { $state[1] } else { 'deep-contrast-dark' }
         $light = if ($state.Count -gt 2) { $state[2] } else { 'deep-contrast-light' }
-        "following the system: $(Get-ThemeName $dark) or $(Get-ThemeName $light)"
-    } else { "fixed: $(Get-ThemeName $state[0])" }
-    Write-Host "zt state: $neovim"
+        return "following the system: $(Get-ThemeName $dark) or $(Get-ThemeName $light)"
+    }
+    return "fixed: $(Get-ThemeName $state[0])"
+}
+
+function Get-CurrentState {
+    $script:Current.Clear()
+    $neovim = Get-StateText
 
     $vs = Join-Path $env:APPDATA 'Code\User\settings.json'
     if (Test-Path $vs) {
@@ -480,7 +492,7 @@ function Show-Current {
         $text = if ($data.'window.autoDetectColorScheme') {
             "following the system: $($data.'workbench.preferredDarkColorTheme') or $($data.'workbench.preferredLightColorTheme')"
         } else { "fixed: $($data.'workbench.colorTheme')" }
-        Write-Result 'VS Code' $text $false
+        Add-Current 'VS Code' $text
     }
 
     $zed =Join-Path $env:APPDATA 'Zed\settings.json'
@@ -490,7 +502,7 @@ function Show-Current {
                 elseif (-not $theme) { 'fixed: default' }
                 elseif ($theme.mode -eq 'system' -or -not $theme.mode) { "following the system: $($theme.dark) or $($theme.light)" }
                 else { "fixed: $($theme.($theme.mode))" }
-        Write-Result 'Zed' $text $false
+        Add-Current 'Zed' $text
     }
 
     $base = Join-Path $env:APPDATA 'JetBrains'
@@ -509,24 +521,24 @@ function Show-Current {
                 "fixed: $(Get-ThemeName $(if ($n) { $n.GetAttribute('themeId') }))"
             }
             $plugin = if (Test-Path (Join-Path $dir.FullName 'plugins\zacess-themes')) { '' } else { ' (no Zacess plugin)' }
-            Write-Result "  $($dir.Name)" "$text, editor $editor$plugin" $false
+            Add-Current "  $($dir.Name)" "$text, editor $editor$plugin"
         }
     }
 
-    Write-Result 'Neovim' $neovim $false
+    Add-Current 'Neovim' $neovim
 
     $eclipse = Get-CurrentEclipse
-    if ($eclipse) { Write-Result 'Eclipse' $eclipse $false }
+    if ($eclipse) { Add-Current 'Eclipse' $eclipse }
     $stm32 = Get-CurrentSTM32CubeIDE
-    if ($stm32) { Write-Result 'STM32CubeIDE' $stm32 $false }
+    if ($stm32) { Add-Current 'STM32CubeIDE' $stm32 }
     $kicad = Get-CurrentKiCad
-    if ($kicad) { Write-Result 'KiCad' $kicad $false }
+    if ($kicad) { Add-Current 'KiCad' $kicad }
     $vivado = Get-CurrentVivado
-    if ($vivado) { Write-Result 'Vivado' $vivado $false }
+    if ($vivado) { Add-Current 'Vivado' $vivado }
     $processing = Get-CurrentProcessing
-    if ($processing) { Write-Result 'Processing' $processing $false }
+    if ($processing) { Add-Current 'Processing' $processing }
     $microchip = Get-CurrentMicrochipStudio
-    if ($microchip) { Write-Result 'Microchip Studio' $microchip $false }
+    if ($microchip) { Add-Current 'Microchip Studio' $microchip }
 
     $terminals = @(
         (Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json'),
@@ -538,29 +550,29 @@ function Show-Current {
         $text = if ($scheme -is [string]) { "fixed: $scheme" }
                 elseif ($scheme) { "following the system: $($scheme.dark) or $($scheme.light)" }
                 else { 'fixed: default' }
-        Write-Result 'Windows Terminal' $text $false
+        Add-Current 'Windows Terminal' $text
     }
 
     $alacritty = Join-Path $env:APPDATA 'alacritty\alacritty.toml'
     if (Test-Path $alacritty) {
         $m = [regex]::Match([IO.File]::ReadAllText($alacritty), 'zacess-([\w-]+)\.toml')
-        Write-Result 'Alacritty' $(if ($m.Success) { "fixed: $(Get-ThemeName $m.Groups[1].Value)" } else { 'fixed: no Zacess import' }) $false
+        Add-Current 'Alacritty' $(if ($m.Success) { "fixed: $(Get-ThemeName $m.Groups[1].Value)" } else { 'fixed: no Zacess import' })
     }
 
     $arduino = Join-Path $env:USERPROFILE '.arduinoIDE\settings.json'
-    if (Test-Path $arduino) { Write-Result 'Arduino IDE' "fixed: $((Get-Content -Raw $arduino | ConvertFrom-Json).'workbench.colorTheme')" $false }
+    if (Test-Path $arduino) { Add-Current 'Arduino IDE' "fixed: $((Get-Content -Raw $arduino | ConvertFrom-Json).'workbench.colorTheme')" }
 
     $npp = Join-Path $env:APPDATA 'Notepad++\config.xml'
     if (Test-Path $npp) {
         $mode = ([xml](Get-Content -Raw $npp)).NotepadPlus.GUIConfigs.GUIConfig | Where-Object { $_.name -eq 'DarkMode' }
         $file = if ($mode.enable -eq 'yes') { $mode.darkThemeName } else { $mode.lightThemeName }
-        Write-Result 'Notepad++' "fixed: $(if ($file) { $file -replace '\.xml$', '' } else { 'default' })" $false
+        Add-Current 'Notepad++' "fixed: $(if ($file) { $file -replace '\.xml$', '' } else { 'default' })"
     }
 
     $thonny = Join-Path $env:APPDATA 'Thonny\configuration.ini'
     if (Test-Path $thonny) {
         $m = Select-String -Path $thonny -Pattern '^syntax_theme = (.+)$' | Select-Object -First 1
-        Write-Result 'Thonny' "fixed: $(if ($m) { $m.Matches[0].Groups[1].Value } else { 'default' })" $false
+        Add-Current 'Thonny' "fixed: $(if ($m) { $m.Matches[0].Groups[1].Value } else { 'default' })"
     }
 
     $ltspice = @((Join-Path $env:APPDATA 'LTspice.ini'), (Join-Path $env:APPDATA 'LTspiceXVII.ini')) | Where-Object { Test-Path $_ } | Select-Object -First 1
@@ -577,7 +589,7 @@ function Show-Current {
             $file = Join-Path $RepoRoot "editors\ltspice\shared\themes\$($_.Name).ini"
             (Test-Path $file) -and -not (Get-Content $file | Where-Object { $_ -match '^\w+=\d+$' -and $text -notmatch "(?m)^$([regex]::Escape($_))\r?$" })
         } | Select-Object -First 1
-        Write-Result 'LTspice' $(if ($match) { "fixed: $($match.Name)" } else { 'fixed: not a Zacess theme' }) $false
+        Add-Current 'LTspice' $(if ($match) { "fixed: $($match.Name)" } else { 'fixed: not a Zacess theme' })
     }
 
     $proteus = 'HKCU:\Software\Labcenter Electronics\Proteus 8 Professional\ARES\Settings'
@@ -587,7 +599,7 @@ function Show-Current {
             $file = Join-Path $RepoRoot "editors\proteus\shared\themes\$($_.Name).json"
             (Test-Path $file) -and (Get-Content -Raw $file | ConvertFrom-Json).set -eq $set
         } | Select-Object -First 1
-        Write-Result 'Proteus' "fixed: $(if ($match) { $match.Name } else { $set })" $false
+        Add-Current 'Proteus' "fixed: $(if ($match) { $match.Name } else { $set })"
     }
 
     $zotero = Get-ChildItem (Join-Path $env:APPDATA 'Zotero\Zotero\Profiles') -Directory -ErrorAction SilentlyContinue | ForEach-Object { Join-Path $_.FullName 'user.js' } | Where-Object { Test-Path $_ } | Select-Object -First 1
@@ -595,7 +607,7 @@ function Show-Current {
         $js = [IO.File]::ReadAllText($zotero)
         $mode = switch -regex ($js) { 'toolbar-theme", 0' { 'dark mode' } 'toolbar-theme", 1' { 'light mode' } default { 'following the system' } }
         $reader = [regex]::Match($js, 'reader\.(dark|light)Theme", "([^"]*)"')
-        Write-Result 'Zotero' "fixed: $mode, reader $(if ($reader.Success -and $reader.Groups[2].Value) { $reader.Groups[2].Value } else { 'original' })" $false
+        Add-Current 'Zotero' "fixed: $mode, reader $(if ($reader.Success -and $reader.Groups[2].Value) { $reader.Groups[2].Value } else { 'original' })"
     }
 
     $vault = if ($env:OBSIDIAN_VAULT) { Join-Path $env:OBSIDIAN_VAULT '.obsidian' }
@@ -606,7 +618,7 @@ function Show-Current {
         $text = if ($look.cssTheme -ne 'Zacess') { "fixed: $($look.cssTheme) theme" }
                 elseif ($contrast -and $contrast -ne 'zacess-follow') { "fixed: $(Get-ThemeName ($contrast -replace '^zacess-', ''))" }
                 elseif ($look.theme -eq 'obsidian') { 'fixed: Zacess Dark' } else { 'fixed: Zacess Light' }
-        Write-Result 'Obsidian' $text $false
+        Add-Current 'Obsidian' $text
     }
 
     $mlsettings = Get-ChildItem (Join-Path $env:APPDATA 'MathWorks\MATLAB') -Directory -Filter 'R20*' -ErrorAction SilentlyContinue | Sort-Object Name -Descending | ForEach-Object { Join-Path $_.FullName 'matlab.mlsettings' } | Where-Object { Test-Path $_ } | Select-Object -First 1
@@ -626,8 +638,226 @@ function Show-Current {
                 (Test-Path $file) -and ((Get-Content -Raw $file | ConvertFrom-Json).settings.'matlab.colors.KeywordColor' -join ',') -eq "$($keyword.Groups[1].Value),$($keyword.Groups[2].Value),$($keyword.Groups[3].Value)"
             } | Select-Object -First 1
         }
-        Write-Result 'MATLAB' "fixed: $(if ($match) { $match.Name } else { 'not a Zacess theme' }), $(if ($mode) { $mode } else { 'System' }) desktop" $false
+        Add-Current 'MATLAB' "fixed: $(if ($match) { $match.Name } else { 'not a Zacess theme' }), $(if ($mode) { $mode } else { 'System' }) desktop"
     }
+
+    $highlight = Get-CurrentHighlight
+    if ($highlight) { Add-Current 'Highlight' $highlight }
+    return $script:Current.ToArray()
+}
+
+function Show-Current {
+    Write-Host "zt state: $(Get-StateText)"
+    foreach ($item in Get-CurrentState) { Write-Result $item.Tool $item.Text $false }
+}
+
+# ---------------------------------------------------------------------------------------------------
+# the Windows text highlight: the active theme's selection colour, read from the generated Windows
+# Terminal scheme (its selectionBackground) and, since a scheme carries no selection text colour, the
+# palette that scheme is built from. Windows reads both values at the next sign in, which is when
+# these machines pull the dotfiles anyway. The values found before the first change are recorded, so
+# `zt highlight default` can put them back
+# ---------------------------------------------------------------------------------------------------
+
+$HighlightRecord = Join-Path $env:LOCALAPPDATA 'zacess\highlight.default'
+$ColoursKey = 'HKCU:\Control Panel\Colors'
+$WindowsHighlight = @{ Hilight = '0 120 215'; HilightText = '255 255 255' }
+
+function Get-SelectionColour($Theme) {
+    $fragment = Join-Path $RepoRoot 'terminal\terminal\windows\windows-terminal\zacess.json'
+    $scheme = (Get-Content -Raw $fragment | ConvertFrom-Json).schemes | Where-Object { $_.name -eq $Theme.Name } | Select-Object -First 1
+    $palette = Join-Path $RepoRoot 'terminal\terminal\palette\zacess.json'
+    $entry = (Get-Content -Raw $palette | ConvertFrom-Json).themes | Where-Object { $_.id -eq $Theme.Id } | Select-Object -First 1
+    return @{ Background = $scheme.selectionBackground; Foreground = $entry.selection_foreground }
+}
+
+# "r g b" in decimal, the form the Colors key holds
+function ConvertTo-RegistryColour([string]$Hex) {
+    return (@(1, 3, 5) | ForEach-Object { [Convert]::ToInt32($Hex.Substring($_, 2), 16) }) -join ' '
+}
+
+function Set-Highlight($Fixed, $Dark, $Light, $Now) {
+    $theme = if ($Fixed) { $Fixed } else { $Now }
+    $colour = Get-SelectionColour $theme
+    $wanted = @{ Hilight = ConvertTo-RegistryColour $colour.Background; HilightText = ConvertTo-RegistryColour $colour.Foreground }
+    $current = Get-ItemProperty -Path $ColoursKey -ErrorAction SilentlyContinue
+    if (-not $current) { return Write-Result 'Highlight' 'no Colors key to set, skipped' $false }
+    if (-not (Test-Path $HighlightRecord)) {
+        New-Item -ItemType Directory -Force (Split-Path $HighlightRecord) | Out-Null
+        [IO.File]::WriteAllText($HighlightRecord, "Hilight=$($current.Hilight)`nHilightText=$($current.HilightText)`n")
+    }
+    $changed = $false
+    foreach ($name in 'Hilight', 'HilightText') {
+        if ("$($current.$name)" -ne $wanted[$name]) { Set-ItemProperty -Path $ColoursKey -Name $name -Value $wanted[$name]; $changed = $true }
+    }
+    $note = if ($Fixed) { '' } else { ' (the highlight cannot follow the system, so this matches it now)' }
+    $when = if ($changed) { 'from the next sign in' } else { 'already set' }
+    Write-Result 'Highlight' "$($colour.Background) with $($colour.Foreground) text, $($theme.Name)'s selection$note, $when"
+}
+
+function Restore-Highlight {
+    $values = $WindowsHighlight.Clone()
+    if (Test-Path $HighlightRecord) {
+        foreach ($line in [IO.File]::ReadAllLines($HighlightRecord)) {
+            $i = $line.IndexOf('=')
+            if ($i -gt 0 -and $line.Substring($i + 1)) { $values[$line.Substring(0, $i)] = $line.Substring($i + 1) }
+        }
+    }
+    if (-not (Test-Path $ColoursKey)) { return Write-Result 'Highlight' 'no Colors key to restore, skipped' $false }
+    foreach ($name in 'Hilight', 'HilightText') { Set-ItemProperty -Path $ColoursKey -Name $name -Value $values[$name] }
+    if (Test-Path $HighlightRecord) { Remove-Item $HighlightRecord }
+    Write-Result 'Highlight' "restored: $($values.Hilight) with $($values.HilightText) text, from the next sign in"
+}
+
+function Get-CurrentHighlight {
+    $current = Get-ItemProperty -Path $ColoursKey -ErrorAction SilentlyContinue
+    if (-not $current) { return $null }
+    foreach ($theme in $Themes) {
+        $colour = Get-SelectionColour $theme
+        if ("$($current.Hilight)" -eq (ConvertTo-RegistryColour $colour.Background)) {
+            return "fixed: $($theme.Name)'s selection ($($colour.Background)), from the next sign in"
+        }
+    }
+    if ("$($current.Hilight)" -eq $WindowsHighlight.Hilight) { return 'the Windows default' }
+    return "not a Zacess selection ($($current.Hilight))"
+}
+
+# ---------------------------------------------------------------------------------------------------
+# zt doctor: every installed theme file against the repo copy for the active theme and every tool's
+# own setting against the state, so a copy that stopped matching the repo or a tool switched by hand
+# shows up. Exit 1 on any drift
+# ---------------------------------------------------------------------------------------------------
+
+function Get-ActivePair {
+    $state = @(if (Test-Path $StateFile) { ([IO.File]::ReadAllText($StateFile)).Trim() -split '\s+' } else { @() })
+    if ($state.Count -and $state[0] -eq 'auto') {
+        $dark = $(if ($state.Count -gt 1) { Find-Theme $state[1] })
+        if (-not $dark) { $dark = Find-Theme 'deep-contrast-dark' }
+        $light = $(if ($state.Count -gt 2) { Find-Theme $state[2] })
+        if (-not $light) { $light = Find-Theme 'deep-contrast-light' }
+        return @{ Fixed = $null; Dark = $dark; Light = $light; Now = $(if (Test-SystemDark) { $dark } else { $light }) }
+    }
+    $fixed = $(if ($state.Count) { Find-Theme $state[0] })
+    if (-not $fixed) { $fixed = Find-Theme 'deep-contrast-dark' }
+    $dark = if ($fixed.Dark) { $fixed } else { Find-Theme 'deep-contrast-dark' }
+    $light = if (-not $fixed.Dark) { $fixed } else { Find-Theme 'deep-contrast-light' }
+    return @{ Fixed = $fixed; Dark = $dark; Light = $light; Now = $fixed }
+}
+
+$script:Drift = 0
+$Bad = if ($env:NO_COLOR) { '' } else { "$e[31m" }
+
+function Write-Doctor([string]$Tool, [string]$Status, [string]$Text) {
+    $colour = switch ($Status) { 'ok' { $Ok } 'drift' { $Bad } default { $Skip } }
+    Write-Host ("  {0}{1,-16}{2} {3}{4}: {5}{2}" -f $Bold, $Tool, $Reset, $colour, $Status, $Text)
+    if ($Status -eq 'drift') { $script:Drift++ }
+}
+
+# whether a tool's own reading names the theme zt last set
+function Test-Agrees($Pair, [string]$Text) {
+    if ($Pair.Fixed) { return $Text.Contains($Pair.Fixed.Name) -or $Text.Contains($Pair.Fixed.Name.Replace('Zacess ', '')) }
+    if ($Text.Contains('following the system') -or $Text.Contains('Sync with OS')) {
+        $mentioned = @($Themes | Where-Object { $Text.Contains($_.Name) })
+        return (-not $mentioned) -or ($Text.Contains($Pair.Dark.Name) -and $Text.Contains($Pair.Light.Name))
+    }
+    # a tool that cannot follow the system was set to the theme matching the appearance then
+    return $Text.Contains($Pair.Now.Name)
+}
+
+function Test-Setting($Pair, [string]$Tool, $Text) {
+    if ($null -eq $Text -or $Tool -eq 'Highlight') { return }
+    if ($Text.StartsWith('could not read') -or $Text.Contains('not a Zacess')) { return Write-Doctor $Tool 'drift' $Text }
+    Write-Doctor $Tool $(if (Test-Agrees $Pair $Text) { 'ok' } else { 'drift' }) $Text
+}
+
+function Compare-Bytes([string]$A, [string]$B) {
+    $x = [IO.File]::ReadAllBytes($A); $y = [IO.File]::ReadAllBytes($B)
+    if ($x.Length -ne $y.Length) { return $false }
+    return [Linq.Enumerable]::SequenceEqual($x, $y)
+}
+
+# installed files against their repo copies: pairs of (installed, repo); a folder pair compares
+# every file under the repo folder
+function Test-Files([string]$Tool, $Pairs, [string]$What) {
+    $problems = @()
+    foreach ($pair in $Pairs) {
+        $installed = [string]$pair[0]; $repo = [string]$pair[1]
+        if (-not $repo -or -not (Test-Path $repo)) { continue }
+        $shown = $installed.Replace($env:USERPROFILE, '~')
+        if (-not (Test-Path $installed)) { $problems += "$shown missing"; continue }
+        if (Test-Path $repo -PathType Container) {
+            foreach ($file in Get-ChildItem $repo -Recurse -File) {
+                $rel = $file.FullName.Substring($repo.Length).TrimStart('\', '/')
+                $other = Join-Path $installed $rel
+                if (-not (Test-Path $other)) { $problems += "$shown\$rel missing" }
+                elseif (-not (Compare-Bytes $other $file.FullName)) { $problems += "$shown\$rel differs from the repo" }
+            }
+        } elseif (-not (Compare-Bytes $installed $repo)) {
+            $problems += "$shown differs from $($repo.Replace($RepoRoot, '').TrimStart('\', '/'))"
+        }
+    }
+    if ($problems) { return Write-Doctor $Tool 'drift' ($problems -join '; ') }
+    Write-Doctor $Tool 'ok' $What
+}
+
+function Get-PinnedExtension([string]$Listing, [string]$Prefix) {
+    if (-not (Test-Path $Listing)) { return $null }
+    $m = Select-String -Path $Listing -Pattern ('^' + [regex]::Escape($Prefix) + '@(\S+)') | Select-Object -First 1
+    if ($m) { return $m.Matches[0].Groups[1].Value }
+}
+
+function Get-InstalledExtension([string]$Folder, [string]$Prefix) {
+    if (-not (Test-Path $Folder)) { return $null }
+    $found = Get-ChildItem $Folder -Directory -Filter "$Prefix-*" | ForEach-Object { if ($_.Name -match '-(\d+\.\d+\.\d+)') { [version]$Matches[1] } } | Sort-Object | Select-Object -Last 1
+    if ($found) { return $found.ToString() }
+}
+
+function Invoke-Doctor {
+    $pair = Get-ActivePair
+    $wanted = @(if ($pair.Fixed) { $pair.Now } else { $pair.Dark; $pair.Light })
+    $mode = if ($pair.Fixed) { "fixed $($pair.Now.Name)" } else { "following the system: $($pair.Dark.Name) or $($pair.Light.Name) (now $($pair.Now.Name))" }
+    Write-Host "${Bold}zt state${Reset}: $mode"
+    foreach ($item in Get-CurrentState) { Test-Setting $pair $item.Tool $item.Text }
+
+    $vs = Join-Path $env:APPDATA 'Code\User\settings.json'
+    if (Test-Path $vs) {
+        Test-Files 'VS Code' @(
+            @($vs, (Join-Path $RepoRoot 'editors\vscode\windows\settings.json')),
+            @((Join-Path $env:APPDATA 'Code\User\keybindings.json'), (Join-Path $RepoRoot 'editors\vscode\windows\keybindings.json')),
+            @((Join-Path $env:APPDATA 'Code\User\snippets\global.code-snippets'), (Join-Path $RepoRoot 'editors\vscode\windows\global.code-snippets'))
+        ) 'settings, key bindings and snippets match the repo'
+        $pin = Get-PinnedExtension (Join-Path $RepoRoot 'editors\vscode\windows\extensions.txt') 'zacess.zacess-themes'
+        $installed = Get-InstalledExtension (Join-Path $env:USERPROFILE '.vscode\extensions') 'zacess.zacess-themes'
+        if ($pin -and $installed) {
+            $status = if ([version]$installed -lt [version]$pin) { 'drift' } else { 'ok' }
+            Write-Doctor 'VS Code' $status "Zacess Themes $installed installed, $pin pinned in extensions.txt"
+        }
+    }
+    $zed = Join-Path $env:APPDATA 'Zed\settings.json'
+    if (Test-Path $zed) {
+        $pairs = @(, @($zed, (Join-Path $RepoRoot 'editors\zed\windows\settings.json')))
+        $local = Join-Path $env:APPDATA 'Zed\themes\zacess.json'
+        if (Test-Path $local) { $pairs += , @($local, (Join-Path $RepoRoot 'editors\zed\shared\themes\zacess.json')) }
+        Test-Files 'Zed' $pairs 'settings match the repo'
+    }
+    $nvim = Join-Path $env:LOCALAPPDATA 'nvim'
+    if (Test-Path $nvim) { Test-Files 'Neovim' @(, @($nvim, (Join-Path $RepoRoot 'editors\neovim\windows\nvim'))) 'the config files match the repo' }
+    $fragment = Join-Path $env:LOCALAPPDATA 'Microsoft\Windows Terminal\Fragments\Zacess\zacess.json'
+    if (Test-Path $fragment) { Test-Files 'Windows Terminal' @(, @($fragment, (Join-Path $RepoRoot 'terminal\terminal\windows\windows-terminal\zacess.json'))) 'the scheme fragment matches the repo' }
+    $alacritty = Join-Path $env:APPDATA 'alacritty'
+    if (Test-Path (Join-Path $alacritty 'alacritty.toml')) {
+        $pairs = @($wanted | ForEach-Object { , @((Join-Path $alacritty "zacess-$($_.Id).toml"), (Join-Path $RepoRoot "terminal\terminal\windows\alacritty\zacess-$($_.Id).toml")) })
+        Test-Files 'Alacritty' $pairs 'the theme files match the repo'
+    }
+    $highlight = Get-CurrentHighlight
+    if ($highlight) {
+        $expected = (Get-SelectionColour $pair.Now).Background
+        if ($highlight.Contains($expected)) { Write-Doctor 'Highlight' 'ok' $highlight }
+        else { Write-Doctor 'Highlight' 'drift' "$highlight, $($pair.Now.Name)'s selection is $expected" }
+    }
+    if ($script:Drift) { Write-Host "$Bad$($script:Drift) drift$Reset"; return 1 }
+    Write-Host "${Ok}no drift${Reset}"
+    return 0
 }
 
 $command = if ($args.Count) { [string]$args[0] } else { 'help' }
@@ -646,6 +876,16 @@ switch ($command) {
     }
     'current' {
         try { Show-Current } catch { [Console]::Error.WriteLine("could not read a setting: $($_.Exception.Message)") }
+        exit 0
+    }
+    'doctor' {
+        try { exit (Invoke-Doctor) } catch { [Console]::Error.WriteLine("could not check a setting: $($_.Exception.Message)"); exit 1 }
+    }
+    'highlight' {
+        if ($args.Count -eq 2 -and $args[1] -eq 'default') { Restore-Highlight; exit 0 }
+        if ($args.Count -gt 1) { [Console]::Error.WriteLine('Usage: zt highlight [default]'); exit 1 }
+        $pair = Get-ActivePair
+        Set-Highlight $pair.Fixed $pair.Dark $pair.Light $pair.Now
         exit 0
     }
 }
@@ -668,7 +908,7 @@ if ($command -eq 'auto') {
 
 foreach ($tool in 'Set-VSCode', 'Set-Zed', 'Set-JetBrains', 'Set-Neovim', 'Set-Eclipse', 'Set-STM32CubeIDE', 'Set-KiCad', 'Set-Vivado',
     'Set-WindowsTerminal', 'Set-Alacritty', 'Set-ArduinoIDE', 'Set-NotepadPlusPlus', 'Set-Thonny', 'Set-LTspice', 'Set-Proteus', 'Set-Zotero',
-    'Set-Obsidian', 'Set-MATLAB', 'Set-Processing', 'Set-MicrochipStudio') {
+    'Set-Obsidian', 'Set-MATLAB', 'Set-Processing', 'Set-MicrochipStudio', 'Set-Highlight') {
     try {
         & $tool $fixed $dark $light $now
     } catch {

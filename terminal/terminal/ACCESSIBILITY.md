@@ -16,6 +16,8 @@ Every config in this folder is chosen for readability first. Every terminal shar
 | Contrast lost to the background | Windows are fully opaque (`1.0`), since a see-through window lets whatever sits behind it lower the contrast |
 | Text crowding the edge | Alacritty keeps 10 px of padding between the text and the window frame |
 | Colour vision differences | The palette is one JSON file, so a version tuned for a specific colour vision difference is one edit and one run of `scripts/build-themes.py` away |
+| Text a program prints on its own background | iTerm2, Ghostty and Kitty hold text to about 4.5:1 on the cell behind it (`Minimum Contrast`, `minimum-contrast` and `text_fg_override_threshold`) and Windows Terminal adjusts indistinguishable colours; Terminal.app and Alacritty have no such setting. See [guides/themes.md](guides/themes.md#a-floor-under-every-colour-pair) |
+| Finding the selection | Each theme's selection is a solid block with its own text colour at 4.5:1 or more, never a faint tint. `zt` gives the system text highlight the same colour |
 | Losing track in long output | 10,000 lines of scrollback |
 
 > [!WARNING]

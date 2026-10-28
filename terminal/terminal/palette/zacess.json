@@ -1,5 +1,10 @@
 {
-  "source": "Zacess Themes 0.3.0 (zacesshq/themes, palette/zacess.json), terminal colours only",
+  "source": {
+    "repository": "zacesshq/themes",
+    "version": "0.5.0",
+    "file": "palette/zacess.json",
+    "note": "copied by scripts/sync-palette.py: the terminal colours and the interface tokens the generated files use"
+  },
   "default": "deep-contrast-dark",
   "themes": [
     {
@@ -10,8 +15,8 @@
       "background": "#ffffff",
       "foreground": "#111111",
       "cursor": "#111111",
-      "selection_background": "#fff1a8",
-      "selection_foreground": "#111111",
+      "selection_background": "#0150b2",
+      "selection_foreground": "#ffffff",
       "ansi": [
         "#111111",
         "#ca010e",
@@ -46,7 +51,19 @@
         13,
         14
       ],
-      "background_role": []
+      "background_role": [],
+      "ui": {
+        "surface": "#f4f4f4",
+        "surface_alt": "#ededed",
+        "muted": "#424242",
+        "border": "#707070",
+        "border_active": "#0049a3",
+        "accent": "#0049a3",
+        "accent_foreground": "#ffffff",
+        "line_highlight": "#f0f0f0",
+        "find_match": "#ffd400",
+        "find_match_border": "#111111"
+      }
     },
     {
       "id": "dark",
@@ -56,8 +73,8 @@
       "background": "#121212",
       "foreground": "#f5f5f5",
       "cursor": "#ffd400",
-      "selection_background": "#1a2436",
-      "selection_foreground": "#f5f5f5",
+      "selection_background": "#4fbdff",
+      "selection_foreground": "#121212",
       "ansi": [
         "#a3a3a3",
         "#ffa79b",
@@ -79,7 +96,19 @@
         "#ffffff"
       ],
       "dim": [],
-      "background_role": []
+      "background_role": [],
+      "ui": {
+        "surface": "#1a1a1a",
+        "surface_alt": "#232323",
+        "muted": "#c8c8c8",
+        "border": "#7a7a7a",
+        "border_active": "#8cbcff",
+        "accent": "#8cbcff",
+        "accent_foreground": "#121212",
+        "line_highlight": "#1f1f1f",
+        "find_match": "#332a00",
+        "find_match_border": "#ffd400"
+      }
     },
     {
       "id": "yellow-on-black",
@@ -87,10 +116,10 @@
       "name": "Zacess Yellow on Black",
       "appearance": "dark",
       "background": "#000000",
-      "foreground": "#ffeb3b",
-      "cursor": "#ffffff",
-      "selection_background": "#0a2257",
-      "selection_foreground": "#ffeb3b",
+      "foreground": "#ffffff",
+      "cursor": "#ffeb3b",
+      "selection_background": "#09bcc4",
+      "selection_foreground": "#000000",
       "ansi": [
         "#a3a3a3",
         "#ffa79b",
@@ -112,7 +141,19 @@
         "#ffffff"
       ],
       "dim": [],
-      "background_role": []
+      "background_role": [],
+      "ui": {
+        "surface": "#000000",
+        "surface_alt": "#0d0d0d",
+        "muted": "#e6e6e6",
+        "border": "#7a7a7a",
+        "border_active": "#ffeb3b",
+        "accent": "#ffeb3b",
+        "accent_foreground": "#000000",
+        "line_highlight": "#141414",
+        "find_match": "#3d3000",
+        "find_match_border": "#ffffff"
+      }
     },
     {
       "id": "cream",
@@ -122,8 +163,8 @@
       "background": "#fdf6e3",
       "foreground": "#000000",
       "cursor": "#000000",
-      "selection_background": "#f9e79a",
-      "selection_foreground": "#000000",
+      "selection_background": "#7401ca",
+      "selection_foreground": "#fdf6e3",
       "ansi": [
         "#000000",
         "#c1000a",
@@ -158,7 +199,19 @@
         13,
         14
       ],
-      "background_role": []
+      "background_role": [],
+      "ui": {
+        "surface": "#f2efe9",
+        "surface_alt": "#e9e5dd",
+        "muted": "#3f382c",
+        "border": "#6e6555",
+        "border_active": "#004498",
+        "accent": "#004498",
+        "accent_foreground": "#ffffff",
+        "line_highlight": "#f3ead2",
+        "find_match": "#ffd400",
+        "find_match_border": "#000000"
+      }
     },
     {
       "id": "high-contrast-dark",
@@ -168,8 +221,8 @@
       "background": "#000000",
       "foreground": "#ffffff",
       "cursor": "#f5c400",
-      "selection_background": "#0a2552",
-      "selection_foreground": "#ffffff",
+      "selection_background": "#bf96ff",
+      "selection_foreground": "#000000",
       "ansi": [
         "#b3b3b3",
         "#ff9e94",
@@ -191,7 +244,19 @@
         "#ffffff"
       ],
       "dim": [],
-      "background_role": []
+      "background_role": [],
+      "ui": {
+        "surface": "#000000",
+        "surface_alt": "#0f0f0f",
+        "muted": "#e0e0e0",
+        "border": "#a6a6a6",
+        "border_active": "#f5c400",
+        "accent": "#f5c400",
+        "accent_foreground": "#000000",
+        "line_highlight": "#1a1a1a",
+        "find_match": "#403300",
+        "find_match_border": "#f5c400"
+      }
     },
     {
       "id": "high-contrast-light",
@@ -201,8 +266,8 @@
       "background": "#ffffff",
       "foreground": "#000000",
       "cursor": "#000000",
-      "selection_background": "#fff1a0",
-      "selection_foreground": "#000000",
+      "selection_background": "#015f5e",
+      "selection_foreground": "#ffffff",
       "ansi": [
         "#000000",
         "#ca0000",
@@ -237,7 +302,19 @@
         13,
         14
       ],
-      "background_role": []
+      "background_role": [],
+      "ui": {
+        "surface": "#f7f7f7",
+        "surface_alt": "#efefef",
+        "muted": "#2e2e2e",
+        "border": "#262626",
+        "border_active": "#003d99",
+        "accent": "#003d99",
+        "accent_foreground": "#ffffff",
+        "line_highlight": "#f2f2f2",
+        "find_match": "#ffd400",
+        "find_match_border": "#000000"
+      }
     },
     {
       "id": "deep-contrast-dark",
@@ -247,8 +324,8 @@
       "background": "#000000",
       "foreground": "#ffffff",
       "cursor": "#ffff00",
-      "selection_background": "#1c1c38",
-      "selection_foreground": "#ffffff",
+      "selection_background": "#ff70ff",
+      "selection_foreground": "#000000",
       "ansi": [
         "#000000",
         "#ff5f5f",
@@ -272,7 +349,19 @@
       "dim": [],
       "background_role": [
         0
-      ]
+      ],
+      "ui": {
+        "surface": "#000000",
+        "surface_alt": "#0a0a0a",
+        "muted": "#b3b3b3",
+        "border": "#00ffff",
+        "border_active": "#ffff00",
+        "accent": "#00ffff",
+        "accent_foreground": "#000000",
+        "line_highlight": "#141414",
+        "find_match": "#403300",
+        "find_match_border": "#ffff00"
+      }
     },
     {
       "id": "deep-contrast-light",
@@ -282,8 +371,8 @@
       "background": "#ffffff",
       "foreground": "#000000",
       "cursor": "#000000",
-      "selection_background": "#f0f5ff",
-      "selection_foreground": "#000000",
+      "selection_background": "#990098",
+      "selection_foreground": "#ffffff",
       "ansi": [
         "#000000",
         "#ca0000",
@@ -318,7 +407,19 @@
         13,
         14
       ],
-      "background_role": []
+      "background_role": [],
+      "ui": {
+        "surface": "#ffffff",
+        "surface_alt": "#ffffff",
+        "muted": "#4d4d4d",
+        "border": "#0f4a85",
+        "border_active": "#b5200d",
+        "accent": "#0f4a85",
+        "accent_foreground": "#ffffff",
+        "line_highlight": "#f5f5f5",
+        "find_match": "#fff1a0",
+        "find_match_border": "#b5200d"
+      }
     }
   ]
 }

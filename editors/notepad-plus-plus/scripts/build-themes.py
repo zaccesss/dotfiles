@@ -94,7 +94,10 @@ def build(name, theme, template):
     widgets = {
         "Default Style": (fg, bg),
         "Current line background colour": (None, c.get("editor.lineHighlightBackground", bg)),
-        "Selected text colour": (c.get("editor.selectionForeground", fg), c["editor.selectionBackground"]),
+        # the strong selection block with its own text colour, which Zacess Themes 0.5.0 carries in
+        # its terminal selection keys for every theme; an older package keeps the editor keys
+        "Selected text colour": (c.get("terminal.selectionForeground", c.get("editor.selectionForeground", fg)),
+                                 c.get("terminal.selectionBackground", c["editor.selectionBackground"])),
         "Caret colour": (c.get("editorCursor.foreground", fg), None),
         "Line number margin": (c.get("editorLineNumber.foreground", fg), bg),
         "Indent guideline style": (c.get("editorIndentGuide.background", c.get("editorLineNumber.foreground", fg)), bg),

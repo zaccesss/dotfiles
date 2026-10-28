@@ -1,0 +1,17 @@
+# Recommended starter config, not yet applied since Ghostty is not installed on this machine.
+# All eight Zacess themes sit in this folder (zacess-*, from palette/zacess.json); mac/install.sh
+# links them into ~/.config/ghostty/themes and the theme line below picks one, Zacess Deep
+# Contrast Dark by default. `zt <theme>` in the dotfiles rewrites that line and `zt auto`
+# writes a light and dark pair, which Ghostty follows with the system.
+
+theme = zacess-deep-contrast-dark
+
+# text is pushed towards black or white until it reaches 4.5:1 (WCAG AA) on whatever sits behind
+# it, so a program's own colour pairs can never fall below that. The palette itself clears 7:1
+minimum-contrast = 4.5
+
+font-family = SF Mono
+font-size = 13
+
+background-opacity = 1
+scrollback-limit = 10000000

@@ -40,6 +40,14 @@ binding below is pressed after the prefix, `Ctrl+B` then the key, unless marked 
   behind an Esc keypress.
 - True colour (`Tc`) forced on for every pane, so Neovim's own colourscheme renders correctly
   inside tmux, not a degraded 256-colour approximation.
+- `pane-border-indicators both`, so the active pane carries arrows in its border as well as its
+  own border colour.
+- The theme file linked to `~/.local/state/zacess/tmux.conf` by `zt` is sourced last, with
+  `source-file -q` so a missing link is silent. Each `themes/zacess-*.conf` sets `status-style`,
+  `message-style` and `message-command-style` (the accent pair, bold), `mode-style` (the selection
+  pair), `copy-mode-match-style` and `copy-mode-current-match-style` (the find colour, the current
+  match bold and underlined), `pane-border-style` and `pane-active-border-style` (two border
+  colours), the `display-panes` colours and `clock-mode-colour`.
 
 ## Design notes
 

@@ -8,6 +8,8 @@
 #   zt deep-dark            fix one theme everywhere (short name, id or full name)
 #   zt auto [dark] [light]  follow the Windows light and dark setting where a tool can
 #   zt list / zt current    the themes plus what each tool is on now
+#   zt doctor               every installed theme file against the repo copy, exit 1 on drift
+#   zt highlight [default]  the system text highlight from the theme or the system's own back
 # =============================================================================
 
 function zt { & (Join-Path $env:DOTFILES 'windows\scripts\zt.ps1') @args }

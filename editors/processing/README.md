@@ -15,7 +15,7 @@ Every other line of `preferences.txt` stays as it was, the built-in theme choice
 
 ## The themes
 
-[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/themes/`](shared/themes/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 0.4.0, downloaded and checked against its SHA-256 digest. Every colour key Processing reads is written: the editor, the console, the tabs, the toolbar buttons, the error table and the Contribution Manager. The fonts in the theme are left to Processing.
+[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/themes/`](shared/themes/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 0.5.0, downloaded and checked against its SHA-256 digest. Every colour key Processing reads is written: the editor, the console, the tabs, the toolbar buttons, the error table and the Contribution Manager. The fonts in the theme are left to Processing.
 
 | Processing token | Zacess colour |
 | --- | --- |

@@ -21,7 +21,7 @@ Comments are not italic: Visual Studio 2015 has no italic style.
 [`themes/`](themes/) holds one `.vssettings` file per Zacess theme, built by [`scripts/build-themes.py`](scripts/build-themes.py) from the Zacess Themes `.vsix`. Each file holds only the Fonts and Colors category, so importing it changes nothing else. Rebuild after a Zacess Themes release:
 
 ```bash
-python scripts/build-themes.py zacess-themes-0.4.0.vsix
+python scripts/build-themes.py zacess-themes-0.5.0.vsix
 ```
 
 ## Apply

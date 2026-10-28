@@ -11,6 +11,8 @@ The settings put readability first and every custom shortcut follows one pattern
 - The integrated terminal takes its 16 colours from the same theme. Bold text keeps its colour.
 - Word wrap is on, so long lines never need horizontal scrolling. `Cmd+Alt+W` (`Ctrl+Alt+W` on Windows and Linux) switches it off for one file.
 - The editor font is 14 points. Raise `editor.fontSize` in `settings.json` as needed.
+- Git changes in the gutter have a shape as well as a colour: added and modified lines carry a striped mark, deleted lines a triangle. The diff editor draws `+` and `-` beside each changed line. The current line is marked across the text and the gutter.
+- Text in the integrated terminal is held to 4.5:1 on whatever sits behind it (`terminal.integrated.minimumContrastRatio`), so a program's own colour pairs can never vanish.
 
 > [!TIP]
 > The theme stays on `Zacess Deep Contrast Dark` whatever the system appearance, since `window.autoDetectColorScheme` is `false`. All eight Zacess themes are in the theme picker (`Cmd+K Cmd+T`, `Ctrl+K Ctrl+T` on Windows and Linux). Set `window.autoDetectColorScheme` to `true` to switch between `Zacess Deep Contrast Dark` and `Zacess Deep Contrast Light` with the system instead.

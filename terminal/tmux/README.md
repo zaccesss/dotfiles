@@ -27,6 +27,11 @@ and Cream.
 - **[`tmux.conf`](tmux.conf)** - the full config: tmux's default `Ctrl-b` prefix, vi-style copy
   mode and pane navigation, a status bar in the terminal's own colours and TPM-managed plugins that save and restore
   sessions across a restart.
+- **`themes/zacess-*.conf`** - one file per Zacess theme, generated from the terminal palette by
+  `terminal/terminal/scripts/build-themes.py`: the status bar in the theme's text and background,
+  the message line in its accent pair, copy mode in its selection pair, search matches in its find
+  colour and the pane borders in two colours. `zt <theme>` links the active one to
+  `~/.local/state/zacess/tmux.conf`, which `tmux.conf` sources. `zt doctor` checks it.
 
 ## Setup
 
@@ -43,4 +48,5 @@ install the plugins, start a session.
 | --- | --- |
 | [`ACCESSIBILITY.md`](ACCESSIBILITY.md) | The high-contrast status bar and short, consistent bindings |
 | [`tmux.conf`](tmux.conf) | Installs to `~/.tmux.conf` on macOS, Linux and inside WSL |
+| [`themes/`](themes/) | One generated theme file per Zacess theme, linked into place by `zt` |
 | [`guides/`](guides/) | Setup walkthrough and full reference |

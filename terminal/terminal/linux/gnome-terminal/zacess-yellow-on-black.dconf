@@ -5,12 +5,12 @@
 visible-name='Zacess Yellow on Black'
 use-theme-colors=false
 background-color='#000000'
-foreground-color='#ffeb3b'
+foreground-color='#ffffff'
 bold-is-bright=false
 cursor-colors-set=true
-cursor-background-color='#ffffff'
+cursor-background-color='#ffeb3b'
 cursor-foreground-color='#000000'
 highlight-colors-set=true
-highlight-background-color='#0a2257'
-highlight-foreground-color='#ffeb3b'
+highlight-background-color='#09bcc4'
+highlight-foreground-color='#000000'
 palette=['#a3a3a3', '#ffa79b', '#01dc3f', '#edb618', '#90c1ff', '#fd9cf8', '#1fd3d3', '#d9d9d9', '#c8c8c8', '#ffd5ce', '#3cff5d', '#ffda8a', '#c9e0ff', '#ffd0fa', '#00f7f5', '#ffffff']

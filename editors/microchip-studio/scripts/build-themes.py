@@ -112,8 +112,12 @@ def build(name, mode, theme):
         items.append(f"<Item {attrs} />")
 
     item("Plain Text", fg, bg)
-    item("Selected Text", c.get("editor.selectionForeground", fg), c["editor.selectionBackground"])
-    item("Inactive Selected Text", c.get("editor.selectionForeground", fg), c.get("editor.inactiveSelectionBackground", c["editor.selectionBackground"]))
+    # the strong selection block with its own text colour, which Zacess Themes 0.5.0 carries in
+    # its terminal selection keys for every theme; an older package keeps the editor keys
+    selected_fg = c.get("terminal.selectionForeground", c.get("editor.selectionForeground", fg))
+    selected_bg = c.get("terminal.selectionBackground", c["editor.selectionBackground"])
+    item("Selected Text", selected_fg, selected_bg)
+    item("Inactive Selected Text", selected_fg, c.get("terminal.inactiveSelectionBackground", c.get("editor.inactiveSelectionBackground", selected_bg)))
     item("Line Number", c.get("editorLineNumber.foreground", fg), bg)
     item("Highlight Current Line (Active)", c.get("editor.lineHighlightBackground", bg), c.get("editor.lineHighlightBackground", bg))
     item("VA Current Line", None, c.get("editor.lineHighlightBackground", bg))

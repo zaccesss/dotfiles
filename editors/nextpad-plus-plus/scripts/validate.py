@@ -1,9 +1,9 @@
 """Checks the Nextpad++ folder without Nextpad++: run from anywhere, exits non-zero on a problem.
 
 - shared/themes holds the eight Zacess themes as Notepad++ style files that parse
-- every style's text colour is at least 7:1 on the editor background, the current line and the
-  selection in the Deep Contrast and High Contrast themes and at least 4.5:1 in the others, and
-  so are the line numbers on their margin
+- every style's text colour and the line numbers are at least 7:1 on the editor background and
+  the current line in the Deep Contrast and High Contrast themes and at least 4.5:1 in the others
+- selected text is at least 4.5:1 on its selection block, Zacess Themes' own selection rule
 - the Default Style names Geist Mono, which every style without a font of its own inherits
 """
 
@@ -51,8 +51,7 @@ for theme_id, name in NAMES.items():
         continue
     floor = 7 if theme_id.startswith(("deep-", "high-")) else 4.5
     surfaces = {"background": default.get("bgColor"),
-                "current line": widgets["Current line background colour"].get("bgColor"),
-                "selection": widgets["Selected text colour"].get("bgColor")}
+                "current line": widgets["Current line background colour"].get("bgColor")}
     worst = {}
     for style in tree.iter("WordsStyle"):
         fg = style.get("fgColor")
@@ -65,6 +64,12 @@ for theme_id, name in NAMES.items():
     for surface, (ratio, style_name) in worst.items():
         if ratio < floor:
             problems.append(f"{path.name}: {style_name} is {ratio:.2f}:1 on the {surface}, below {floor}:1")
+    # selected text is drawn in the selection block's own text colour, so that pair is what matters
+    # there, held to Zacess Themes' selection rule rather than the token floor
+    selected = widgets["Selected text colour"]
+    ratio = contrast(selected.get("fgColor"), selected.get("bgColor"))
+    if ratio < 4.5:
+        problems.append(f"{path.name}: selected text is {ratio:.2f}:1 on the selection, below 4.5:1")
     margin = widgets["Line number margin"]
     ratio = contrast(margin.get("fgColor"), margin.get("bgColor"))
     if ratio < floor:

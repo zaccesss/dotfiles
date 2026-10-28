@@ -73,7 +73,7 @@ The full binding list as stored, with the command and context ids, is the `org.e
 
 ## Colours
 
-`shared/theme/` holds the eight Zacess themes for STM32CubeIDE (`Zacess <name>.epf`) and the tab outline files for the two Deep Contrast themes. They are built by [`scripts/build-themes.py`](../scripts/build-themes.py) from the Zacess Eclipse themes in [Zacess Themes](https://github.com/zacesshq/themes) 0.3.0, so the palette and measured contrast are the same:
+`shared/theme/` holds the eight Zacess themes for STM32CubeIDE (`Zacess <name>.epf`) and the tab outline files for the two Deep Contrast themes. They are built by [`scripts/build-themes.py`](../scripts/build-themes.py) from the Zacess Eclipse themes in [Zacess Themes](https://github.com/zacesshq/themes) 0.5.0, so the palette and measured contrast are the same:
 
 - **Editor colours** (background, text, selection, current line, line numbers, markers) carry over unchanged.
 - **C syntax colours** come from the Java colour that plays the same part: keywords and types from Java keywords, strings and `#include` headers from strings, comments from comments and numbers from Java's number colour.

@@ -1,9 +1,9 @@
 {
   "name": "zacess-themes",
   "id": "com.zacess.themes",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "marketplace": "https://plugins.jetbrains.com/plugin/35082-zacess-themes",
-  "url": "https://github.com/zacesshq/themes/releases/download/v0.4.0/zacess-themes-0.4.0.zip",
-  "sha256": "56e920a207bea74df332efa09f60ab77a73545ac3f92b3d04e8d8b35f6b4c0d4",
+  "url": "https://github.com/zacesshq/themes/releases/download/v0.5.0/zacess-themes-0.5.0.zip",
+  "sha256": "efad897308888f03e26738ce4f4bfaf9ec76f43802db0d38e67e0955681fb4e7",
   "folder": "zacess-themes"
 }

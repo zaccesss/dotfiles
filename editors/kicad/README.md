@@ -17,7 +17,7 @@ KiCad has no setting for the font of its menus, panels or canvas text: the inter
 
 ## The themes
 
-[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/colors/`](shared/colors/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 0.4.0, downloaded and checked against its SHA-256 digest. Every colour key KiCad 10 reads is written, so a light theme never falls back to KiCad's dark defaults.
+[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/colors/`](shared/colors/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 0.5.0, downloaded and checked against its SHA-256 digest. Every colour key KiCad 10 reads is written, so a light theme never falls back to KiCad's dark defaults.
 
 | Part | Colours |
 | --- | --- |

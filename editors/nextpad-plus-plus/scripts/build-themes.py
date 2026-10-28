@@ -21,8 +21,8 @@ import sys
 import urllib.request
 import xml.etree.ElementTree as ET
 
-PALETTE_URL = "https://raw.githubusercontent.com/zacesshq/themes/v0.4.0/palette/zacess.json"
-PALETTE_SHA256 = "fd45d887c54703e639fe34e83dbc146c9f56d985fcaf9a0fb3a9233db9914c9c"
+PALETTE_URL = "https://raw.githubusercontent.com/zacesshq/themes/v0.5.0/palette/zacess.json"
+PALETTE_SHA256 = "4fe26dbd819605ec5a17141eb5994ef5e0cb0eb7a2fc5fab93cdc82a21cf40cf"
 MODEL = pathlib.Path("/Applications/Nextpad++.app/Contents/Resources/stylers.model.xml")
 ORDER = ["deep-contrast-dark", "deep-contrast-light", "high-contrast-dark", "high-contrast-light",
          "dark", "light", "cream", "yellow-on-black"]
@@ -102,7 +102,10 @@ def build(model, theme, styles):
         "Brace highlight style": {"fgColor": hexval(ui["accent"]), "bgColor": bg, "fontStyle": "1"},
         "Bad brace colour": {"fgColor": hexval(syn["invalid"]), "bgColor": bg, "fontStyle": "1"},
         "Current line background colour": {"bgColor": hexval(ui["lineHighlight"])},
-        "Selected text colour": {"bgColor": hexval(ui["selection"]), "fgColor": fg},
+        # the strong selection block with its own text colour, which Zacess Themes ships from 0.5.0;
+        # an older palette keeps the editor fill. Background only widgets keep the fill
+        "Selected text colour": {"bgColor": hexval(ui.get("selectionStrong", ui["selection"])),
+                                 "fgColor": hexval(ui["selectionForeground"]) if "selectionForeground" in ui else fg},
         "Multi-selected text color": {"bgColor": hexval(ui["selection"])},
         "Caret colour": {"fgColor": hexval(ui["cursor"])},
         "Multi-edit carets color": {"fgColor": hexval(ui["cursor"])},

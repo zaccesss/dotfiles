@@ -10,10 +10,12 @@ The theme puts contrast first and stays fixed on `Zacess Deep Contrast Dark` unt
 - The theme is `Zacess Deep Contrast Dark` from the Zacess Themes extension: white text on pure black at 21:1 with deep, fully saturated colours, every syntax colour at 9.0:1 or more. Keywords are blue (`#67aeff`, 9.1:1) and bold, comments green (`#00c600`, 9.1:1) and italic, strings orange (`#ffaa7c`, 11.3:1). The focused element gets a yellow outline and frames are cyan.
 - `Zacess Deep Contrast Light`, its light counterpart, is black on white with vivid colours at 7.7:1 or more. It is the `light` theme in `settings.json`, used when `theme.mode` is `light` or `system`.
 - All eight Zacess themes, plus the High Contrast Themes extension's dark themes, are in the theme picker. The full measured tables are in the [Zacess Themes accessibility statement](https://github.com/zacesshq/themes/blob/main/ACCESSIBILITY.md).
+- Git changes in the gutter have a shape as well as a colour (a bar for added and modified lines, a triangle for a deletion) and the current line is marked across the text and the gutter.
+- Text in the terminal is held to about 4.5:1 on whatever sits behind it (`terminal.minimum_contrast` at APCA 60), so a program's own colour pairs can never vanish.
 - Interface text is 16 pixels and editor text 15 pixels. `Cmd+=` and `Cmd+-` (`Ctrl+=` and `Ctrl+-` on Windows and Linux) change the editor text for the current session. Raise `buffer_font_size` and `ui_font_size` in `settings.json` to make it permanent.
 
 > [!IMPORTANT]
-> The two Deep Contrast themes only exist in Zacess Themes 0.3.0 or later. Zed's extension store still has an older release, so the apply script installs the 0.4.0 theme file from `shared/themes` into Zed's `themes` folder, which gives Zed every theme now. `settings.json` also lists the extension under `auto_install_extensions`, so Zed installs it on its own and the script removes the local file once the installed extension catches up. See the [README](README.md#while-the-extension-store-catches-up).
+> The two Deep Contrast themes only exist in Zacess Themes 0.3.0 or later. Zed's extension store still has an older release, so the apply script installs the 0.5.0 theme file from `shared/themes` into Zed's `themes` folder, which gives Zed every theme now. `settings.json` also lists the extension under `auto_install_extensions`, so Zed installs it on its own and the script removes the local file once the installed extension catches up. See the [README](README.md#while-the-extension-store-catches-up).
 
 ## Keyboard
 

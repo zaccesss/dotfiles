@@ -8,6 +8,7 @@ opt.ignorecase = true
 opt.smartcase = true -- case-sensitive only when the search itself has a capital letter
 opt.termguicolors = false -- use the terminal's own 16 colours, so Neovim matches the terminal palette exactly
 opt.signcolumn = "yes" -- always reserve the gutter so LSP diagnostics never shift text
+opt.cursorline = true -- the current line is marked across the text and its number, not by the cursor alone
 opt.updatetime = 250
 opt.timeoutlen = 300
 opt.splitright = true

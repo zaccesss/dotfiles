@@ -2,8 +2,9 @@
 
 - shared/themes holds the eight Zacess themes, each with the eight CODE_EDITOR_* colours as
   Vivado's short hex and syntax styles 0 to 20 with colours as signed Java ARGB integers
-- every text style is at least 7:1 on the editor background, the current line and the selection
-  in the Deep Contrast and High Contrast themes and at least 4.5:1 in the others
+- every text style is at least 7:1 on the editor background and the current line in the Deep
+  Contrast and High Contrast themes and at least 4.5:1 in the others; the selection fill is held to
+  4.5:1 in every theme, Zacess Themes' own selection rule
 """
 
 import json
@@ -67,13 +68,15 @@ for theme_id in IDS:
     floor = 7 if theme_id.startswith(("deep-", "high-")) else 4.5
     for surface in ("CODE_EDITOR_BACKGROUND", "CODE_EDITOR_LINE_HIGHLIGHT", "CODE_EDITOR_SELECTION_BACKGROUND"):
         bg = rgb_of_hex(colours[surface])
+        # the selection is a fill under the style's own colour, held to Zacess Themes' 4.5:1 selection rule
+        limit = 4.5 if surface == "CODE_EDITOR_SELECTION_BACKGROUND" else floor
         for index in TEXT_STYLES:
             ratio = contrast(rgb_of_argb(styles[index]["foreground_color"]), bg)
-            if ratio < floor:
-                problems.append(f"{path.name}: style {index} is {ratio:.2f}:1 on {surface}, below {floor}:1")
+            if ratio < limit:
+                problems.append(f"{path.name}: style {index} is {ratio:.2f}:1 on {surface}, below {limit}:1")
         ratio = contrast(rgb_of_hex(colours["CODE_EDITOR_FOREGROUND"]), bg)
-        if ratio < floor:
-            problems.append(f"{path.name}: CODE_EDITOR_FOREGROUND is {ratio:.2f}:1 on {surface}, below {floor}:1")
+        if ratio < limit:
+            problems.append(f"{path.name}: CODE_EDITOR_FOREGROUND is {ratio:.2f}:1 on {surface}, below {limit}:1")
 
 for problem in problems:
     print(f"::error::{problem}")

@@ -3,7 +3,8 @@
 - shared/themes holds the eight Zacess themes, each starting with the marker line the apply
   scripts look for, every line a comment or key = value and every colour a six-digit hex value
 - every syntax colour and the editor, console, tab, status and error table text is at least 7:1
-  on what it sits on in the Deep Contrast and High Contrast themes and at least 4.5:1 in the others
+  on what it sits on in the Deep Contrast and High Contrast themes and at least 4.5:1 in the others;
+  the selection fill is held to 4.5:1 in every theme, Zacess Themes' own selection rule
 - shared/preferences.txt names Geist Mono for the editor
 - mac/apply.sh and linux/apply.sh are the same file
 """
@@ -84,8 +85,10 @@ for theme_id in IDS:
             problems.append(f"{path.name}: {fg_key} or {bg_key} is missing")
             continue
         ratio = contrast(values[fg_key].split(",")[0], values[bg_key])
-        if ratio < floor:
-            problems.append(f"{path.name}: {fg_key} is {ratio:.2f}:1 on {bg_key}, below {floor}:1")
+        # the selection is a fill under the token's own colour, held to Zacess Themes' 4.5:1 selection rule
+        limit = 4.5 if bg_key == "editor.selection.color" else floor
+        if ratio < limit:
+            problems.append(f"{path.name}: {fg_key} is {ratio:.2f}:1 on {bg_key}, below {limit}:1")
 
 prefs = (root / "shared" / "preferences.txt").read_text(encoding="utf-8")
 if "editor.font.family=GeistMono Nerd Font Mono" not in prefs.splitlines():

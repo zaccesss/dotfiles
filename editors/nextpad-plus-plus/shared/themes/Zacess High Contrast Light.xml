@@ -1775,13 +1775,13 @@
         </LexerType>
     </LexerStyles>
     <GlobalStyles>
-        <WidgetStyle name="Default Style" styleID="32" fgColor="000000" bgColor="FFFFFF" fontName="GeistMono Nerd Font Mono" fontStyle="0" fontSize="10" />
+        <WidgetStyle name="Default Style" styleID="32" fgColor="000000" bgColor="FFFFFF" fontName="GeistMono Nerd Font Mono" fontStyle="0" fontSize="11" />
         <WidgetStyle name="Indent guideline style" styleID="37" fgColor="6E6E6E" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" />
         <WidgetStyle name="Brace highlight style" styleID="34" fgColor="003D99" bgColor="FFFFFF" fontName="" fontStyle="1" fontSize="" />
         <WidgetStyle name="Bad brace colour" styleID="35" fgColor="600000" bgColor="FFFFFF" fontName="" fontStyle="1" fontSize="" />
         <WidgetStyle name="Current line background colour" styleID="0" bgColor="F2F2F2" />
-        <WidgetStyle name="Selected text colour" styleID="0" bgColor="FFF1A0" fgColor="000000" />
-        <WidgetStyle name="Multi-selected text color" styleID="0" bgColor="FFF1A0" />
+        <WidgetStyle name="Selected text colour" styleID="0" bgColor="015F5E" fgColor="FFFFFF" />
+        <WidgetStyle name="Multi-selected text color" styleID="0" bgColor="00D3D0" />
         <WidgetStyle name="Caret colour" styleID="0" fgColor="000000" />
         <WidgetStyle name="Multi-edit carets color" styleID="0" fgColor="000000" />
         <WidgetStyle name="Edge colour" styleID="0" fgColor="262626" />
@@ -1796,7 +1796,7 @@
         <WidgetStyle name="Fold active" styleID="0" fgColor="003D99" />
         <WidgetStyle name="Fold margin" styleID="0" fgColor="FFFFFF" bgColor="FFFFFF" />
         <WidgetStyle name="White space symbol" styleID="0" fgColor="6E6E6E" />
-        <WidgetStyle name="Smart Highlighting" styleID="29" bgColor="FFF1A0" />
+        <WidgetStyle name="Smart Highlighting" styleID="29" bgColor="00D3D0" />
         <WidgetStyle name="Find Mark Style" styleID="31" bgColor="FFD400" />
         <WidgetStyle name="Find status: Not found" styleID="0" fgColor="8B0000" />
         <WidgetStyle name="Find status: Message" styleID="0" fgColor="00337F" />
@@ -1807,8 +1807,8 @@
         <WidgetStyle name="Mark Style 4" styleID="22" bgColor="B400AC" />
         <WidgetStyle name="Mark Style 5" styleID="21" bgColor="017424" />
         <WidgetStyle name="Incremental highlight all" styleID="28" bgColor="FFD400" />
-        <WidgetStyle name="Tags match highlighting" styleID="27" bgColor="FFF1A0" />
-        <WidgetStyle name="Tags attribute" styleID="26" bgColor="FFF1A0" />
+        <WidgetStyle name="Tags match highlighting" styleID="27" bgColor="00D3D0" />
+        <WidgetStyle name="Tags attribute" styleID="26" bgColor="00D3D0" />
         <WidgetStyle name="Active tab focused indicator" styleID="0" fgColor="003D99" />
         <WidgetStyle name="Active tab unfocused indicator" styleID="0" fgColor="262626" />
         <WidgetStyle name="Active tab text" styleID="0" fgColor="000000" />
