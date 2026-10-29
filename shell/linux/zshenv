@@ -1,6 +1,6 @@
 # =============================================================================
 # Isaac Adjei - Linux zsh environment
-# github.com/zaccesss/dotfiles-private - MIT licence
+# github.com/zaccesss/dotfiles - MIT licence
 #
 # zsh reads this file before the system zshrc, so it is the only place that can
 # turn off Ubuntu's own completion set-up. linux/zshrc runs compinit itself.
