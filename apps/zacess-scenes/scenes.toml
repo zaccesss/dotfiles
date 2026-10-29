@@ -1,0 +1,25 @@
+# Zacess Scenes settings, linked to ~/.config/zacess/scenes.toml (%APPDATA%\zacess\scenes.toml on
+# Windows) by setup.sh or setup.ps1. Every key is optional; `zacess-scenes config init` writes the
+# full commented reference to compare against.
+#
+# there is no theme key on purpose: Scenes reads the theme zt last set from
+# ~/.local/state/zacess/theme, so it always matches the terminal.
+
+[scenes]
+# calm scenes for a passing build, picked in turn
+pass = ["koi-pond", "lanterns", "tea", "winter-cabin", "constellations", "aurora"]
+# slow failure scenes
+fail = ["storm", "flood", "fog"]
+rotation = "shuffle"
+# minutes before the next scene
+interval = 10
+motion = "calm"
+
+[sound]
+enabled = true
+set = "bells"
+volume = 40
+quiet_hours = "22:00-07:00"
+
+[notifications]
+enabled = false

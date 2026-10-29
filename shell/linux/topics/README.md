@@ -44,6 +44,7 @@
 | `36-swift.sh` | Swift on Linux | `sr`, `sb2`, `sb2r`, `st2`, `sf2`, `srepl`, `spinit`, `spup`, `spres`, `spls`, `spclean` |
 | `37-command-marks.sh` | Command marks | OSC 133 marks around each prompt, command and output, chained onto `PROMPT_COMMAND` and `PS0` (skipped in VS Code and dumb terminals) |
 | `38-zacess-theme.sh` | Zacess theme switching | `zt`, `zacess-theme`: every editor and terminal to one Zacess theme. `zt auto` follows the system |
+| `39-zacess-scenes.sh` | Zacess Scenes | `zs` for a random calm scene or one by name, with the subcommands list, sounds, config, new, snap and themes. `zw` watches a Rust build, `zwc` with Clippy, `zwt` with the tests and `zwa` with check-all. Also `zacess-scene` |
 
 ## Adding a topic
 
