@@ -12,4 +12,5 @@ platform: a notes app and a reference manager.
 | [zotero](zotero) | Zotero's dark or light mode and reader theme matched to the Zacess theme, plus larger text | macOS, Linux and Windows |
 | [onedrive](onedrive) | A personal OneDrive synced in full into `~/OneDrive` by the OneDrive client, with OneDriveGUI's tray icon | Linux |
 | [zacess-scenes](zacess-scenes) | Zacess Scenes: example scenes and sounds, the release binary and bacon installed and the `zs` and `zw` commands | macOS, Linux and Windows |
+| [zacess-games](zacess-games) | Zacess Games: the release binary installed and the `zg` command for fourteen small terminal games | macOS, Linux and Windows |
 | [translucenttb](translucenttb) | A dark acrylic taskbar that turns solid with a maximised window or battery saver | Windows |

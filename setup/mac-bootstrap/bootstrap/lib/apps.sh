@@ -209,5 +209,8 @@ apply_installed_apps() {
     # Zacess Scenes installs its own release binary, so it needs no app to be present
     apply_app "Zacess Scenes" apps/zacess-scenes/setup.sh
 
+    # Zacess Games installs its own release binary too
+    apply_app "Zacess Games" apps/zacess-games/setup.sh
+
     place_rectangle_config
 }

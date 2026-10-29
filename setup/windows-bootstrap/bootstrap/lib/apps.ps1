@@ -43,6 +43,9 @@ function Get-AppScripts {
         # Zacess Scenes installs its own release binary, so it needs no app to be present
         @{ Name = 'Zacess Scenes'; Script = 'apps\zacess-scenes\setup.ps1'; Process = $null
            Installed = { $true } }
+        # Zacess Games installs its own release binary too
+        @{ Name = 'Zacess Games'; Script = 'apps\zacess-games\setup.ps1'; Process = $null
+           Installed = { $true } }
         # TranslucentTB reloads its settings file while it runs, so it is never skipped for being open
         @{ Name = 'TranslucentTB'; Script = 'apps\translucenttb\windows\apply.ps1'; Process = $null
            Installed = { Test-Path (Join-Path $localAppData 'Packages\28017CharlesMilette.TranslucentTB_v826wp6bftszj') } }
