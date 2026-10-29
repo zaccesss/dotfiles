@@ -1,6 +1,7 @@
 """Checks the TranslucentTB folder without TranslucentTB: run from anywhere, exits non-zero on a problem.
 
-- windows/settings.json parses and only uses appearance sections TranslucentTB knows
+- windows/settings.json and every windows/machines/<computer name>.json parse and only use
+  appearance sections TranslucentTB knows
 - every accent is one TranslucentTB offers and every colour is #RRGGBBAA
 """
 
@@ -18,18 +19,25 @@ COLOUR = re.compile(r"^#[0-9A-F]{8}$")
 root = pathlib.Path(__file__).resolve().parent.parent
 problems = []
 
-settings = json.loads((root / "windows" / "settings.json").read_text(encoding="utf-8"))
-for key, value in settings.items():
-    if key not in TOP_LEVEL:
-        problems.append(f"settings.json: {key} is not a TranslucentTB setting this folder tracks")
-    if key in SECTIONS:
-        if not isinstance(value, dict):
-            problems.append(f"settings.json: {key} is not an object")
-            continue
-        if "accent" in value and value["accent"] not in ACCENTS:
-            problems.append(f"settings.json: {key}.accent {value['accent']} is not one of {sorted(ACCENTS)}")
-        if "color" in value and not COLOUR.match(value["color"]):
-            problems.append(f"settings.json: {key}.color {value['color']} is not #RRGGBBAA")
+files = [root / "windows" / "settings.json"] + sorted((root / "windows" / "machines").glob("*.json"))
+for path in files:
+    name = path.relative_to(root / "windows").as_posix()
+    try:
+        settings = json.loads(path.read_text(encoding="utf-8"))
+    except ValueError as error:
+        problems.append(f"{name}: not valid JSON ({error})")
+        continue
+    for key, value in settings.items():
+        if key not in TOP_LEVEL:
+            problems.append(f"{name}: {key} is not a TranslucentTB setting this folder tracks")
+        if key in SECTIONS:
+            if not isinstance(value, dict):
+                problems.append(f"{name}: {key} is not an object")
+                continue
+            if "accent" in value and value["accent"] not in ACCENTS:
+                problems.append(f"{name}: {key}.accent {value['accent']} is not one of {sorted(ACCENTS)}")
+            if "color" in value and not COLOUR.match(value["color"]):
+                problems.append(f"{name}: {key}.color {value['color']} is not #RRGGBBAA")
 
 if problems:
     print("\n".join(problems))

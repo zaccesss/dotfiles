@@ -39,6 +39,10 @@ Each script finds the newest MATLAB release (`/Applications/MATLAB_R20*.app` on 
 
 A scheme can also be applied by hand from MATLAB with the add-on on the path: `import_scheme('shared/schemes/Zacess Cream.json')`.
 
+Every run also adds a marked block to `startup.m` in MATLAB's userpath (`Documents\MATLAB` on Windows) and leaves the file's other lines as they are. The block runs [`shared/zacess_startup.m`](shared/zacess_startup.m), which applies a theme named in a pending file when MATLAB starts, then removes that file. The settings go in at once. The colour scheme follows from a timer once the desktop is ready. On Windows the pending file is `%LOCALAPPDATA%\zacess\matlab-theme` and the add-on is kept in `%LOCALAPPDATA%\zacess\matlab-tools`. On the Mac and Linux they are `~/.local/state/zacess/matlab-theme` and `~/.local/state/zacess/matlab-tools`, with `startup.m` in `~/Documents/MATLAB`.
+
+`pwsh -File windows\apply.ps1 -Theme cream -Pending` only writes the pending file, so MATLAB is not started. `bash mac/apply.sh --theme cream --pending` and the Linux script do the same. `zt` uses it and reports the theme as "on next start".
+
 ## Its start folder
 
 MATLAB starts in `~/dev/projects/matlab`, the projects folder every editor shares on every machine. [`shared/folders.json`](shared/folders.json) holds the setting once for every OS: `zacess_apply.m` turns `~/` into the home folder and makes the folder when it is missing.

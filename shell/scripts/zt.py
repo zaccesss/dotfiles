@@ -2,11 +2,14 @@
 """zt: switch every installed editor and terminal to one Zacess theme at once (macOS and Linux).
 
     zt <theme>                     fix that theme everywhere and stop following the system
+    zt <theme> --all               the same here, then on every other device as a terminal opens there
+    zt undo [--all]                back to the theme before the last change (on every device with --all)
     zt auto [dark] [light]         follow the system light and dark appearance, Deep Contrast by default
     zt list                        the eight themes and their short names
     zt current                     the mode zt last set and what each tool is on now
     zt doctor                      every installed theme file against the repo copy, exit 1 on drift
     zt highlight [default]         the system text highlight again from the theme or the system's own back
+    zt sync                        apply a change sent with --all from another device (run at shell start)
 
 Each tool is edited in place and only for its theme setting; a tool that is not installed is skipped.
 Tools that keep settings in memory (JetBrains IDEs, Eclipse, STM32CubeIDE, KiCad, Processing, Nextpad++,
@@ -16,6 +19,7 @@ state folder and the system text highlight (macOS, KDE Plasma or GNOME) takes th
 colour, read from the generated terminal theme. Windows has its own version in windows/scripts/zt.ps1.
 """
 
+import concurrent.futures
 import json
 import os
 import platform
@@ -24,6 +28,8 @@ import re
 import shutil
 import subprocess
 import sys
+import threading
+import time
 import uuid
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -47,6 +53,42 @@ MAC = platform.system() == "Darwin"
 XDG_CONFIG = Path(os.environ.get("XDG_CONFIG_HOME") or HOME / ".config")
 XDG_STATE = Path(os.environ.get("XDG_STATE_HOME") or HOME / ".local" / "state")
 STATE_FILE = XDG_STATE / "zacess" / "theme"
+# the theme left for MATLAB's next start, applied by its startup.m and then removed
+MATLAB_PENDING = XDG_STATE / "zacess" / "matlab-theme"
+# the state before the last change, for zt undo. a second undo swaps back, so it also redoes
+PREVIOUS_FILE = XDG_STATE / "zacess" / "previous"
+# --all: one push at a time in a synced folder, read by every device. all-seen is the last push this
+# device handled and all-applied the state it had before applying it, so zt undo --all can return
+# each device to its own previous theme
+ALL_SEEN = XDG_STATE / "zacess" / "all-seen"
+ALL_APPLIED = XDG_STATE / "zacess" / "all-applied"
+
+
+def shared_file():
+    """zt-all.json in the synced folder (None on a device with no such folder)."""
+    if os.environ.get("ZACESS_SHARED_DIR"):
+        return Path(os.environ["ZACESS_SHARED_DIR"]) / "zt-all.json"
+    onedrive = HOME / "Library" / "CloudStorage" / "OneDrive-Personal"
+    return onedrive / ".zacess" / "zt-all.json" if MAC and onedrive.is_dir() else None
+
+
+def read_json(path):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+
+
+def write_atomic(path, text):
+    # a temp file in the same folder then a rename, so a syncing device never reads half a file
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp = path.with_name(f".{path.name}.{uuid.uuid4().hex}")
+    temp.write_text(text, encoding="utf-8")
+    os.replace(temp, path)
+
+
+def current_state():
+    return STATE_FILE.read_text().strip() if STATE_FILE.exists() else ""
 ECLIPSE_WORKSPACE = Path(os.environ.get("ZT_ECLIPSE_WORKSPACE") or HOME / "eclipse-workspace")
 # editors/eclipse and editors/stm32cubeide sit beside shell/ in the same clone (shell/scripts/zt.py)
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -85,9 +127,19 @@ def find_theme(word):
     return None
 
 
+# the tools run at once (see main), so each one collects its lines here and they are printed
+# afterwards in TOOLS order, never interleaved
+_lines = threading.local()
+
+
 def report(tool, message, changed=True):
     colour = OK if changed else SKIP
-    print(f"  {BOLD}{tool:<16}{RESET} {colour}{message}{RESET}")
+    line = f"  {BOLD}{tool:<16}{RESET} {colour}{message}{RESET}"
+    buffer = getattr(_lines, "buffer", None)
+    if buffer is None:
+        print(line)
+    else:
+        buffer.append(line)
 
 
 def run(*args, **kwargs):
@@ -642,8 +694,21 @@ def thonny(fixed, dark, light, now):
 
 
 def matlab(fixed, dark, light, now):
-    if matlab_installs():
-        apply_script("MATLAB", "matlab", fixed, now)
+    # MATLAB saves a theme only from a running session, so a switch is left for its next start
+    # rather than starting it here (about a minute). a theme it already holds needs nothing
+    if not matlab_installs():
+        return
+    theme = fixed or now
+    # only the saved settings count here: a theme still waiting for the next start is not held yet
+    if (current_matlab(pending_too=False) or "").startswith(f"fixed: {theme.name},"):
+        MATLAB_PENDING.unlink(missing_ok=True)
+        return report("MATLAB", f"{theme.name}, unchanged")
+    script = EDITORS / "matlab" / ("mac" if MAC else "linux") / "apply.sh"
+    result = run("bash", str(script), "--theme", theme.short, "--pending")
+    if result.returncode:
+        out = (result.stdout + result.stderr).strip()
+        return report("MATLAB", f"failed: {out.splitlines()[-1] if out else result.returncode}", False)
+    report("MATLAB", f"{theme.name}, on next start")
 
 
 def ltspice(fixed, dark, light, now):
@@ -1038,7 +1103,7 @@ def current_thonny():
     return f"fixed: {view.get('syntax_theme', 'default')}, {view.get('editor_font_family', 'default font')}"
 
 
-def current_matlab():
+def current_matlab(pending_too=True):
     import zipfile
     roots = [HOME / "Library" / "Application Support" / "MathWorks" / "MATLAB"] if MAC else [HOME / ".matlab"]
     folders = sorted((d for root in roots if root.is_dir() for d in root.glob("R20*")), reverse=True)
@@ -1061,12 +1126,20 @@ def current_matlab():
                             data = data[0]
                         current[f"{prefix}.{setting['name']}"] = data
     font = f"{current.get('matlab.fonts.codefont.Name', 'default font')} {current.get('matlab.fonts.codefont.Size', '')}".strip()
+    pending = MATLAB_PENDING.read_text(encoding="utf-8").strip() if pending_too and MATLAB_PENDING.exists() else ""
+    saved = None
     for row in THEMES:
         theme = EDITORS / "matlab" / "shared" / "themes" / f"{row[2]}.json"
         if theme.exists():
             wanted = json.loads(theme.read_text())["settings"]
             if all(current.get(key) == value for key, value in wanted.items()):
-                return f"fixed: {row[2]}, {font}"
+                saved = row[2]
+                break
+    # a theme zt left for the next start is what MATLAB will show, so that is what is reported
+    if pending and pending != saved:
+        return f"fixed: {pending}, on next start"
+    if saved:
+        return f"fixed: {saved}, {font}"
     return f"not a Zacess theme ({current.get('matlab.appearance.MATLABTheme', 'default')} desktop), {font}"
 
 
@@ -1269,6 +1342,13 @@ def current_ghostty():
 
 def show_current():
     print(current_neovim().replace("fixed:", "zt state: fixed", 1).replace("following the system", "zt state: following the system", 1))
+    shared = shared_file()
+    push = read_json(shared) if shared else None
+    if push:
+        seen = ALL_SEEN.read_text().strip() if ALL_SEEN.exists() else ""
+        what = "undo of the last push" if push.get("undo_of") else push.get("state", "")
+        print(f"--all: last push {what} from {push.get('from', '?')} at {push.get('at', '?')}, "
+              f"{'applied here' if push.get('id') == seen else 'not applied here yet'}")
     readers = [("VS Code", current_vscode), ("Zed", current_zed), ("Neovim", current_neovim),
                ("Eclipse", current_eclipse), ("STM32CubeIDE", current_stm32cubeide), ("KiCad", current_kicad),
                ("Processing", current_processing), ("Nextpad++", current_nextpad), ("Vivado", current_vivado),
@@ -1596,6 +1676,11 @@ def main(argv):
     if not argv or argv[0] in ("-h", "--help", "help"):
         print(__doc__.strip())
         return 0
+    every = "--all" in argv
+    argv = [word for word in argv if word != "--all"]
+    if not argv:
+        print("Usage: zt <theme> --all or zt undo --all", file=sys.stderr)
+        return 1
     command = argv[0]
     if command == "doctor":
         return doctor()
@@ -1618,32 +1703,125 @@ def main(argv):
     if command == "current":
         show_current()
         return 0
+    if command == "undo":
+        return undo(every)
+    if command == "sync":
+        return sync()
     if command == "auto":
         dark = find_theme(argv[1]) if len(argv) > 1 else find_theme(DEFAULT_DARK)
         light = find_theme(argv[2]) if len(argv) > 2 else find_theme(DEFAULT_LIGHT)
         if not dark or not light:
             print("Unknown theme. Run zt list for the names.", file=sys.stderr)
             return 1
-        now = dark if system_is_dark() else light
-        print(f"{BOLD}Following the system{RESET}: {dark.name} in dark mode, {light.name} in light mode "
-              f"(now {now.appearance})")
-        fixed = None
+        state = f"auto {dark.id} {light.id}"
     else:
         fixed = find_theme(" ".join(argv))
         if not fixed:
             print(f"Unknown theme: {' '.join(argv)}. Run zt list for the names.", file=sys.stderr)
             return 1
+        state = fixed.id
+    before = current_state()
+    apply_state(state)
+    if every:
+        send(state, before)
+    return 0
+
+
+def apply_state(state, quiet=False):
+    """Switch every tool to a state file's text: a theme id or "auto <dark id> <light id>"."""
+    words = state.split()
+    if words and words[0] == "auto":
+        dark = find_theme(words[1]) if len(words) > 1 else find_theme(DEFAULT_DARK)
+        light = find_theme(words[2]) if len(words) > 2 else find_theme(DEFAULT_LIGHT)
+        fixed = None
+        now = dark if system_is_dark() else light
+        heading = (f"{BOLD}Following the system{RESET}: {dark.name} in dark mode, {light.name} in light mode "
+                   f"(now {now.appearance})")
+    else:
+        fixed = find_theme(state)
+        if not fixed:
+            return 1
         dark = fixed if fixed.dark else find_theme(DEFAULT_DARK)
         light = fixed if not fixed.dark else find_theme(DEFAULT_LIGHT)
         now = fixed
-        print(f"{BOLD}{fixed.name}{RESET} everywhere, not following the system")
-    for tool in TOOLS:
+        heading = f"{BOLD}{fixed.name}{RESET} everywhere, not following the system"
+    before = current_state()
+    if before and before != state:
+        PREVIOUS_FILE.parent.mkdir(parents=True, exist_ok=True)
+        PREVIOUS_FILE.write_text(before + "\n")
+
+    def run_tool(tool):
+        _lines.buffer = []
         try:
             tool(fixed, dark, light, now)
         except Exception as error:  # one broken config never stops the other tools
             report(tool.__name__, f"failed: {error}", False)
+        return _lines.buffer
+
+    if not quiet:
+        print(heading)
+    # every tool edits its own files, so they all run at once: a switch takes as long as the
+    # slowest tool rather than the sum of them all
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, len(TOOLS))) as pool:
+        for lines in pool.map(run_tool, TOOLS):
+            if not quiet:
+                for line in lines:
+                    print(line)
     return 0
 
+
+def send(state, before):
+    shared = shared_file()
+    if shared is None:
+        print("No OneDrive on this device, so only this device changed")
+        return
+    push = {"id": str(uuid.uuid4()), "state": state, "undo_of": None, "from": platform.node(),
+            "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+    write_atomic(shared, json.dumps(push))
+    write_atomic(ALL_SEEN, push["id"])
+    write_atomic(ALL_APPLIED, json.dumps({"id": push["id"], "previous": before}))
+    print("Sent to every device: each one switches when a terminal next opens there")
+
+
+def undo(every):
+    if not every:
+        previous = PREVIOUS_FILE.read_text().strip() if PREVIOUS_FILE.exists() else ""
+        if not previous:
+            print("Nothing to undo")
+            return 0
+        return apply_state(previous)
+    shared = shared_file()
+    push = read_json(shared) if shared else None
+    if not push or push.get("undo_of"):
+        print("Nothing to undo on every device")
+        return 0
+    entry = {"id": str(uuid.uuid4()), "state": "", "undo_of": push["id"], "from": platform.node(),
+             "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+    write_atomic(shared, json.dumps(entry))
+    write_atomic(ALL_SEEN, entry["id"])
+    applied = read_json(ALL_APPLIED) or {}
+    if applied.get("id") == push["id"] and applied.get("previous"):
+        apply_state(applied["previous"])
+    print("Undone on every device: each one goes back to its own previous theme when a terminal next opens there")
+    return 0
+
+
+def sync():
+    """Apply the latest --all push from another device once. Started silently at shell start."""
+    shared = shared_file()
+    push = read_json(shared) if shared else None
+    seen = ALL_SEEN.read_text().strip() if ALL_SEEN.exists() else ""
+    if not push or push.get("id") == seen:
+        return 0
+    # claimed first, so two terminals opening together never apply the same push twice
+    write_atomic(ALL_SEEN, push["id"])
+    if push.get("undo_of"):
+        applied = read_json(ALL_APPLIED) or {}
+        if applied.get("id") == push["undo_of"] and applied.get("previous"):
+            apply_state(applied["previous"], quiet=True)
+        return 0
+    write_atomic(ALL_APPLIED, json.dumps({"id": push["id"], "previous": current_state()}))
+    return apply_state(push["state"], quiet=True)
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))

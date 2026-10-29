@@ -17,6 +17,8 @@ TranslucentTB's defaults:
 | Battery saver on | Solid `#1C1C1C` with the Peek button and line |
 | A window visible, Start or search open | Off, so the desktop look carries on |
 
+A PC can keep its own values in `windows/machines/<computer name>.json`, laid over `windows/settings.json` by `windows/apply.ps1` on that PC. The same blur looks heavier on a large low-density monitor than on a high-density laptop screen, so each PC can keep its own look while the shared file stays the default.
+
 ## Install
 
 ```powershell

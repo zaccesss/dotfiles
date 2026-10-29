@@ -14,3 +14,20 @@
 
 function zt { & (Join-Path $env:DOTFILES 'windows\scripts\zt.ps1') @args }
 function zacess-theme { zt @args }
+
+# zt --all leaves a change in a synced folder. a new shell compares its id with the last one this
+# device handled using .NET calls in this process, so an unchanged folder costs one small file
+# read. zt sync starts hidden in the background only when a new change has arrived
+& {
+    $folder = if ($env:ZACESS_SHARED_DIR) { $env:ZACESS_SHARED_DIR }
+              elseif ($env:OneDriveConsumer) { Join-Path $env:OneDriveConsumer '.zacess' }
+              elseif ($env:OneDrive) { Join-Path $env:OneDrive '.zacess' }
+    if (-not $folder) { return }
+    $shared = Join-Path $folder 'zt-all.json'
+    if (-not [IO.File]::Exists($shared)) { return }
+    $id = [regex]::Match([IO.File]::ReadAllText($shared), '"id"\s*:\s*"([^"]+)"')
+    if (-not $id.Success) { return }
+    $seen = Join-Path $env:LOCALAPPDATA 'zacess\all-seen'
+    if ([IO.File]::Exists($seen) -and [IO.File]::ReadAllText($seen).Trim() -eq $id.Groups[1].Value) { return }
+    Start-Process pwsh -WindowStyle Hidden -ArgumentList '-NoProfile', '-File', "`"$(Join-Path $env:DOTFILES 'windows\scripts\zt.ps1')`"", 'sync'
+}

@@ -34,9 +34,11 @@ extrestore() {
 # to 'open -a' which opens the app without passing a path argument.
 idea()     { if command -v idea     &>/dev/null; then idea "${1:-.}";     else open -a "IntelliJ IDEA" "${1:-.}"; fi }
 pycharm()  { if command -v pycharm  &>/dev/null; then pycharm "${1:-.}";  else open -a "PyCharm" "${1:-.}"; fi }
-webstorm() { if command -v webstorm &>/dev/null; then webstorm "${1:-.}"; else open -a "WebStorm" "${1:-.}"; fi }
+# whence -p finds only the real program and command runs it, since command -v also finds
+# the function itself, which then called itself until zsh stopped it
+webstorm() { if whence -p webstorm &>/dev/null; then command webstorm "${1:-.}"; else open -a "WebStorm" "${1:-.}"; fi }
 goland()   { if command -v goland   &>/dev/null; then goland "${1:-.}";   else open -a "GoLand" "${1:-.}"; fi }
 clion()    { if command -v clion    &>/dev/null; then clion "${1:-.}";    else open -a "CLion" "${1:-.}"; fi }
 rider()    { if command -v rider    &>/dev/null; then rider "${1:-.}";    else open -a "Rider" "${1:-.}"; fi }
-phpstorm() { if command -v phpstorm &>/dev/null; then phpstorm "${1:-.}"; else open -a "PhpStorm" "${1:-.}"; fi }
-datagrip() { if command -v datagrip &>/dev/null; then datagrip "${1:-.}"; else open -a "DataGrip" "${1:-.}"; fi }
+phpstorm() { if whence -p phpstorm &>/dev/null; then command phpstorm "${1:-.}"; else open -a "PhpStorm" "${1:-.}"; fi }
+datagrip() { if whence -p datagrip &>/dev/null; then command datagrip "${1:-.}"; else open -a "DataGrip" "${1:-.}"; fi }

@@ -8,7 +8,8 @@
 # hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
 # deep-dark.
 #
-# for every IDE that has been started once: the theme plugin is installed when missing, through
+# for every IDE that has been started once: a theme plugin older than the pin is replaced by the
+# pinned release. one that is missing is installed through
 # the IDE's own installPlugins command (its launcher comes from product-info.json) or, with no
 # launcher found, from the pinned release in ..\shared\theme-package.json checked against its
 # digest; the colour schemes, file template and keymap in this folder are copied in with the
@@ -107,7 +108,54 @@ function Test-ThemePlugin($Dir) {
     (Test-Path (Join-Path $Dir.FullName "plugins\$($package.folder)")) -or ((Get-PluginIds (Join-Path $Dir.FullName 'plugins')) -contains $package.id)
 }
 
+# the version of the Zacess Themes plugin in a config folder's plugins\ ($null when it is not there),
+# as editors\jetbrains\shared\apply.py reads it on the Mac and Linux
+function Get-ThemePluginVersion($Dir) {
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    foreach ($jar in Get-ChildItem -LiteralPath (Join-Path $Dir.FullName "plugins\$($package.folder)\lib") -Filter '*.jar' -ErrorAction SilentlyContinue | Sort-Object Name) {
+        $zip = try { [IO.Compression.ZipFile]::OpenRead($jar.FullName) } catch { $null }
+        if (-not $zip) { continue }
+        try {
+            $entry = $zip.GetEntry('META-INF/plugin.xml')
+            if (-not $entry) { continue }
+            $reader = [IO.StreamReader]::new($entry.Open())
+            $manifest = $reader.ReadToEnd()
+            $reader.Dispose()
+            $match = [regex]::Match($manifest, '<version>\s*([^<]+?)\s*</version>')
+            if ($match.Success) { return $match.Groups[1].Value }
+        } finally {
+            $zip.Dispose()
+        }
+    }
+    return $null
+}
+
 $release = $null
+# the pinned release, downloaded once per run and checked against its digest
+function Get-PinnedRelease {
+    if (-not $script:release) {
+        $download = Join-Path ([IO.Path]::GetTempPath()) "zacess-themes-$PID.zip"
+        Invoke-WebRequest -Uri $package.url -OutFile $download -UseBasicParsing
+        if ((Get-FileHash $download -Algorithm SHA256).Hash -ne $package.sha256) {
+            Remove-Item $download -Force -ErrorAction SilentlyContinue
+            [Console]::Error.WriteLine('The Zacess Themes download does not match its pinned checksum, so it was not installed')
+            exit 1
+        }
+        $script:release = $download
+    }
+    return $script:release
+}
+
+# a copy older than the pin is never brought up to it by a check on the plugin being there, so it
+# is replaced by the pinned release. the IDE loads it on its next start
+function Update-ThemePlugin($Dir, [string]$Installed) {
+    $folder = Join-Path $Dir.FullName "plugins\$($package.folder)"
+    $archive = Get-PinnedRelease
+    Remove-Item -LiteralPath $folder -Recurse -Force
+    Expand-Archive -LiteralPath $archive -DestinationPath (Join-Path $Dir.FullName 'plugins') -Force
+    Write-Output "  changed    $($Dir.Name)  plugins\$($package.folder) $Installed to $($package.version) (restart the IDE to load it)"
+}
+
 function Install-ThemePlugin($Dir) {
     $launcher = if ($infos.ContainsKey($Dir.Name)) { $infos[$Dir.Name].Launcher }
     if ($launcher -and (Test-Path -LiteralPath $launcher)) {
@@ -122,20 +170,11 @@ function Install-ThemePlugin($Dir) {
     } else {
         $reason = 'no launcher found for it'
     }
-    if (-not $script:release) {
-        $download = Join-Path ([IO.Path]::GetTempPath()) "zacess-themes-$PID.zip"
-        Invoke-WebRequest -Uri $package.url -OutFile $download -UseBasicParsing
-        if ((Get-FileHash $download -Algorithm SHA256).Hash -ne $package.sha256) {
-            Remove-Item $download -Force -ErrorAction SilentlyContinue
-            [Console]::Error.WriteLine('The Zacess Themes download does not match its pinned checksum, so it was not installed')
-            exit 1
-        }
-        $script:release = $download
-    }
+    $archive = Get-PinnedRelease
     $plugins = Join-Path $Dir.FullName 'plugins'
     New-Item -ItemType Directory -Force $plugins | Out-Null
     # the zip unpacks into its own folder (zacess-themes\lib\*.jar), the layout the IDE reads
-    Expand-Archive -LiteralPath $script:release -DestinationPath $plugins -Force
+    Expand-Archive -LiteralPath $archive -DestinationPath $plugins -Force
     Write-Output "  added      $($Dir.Name)  plugins\$($package.folder) (from the pinned release $($package.version), $reason)"
 }
 
@@ -239,7 +278,19 @@ if (-not (Test-Path $projects)) {
 }
 try {
     foreach ($dir in $dirs) {
-        if (Test-ThemePlugin $dir) { Write-Output "  unchanged  $($dir.Name)  plugins\$($package.folder)" } else { Install-ThemePlugin $dir }
+        $installed = Get-ThemePluginVersion $dir
+        $parsed = $null
+        if ($installed -and [version]::TryParse($installed, [ref]$parsed) -and $parsed -lt [version]$package.version) { Update-ThemePlugin $dir $installed }
+        elseif (Test-ThemePlugin $dir) { Write-Output "  unchanged  $($dir.Name)  plugins\$($package.folder)" }
+        else { Install-ThemePlugin $dir }
+        # the IDE's own installPlugins can leave its download beside its system files. it is only
+        # cleared once the plugin is unpacked at the pinned version, so nothing still needed goes
+        if ((Get-ThemePluginVersion $dir) -eq $package.version) {
+            foreach ($zip in Get-ChildItem (Join-Path $env:LOCALAPPDATA "JetBrains\$($dir.Name)\plugins") -Filter "$($package.folder)*.zip" -ErrorAction SilentlyContinue) {
+                Remove-Item -LiteralPath $zip.FullName -Force
+                Write-Output "  removed    $($dir.Name)  $($zip.Name) left in its system plugins folder"
+            }
+        }
         foreach ($scheme in Get-ChildItem (Join-Path $folder 'colors') -Filter *.icls | Sort-Object Name) {
             Copy-Tracked $dir $scheme.FullName "colors\$($scheme.Name)"
         }

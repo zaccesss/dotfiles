@@ -58,6 +58,15 @@ Describe 'Get-WantedExtensions' {
     }
 }
 
+Describe 'Get-OutdatedExtensions' {
+    It 'returns only installed extensions older than their pin, at the pinned version' {
+        $list = Join-Path $TestDrive 'extensions.txt'
+        Set-Content $list @('// themes', 'zacess.zacess-themes@0.6.0', 'EditorConfig.EditorConfig@0.16.4', 'eamodio.gitlens', 'ms-python.python@2026.1.0')
+        $installed = @('Zacess.zacess-themes@0.3.0', 'editorconfig.editorconfig@0.17.0', 'eamodio.gitlens@16.0.0')
+        Get-OutdatedExtensions -ListPath $list -Installed $installed | Should -Be @('zacess.zacess-themes@0.6.0')
+    }
+}
+
 Describe 'Set-PointerFile' {
     It 'writes the pointer when no file exists' {
         $path = Join-Path $TestDrive 'new\profile.ps1'
