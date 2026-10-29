@@ -1,0 +1,12 @@
+# =============================================================================
+# Isaac Adjei - Linux zsh environment
+# github.com/zaccesss/dotfiles - MIT licence
+#
+# zsh reads this file before the system zshrc, so it is the only place that can
+# turn off Ubuntu's own completion set-up. linux/zshrc runs compinit itself.
+# linked to ~/.zshenv by the Linux bootstrap.
+# =============================================================================
+
+# Ubuntu's /etc/zsh/zshrc runs a full compinit with its security audit on every
+# start, about a third of a second under WSL
+skip_global_compinit=1

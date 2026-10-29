@@ -5,7 +5,7 @@ A high contrast theme for every language Nextpad++ knows, with Geist Mono at the
 ## Vision
 
 - The theme is Zacess Deep Contrast Dark from [Zacess Themes](https://github.com/zacesshq/themes) 0.5.0: white on pure black with deep, fully saturated syntax colours. All eight Zacess themes install together and any of them can be picked with `--theme` or in **Settings > Style Configurator**.
-- Every token style in every language is at least 7:1 on the background and the current line in the Deep Contrast and High Contrast themes and at least 4.5:1 in the others. Line numbers pass the same floor. Selected text is drawn in its own colour on a solid block, the pair held to 4.5:1, Zacess Themes' selection rule.
+- Every token style in every language is at least 7:1 on the background in the Deep Contrast and High Contrast themes and at least 4.5:1 in the others. The current line is a visible band, as in Zacess Themes 0.6.0, with every token at least 4.5:1 over it. Line numbers pass the same floor. Selected text is drawn in its own colour on a solid block, the pair held to 4.5:1, Zacess Themes' selection rule.
 - Colour is never the only signal: keywords and control flow are bold while comments and parameters are italic.
 - The text size set in the Style Configurator is kept. Only the colour and font overrides that would hide the theme are cleared.
 - Nextpad++ cannot follow the system light and dark setting for its editor colours, so the theme stays fixed until another one is applied.

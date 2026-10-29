@@ -1779,7 +1779,7 @@
         <WidgetStyle name="Indent guideline style" styleID="37" fgColor="6E6E6E" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" />
         <WidgetStyle name="Brace highlight style" styleID="34" fgColor="003D99" bgColor="FFFFFF" fontName="" fontStyle="1" fontSize="" />
         <WidgetStyle name="Bad brace colour" styleID="35" fgColor="600000" bgColor="FFFFFF" fontName="" fontStyle="1" fontSize="" />
-        <WidgetStyle name="Current line background colour" styleID="0" bgColor="F2F2F2" />
+        <WidgetStyle name="Current line background colour" styleID="0" bgColor="C3E5FE" />
         <WidgetStyle name="Selected text colour" styleID="0" bgColor="015F5E" fgColor="FFFFFF" />
         <WidgetStyle name="Multi-selected text color" styleID="0" bgColor="00D3D0" />
         <WidgetStyle name="Caret colour" styleID="0" fgColor="000000" />

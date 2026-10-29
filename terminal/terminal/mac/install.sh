@@ -33,27 +33,37 @@ link() {
 running() { pgrep -x "$1" >/dev/null 2>&1; }
 
 terminal_app() {
-    local file name
+    local file name exists
     for file in "${HERE}"/terminal-app/*.terminal; do
         name="$(basename "$file" .terminal)"
-        if defaults read com.apple.Terminal "Window Settings" 2>/dev/null | grep -q "\"${name}\" ="; then
-            continue
-        fi
+        exists=0
+        defaults read com.apple.Terminal "Window Settings" 2>/dev/null | grep -q "\"${name}\" =" && exists=1
         if running Terminal; then
-            # importing through the app opens one window per profile; the preferences file is
-            # only safe to edit while Terminal.app is closed
+            # importing through the app opens one window per profile and cannot replace one that
+            # exists; the preferences file is only safe to edit while Terminal.app is closed
+            if [[ "$exists" == 1 ]]; then
+                info "Terminal.app is open, so the ${name} profile is checked again when this runs with it closed"
+                continue
+            fi
             open -g "$file"
         else
+            # the repo's keys are written over an existing profile, so a new release reaches it while
+            # any key the repo does not set (a window size chosen in the app) stays as it was
             /usr/bin/python3 - "$file" <<'PY'
 import plistlib, subprocess, sys
 profile = plistlib.load(open(sys.argv[1], "rb"))
 prefs = plistlib.loads(subprocess.run(["defaults", "export", "com.apple.Terminal", "-"],
                                       capture_output=True, check=True).stdout)
-prefs.setdefault("Window Settings", {})[profile["name"]] = profile
+settings = prefs.setdefault("Window Settings", {})
+settings.setdefault(profile["name"], {}).update(profile)
 subprocess.run(["defaults", "import", "com.apple.Terminal", "-"], input=plistlib.dumps(prefs), check=True)
 PY
         fi
-        info "Added the ${name} profile to Terminal.app"
+        if [[ "$exists" == 1 ]]; then
+            info "Updated the ${name} profile in Terminal.app"
+        else
+            info "Added the ${name} profile to Terminal.app"
+        fi
     done
     if [[ "$(defaults read com.apple.Terminal "Default Window Settings" 2>/dev/null || true)" != "$DEFAULT_THEME" ]]; then
         if running Terminal; then

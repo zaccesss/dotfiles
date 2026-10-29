@@ -10,7 +10,9 @@ export PATH="$HOME/.local/bin:$PATH"
 # pyenv - manages multiple Python versions
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d "$PYENV_ROOT/bin" ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-[[ -x "$(command -v pyenv)" ]] && eval "$(pyenv init -)"
+# pyenv lives in PYENV_ROOT, so it is tested there: a PATH search also walks every Windows
+# folder under WSL, about 0.2 seconds when pyenv is not installed
+[[ -x "$PYENV_ROOT/bin/pyenv" ]] && eval "$("$PYENV_ROOT/bin/pyenv" init -)"
 
 # Go - adjust if installed to a different location
 [[ -d "/usr/local/go/bin" ]] && export PATH="/usr/local/go/bin:$PATH"
@@ -28,8 +30,10 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d "$HOME/.dotnet/tools" ]] && export PATH="$HOME/.dotnet/tools:$PATH"
 
 # WSL has no browser of its own and Ubuntu 26.04 no wslview, so links from gh and other tools open
-# in the Windows browser through Windows' own file handler. a BROWSER set by hand is left alone
-if [[ -z "${BROWSER:-}" ]] && ! command -v wslview >/dev/null 2>&1 \
+# in the Windows browser through Windows' own file handler. a BROWSER set by hand is left alone.
+# wslview is looked for only where its package installs it: a PATH search also walks every Windows
+# folder under WSL, about 0.17 seconds when it is missing
+if [[ -z "${BROWSER:-}" && ! -x /usr/bin/wslview && ! -x /usr/local/bin/wslview ]] \
     && { [[ -n "${WSL_DISTRO_NAME:-}" ]] || grep -qsi microsoft /proc/version; }; then
     export BROWSER="explorer.exe"
 fi

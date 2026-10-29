@@ -24,6 +24,24 @@
 
 DOTFILES="${DOTFILES:-$HOME/dev/github/repos/dotfiles/shell}"
 
+# completion, in place of Ubuntu's global compinit that linux/zshenv turns off. the
+# security audit (compaudit) runs when the saved dump is a day old and is skipped
+# otherwise, so most starts reuse the dump. only where Ubuntu ran it before, so other
+# distributions start exactly as they did
+if [[ -n "${skip_global_compinit:-}" ]] && grep -qs '^ID.*ubuntu' /etc/os-release; then
+    autoload -Uz compinit
+    # find rather than a zsh glob qualifier, so the file still parses for the bash lint in CI
+    _zdump="${ZDOTDIR:-$HOME}/.zcompdump"
+    if [[ ! -e "$_zdump" || -n "$(find "$_zdump" -mmin +1440 2>/dev/null)" ]]; then
+        # compinit leaves an unchanged dump as it was, so its time is reset here or every
+        # later start would see a day-old dump and run the audit again
+        compinit && touch "$_zdump"
+    else
+        compinit -C
+    fi
+    unset _zdump
+fi
+
 for _f in "$DOTFILES/linux/topics-zsh/"*.zsh; do
     # shellcheck disable=SC1090
     [[ -f "$_f" ]] && source "$_f"
