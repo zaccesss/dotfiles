@@ -1,0 +1,18 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Isaac Adjei"
+            }
+        ],
+        "Category": "",
+        "Description": "Breeze with high contrast light colours",
+        "Id": "zacess.highcontrastlight.desktop",
+        "License": "GPLv2+",
+        "Name": "Zacess High Contrast Light",
+        "Website": "https://www.kde.org"
+    },
+    "Keywords": "Desktop;Workspace;Appearance;Look and Feel;Logout;Lock;Suspend;Shutdown;Hibernate;",
+    "X-Plasma-APIVersion": "2"
+}

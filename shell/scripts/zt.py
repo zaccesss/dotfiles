@@ -68,8 +68,9 @@ def shared_file():
     """zt-all.json in the synced folder (None on a device with no such folder)."""
     if os.environ.get("ZACESS_SHARED_DIR"):
         return Path(os.environ["ZACESS_SHARED_DIR"]) / "zt-all.json"
-    onedrive = HOME / "Library" / "CloudStorage" / "OneDrive-Personal"
-    return onedrive / ".zacess" / "zt-all.json" if MAC and onedrive.is_dir() else None
+    # Linux syncs it with the OneDrive client into ~/OneDrive
+    onedrive = HOME / "Library" / "CloudStorage" / "OneDrive-Personal" if MAC else HOME / "OneDrive"
+    return onedrive / ".zacess" / "zt-all.json" if onedrive.is_dir() else None
 
 
 def read_json(path):

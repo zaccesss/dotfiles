@@ -10,6 +10,13 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ### Added
 
+- KDE Plasma defaults in `setup/defaults/linux/kde`, tested on Fedora KDE Plasma 6.7:
+  - High contrast light and dark global themes switching by time of day and a larger yellow pointer.
+  - A see-through Windows 11-style taskbar: the Zacess Dark Plasma style at a 15 percent tint over KWin's blur, with a faint line along its top edge.
+  - A centred start menu (Menu11 - Next, pinned to its release commit), with Kickoff as the fallback.
+  - Wallpaper slideshows for the desktop, lock screen and login screen.
+  - Windows-style keys, scroll bars, touchpad scrolling and the UK region.
+- `apps/onedrive`: a personal OneDrive synced in full into `~/OneDrive` on Linux by the OneDrive client, with OneDriveGUI's tray icon started minimised at login. On Linux `zt --all` falls back to `~/OneDrive/.zacess` when `ZACESS_SHARED_DIR` is not set.
 - `zt undo` returns to the theme before the last change and `zt <theme> --all` changes every device through a synced folder (`.zacess/zt-all.json` in OneDrive Personal unless `ZACESS_SHARED_DIR` names another folder). Each device applies it once when a terminal next opens there and `zt undo --all` returns each to its own previous theme. `zt` also runs every tool at once and leaves MATLAB's theme for its next start.
 - A Windows PC can keep its own TranslucentTB values in `apps/translucenttb/windows/machines/<computer name>.json`.
 - MATLAB and Microchip Studio take a theme change on their next start: the apply scripts gain a pending mode and a marked `startup.m` block runs `editors/matlab/shared/zacess_startup.m`, so switching a theme never has to start either app.

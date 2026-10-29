@@ -1,6 +1,6 @@
 # Accessibility
 
-The scripts apply a handful of desktop preferences on macOS and GNOME. Several of them make the desktop easier to read and more predictable.
+The scripts apply a handful of desktop preferences on macOS, GNOME and KDE Plasma. Several of them make the desktop easier to read and more predictable.
 
 ## Vision
 
@@ -17,6 +17,19 @@ The scripts apply a handful of desktop preferences on macOS and GNOME. Several o
 
 - Spaces on macOS keep a fixed order instead of rearranging by recent use. On GNOME, workspaces stay fixed rather than being created and removed automatically.
 - New Finder windows open to the home folder. Screenshots go to their own folder instead of the Desktop.
+
+## KDE Plasma
+
+- Two high contrast colour schemes, black on white and white on black, with no grey secondary
+  text. The desktop switches between them by time of day.
+- The pointer is size 48 and yellow with a black outline, so it stands out on light and dark
+  backgrounds alike.
+- Taskbar text is white in both themes over a tinted strip with a line along its top edge, so the
+  taskbar's edge stays visible over any wallpaper. Very light wallpapers make the tray icons
+  fainter, since the tint is light.
+- Scroll bars keep an arrow at each end and stay visible in GTK apps instead of hiding until
+  hovered.
+- Discord and Kitty keep their sound and badge but no pop-ups over the screen.
 
 ## Not changed here
 
