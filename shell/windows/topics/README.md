@@ -43,6 +43,7 @@
 | `35-secrets.ps1` | age and sops secrets encryption | `agenew`, `agenc`, `agedec`, `sopsenc`, `sopsdec`, `sopsedit`, `sopsview` |
 | `36-command-marks.ps1` | Command marks | OSC 133 marks around each prompt, command and output: wraps the Starship prompt and handles Enter through PSReadLine (skipped in VS Code and dumb terminals) |
 | `37-zacess-theme.ps1` | Zacess theme switching | `zt`, `zacess-theme`: every editor and terminal to one Zacess theme. `zt auto` follows the system |
+| `38-zacess-scenes.ps1` | Zacess Scenes | `zs` for a random calm scene or one by name, with the subcommands list, sounds, config, new, snap and themes. `zw` watches a Rust build, `zwc` with Clippy, `zwt` with the tests and `zwa` with check-all. Also `zacess-scene` |
 
 ## Adding a topic
 

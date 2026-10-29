@@ -206,5 +206,8 @@ apply_installed_apps() {
         skip_app Zotero "not installed or not started once"
     fi
 
+    # Zacess Scenes installs its own release binary, so it needs no app to be present
+    apply_app "Zacess Scenes" apps/zacess-scenes/setup.sh
+
     place_rectangle_config
 }

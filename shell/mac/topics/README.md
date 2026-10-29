@@ -44,6 +44,7 @@
 | `36-command-marks.zsh` | Command marks | OSC 133 marks around each prompt, command and output, so the terminal can jump between commands (skipped in VS Code and dumb terminals) |
 | `37-syntax-highlighting.zsh` | Typed-command colours | Loads zsh-syntax-highlighting last (from Homebrew, skipped when absent): commands green, unknown commands red, strings yellow, options cyan |
 | `38-zacess-theme.zsh` | Zacess theme switching | `zt`, `zacess-theme`: every editor and terminal to one Zacess theme. `zt auto` follows the system |
+| `39-zacess-scenes.zsh` | Zacess Scenes | `zs` for a random calm scene or one by name, with the subcommands list, sounds, config, new, snap and themes. `zw` watches a Rust build, `zwc` with Clippy, `zwt` with the tests and `zwa` with check-all. Also `zacess-scene` |
 
 ## Adding a topic
 
