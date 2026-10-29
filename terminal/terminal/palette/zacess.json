@@ -1,7 +1,7 @@
 {
   "source": {
     "repository": "zacesshq/themes",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "file": "palette/zacess.json",
     "note": "copied by scripts/sync-palette.py: the terminal colours and the interface tokens the generated files use"
   },
@@ -60,7 +60,7 @@
         "border_active": "#0049a3",
         "accent": "#0049a3",
         "accent_foreground": "#ffffff",
-        "line_highlight": "#f0f0f0",
+        "line_highlight": "#d6dde8",
         "find_match": "#ffd400",
         "find_match_border": "#111111"
       }
@@ -105,8 +105,8 @@
         "border_active": "#8cbcff",
         "accent": "#8cbcff",
         "accent_foreground": "#121212",
-        "line_highlight": "#1f1f1f",
-        "find_match": "#332a00",
+        "line_highlight": "#2f2f2f",
+        "find_match": "#4d4000",
         "find_match_border": "#ffd400"
       }
     },
@@ -150,8 +150,8 @@
         "border_active": "#ffeb3b",
         "accent": "#ffeb3b",
         "accent_foreground": "#000000",
-        "line_highlight": "#141414",
-        "find_match": "#3d3000",
+        "line_highlight": "#262626",
+        "find_match": "#4b3a00",
         "find_match_border": "#ffffff"
       }
     },
@@ -208,7 +208,7 @@
         "border_active": "#004498",
         "accent": "#004498",
         "accent_foreground": "#ffffff",
-        "line_highlight": "#f3ead2",
+        "line_highlight": "#c8dadd",
         "find_match": "#ffd400",
         "find_match_border": "#000000"
       }
@@ -253,8 +253,8 @@
         "border_active": "#f5c400",
         "accent": "#f5c400",
         "accent_foreground": "#000000",
-        "line_highlight": "#1a1a1a",
-        "find_match": "#403300",
+        "line_highlight": "#262626",
+        "find_match": "#493900",
         "find_match_border": "#f5c400"
       }
     },
@@ -311,7 +311,7 @@
         "border_active": "#003d99",
         "accent": "#003d99",
         "accent_foreground": "#ffffff",
-        "line_highlight": "#f2f2f2",
+        "line_highlight": "#c3e5fe",
         "find_match": "#ffd400",
         "find_match_border": "#000000"
       }
@@ -358,8 +358,8 @@
         "border_active": "#ffff00",
         "accent": "#00ffff",
         "accent_foreground": "#000000",
-        "line_highlight": "#141414",
-        "find_match": "#403300",
+        "line_highlight": "#262626",
+        "find_match": "#453800",
         "find_match_border": "#ffff00"
       }
     },
@@ -416,7 +416,7 @@
         "border_active": "#b5200d",
         "accent": "#0f4a85",
         "accent_foreground": "#ffffff",
-        "line_highlight": "#f5f5f5",
+        "line_highlight": "#c8debd",
         "find_match": "#fff1a0",
         "find_match_border": "#b5200d"
       }

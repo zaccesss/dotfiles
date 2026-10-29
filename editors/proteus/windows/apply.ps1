@@ -117,12 +117,26 @@ function Get-WantedColours([byte[]]$Bytes) {
 }
 
 $templates = Join-Path $env:ProgramData 'Labcenter Electronics\Proteus 8 Professional\Templates'
-foreach ($file in Get-ChildItem $templates -Filter '*.DTF' -ErrorAction SilentlyContinue) {
-    $bytes = [IO.File]::ReadAllBytes($file.FullName)
-    if (-not (Get-TemplateSlots $bytes)) { Write-Output "  skipped    template  $($file.Name): not laid out as expected"; continue }
-    $changed = Write-TemplateColours $bytes (Get-WantedColours $bytes)
-    if ($changed) { [IO.File]::WriteAllBytes($file.FullName, $bytes) }
-    Write-Output "  $(if ($changed) { 'changed  ' } else { 'unchanged' })  template  $($file.Name)$(if ($changed) { ": $changed colours" })"
+# reading every template's colour slots takes most of a second, so the theme and each template's
+# size and write time are noted once they are done. a later run for the same theme skips them
+# while none has changed, so zt stays quick
+$note = Join-Path $env:LOCALAPPDATA 'zacess\proteus-templates'
+$stamp = { param($files) @($name) + @($files | Sort-Object Name | ForEach-Object { "$($_.Name)|$($_.Length)|$($_.LastWriteTimeUtc.Ticks)" }) -join "`n" }
+$dtf = @(Get-ChildItem $templates -Filter '*.DTF' -ErrorAction SilentlyContinue)
+if ($dtf -and (Test-Path $note) -and [IO.File]::ReadAllText($note) -ceq (& $stamp $dtf)) {
+    Write-Output "  unchanged  templates $($dtf.Count) templates, already in $name"
+} else {
+    foreach ($file in $dtf) {
+        $bytes = [IO.File]::ReadAllBytes($file.FullName)
+        if (-not (Get-TemplateSlots $bytes)) { Write-Output "  skipped    template  $($file.Name): not laid out as expected"; continue }
+        $changed = Write-TemplateColours $bytes (Get-WantedColours $bytes)
+        if ($changed) { [IO.File]::WriteAllBytes($file.FullName, $bytes) }
+        Write-Output "  $(if ($changed) { 'changed  ' } else { 'unchanged' })  template  $($file.Name)$(if ($changed) { ": $changed colours" })"
+    }
+    if ($dtf) {
+        New-Item -ItemType Directory -Force (Split-Path $note) | Out-Null
+        [IO.File]::WriteAllText($note, (& $stamp @(Get-ChildItem $templates -Filter '*.DTF')))
+    }
 }
 
 if ($Project) {

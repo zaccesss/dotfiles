@@ -19,7 +19,7 @@ Every key lives in [`shared/settings.json`](shared/settings.json). The scripts m
 
 ## The themes
 
-[`shared/theme-package.json`](shared/theme-package.json) pins Zacess Themes 0.5.0 by its release URL and SHA-256 digest. The apply script downloads it, checks the digest and puts `zacess-themes-0.5.0.vsix` in the `plugins` folder. Arduino IDE unpacks it into `deployedPlugins` on its next start. An older `zacess-themes-*.vsix` in the folder is removed, so the themes never load twice. To move to a new release, change the version, URL and digest together.
+[`shared/theme-package.json`](shared/theme-package.json) pins Zacess Themes 0.6.0 by its release URL and SHA-256 digest. The apply script downloads it, checks the digest and puts `zacess-themes-0.6.0.vsix` in the `plugins` folder. Arduino IDE unpacks it into `deployedPlugins` on its next start. An older `zacess-themes-*.vsix` in the folder is removed, so the themes never load twice. To move to a new release, change the version, URL and digest together.
 
 ## Where the settings live
 

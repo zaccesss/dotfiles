@@ -41,4 +41,4 @@ The script prints each change as `added`, `changed`, `removed` or `unchanged`. R
 
 ## Validation
 
-[`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks every theme parses, that every style's text is at least 7:1 on the editor background and the current line in the Deep Contrast and High Contrast themes (4.5:1 in the others), that selected text is at least 4.5:1 on its block, that line numbers pass the same floor and that the Default Style names Geist Mono.
+[`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks every theme parses, that every style's text is at least 7:1 on the editor background in the Deep Contrast and High Contrast themes (4.5:1 in the others) and 4.5:1 on the current line, that selected text is at least 4.5:1 on its block, that line numbers pass the same floor and that the Default Style names Geist Mono.

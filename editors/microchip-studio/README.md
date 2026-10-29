@@ -37,6 +37,10 @@ Microchip Studio only takes colours through its own **Import and Export Settings
 
 `-Studio` points the script at another `AtmelStudio.exe` than `C:\Program Files (x86)\Atmel\Studio\7.0\AtmelStudio.exe`.
 
+## On Studio's next start
+
+The theme's `.vssettings` file also becomes Studio's team settings file (**Tools > Options > Environment > Import and Export Settings > Use team settings file**). Studio imports that file by itself when it starts whenever the file is newer than the time it last imported it. `-Pending` only points the team settings file at the theme and clears that time, so Studio is not started. `zt` uses it and reports the theme as "on next start". A direct run imports at once and records the file's time, so the next start does not import it again.
+
 ## Its projects folder
 
 New projects go in `~\dev\projects\avr`, the projects folder every editor shares on every machine. The script writes Studio's `DefaultNewProjectLocation` and `VisualStudioProjectsLocation` before it starts Studio and makes the folder when it is missing. The folder Studio opens projects from is left as it is.

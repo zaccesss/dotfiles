@@ -1,8 +1,10 @@
 """Checks the Nextpad++ folder without Nextpad++: run from anywhere, exits non-zero on a problem.
 
 - shared/themes holds the eight Zacess themes as Notepad++ style files that parse
-- every style's text colour and the line numbers are at least 7:1 on the editor background and
-  the current line in the Deep Contrast and High Contrast themes and at least 4.5:1 in the others
+- every style's text colour and the line numbers are at least 7:1 on the editor background in the
+  Deep Contrast and High Contrast themes and at least 4.5:1 in the others
+- every style is at least 4.5:1 on the current line, the rule Zacess Themes 0.6.0 sets for syntax
+  over its visible current line band
 - selected text is at least 4.5:1 on its selection block, Zacess Themes' own selection rule
 - the Default Style names Geist Mono, which every style without a font of its own inherits
 """
@@ -62,8 +64,9 @@ for theme_id, name in NAMES.items():
             if ratio < worst.get(surface, (99,))[0]:
                 worst[surface] = (ratio, style.get("name"))
     for surface, (ratio, style_name) in worst.items():
-        if ratio < floor:
-            problems.append(f"{path.name}: {style_name} is {ratio:.2f}:1 on the {surface}, below {floor}:1")
+        need = 4.5 if surface == "current line" else floor
+        if ratio < need:
+            problems.append(f"{path.name}: {style_name} is {ratio:.2f}:1 on the {surface}, below {need}:1")
     # selected text is drawn in the selection block's own text colour, so that pair is what matters
     # there, held to Zacess Themes' selection rule rather than the token floor
     selected = widgets["Selected text colour"]

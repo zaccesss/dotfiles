@@ -1,6 +1,9 @@
 # installs the Zacess theme file into Zed's themes folder and sets the theme in settings.json.
-# usage: .\apply.ps1 [-Theme <theme>] [-ConfigDir <folder>]
+# usage: .\apply.ps1 [-Theme <theme>] [-ConfigDir <folder>] [-ThemesOnly]
 #   (the config folder defaults to %APPDATA%\Zed)
+#
+# -ThemesOnly refreshes the theme file and leaves settings.json alone. zt uses it, since zt writes
+# the theme block itself and can also set it to follow the system.
 #
 # -Theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
 # hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
@@ -16,7 +19,8 @@
 # never checks whether Zed is open.
 param(
     [string]$Theme = 'deep-dark',
-    [string]$ConfigDir = (Join-Path $env:APPDATA 'Zed')
+    [string]$ConfigDir = (Join-Path $env:APPDATA 'Zed'),
+    [switch]$ThemesOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -76,6 +80,11 @@ foreach ($source in Get-ChildItem (Join-Path $shared 'themes') -Filter *.json | 
         [IO.File]::WriteAllBytes($target, $want)
     }
     Write-Output "  $status  themes  $($source.Name)"
+}
+
+if ($ThemesOnly) {
+    Write-Output 'Done. Zed reloads its themes while it runs, so nothing needs restarting.'
+    exit 0
 }
 
 # the theme block the same way zt sets it: a fixed theme keeps the other half of the pair, so

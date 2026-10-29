@@ -1,5 +1,5 @@
 # imports one Zacess theme (fonts and colours) into Microchip Studio 7.
-# usage: .\apply.ps1 [-Theme <theme>] [-Studio <path to AtmelStudio.exe>] [-Close]
+# usage: .\apply.ps1 [-Theme <theme>] [-Studio <path to AtmelStudio.exe>] [-Close] [-Pending]
 #
 # -Theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
 # hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
@@ -9,11 +9,18 @@
 # script starts Studio with that command and the chosen ..\themes\<name>.vssettings. the file
 # holds only the Fonts and Colors category, so every other setting is left as it was. nothing is
 # backed up: the repo holds every value it imports.
+#
+# the theme file also becomes Studio's team settings file (Tools > Options > Environment > Import
+# and Export Settings), which Studio imports by itself at its next start whenever the file is newer
+# than the time it last imported it. -Pending only points the team settings file at the theme and
+# clears that time, so Studio is not started: zt uses it to stay instant. a direct run imports at
+# once and records the file's time, so the next start does not import it again.
 param(
     [string]$Theme = 'deep-dark',
     [string]$Studio = 'C:\Program Files (x86)\Atmel\Studio\7.0\AtmelStudio.exe',
-    # closes Studio once the import is confirmed, as zt does, so nothing is left open
-    [switch]$Close
+    # closes Studio once the import is confirmed, so nothing is left open
+    [switch]$Close,
+    [switch]$Pending
 )
 
 $ErrorActionPreference = 'Stop'
@@ -63,6 +70,41 @@ foreach ($valueName in 'DefaultNewProjectLocation', 'VisualStudioProjectsLocatio
     if ($old -ne $projects) { Set-ItemProperty -Path $studioKey -Name $valueName -Value $projects }
     Write-Output "  $status  registry  $valueName"
 }
+
+# Visual Studio's team settings values: the file, whether it is tracked and the file's UTC write
+# time as a FILETIME split in two, which Studio sets once it has imported the file
+$profileKey = Join-Path $studioKey 'Profile'
+$teamFile = (Resolve-Path (Join-Path $themes "$name.vssettings")).Path
+function Set-TeamSettings([int64]$Imported) {
+    if (-not (Test-Path $profileKey)) { New-Item -Path $profileKey -Force | Out-Null }
+    $bytes = [BitConverter]::GetBytes($Imported)
+    Set-ItemProperty -Path $profileKey -Name TeamSettingsFile -Value $teamFile
+    Set-ItemProperty -Path $profileKey -Name TrackTeamSettings -Value 1 -Type DWord
+    Set-ItemProperty -Path $profileKey -Name TeamSettingsFILETIMELow -Value ([BitConverter]::ToInt32($bytes, 0)) -Type DWord
+    Set-ItemProperty -Path $profileKey -Name TeamSettingsFILETIMEHigh -Value ([BitConverter]::ToInt32($bytes, 4)) -Type DWord
+}
+
+if ($Pending) {
+    # Studio writes its profile back as it exits, so a change made while it is open could be lost
+    if (Get-Process -Name 'AtmelStudio' -ErrorAction SilentlyContinue) {
+        [Console]::Error.WriteLine('Microchip Studio is running. Quit it first, then run this again.')
+        exit 1
+    }
+    $current = Get-ItemProperty -Path $profileKey -ErrorAction SilentlyContinue
+    if ($current -and $current.TrackTeamSettings -eq 1 -and $current.TeamSettingsFile -eq $teamFile) {
+        $stored = ([int64][uint32]$current.TeamSettingsFILETIMEHigh -shl 32) -bor [int64][uint32]$current.TeamSettingsFILETIMELow
+        $status = if ($stored -eq (Get-Item $teamFile).LastWriteTimeUtc.ToFileTimeUtc()) { 'unchanged' } else { 'waiting  ' }
+        Write-Output "  $status  registry  TeamSettingsFile $name"
+    } else {
+        Set-TeamSettings 0
+        Write-Output "  changed    registry  TeamSettingsFile $name"
+    }
+    Write-Output "Theme: $name, on Microchip Studio's next start"
+    exit 0
+}
+
+# the import below is the one that counts, so the team settings file is marked as already imported
+Set-TeamSettings ((Get-Item $teamFile).LastWriteTimeUtc.ToFileTimeUtc())
 
 # the /Command argument cannot quote a path, so the theme goes to a temporary path with no spaces
 # the file of an earlier run is cleared here: Studio may still have been reading it when that run ended

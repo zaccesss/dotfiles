@@ -27,6 +27,7 @@ import json
 import os
 import platform
 import re
+import shutil
 import subprocess
 import sys
 import urllib.request
@@ -125,6 +126,20 @@ def plugin_ids(plugins):
                 ids.add(match.group(1))
             break
     return ids
+
+
+def theme_plugin_version(d):
+    """The version of the Zacess Themes plugin in d's plugins/ folder (None when it is not there)."""
+    for jar in sorted((d / "plugins" / PACKAGE["folder"] / "lib").glob("*.jar")):
+        try:
+            with zipfile.ZipFile(jar) as archive:
+                manifest = archive.read("META-INF/plugin.xml").decode("utf-8", "replace")
+        except (KeyError, zipfile.BadZipFile, OSError):
+            continue
+        match = re.search(r"<version>\s*([^<]+?)\s*</version>", manifest)
+        if match:
+            return match.group(1)
+    return None
 
 
 def has_theme_plugin(d):
@@ -232,7 +247,15 @@ if not PROJECTS.is_dir():
     print(f"  added      folder  {PROJECTS}")
 for d in dirs:
     info = infos.get(d.name, (None, None))[0]
-    if has_theme_plugin(d):
+    installed = theme_plugin_version(d)
+    if installed is not None and installed != PACKAGE["version"]:
+        # an older copy in plugins/ is never updated by the IDE when it came from the pinned release,
+        # so it is replaced by the pinned one. the IDE loads it on its next start
+        shutil.rmtree(d / "plugins" / PACKAGE["folder"])
+        with zipfile.ZipFile(io.BytesIO(pinned_release())) as archive:
+            archive.extractall(d / "plugins")
+        print(f"  changed    {d.name}  plugins/{PACKAGE['folder']} {installed} to {PACKAGE['version']} (restart the IDE to load it)")
+    elif has_theme_plugin(d):
         print(f"  unchanged  {d.name}  plugins/{PACKAGE['folder']}")
     else:
         install_theme_plugin(d, infos)

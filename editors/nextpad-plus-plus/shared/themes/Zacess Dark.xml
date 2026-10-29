@@ -1779,7 +1779,7 @@
         <WidgetStyle name="Indent guideline style" styleID="37" fgColor="6B6B6B" bgColor="121212" fontName="" fontStyle="0" fontSize="" />
         <WidgetStyle name="Brace highlight style" styleID="34" fgColor="8CBCFF" bgColor="121212" fontName="" fontStyle="1" fontSize="" />
         <WidgetStyle name="Bad brace colour" styleID="35" fgColor="FFD7D2" bgColor="121212" fontName="" fontStyle="1" fontSize="" />
-        <WidgetStyle name="Current line background colour" styleID="0" bgColor="1F1F1F" />
+        <WidgetStyle name="Current line background colour" styleID="0" bgColor="2F2F2F" />
         <WidgetStyle name="Selected text colour" styleID="0" bgColor="4FBDFF" fgColor="121212" />
         <WidgetStyle name="Multi-selected text color" styleID="0" bgColor="004769" />
         <WidgetStyle name="Caret colour" styleID="0" fgColor="FFD400" />
@@ -1797,7 +1797,7 @@
         <WidgetStyle name="Fold margin" styleID="0" fgColor="121212" bgColor="121212" />
         <WidgetStyle name="White space symbol" styleID="0" fgColor="7A7A7A" />
         <WidgetStyle name="Smart Highlighting" styleID="29" bgColor="004769" />
-        <WidgetStyle name="Find Mark Style" styleID="31" bgColor="332A00" />
+        <WidgetStyle name="Find Mark Style" styleID="31" bgColor="4D4000" />
         <WidgetStyle name="Find status: Not found" styleID="0" fgColor="FFCCC4" />
         <WidgetStyle name="Find status: Message" styleID="0" fgColor="BDDAFF" />
         <WidgetStyle name="Find status: Search end reached" styleID="0" fgColor="FFD182" />
@@ -1806,7 +1806,7 @@
         <WidgetStyle name="Mark Style 3" styleID="23" bgColor="FFDA8A" />
         <WidgetStyle name="Mark Style 4" styleID="22" bgColor="F7A0F1" />
         <WidgetStyle name="Mark Style 5" styleID="21" bgColor="1BDB41" />
-        <WidgetStyle name="Incremental highlight all" styleID="28" bgColor="332A00" />
+        <WidgetStyle name="Incremental highlight all" styleID="28" bgColor="4D4000" />
         <WidgetStyle name="Tags match highlighting" styleID="27" bgColor="004769" />
         <WidgetStyle name="Tags attribute" styleID="26" bgColor="004769" />
         <WidgetStyle name="Active tab focused indicator" styleID="0" fgColor="8CBCFF" />

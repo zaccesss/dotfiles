@@ -60,6 +60,8 @@ dot() {
     echo -e "${CYAN}Applying Linux zsh profile...${RESET}"
     # a linked ~/.zshrc already points at the repo copy. cp onto it fails as identical
     [[ -L ~/.zshrc ]] || cp "$dir/linux/zshrc" ~/.zshrc
+    # linux/zshenv only turns off Ubuntu's slow global compinit, so an existing ~/.zshenv is left alone
+    [[ -e ~/.zshenv ]] || ln -s "$dir/linux/zshenv" ~/.zshenv
     # shellcheck disable=SC1090
     source ~/.zshrc
     echo -e "${GREEN}Done - dotfiles are up to date${RESET}"
