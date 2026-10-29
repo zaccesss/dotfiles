@@ -8,6 +8,8 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-10-29
+
 ### Added
 
 - KDE Plasma defaults in `setup/defaults/linux/kde`, tested on Fedora KDE Plasma 6.7:
@@ -25,6 +27,9 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 - tmux theme files, one per Zacess theme in `terminal/tmux/themes`, generated from the terminal palette: the status bar in the theme's text and background, the message line in its accent pair, copy mode in its selection pair, search matches in its find colour and the pane borders in two colours. `zt` links the active one to `~/.local/state/zacess/tmux.conf`, which `tmux.conf` sources. A running server reloads at once. The active pane also carries border arrows.
 - `terminal/terminal/scripts/sync-palette.py` copies the palette from a pinned Zacess Themes release (`--version`, `--from <clone>` offline, `--check`), regenerates every theme file and moves the Zed theme file and zacess.nvim pins to the same release. A release without the strong selection pair keeps the selection the palette already holds.
 - Ghostty theme files for the Mac and Linux, a starter config with `minimum-contrast = 4.5` and the Mac installer linking the themes.
+- `apps/translucenttb`: TranslucentTB from winget with a dark acrylic taskbar over the desktop that turns solid with a maximised window or battery saver. The apps stage merges the tracked values into its settings file.
+- `setup/defaults/windows/defaults.ps1` tells Windows the colour set changed after a light or dark setting is applied, so the taskbar redraws without signing out.
+- `editors/stm32cubeide/<os>/plugins.txt` lists the WakaTime plugin from the Eclipse update site. The Linux README gives the `p2.director` command that installs it into STM32CubeIDE 2.2.0 without opening the IDE.
 
 ### Changed
 
@@ -36,12 +41,16 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 - Diff markers that do not rest on colour alone: VS Code draws `+` and `-` in the diff editor, striped gutter marks for added and modified lines and the current line across the gutter; Zed keeps its git gutter and current line highlight pinned; Neovim marks the current line and gives each kind of git change its own sign (`+`, `~`, `_`, `‾`, `~_`, `┆`) with the line number coloured.
 - The Notepad++, Nextpad++ and Microchip Studio builds read the strong selection pair for selected text from the Zacess Themes 0.5.0 package and keep the editor fill with an older one.
 - `mac/tracked.txt` no longer tracks `AppleHighlightColor`, since `zt` sets it.
-
-### Changed
-
 - On Windows the bootstrap hides dot folders only and keeps dot files shown, showing again any it hid before. Node and Electron apps cannot overwrite a hidden file on Windows (EPERM), so a save to a hidden dot file failed silently.
 - Windows pointer size is no longer captured: each PC keeps its own size. The colour and style are still captured.
 - On Windows the display now stays on for 60 minutes after Win+L on mains and 15 on battery, so the lock screen and screen saver show. Windows' hidden lock screen timeout had turned it off after a minute.
+- `setup/defaults/windows/defaults.ps1` turns the display off at 60 minutes on battery and mains and sleeps at 60 on battery (never on mains), so a screen saver started at 15 minutes runs for a while first.
+- The VS Code extension list pins Zacess Themes 0.4.0.
+- A file the Mac, Linux and Windows bootstraps replace goes to the Bin (the Recycle Bin on Windows) instead of a backups folder. The Xcode apply script no longer exports a copy of the preferences domain and the Windows Terminal settings are no longer copied before each change.
+
+### Removed
+
+- The temporary forwarding files at the shell profile's old paths (`mac/`, `linux/` and `windows/` at the root) and their CI checks. Re-run the bootstrap on a machine set up before the grouped layout.
 
 ### Fixed
 
@@ -53,25 +62,6 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 - Starship starts from a cached init script made again only after an upgrade or a change to `starship.toml`. The continuation prompt is written into the cache, so Starship is no longer started on every new window.
 - The pre-commit hooks split staged file lists on newlines only, so a path with a space is checked as one file instead of being skipped by every check.
 - `windows/defaults.ps1 -Plan` no longer applies the power plan timeouts; it only says it would.
-
-### Removed
-
-- The temporary forwarding files at the shell profile's old paths (`mac/`, `linux/` and `windows/` at the root) and their CI checks. Re-run the bootstrap on a machine set up before the grouped layout.
-
-### Added
-
-- `apps/translucenttb`: TranslucentTB from winget with a dark acrylic taskbar over the desktop that turns solid with a maximised window or battery saver. The apps stage merges the tracked values into its settings file.
-- `setup/defaults/windows/defaults.ps1` tells Windows the colour set changed after a light or dark setting is applied, so the taskbar redraws without signing out.
-- `editors/stm32cubeide/<os>/plugins.txt` lists the WakaTime plugin from the Eclipse update site. The Linux README gives the `p2.director` command that installs it into STM32CubeIDE 2.2.0 without opening the IDE.
-
-### Changed
-
-- `setup/defaults/windows/defaults.ps1` turns the display off at 60 minutes on battery and mains and sleeps at 60 on battery (never on mains), so a screen saver started at 15 minutes runs for a while first.
-- The VS Code extension list pins Zacess Themes 0.4.0.
-- A file the Mac, Linux and Windows bootstraps replace goes to the Bin (the Recycle Bin on Windows) instead of a backups folder. The Xcode apply script no longer exports a copy of the preferences domain and the Windows Terminal settings are no longer copied before each change.
-
-### Fixed
-
 - The Mac, Linux and Windows bootstraps link VS Code's global snippets as well as its settings and keybindings. `argv.json` stays VS Code's own file, because VS Code writes each install's crash reporter id into it.
 - `zt current` on Windows reads an LTspice ini written entirely as UTF-16, which it had reported as not a Zacess theme.
 - Windows Terminal finds Geist Mono: Windows lists the Nerd Font builds as `GeistMono NF` and `GeistMono NFM`, so the long family name the Mac and Linux use made Terminal fall back to its default font.
