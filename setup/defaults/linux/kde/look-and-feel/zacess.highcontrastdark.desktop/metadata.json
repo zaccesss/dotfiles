@@ -1,0 +1,16 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Isaac Adjei"
+            }
+        ],
+        "Category": "",
+        "Description": "Breeze with high contrast dark colours",
+        "Id": "zacess.highcontrastdark.desktop",
+        "License": "GPLv2+",
+        "Name": "Zacess High Contrast Dark",
+        "Website": "https://www.kde.org"
+    }
+}

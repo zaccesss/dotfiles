@@ -25,7 +25,8 @@ zacess-theme() {
 # device handled using only shell builtins, so an unchanged folder costs nothing. zt sync starts in
 # the background only when a new change has arrived
 _zt_check_all() {
-    local shared="${ZACESS_SHARED_DIR:+$ZACESS_SHARED_DIR/zt-all.json}"
+    # the OneDrive client syncs the folder into ~/OneDrive, the place zt.py looks too
+    local shared="${ZACESS_SHARED_DIR:-$HOME/OneDrive/.zacess}/zt-all.json"
     local state="${XDG_STATE_HOME:-$HOME/.local/state}/zacess/all-seen" text="" seen=""
     [[ -n $shared && -r $shared ]] || return 0
     IFS= read -r -d '' text < "$shared"

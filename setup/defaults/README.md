@@ -17,6 +17,9 @@ meaningful native equivalent exists, otherwise it stays platform-specific.
   registry values in [`windows/tracked.txt`](windows/tracked.txt). Run `-Capture` on your PC first.
 - [`linux/defaults.sh`](linux/defaults.sh) - the GNOME implementation, using `gsettings`. It only
   applies settings for schemas and keys available in the current environment.
+- [`linux/kde/apply.sh`](linux/kde/apply.sh) - the KDE Plasma implementation: high contrast global
+  themes, a see-through Windows 11-style taskbar with a centred start menu, wallpapers, power and
+  keys. See its [README](linux/kde/README.md).
 - [`guides/reference.md`](guides/reference.md) - every setting and what it does.
 - [`guides/setup.md`](guides/setup.md) - how to apply the scripts safely.
 
@@ -26,6 +29,7 @@ meaningful native equivalent exists, otherwise it stays platform-specific.
 bash mac/defaults.sh --capture   # macOS: record this Mac's settings into mac/defaults.tsv
 bash mac/defaults.sh             # macOS: apply mac/defaults.tsv, writing only values that differ
 bash linux/defaults.sh           # Linux with GNOME
+bash linux/kde/apply.sh          # Linux with KDE Plasma
 ```
 
 ```powershell
@@ -46,5 +50,5 @@ bash linux/defaults.sh           # Linux with GNOME
 | [`ACCESSIBILITY.md`](ACCESSIBILITY.md) | Larger Dock icons, a still clock, visible extensions and predictable layouts |
 | [`common/`](common/) | The shared preference model |
 | [`mac/`](mac/) | macOS implementation |
-| [`linux/`](linux/) | GNOME implementation |
+| [`linux/`](linux/) | GNOME implementation, with KDE Plasma in `linux/kde` |
 | [`guides/`](guides/) | Setup walkthrough and settings reference |

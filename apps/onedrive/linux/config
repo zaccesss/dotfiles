@@ -1,0 +1,5 @@
+# a personal OneDrive, synced in full into the home folder as on Windows. zt --all reads its push
+# file from ~/OneDrive/.zacess
+sync_dir = "~/OneDrive"
+# 16 transfers at once, the client's most: the first sync of the whole drive is mostly large pictures
+threads = "16"

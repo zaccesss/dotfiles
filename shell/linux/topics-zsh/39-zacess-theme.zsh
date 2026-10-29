@@ -24,10 +24,11 @@ zacess-theme() {
 # the background only when a new change has arrived
 _zt_check_all() {
     local shared state="${XDG_STATE_HOME:-$HOME/.local/state}/zacess/all-seen" text seen=""
+    # the OneDrive client syncs the folder into ~/OneDrive, the place zt.py looks too
     if [[ -n ${ZACESS_SHARED_DIR:-} ]]; then
         shared="$ZACESS_SHARED_DIR/zt-all.json"
     else
-        shared=""
+        shared="$HOME/OneDrive/.zacess/zt-all.json"
     fi
     [[ -n $shared && -r $shared ]] || return 0
     text=$(<"$shared")
