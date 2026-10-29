@@ -8,6 +8,8 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-10-29
+
 ### Added
 
 - Zacess Games in `apps/zacess-games`: setup scripts for macOS, Linux and Windows install the newest release binary checked against its checksum, only when it is newer. Every bootstrap runs them in its apps stage. The shell topics `zacess-games` add `zg` for the menu or one of the fourteen games by name, with `zg list` for best scores, `zg sounds` to hear every effect and each game's music, `zg snap` for SVG stills and Tab completion of the game names. The games follow the theme `zt` last set; on Windows `zg` hands it over, as the Scenes commands do.
