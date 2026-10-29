@@ -35,6 +35,7 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ### Fixed
 
+- The four dark tmux theme files are regenerated from the Zacess Themes 0.6.0 palette, which the terminal check found out of date.
 - zsh and bash on Linux start without Ubuntu's global compinit audit on every start and without PATH searches through Windows folders under WSL: the new `shell/linux/zshenv` turns the global compinit off and `zshrc` runs it with the audit once a day.
 - The JetBrains apply script replaces an older Zacess Themes plugin with the pinned release and the Terminal.app installer updates an existing Zacess profile while Terminal.app is closed. Both used to keep an old copy.
 - New PowerShell windows on Windows load the topics as one cached file, rebuilt whenever a topic is added, removed or edited. A bundle that cannot be parsed falls back to the separate files.
