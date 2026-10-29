@@ -1,6 +1,6 @@
 # TranslucentTB
 
-A dark acrylic Windows taskbar over the desktop that turns solid when a window is maximised or
+A dark see-through Windows taskbar over the desktop that turns solid when a window is maximised or
 battery saver is on. Pair it with Windows mode Dark (**Settings > Personalisation > Colours**) so
 the taskbar text is white over any wallpaper.
 
@@ -11,7 +11,7 @@ TranslucentTB's defaults:
 
 | State | Look |
 | --- | --- |
-| Desktop | Acrylic, tinted `#1C1C1C` at 65 percent, blur radius 9, with the line but no Peek button |
+| Desktop | The blur accent at radius 0: a `#1C1C1C` tint at 65 percent with no blur, with the line but no Peek button. TranslucentTB only reads `blur_radius` with the blur accent, so acrylic always blurs |
 | A window maximised | Solid `#1C1C1C` with the Peek button and line |
 | Task View open | Windows' normal taskbar with the line |
 | Battery saver on | Solid `#1C1C1C` with the Peek button and line |

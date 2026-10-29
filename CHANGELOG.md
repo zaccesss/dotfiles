@@ -19,6 +19,7 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ### Changed
 
+- The Windows taskbar over the desktop is a plain `#1C1C1C` tint at 65 percent with no blur (TranslucentTB's blur accent at radius 0) instead of acrylic. Acrylic ignores `blur_radius`, so it always blurred.
 - Every theme file and pin follows Zacess Themes 0.6.0: the terminal palette, Zed, the JetBrains, Arduino IDE, Obsidian and VS Code packages and the Eclipse, Notepad++, Nextpad++ and Microchip Studio builds. The Nextpad++ check holds every style to 4.5:1 on the current line, the rule 0.6.0 sets for syntax over its visible current line band.
 - The selection in every terminal is the strong block with its own text colour that Zacess Themes 0.5.0 ships: Light `#0150b2` with white text, Dark `#4fbdff` with `#121212`, Yellow on Black `#09bcc4` with black, Cream `#7401ca` with `#fdf6e3`, High Contrast Dark `#bf96ff` with black, High Contrast Light `#015f5e` with white, Deep Contrast Dark `#ff70ff` with black and Deep Contrast Light `#990098` with white. The palette's selection floor is 4.5:1, Zacess Themes' own rule for text over a highlight.
 - The palette carries the interface tokens the tmux files use (borders, accent, find match) and Yellow on Black's terminal text is white with a yellow cursor, as the release's own terminal files have it.
