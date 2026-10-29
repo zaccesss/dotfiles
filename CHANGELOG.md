@@ -10,6 +10,8 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ### Added
 
+- `zt undo` returns to the theme before the last change and `zt <theme> --all` changes every device through a synced folder (`.zacess/zt-all.json` in OneDrive Personal unless `ZACESS_SHARED_DIR` names another folder). Each device applies it once when a terminal next opens there and `zt undo --all` returns each to its own previous theme. `zt` also runs every tool at once and leaves MATLAB's theme for its next start.
+- A Windows PC can keep its own TranslucentTB values in `apps/translucenttb/windows/machines/<computer name>.json`.
 - MATLAB and Microchip Studio take a theme change on their next start: the apply scripts gain a pending mode and a marked `startup.m` block runs `editors/matlab/shared/zacess_startup.m`, so switching a theme never has to start either app.
 - `zt doctor`: every installed theme file against the repo copy for the active theme and every tool's own setting against the state, one line per tool, exit 1 on any drift. On the Mac and Linux it covers VS Code (settings, snippets and the pinned Zacess Themes extension), Zed, the JetBrains IDEs (theme and the shared copies), Neovim (every config file), the Eclipse family and every app with an apply script, Terminal.app (profile colours decoded, since Terminal.app stores them without the alpha), iTerm2, Kitty, Alacritty, Ghostty, tmux (the config, the linked theme file and a running server's copy mode colours), Xcode against a Zacess Themes clone and the system highlight. On Windows it covers VS Code, Zed, the JetBrains IDEs, Neovim, the Windows Terminal fragment, Alacritty, every app with a reader and the registry highlight.
 - `zt <theme>` sets the system text highlight from the theme's selection colour, read from the generated terminal theme (iTerm2's profile on the Mac, Kitty's file on Linux, the Windows Terminal scheme on Windows): `AppleHighlightColor` on macOS with the colour change notification posted, `[Colors:Selection]` in the installed Zacess colour schemes on KDE Plasma and the GTK named colours on GNOME, `Hilight` and `HilightText` on Windows for the next sign in. The value found first is recorded and `zt highlight default` puts it back; `zt highlight` applies it again.
@@ -36,6 +38,7 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ### Fixed
 
+- `webstorm`, `phpstorm` and `datagrip` on the Mac run the real program instead of calling themselves. The PowerShell welcome banner only shows in an interactive window. The Windows bootstrap brings a VS Code extension older than its pin up to the pin.
 - The four dark tmux theme files are regenerated from the Zacess Themes 0.6.0 palette, which the terminal check found out of date.
 - zsh and bash on Linux start without Ubuntu's global compinit audit on every start and without PATH searches through Windows folders under WSL: the new `shell/linux/zshenv` turns the global compinit off and `zshrc` runs it with the audit once a day.
 - The JetBrains apply script replaces an older Zacess Themes plugin with the pinned release and the Terminal.app installer updates an existing Zacess profile while Terminal.app is closed. Both used to keep an old copy.

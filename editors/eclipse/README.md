@@ -16,7 +16,7 @@ all of that, so this folder holds only the chosen keys and merges them in.
   fragments and the chosen theme in key by key and print what changed, with no backup. The Windows script also lists PowerShell 7 in the Terminal view. Both refuse to run
   while Eclipse is open.
 - [`theme/`](theme/) - the eight Zacess Eclipse themes from
-  [Zacess Themes](https://github.com/zacesshq/themes) 0.5.0 (editor and Terminal view colours), tab
+  [Zacess Themes](https://github.com/zacesshq/themes) 0.6.0 (editor and Terminal view colours), tab
   outlines for the two Deep Contrast themes and an outline stylesheet for the Dark theme on macOS.
   The scripts import Zacess Deep Contrast Dark by default. `--theme <name>` (`-Theme` on Windows)
   picks another and `--no-theme` (`-NoTheme`) skips it.

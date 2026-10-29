@@ -44,4 +44,8 @@ try {
 # Welcome banner - printed after all topics load so welcome is defined
 # =============================================================================
 
-welcome
+# a program that runs pwsh -Command or -File reads everything printed as its result, so the
+# banner only shows in an interactive window
+$batch = [Environment]::GetCommandLineArgs() | Where-Object { $_ -match '^[-/](c|co|com|comm|comma|comman|command|f|fi|fil|file|e|ec|en|enc\w*|noni\w*)$' }
+if (-not $batch -and -not [Console]::IsOutputRedirected) { welcome }
+Remove-Variable batch

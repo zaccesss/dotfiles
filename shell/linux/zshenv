@@ -4,7 +4,7 @@
 #
 # zsh reads this file before the system zshrc, so it is the only place that can
 # turn off Ubuntu's own completion set-up. linux/zshrc runs compinit itself.
-# linked to ~/.zshenv by the Linux bootstrap.
+# link it to ~/.zshenv, the same way as linux/zshrc to ~/.zshrc.
 # =============================================================================
 
 # Ubuntu's /etc/zsh/zshrc runs a full compinit with its security audit on every

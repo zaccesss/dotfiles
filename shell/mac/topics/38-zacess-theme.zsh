@@ -20,3 +20,26 @@ zt() {
 zacess-theme() {
     zt "$@"
 }
+
+# zt --all leaves a change in a synced folder. a new shell compares its id with the last one this
+# device handled using only shell builtins, so an unchanged folder costs nothing. zt sync starts in
+# the background only when a new change has arrived
+_zt_check_all() {
+    local shared state="${XDG_STATE_HOME:-$HOME/.local/state}/zacess/all-seen" text seen=""
+    if [[ -n ${ZACESS_SHARED_DIR:-} ]]; then
+        shared="$ZACESS_SHARED_DIR/zt-all.json"
+    else
+        shared="$HOME/Library/CloudStorage/OneDrive-Personal/.zacess/zt-all.json"
+    fi
+    [[ -n $shared && -r $shared ]] || return 0
+    text=$(<"$shared")
+    local pattern='"id": *"([^"]+)"'
+    [[ $text =~ $pattern ]] || return 0
+    [[ -r $state ]] && seen=$(<"$state")
+    # zsh sets match from the =~ test above
+    # shellcheck disable=SC2154
+    [[ ${match[1]} == "$seen" ]] && return 0
+    (python3 "$DOTFILES/scripts/zt.py" sync >/dev/null 2>&1 &)
+}
+_zt_check_all
+unset -f _zt_check_all

@@ -1,6 +1,9 @@
 # merges the tracked TranslucentTB settings into its live settings.json.
-# usage: .\apply.ps1 [-Theme <theme>] [-Settings <path to settings.json>]
-#   (the settings file defaults to the Store package's RoamingState folder)
+# usage: .\apply.ps1 [-Theme <theme>] [-Settings <path to settings.json>] [-Machine <computer name>]
+#   (the settings file defaults to the Store package's RoamingState folder and the machine to this PC)
+#
+# .\machines\<computer name>.json holds the values one PC keeps for itself, such as its own desktop
+# look. they are laid over .\settings.json, so applying the shared file never replaces them.
 #
 # TranslucentTB has no themes of its own. -Theme is accepted so the bootstrap's apps stage can call
 # every app script the same way; it is ignored. only the keys in .\settings.json are written and any
@@ -10,7 +13,8 @@
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'Theme', Justification = 'the apps stage passes -Theme to every app script')]
 param(
     [string]$Theme = 'deep-dark',
-    [string]$Settings = (Join-Path $env:LOCALAPPDATA 'Packages\28017CharlesMilette.TranslucentTB_v826wp6bftszj\RoamingState\settings.json')
+    [string]$Settings = (Join-Path $env:LOCALAPPDATA 'Packages\28017CharlesMilette.TranslucentTB_v826wp6bftszj\RoamingState\settings.json'),
+    [string]$Machine = $env:COMPUTERNAME
 )
 
 $ErrorActionPreference = 'Stop'
@@ -27,6 +31,19 @@ if (-not (Test-Path $Settings)) {
 Write-Output "Settings: $Settings"
 
 $want = Get-Content (Join-Path $PSScriptRoot 'settings.json') -Raw | ConvertFrom-Json
+$machineFile = Join-Path $PSScriptRoot "machines\$Machine.json"
+if ($Machine -and (Test-Path $machineFile)) {
+    foreach ($section in (Get-Content $machineFile -Raw | ConvertFrom-Json).PSObject.Properties) {
+        if ($section.Value -is [pscustomobject] -and $want.($section.Name) -is [pscustomobject]) {
+            foreach ($entry in $section.Value.PSObject.Properties) {
+                $want.($section.Name) | Add-Member -NotePropertyName $entry.Name -NotePropertyValue $entry.Value -Force
+            }
+        } else {
+            $want | Add-Member -NotePropertyName $section.Name -NotePropertyValue $section.Value -Force
+        }
+    }
+    Write-Output "Machine: $Machine, with its own values from machines\$Machine.json"
+}
 $live = Get-Content $Settings -Raw | ConvertFrom-Json
 $changes = 0
 

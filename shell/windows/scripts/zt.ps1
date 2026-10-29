@@ -5,14 +5,17 @@
 #   zt list                    the eight themes and their short names
 #   zt current                 the mode zt last set and what each tool is on now
 #   zt doctor                  every installed theme file against the repo copy, exit 1 on drift
+#   zt <theme> --all           the same here, then on every other device as a terminal opens there
+#   zt undo [--all]            back to the theme before the last change (on every device with --all)
+#   zt sync                    apply a change sent with --all from another device (run at shell start)
 #   zt highlight [default]     the Windows text highlight again from the theme or Windows' own back
 #
 # each tool is edited in place and only for its theme setting; a tool that is not installed is
 # skipped. the JetBrains IDEs, Eclipse, STM32CubeIDE and the apps with their own apply script
 # (Arduino IDE, Notepad++, Thonny, LTspice, Proteus, Zotero, Obsidian, MATLAB, KiCad, Vivado,
 # Processing and Microchip Studio) are only changed while they are closed, since they write their
-# settings back on exit. MATLAB and Microchip Studio are started briefly to apply a theme and
-# closed again. the Windows text highlight (Hilight and HilightText under Control Panel\Colors)
+# settings back on exit. MATLAB and Microchip Studio are never started: their theme is left for
+# their next start (a startup.m block and Studio's team settings file). the Windows text highlight (Hilight and HilightText under Control Panel\Colors)
 # takes the theme's selection colour from the generated Windows Terminal scheme and applies at the
 # next sign in. scripts/zt.py is the macOS and Linux version; both keep the same state file
 # format, which Neovim reads. zt.cmd and zacess-theme.cmd run this from Command Prompt.
@@ -31,6 +34,15 @@ $Themes = @(
 )
 
 $StateFile = Join-Path $env:LOCALAPPDATA 'zacess\theme'
+# the theme MATLAB applies at its next start, written by editors\matlab\windows\apply.ps1 -Pending
+$MatlabPending = Join-Path $env:LOCALAPPDATA 'zacess\matlab-theme'
+# the state before the last change, for zt undo. a second undo swaps back, so it also redoes
+$PreviousFile = Join-Path $env:LOCALAPPDATA 'zacess\previous'
+# --all: one push at a time in a synced folder, read by every device. all-seen is the last push
+# this device handled and all-applied the state it had before applying it, so zt undo --all can
+# return each device to its own previous theme
+$AllSeen = Join-Path $env:LOCALAPPDATA 'zacess\all-seen'
+$AllApplied = Join-Path $env:LOCALAPPDATA 'zacess\all-applied'
 $EclipseWorkspace = if ($env:ZT_ECLIPSE_WORKSPACE) { $env:ZT_ECLIPSE_WORKSPACE } else { Join-Path $env:USERPROFILE 'eclipse-workspace' }
 # editors\eclipse and editors\stm32cubeide sit beside shell\ in the same clone (shell\windows\scripts\zt.ps1)
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path
@@ -114,13 +126,39 @@ function Set-VSCode($Fixed, $Dark, $Light, $Now) {
 function Set-Zed($Fixed, $Dark, $Light, $Now) {
     $path = Join-Path $env:APPDATA 'Zed\settings.json'
     if (-not (Test-Path $path)) { return Write-Result 'Zed' 'not installed, skipped' $false }
-    if ($Fixed) {
-        $mode = if ($Fixed.Dark) { 'dark' } else { 'light' }
-        $value = "{ `"mode`": `"$mode`", `"light`": `"$($Light.Name)`", `"dark`": `"$($Dark.Name)`" }"
-        Edit-Json $path @{ 'theme' = $value }
-        return Write-Result 'Zed' $Fixed.Name
+    $mode = if (-not $Fixed) { 'system' } elseif ($Fixed.Dark) { 'dark' } else { 'light' }
+    # the settings file is the repo's own copy, so a theme that is already right is left as it is:
+    # rewriting it on one line left a change behind that blocked the next git pull
+    $current = try { (Get-Content -Raw $path | ConvertFrom-Json).theme } catch { $null }
+    $same = $current -and $current.mode -eq $mode -and $current.light -eq $Light.Name -and $current.dark -eq $Dark.Name
+    if (-not $same) {
+        $entries = @("`"mode`": `"$mode`"", "`"light`": `"$($Light.Name)`"", "`"dark`": `"$($Dark.Name)`"")
+        $text = [IO.File]::ReadAllText($path)
+        $old = [regex]::Match($text, '"theme"\s*:\s*(\{[^{}]*\})')
+        # a block already spread over lines keeps that shape and its trailing comma, as
+        # editors\zed\windows\apply.ps1 writes it: one line left the linked repo file changed
+        $rendered = if ($old.Success -and $old.Groups[1].Value.Contains("`n")) {
+            $lineStart = $text.LastIndexOf("`n", $old.Index) + 1
+            $pad = [regex]::Match($text.Substring($lineStart), '^[ \t]*').Value
+            $inside = [regex]::Match($old.Groups[1].Value, '\n([ \t]+)\S')
+            $step = if ($inside.Success) { $inside.Groups[1].Value } else { $pad + '  ' }
+            $trailing = if ($old.Groups[1].Value -match ',\s*}$') { ',' } else { '' }
+            $nl = if ($text.Contains("`r`n")) { "`r`n" } else { "`n" }
+            "{$nl" + (($entries | ForEach-Object { "$step$_" }) -join ",$nl") + $trailing + "$nl$pad}"
+        } else {
+            '{ ' + ($entries -join ', ') + ' }'
+        }
+        Edit-Json $path @{ 'theme' = $rendered }
     }
-    Edit-Json $path @{ 'theme' = "{ `"mode`": `"system`", `"light`": `"$($Light.Name)`", `"dark`": `"$($Dark.Name)`" }" }
+    # the theme file comes from the apply script, so a Zacess Themes bump in the repo reaches Zed
+    # while its store extension is still older. editing settings.json alone left the old file behind
+    $apply = Join-Path $RepoRoot 'editors\zed\windows\apply.ps1'
+    if (Test-Path $apply) {
+        $global:LASTEXITCODE = 0
+        $output = @(& $apply -ThemesOnly 2>&1 | ForEach-Object { "$_" })
+        if ($LASTEXITCODE -ne 0) { return Write-Result 'Zed' "theme file not refreshed: $($output | Select-Object -First 1)" $false }
+    }
+    if ($Fixed) { return Write-Result 'Zed' $Fixed.Name }
     Write-Result 'Zed' "following the system: $($Dark.Name) or $($Light.Name)"
 }
 
@@ -274,22 +312,44 @@ function Set-Alacritty($Fixed, $Dark, $Light, $Now) {
 # the apps below have an apply script of their own beside their settings, which finds the app,
 # refuses while it is open and changes only its own keys, so zt runs that script. none of them can
 # follow the system, so following it sets the theme for the current mode
-function Invoke-AppScript($Label, $Script, $Fixed, $Now, [string]$Process, [string[]]$Extra = @()) {
+# the apply script runs in this process rather than a new pwsh, which cost most of a second for
+# each app. its exit only ends the script. the reason a script gives on standard error is caught
+# by swapping the console's error writer while it runs. in a parallel run ($ZtErrors) the writer
+# is one per process, so the run swaps it once for all tools and the reason is printed after
+function Invoke-AppScript($Label, $Script, $Fixed, $Now, [string]$Process, [hashtable]$Extra = @{}, [string]$Later) {
     $theme = if ($Fixed) { $Fixed } else { $Now }
     $path = Join-Path $RepoRoot $Script
     if (-not (Test-Path $path)) { return Write-Result $Label "no apply script at $Script, skipped" $false }
     if ($Process -and (Get-Process -Name $Process -ErrorAction SilentlyContinue)) {
         return Write-Result $Label 'open, skipped: quit it and run zt again' $false
     }
-    $output = @(& pwsh -NoProfile -File $path -Theme $theme.Id @Extra 2>&1 | ForEach-Object { "$_" })
-    if ($LASTEXITCODE -ne 0) {
-        $reason = ($output | Where-Object { $_.Trim() } | Select-Object -First 1)
+    $errors = [IO.StringWriter]::new()
+    $console = [Console]::Error
+    if (-not $ZtErrors) { [Console]::SetError($errors) }
+    try {
+        $global:LASTEXITCODE = 0
+        $output = @(& $path -Theme $theme.Id @Extra 2>&1 | ForEach-Object { "$_" })
+        $code = $LASTEXITCODE
+    } catch {
+        $output = @($_.Exception.Message)
+        $code = 1
+    } finally {
+        if (-not $ZtErrors) { [Console]::SetError($console) }
+    }
+    if ($code -ne 0) {
+        $reason = @($errors.ToString() -split "`r?`n") + $output | Where-Object { $_.Trim() } | Select-Object -First 1
+        if (-not $reason) { $reason = 'see the message after the list' }
         return Write-Result $Label "skipped: $reason" $false
     }
     # a script whose app is not set up here says so on its first line and exits cleanly
     if ($output.Count -and $output[0] -match 'skipped') { return Write-Result $Label 'not installed, skipped' $false }
-    $note = if ($Fixed) { '' } else { " ($Label cannot follow the system, so this matches it now)" }
-    Write-Result $Label "$($theme.Name)$note"
+    # every apply script prints a line per file or value led by its status (added, changed,
+    # unchanged, waiting and so on), so a run is unchanged only when every such line says so
+    $statuses = @($output | ForEach-Object { if ($_ -match '^\s+([a-z]+)\s') { $Matches[1] } })
+    $same = $statuses.Count -gt 0 -and -not ($statuses | Where-Object { $_ -ne 'unchanged' })
+    $note = if ($same) { ', unchanged' } elseif ($Later) { ", $Later" } else { '' }
+    if (-not $Fixed) { $note += " ($Label cannot follow the system, so this matches it now)" }
+    Write-Result $Label "$($theme.Name)$note" (-not $same)
 }
 
 function Set-ArduinoIDE($Fixed, $Dark, $Light, $Now) {
@@ -330,17 +390,29 @@ function Set-Obsidian($Fixed, $Dark, $Light, $Now) {
     Invoke-AppScript 'Obsidian' 'apps\obsidian\windows\apply.ps1' $Fixed $Now 'Obsidian'
 }
 
-# MATLAB saves settings only from a session that exits normally, so this takes about a minute
+# MATLAB applies settings only through a running session, so the theme is left in $MatlabPending
+# for the startup.m block the apply script adds. MATLAB is never started here. nothing is left
+# when its saved settings already hold the theme and its desktop
 function Set-MATLAB($Fixed, $Dark, $Light, $Now) {
     if (-not (Get-ChildItem 'C:\Program Files\MATLAB' -Filter 'R20*' -Directory -ErrorAction SilentlyContinue)) { return Write-Result 'MATLAB' 'not installed, skipped' $false }
-    Invoke-AppScript 'MATLAB' 'editors\matlab\windows\apply.ps1' $Fixed $Now 'MATLAB'
+    $theme = if ($Fixed) { $Fixed } else { $Now }
+    $current = Get-CurrentMATLAB
+    $file = Join-Path $RepoRoot "editors\matlab\shared\themes\$($theme.Name).json"
+    $desktop = if (Test-Path $file) { (Get-Content -Raw $file | ConvertFrom-Json).settings.'matlab.appearance.MATLABTheme' }
+    if ($current -and $current.Theme -and $current.Theme.Id -eq $theme.Id -and $current.Mode -eq $desktop) {
+        # a theme still waiting from an earlier switch would undo this one at the next start
+        Remove-Item $MatlabPending -Force -ErrorAction SilentlyContinue
+        return Write-Result 'MATLAB' "$($theme.Name), unchanged" $false
+    }
+    Invoke-AppScript 'MATLAB' 'editors\matlab\windows\apply.ps1' $Fixed $Now '' @{ Pending = $true } 'on next start'
 }
 
-# Microchip Studio only imports colours through a running Studio, so its script starts Studio,
-# imports the theme and, with -Close, quits it so the colours are saved (about a minute)
+# Microchip Studio only imports colours through a running Studio, so the theme's .vssettings
+# becomes its team settings file, which Studio imports by itself at its next start. Studio is
+# never started here, but it is skipped while open since it writes its profile back on exit
 function Set-MicrochipStudio($Fixed, $Dark, $Light, $Now) {
     if (-not (Test-Path 'C:\Program Files (x86)\Atmel\Studio\7.0\AtmelStudio.exe')) { return Write-Result 'Microchip Studio' 'not installed, skipped' $false }
-    Invoke-AppScript 'Microchip Studio' 'editors\microchip-studio\windows\apply.ps1' $Fixed $Now 'AtmelStudio' @('-Close')
+    Invoke-AppScript 'Microchip Studio' 'editors\microchip-studio\windows\apply.ps1' $Fixed $Now 'AtmelStudio' @{ Pending = $true } 'on next start'
 }
 
 function Set-KiCad($Fixed, $Dark, $Light, $Now) { Invoke-AppScript 'KiCad' 'editors\kicad\windows\apply.ps1' $Fixed $Now 'kicad' }
@@ -449,14 +521,46 @@ function Get-CurrentVivado {
     return 'not a Zacess theme'
 }
 
+# the Zacess theme MATLAB is on, matched by its keyword colour (each theme's is different), with
+# its Dark or Light desktop. $null when MATLAB has never saved settings
+function Get-CurrentMATLAB {
+    $mlsettings = Get-ChildItem (Join-Path $env:APPDATA 'MathWorks\MATLAB') -Directory -Filter 'R20*' -ErrorAction SilentlyContinue | Sort-Object Name -Descending | ForEach-Object { Join-Path $_.FullName 'matlab.mlsettings' } | Where-Object { Test-Path $_ } | Select-Object -First 1
+    if (-not $mlsettings) { return $null }
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $zip = [IO.Compression.ZipFile]::OpenRead($mlsettings)
+    try {
+        $read = { param($entry) $e = $zip.Entries | Where-Object FullName -eq $entry; if ($e) { $r = New-Object IO.StreamReader($e.Open()); try { $r.ReadToEnd() } finally { $r.Close() } } }
+        # MATLAB writes a value as {"mwdata":[...]} and the Color Theme Extensions add-on as a plain
+        # string or array, so both forms are read
+        $mode = [regex]::Match("$(& $read 'fsroot/settingstree/matlab/appearance/settings.json')", 'MATLABTheme","value":"(?:\{\\"mwdata\\":\[)?\\"(Dark|Light)\\"').Groups[1].Value
+        $keyword = [regex]::Match("$(& $read 'fsroot/settingstree/matlab/colors/settings.json')", 'KeywordColor","value":"(?:\{\\"mwdata\\":)?\[(\d+),(\d+),(\d+)')
+    } finally { $zip.Dispose() }
+    $match = if ($keyword.Success) {
+        $Themes | Where-Object {
+            $file = Join-Path $RepoRoot "editors\matlab\shared\themes\$($_.Name).json"
+            (Test-Path $file) -and ((Get-Content -Raw $file | ConvertFrom-Json).settings.'matlab.colors.KeywordColor' -join ',') -eq "$($keyword.Groups[1].Value),$($keyword.Groups[2].Value),$($keyword.Groups[3].Value)"
+        } | Select-Object -First 1
+    }
+    $pending = if (Test-Path $MatlabPending) { ([IO.File]::ReadAllText($MatlabPending)).Trim() }
+    return @{ Theme = $match; Mode = $mode; Pending = $pending }
+}
+
 # Microchip Studio keeps imported colours in its own binary store, so only its dark or light
-# environment theme can be read back, not which Zacess theme it came from
+# environment theme can be read back. the team settings file names the Zacess theme. its stored
+# time says whether Studio has imported it yet
 function Get-CurrentMicrochipStudio {
     $key = 'HKCU:\Software\Atmel\AtmelStudio\7.0\ApplicationPrivateSettings\Microsoft\VisualStudio'
     $value = "$((Get-ItemProperty -Path $key -Name ColorTheme -ErrorAction SilentlyContinue).ColorTheme)"
+    $environment = if ($value -match '1ded0138-47ce-435e-84ef-9ec1f439b749') { 'dark' } elseif ($value -match 'de3dbbcd-f642-433c-8353-8f1df4370aba') { 'light' }
+    $team = Get-ItemProperty -Path 'HKCU:\Software\Atmel\AtmelStudio\7.0\Profile' -ErrorAction SilentlyContinue
+    if ($team -and $team.TrackTeamSettings -eq 1 -and $team.TeamSettingsFile -and (Test-Path $team.TeamSettingsFile)) {
+        $name = [IO.Path]::GetFileNameWithoutExtension($team.TeamSettingsFile)
+        $stored = ([int64][uint32]$team.TeamSettingsFILETIMEHigh -shl 32) -bor [int64][uint32]$team.TeamSettingsFILETIMELow
+        if ($stored -ne (Get-Item $team.TeamSettingsFile).LastWriteTimeUtc.ToFileTimeUtc()) { return "fixed: $name, on next start" }
+        return "fixed: $name, $environment environment theme"
+    }
     if (-not $value) { return $null }
-    if ($value -match '1ded0138-47ce-435e-84ef-9ec1f439b749') { return 'dark environment theme (the Zacess theme itself is not recorded)' }
-    if ($value -match 'de3dbbcd-f642-433c-8353-8f1df4370aba') { return 'light environment theme (the Zacess theme itself is not recorded)' }
+    if ($environment) { return "$environment environment theme (the Zacess theme itself is not recorded)" }
     return 'not a Zacess environment theme'
 }
 
@@ -605,9 +709,16 @@ function Get-CurrentState {
     $zotero = Get-ChildItem (Join-Path $env:APPDATA 'Zotero\Zotero\Profiles') -Directory -ErrorAction SilentlyContinue | ForEach-Object { Join-Path $_.FullName 'user.js' } | Where-Object { Test-Path $_ } | Select-Object -First 1
     if ($zotero) {
         $js = [IO.File]::ReadAllText($zotero)
-        $mode = switch -regex ($js) { 'toolbar-theme", 0' { 'dark mode' } 'toolbar-theme", 1' { 'light mode' } default { 'following the system' } }
-        $reader = [regex]::Match($js, 'reader\.(dark|light)Theme", "([^"]*)"')
-        Add-Current 'Zotero' "fixed: $mode, reader $(if ($reader.Success -and $reader.Groups[2].Value) { $reader.Groups[2].Value } else { 'original' })"
+        # several Zacess themes share one Zotero mode and reader theme, so every match is named as
+        # zt.py does. doctor then finds the active theme among them
+        $prefs = @{}
+        foreach ($m in [regex]::Matches($js, 'user_pref\("([^"]+)",\s*(.+?)\);')) { $prefs[$m.Groups[1].Value] = $m.Groups[2].Value.Trim('"') }
+        $map = Get-Content -Raw (Join-Path $RepoRoot 'apps\zotero\shared\themes.json') | ConvertFrom-Json
+        $names = @(foreach ($theme in $map.PSObject.Properties) {
+            if (-not @($theme.Value.PSObject.Properties | Where-Object { "$($prefs[$_.Name])" -ne "$($_.Value)" })) { $theme.Name.Replace('Zacess ', '') }
+        })
+        $mode = if ($prefs['browser.theme.toolbar-theme'] -eq '0') { 'dark' } else { 'light' }
+        Add-Current 'Zotero' $(if ($names) { "fixed: $mode mode for $($names -join ' or ')" } else { 'not a Zacess theme' })
     }
 
     $vault = if ($env:OBSIDIAN_VAULT) { Join-Path $env:OBSIDIAN_VAULT '.obsidian' }
@@ -621,24 +732,11 @@ function Get-CurrentState {
         Add-Current 'Obsidian' $text
     }
 
-    $mlsettings = Get-ChildItem (Join-Path $env:APPDATA 'MathWorks\MATLAB') -Directory -Filter 'R20*' -ErrorAction SilentlyContinue | Sort-Object Name -Descending | ForEach-Object { Join-Path $_.FullName 'matlab.mlsettings' } | Where-Object { Test-Path $_ } | Select-Object -First 1
-    if ($mlsettings) {
-        Add-Type -AssemblyName System.IO.Compression.FileSystem
-        $zip = [IO.Compression.ZipFile]::OpenRead($mlsettings)
-        try {
-            $read = { param($entry) $e = $zip.Entries | Where-Object FullName -eq $entry; if ($e) { $r = New-Object IO.StreamReader($e.Open()); try { $r.ReadToEnd() } finally { $r.Close() } } }
-            # MATLAB writes a value as {"mwdata":[...]} and the Color Theme Extensions add-on as a plain
-            # string or array, so both forms are read
-            $mode = [regex]::Match("$(& $read 'fsroot/settingstree/matlab/appearance/settings.json')", 'MATLABTheme","value":"(?:\{\\"mwdata\\":\[)?\\"(Dark|Light)\\"').Groups[1].Value
-            $keyword = [regex]::Match("$(& $read 'fsroot/settingstree/matlab/colors/settings.json')", 'KeywordColor","value":"(?:\{\\"mwdata\\":)?\[(\d+),(\d+),(\d+)')
-        } finally { $zip.Dispose() }
-        $match = if ($keyword.Success) {
-            $Themes | Where-Object {
-                $file = Join-Path $RepoRoot "editors\matlab\shared\themes\$($_.Name).json"
-                (Test-Path $file) -and ((Get-Content -Raw $file | ConvertFrom-Json).settings.'matlab.colors.KeywordColor' -join ',') -eq "$($keyword.Groups[1].Value),$($keyword.Groups[2].Value),$($keyword.Groups[3].Value)"
-            } | Select-Object -First 1
-        }
-        Add-Current 'MATLAB' "fixed: $(if ($match) { $match.Name } else { 'not a Zacess theme' }), $(if ($mode) { $mode } else { 'System' }) desktop"
+    $matlab = Get-CurrentMATLAB
+    if ($matlab -and $matlab.Pending -and -not ($matlab.Theme -and $matlab.Theme.Name -eq $matlab.Pending)) {
+        Add-Current 'MATLAB' "fixed: $($matlab.Pending), on next start"
+    } elseif ($matlab) {
+        Add-Current 'MATLAB' "fixed: $(if ($matlab.Theme) { $matlab.Theme.Name } else { 'not a Zacess theme' }), $(if ($matlab.Mode) { $matlab.Mode } else { 'System' }) desktop"
     }
 
     $highlight = Get-CurrentHighlight
@@ -649,6 +747,12 @@ function Get-CurrentState {
 function Show-Current {
     Write-Host "zt state: $(Get-StateText)"
     foreach ($item in Get-CurrentState) { Write-Result $item.Tool $item.Text $false }
+    $push = Read-JsonFile (Get-SharedFile)
+    if ($push) {
+        $what = if ($push.undo_of) { 'undo of the last push' } else { $push.state }
+        $here = if ($push.id -eq (Read-Text $AllSeen)) { 'applied here' } else { 'not applied here yet' }
+        Write-Host "--all: last push $what from $($push.from) at $($push.at), $here"
+    }
 }
 
 # ---------------------------------------------------------------------------------------------------
@@ -728,8 +832,48 @@ function Get-CurrentHighlight {
 # shows up. Exit 1 on any drift
 # ---------------------------------------------------------------------------------------------------
 
-function Get-ActivePair {
-    $state = @(if (Test-Path $StateFile) { ([IO.File]::ReadAllText($StateFile)).Trim() -split '\s+' } else { @() })
+function Read-Text([string]$Path) {
+    if ($Path -and [IO.File]::Exists($Path)) { return ([IO.File]::ReadAllText($Path)).Trim() }
+    return ''
+}
+
+# a file another device is still writing or one that is not JSON reads as nothing, so the next run
+# tries again. -DateKind String keeps the push time as written instead of a local date
+function Read-JsonFile([string]$Path) {
+    if (-not ($Path -and [IO.File]::Exists($Path))) { return $null }
+    try { return [IO.File]::ReadAllText($Path) | ConvertFrom-Json -DateKind String } catch { return $null }
+}
+
+# a temp file in the same folder then a rename, so a syncing device never reads half a file
+function Write-Atomic([string]$Path, [string]$Text) {
+    $folder = Split-Path $Path
+    New-Item -ItemType Directory -Force $folder | Out-Null
+    $temp = Join-Path $folder ".$(Split-Path $Path -Leaf).$([guid]::NewGuid().ToString('N'))"
+    [IO.File]::WriteAllText($temp, $Text, [Text.UTF8Encoding]::new($false))
+    [IO.File]::Move($temp, $Path, $true)
+}
+
+# zt-all.json in the synced folder: ZACESS_SHARED_DIR, else .zacess in OneDrive Personal. $null on a
+# device with neither
+function Get-SharedFile {
+    if ($env:ZACESS_SHARED_DIR) { return Join-Path $env:ZACESS_SHARED_DIR 'zt-all.json' }
+    $root = if ($env:OneDriveConsumer) { $env:OneDriveConsumer } else { $env:OneDrive }
+    if ($root -and (Test-Path $root)) { return Join-Path $root '.zacess\zt-all.json' }
+    return $null
+}
+
+function New-Push([string]$State, $UndoOf) {
+    [ordered]@{
+        id = [guid]::NewGuid().ToString(); state = $State; undo_of = $UndoOf
+        from = [Environment]::MachineName; at = [DateTime]::UtcNow.ToString("yyyy-MM-dd'T'HH:mm:ss'Z'")
+    }
+}
+
+function Get-ActivePair { ConvertFrom-StateText (Read-Text $StateFile) }
+
+# a state file's text (a theme id or auto with a dark and a light id) as the themes it names
+function ConvertFrom-StateText([string]$Text) {
+    $state = @($Text.Trim() -split '\s+' | Where-Object { $_ })
     if ($state.Count -and $state[0] -eq 'auto') {
         $dark = $(if ($state.Count -gt 1) { Find-Theme $state[1] })
         if (-not $dark) { $dark = Find-Theme 'deep-contrast-dark' }
@@ -767,6 +911,11 @@ function Test-Agrees($Pair, [string]$Text) {
 function Test-Setting($Pair, [string]$Tool, $Text) {
     if ($null -eq $Text -or $Tool -eq 'Highlight') { return }
     if ($Text.StartsWith('could not read') -or $Text.Contains('not a Zacess')) { return Write-Doctor $Tool 'drift' $Text }
+    # Microchip Studio records only its dark or light environment, never the Zacess theme, so the
+    # environment matching the active theme's appearance is all that can be checked
+    if ($Tool -eq 'Microchip Studio' -and -not $Text.StartsWith('fixed:')) {
+        return Write-Doctor $Tool $(if ($Text.StartsWith('dark') -eq [bool]$Pair.Now.Dark) { 'ok' } else { 'drift' }) $Text
+    }
     Write-Doctor $Tool $(if (Test-Agrees $Pair $Text) { 'ok' } else { 'drift' }) $Text
 }
 
@@ -833,6 +982,23 @@ function Invoke-Doctor {
             Write-Doctor 'VS Code' $status "Zacess Themes $installed installed, $pin pinned in extensions.txt"
         }
     }
+    # the Zacess Themes plugin in each JetBrains IDE against the pinned release
+    $jbPin = (Get-Content -Raw (Join-Path $RepoRoot 'editors\jetbrains\shared\theme-package.json') | ConvertFrom-Json).version
+    foreach ($dir in Get-ChildItem (Join-Path $env:APPDATA 'JetBrains') -Directory -ErrorAction SilentlyContinue | Where-Object { Test-Path (Join-Path $_.FullName 'plugins\zacess-themes\lib') }) {
+        $jar = Get-ChildItem (Join-Path $dir.FullName 'plugins\zacess-themes\lib') -Filter '*.jar' | Sort-Object Name | Select-Object -First 1
+        $version = $null
+        if ($jar) {
+            Add-Type -AssemblyName System.IO.Compression.FileSystem
+            $zip = [IO.Compression.ZipFile]::OpenRead($jar.FullName)
+            try {
+                $entry = $zip.GetEntry('META-INF/plugin.xml')
+                if ($entry) { $r = [IO.StreamReader]::new($entry.Open()); try { $version = [regex]::Match($r.ReadToEnd(), '<version>\s*([^<]+?)\s*</version>').Groups[1].Value } finally { $r.Dispose() } }
+            } finally { $zip.Dispose() }
+        }
+        $parsed = $null
+        $status = if ($version -and [version]::TryParse($version, [ref]$parsed) -and $parsed -ge [version]$jbPin) { 'ok' } else { 'drift' }
+        Write-Doctor "  $($dir.Name)" $status "Zacess Themes $(if ($version) { $version } else { 'unknown' }) installed, $jbPin pinned in theme-package.json"
+    }
     $zed = Join-Path $env:APPDATA 'Zed\settings.json'
     if (Test-Path $zed) {
         $pairs = @(, @($zed, (Join-Path $RepoRoot 'editors\zed\windows\settings.json')))
@@ -863,7 +1029,7 @@ function Invoke-Doctor {
 $command = if ($args.Count) { [string]$args[0] } else { 'help' }
 switch ($command) {
     { $_ -in 'help', '-h', '--help' } {
-        Get-Content $PSCommandPath | Select-Object -Skip 2 -First 5 | ForEach-Object { $_.TrimStart('#').TrimStart() }
+        Get-Content $PSCommandPath | Select-Object -Skip 2 -First 8 | ForEach-Object { $_.TrimStart('#').TrimStart() }
         exit 0
     }
     'list' {
@@ -890,29 +1056,145 @@ switch ($command) {
     }
 }
 
-if ($command -eq 'auto') {
-    $dark = Find-Theme $(if ($args.Count -gt 1) { $args[1] } else { 'deep-contrast-dark' })
-    $light = Find-Theme $(if ($args.Count -gt 2) { $args[2] } else { 'deep-contrast-light' })
-    if (-not $dark -or -not $light) { [Console]::Error.WriteLine('Unknown theme. Run zt list for the names.'); exit 1 }
-    $now = if (Test-SystemDark) { $dark } else { $light }
-    $fixed = $null
-    Write-Host "${Bold}Following the system${Reset}: $($dark.Name) in dark mode, $($light.Name) in light mode (now $(if ($now.Dark) { 'dark' } else { 'light' }))"
-} else {
-    $fixed = Find-Theme ($args -join ' ')
-    if (-not $fixed) { [Console]::Error.WriteLine("Unknown theme: $($args -join ' '). Run zt list for the names."); exit 1 }
-    $dark = if ($fixed.Dark) { $fixed } else { Find-Theme 'deep-contrast-dark' }
-    $light = if (-not $fixed.Dark) { $fixed } else { Find-Theme 'deep-contrast-light' }
-    $now = $fixed
-    Write-Host "${Bold}$($fixed.Name)${Reset} everywhere, not following the system"
-}
-
-foreach ($tool in 'Set-VSCode', 'Set-Zed', 'Set-JetBrains', 'Set-Neovim', 'Set-Eclipse', 'Set-STM32CubeIDE', 'Set-KiCad', 'Set-Vivado',
-    'Set-WindowsTerminal', 'Set-Alacritty', 'Set-ArduinoIDE', 'Set-NotepadPlusPlus', 'Set-Thonny', 'Set-LTspice', 'Set-Proteus', 'Set-Zotero',
-    'Set-Obsidian', 'Set-MATLAB', 'Set-Processing', 'Set-MicrochipStudio', 'Set-Highlight') {
-    try {
-        & $tool $fixed $dark $light $now
-    } catch {
-        # one broken config never stops the other tools
-        Write-Result ($tool -replace '^Set-', '') "failed: $($_.Exception.Message)" $false
+# every command below comes down to a state file's text to apply: a theme, auto, zt undo going back
+# to the state before the last change or zt sync taking a push another device left with --all
+$all = $args -contains '--all'
+$words = @($args | Where-Object { $_ -ne '--all' })
+if (-not $words) { [Console]::Error.WriteLine('Usage: zt <theme> --all or zt undo --all'); exit 1 }
+$before = Read-Text $StateFile
+$quiet = $false
+$send = $false
+$after = @()
+switch ($words[0]) {
+    'undo' {
+        if (-not $all) {
+            $target = Read-Text $PreviousFile
+            if (-not $target) { Write-Host 'Nothing to undo'; exit 0 }
+            break
+        }
+        $shared = Get-SharedFile
+        $push = Read-JsonFile $shared
+        if (-not $push -or $push.undo_of) { Write-Host 'Nothing to undo on every device'; exit 0 }
+        $entry = New-Push '' $push.id
+        Write-Atomic $shared ($entry | ConvertTo-Json -Compress)
+        Write-Atomic $AllSeen $entry.id
+        $after += 'Undone on every device: each one goes back to its own previous theme when a terminal next opens there'
+        $applied = Read-JsonFile $AllApplied
+        if (-not ($applied -and $applied.id -eq $push.id -and $applied.previous)) { $after | ForEach-Object { Write-Host $_ }; exit 0 }
+        $target = $applied.previous
+    }
+    'sync' {
+        # started hidden at shell start, so it prints nothing
+        $quiet = $true
+        $push = Read-JsonFile (Get-SharedFile)
+        if (-not $push -or $push.id -eq (Read-Text $AllSeen)) { exit 0 }
+        # claimed first, so two terminals opening together never apply the same push twice
+        Write-Atomic $AllSeen $push.id
+        if ($push.undo_of) {
+            $applied = Read-JsonFile $AllApplied
+            if (-not ($applied -and $applied.id -eq $push.undo_of -and $applied.previous)) { exit 0 }
+            $target = $applied.previous
+        } else {
+            Write-Atomic $AllApplied ([ordered]@{ id = $push.id; previous = $before } | ConvertTo-Json -Compress)
+            $target = $push.state
+        }
+    }
+    'auto' {
+        $dark = Find-Theme $(if ($words.Count -gt 1) { $words[1] } else { 'deep-contrast-dark' })
+        $light = Find-Theme $(if ($words.Count -gt 2) { $words[2] } else { 'deep-contrast-light' })
+        if (-not $dark -or -not $light) { [Console]::Error.WriteLine('Unknown theme. Run zt list for the names.'); exit 1 }
+        $target = "auto $($dark.Id) $($light.Id)"
+        $send = $all
+    }
+    default {
+        $fixed = Find-Theme ($words -join ' ')
+        if (-not $fixed) { [Console]::Error.WriteLine("Unknown theme: $($words -join ' '). Run zt list for the names."); exit 1 }
+        $target = $fixed.Id
+        $send = $all
     }
 }
+
+$pair = ConvertFrom-StateText $target
+$fixed = $pair.Fixed; $dark = $pair.Dark; $light = $pair.Light; $now = $pair.Now
+if ($before -and $before -ne $target) { Write-Atomic $PreviousFile $before }
+if (-not $quiet) {
+    if ($fixed) { Write-Host "${Bold}$($fixed.Name)${Reset} everywhere, not following the system" }
+    else { Write-Host "${Bold}Following the system${Reset}: $($dark.Name) in dark mode, $($light.Name) in light mode (now $(if ($now.Dark) { 'dark' } else { 'light' }))" }
+}
+
+# every tool runs at once in a runspace pool, so a switch takes about as long as the slowest tool.
+# each group's lines are collected and printed in this order, so the output reads as it always has
+$groups = @('Set-VSCode', 'Set-Zed', 'Set-JetBrains', 'Set-Neovim', 'Set-Eclipse', 'Set-STM32CubeIDE', 'Set-KiCad', 'Set-Vivado',
+    'Set-WindowsTerminal', 'Set-Alacritty', 'Set-ArduinoIDE', 'Set-NotepadPlusPlus', 'Set-Thonny', 'Set-LTspice', 'Set-Proteus', 'Set-Zotero',
+    'Set-Obsidian', 'Set-MATLAB', 'Set-Processing', 'Set-MicrochipStudio', 'Set-Highlight')
+
+# each runspace starts with this script's functions and top-level values
+$script:Ast = [Management.Automation.Language.Parser]::ParseFile($PSCommandPath, [ref]$null, [ref]$null)
+$iss = [InitialSessionState]::CreateDefault2()
+foreach ($definition in $script:Ast.EndBlock.Statements | Where-Object { $_ -is [Management.Automation.Language.FunctionDefinitionAst] }) {
+    $iss.Commands.Add([Management.Automation.Runspaces.SessionStateFunctionEntry]::new($definition.Name, (Get-Item "function:$($definition.Name)").Definition))
+}
+# only values set before this point: the session state and pool below must not be copied into it
+$cut = $script:Ast.Find({ param($node) $node -is [Management.Automation.Language.AssignmentStatementAst] -and "$($node.Left)" -eq '$groups' }, $false).Extent.StartOffset
+$names = $script:Ast.FindAll({ param($node) $node -is [Management.Automation.Language.AssignmentStatementAst] -and $node.Left -is [Management.Automation.Language.VariableExpressionAst] -and $node.Extent.StartOffset -lt $cut }, $false) |
+    ForEach-Object { $_.Left.VariablePath.UserPath -replace '^script:', '' } | Sort-Object -Unique
+# a name the default state already holds (ErrorActionPreference) is replaced, not added again.
+# $null and other constants are left out
+foreach ($name in $names) {
+    $variable = Get-Variable -Name $name -ErrorAction SilentlyContinue
+    if ($variable -and -not ($variable.Options -band ([Management.Automation.ScopedItemOptions]::Constant -bor [Management.Automation.ScopedItemOptions]::ReadOnly))) {
+        $iss.Variables.Remove($name, $null)
+        $iss.Variables.Add([Management.Automation.Runspaces.SessionStateVariableEntry]::new($name, $variable.Value, ''))
+    }
+}
+# the apply scripts write their reasons to the console's error writer, which is one per process, so
+# one shared writer collects them for the whole run and Invoke-AppScript leaves it in place
+$errors = [IO.StringWriter]::new()
+$iss.Variables.Add([Management.Automation.Runspaces.SessionStateVariableEntry]::new('ZtErrors', $true, ''))
+$console = [Console]::Error
+[Console]::SetError([IO.TextWriter]::Synchronized($errors))
+$pool = [runspacefactory]::CreateRunspacePool($iss)
+$null = $pool.SetMaxRunspaces($groups.Count)
+$pool.Open()
+try {
+    $jobs = foreach ($group in $groups) {
+        $ps = [powershell]::Create()
+        $ps.RunspacePool = $pool
+        $null = $ps.AddScript({
+            param($Tools, $Fixed, $Dark, $Light, $Now)
+            foreach ($tool in $Tools) {
+                try {
+                    & $tool $Fixed $Dark $Light $Now
+                } catch {
+                    # one broken config never stops the other tools
+                    Write-Result ($tool -replace '^Set-', '') "failed: $($_.Exception.Message)" $false
+                }
+            }
+        }).AddArgument(@($group)).AddArgument($fixed).AddArgument($dark).AddArgument($light).AddArgument($now)
+        [pscustomobject]@{ Shell = $ps; Handle = $ps.BeginInvoke(); Name = (@($group)[0] -replace '^Set-', '') }
+    }
+    foreach ($job in $jobs) {
+        try { $null = $job.Shell.EndInvoke($job.Handle) } catch { Write-Result $job.Name "failed: $($_.Exception.InnerException.Message)" $false }
+        if (-not $quiet) { foreach ($record in $job.Shell.Streams.Information) { Write-Host $record.MessageData.ToString() } }
+        $job.Shell.Dispose()
+    }
+} finally {
+    [Console]::SetError($console)
+    $pool.Close()
+}
+$messages = $errors.ToString().Trim()
+if ($messages -and -not $quiet) { [Console]::Error.WriteLine($messages) }
+
+if ($send) {
+    $shared = Get-SharedFile
+    if (-not $shared) {
+        Write-Host 'No OneDrive on this device, so only this device changed'
+    } else {
+        $push = New-Push $target $null
+        Write-Atomic $shared ($push | ConvertTo-Json -Compress)
+        Write-Atomic $AllSeen $push.id
+        Write-Atomic $AllApplied ([ordered]@{ id = $push.id; previous = $before } | ConvertTo-Json -Compress)
+        Write-Host 'Sent to every device: each one switches when a terminal next opens there'
+    }
+}
+$after | ForEach-Object { Write-Host $_ }
