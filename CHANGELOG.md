@@ -8,6 +8,8 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-10-29
+
 ### Added
 
 - Zacess Scenes in `apps/zacess-scenes`: an example `scenes.toml` linked into the config folder. Setup scripts for macOS, Linux and Windows install the newest release binary checked against its checksum plus bacon for watch mode. Every bootstrap runs them in its apps stage. The shell topics `zacess-scenes` add `zs` for a random calm scene or a scene by name, with the subcommands list, sounds, config, new, snap and themes. `zw` watches a Rust build, `zwc` with Clippy, `zwt` with the tests and `zwa` with check-all. Scenes follows the theme `zt` last set; on Windows the PowerShell commands hand it over, since `zt` keeps it under `%LOCALAPPDATA%` there.
