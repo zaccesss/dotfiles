@@ -45,6 +45,7 @@
 | `37-syntax-highlighting.zsh` | Typed-command colours | Loads zsh-syntax-highlighting last (from Homebrew, skipped when absent): commands green, unknown commands red, strings yellow, options cyan |
 | `38-zacess-theme.zsh` | Zacess theme switching | `zt`, `zacess-theme`: every editor and terminal to one Zacess theme. `zt auto` follows the system |
 | `39-zacess-scenes.zsh` | Zacess Scenes | `zs` for a random calm scene or one by name, with the subcommands list, sounds, config, new, snap and themes. `zw` watches a Rust build, `zwc` with Clippy, `zwt` with the tests and `zwa` with check-all. Also `zacess-scene` |
+| `40-zacess-games.zsh` | Zacess Games | `zg` for the games menu or `zg <game>` for one of the fourteen games, with `zg list` for best scores, `zg sounds` to hear every effect and each game's music, `zg snap` for SVG stills and Tab completion of the names. Also `zacess-game` |
 
 ## Adding a topic
 
