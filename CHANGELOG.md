@@ -8,6 +8,20 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+### Added
+
+- `ide` (or `ide <folder>`) opens a project in its own tmux session: Neovim on the top 70 percent, a shell bottom left, a Zacess Scenes follow scene bottom right and a `git` window running lazygit in a repository. Running it again goes back to the open session. `Ctrl+B` then `f` lists the folders in `IDE_ROOTS` with fzf and opens the one picked.
+- vim-tmux-navigator in tmux and Neovim: `Ctrl+H/J/K/L` move across tmux panes and Neovim splits as one set. The prefix sends each of those keys on to a shell pane, so `Ctrl+B` then `Ctrl+L` still clears the screen.
+- Neovim: snacks.nvim (a start screen, a file tree on `Space e`, lazygit on `Space g g`, indent guides with no animation and a quieter message area), conform.nvim (format on save with an installed formatter, never the language server), nvim-autopairs and trouble.nvim (`Space x x`). `lua/config/servers.lua` adds marksman everywhere and rust_analyzer, gopls, jdtls, html, cssls, jsonls and bashls only where their runtime is installed.
+- `zt pin <app> <theme>` keeps one app on its own theme while every other app follows `zt` on macOS, Linux and Windows. A pin can also be `auto` with its own pair or the app's built-in theme (`default`, `default-dark` or `default-light`). `zt unpin` hands an app back and `zt current` and `zt doctor` show the pins.
+- The shell topics load the Zacess Scenes follow hook for zsh, bash and PowerShell, so a scene running `zsf` (`zacess-scenes follow`) shows how each command ended. `zs` moves to another scene every five minutes and `zw` watches a project in any language.
+
+### Changed
+
+- Neovim uses the eight Zacess colour schemes from zacess.nvim 0.6.0, picked from the theme `zt` last set (or a `zt pin neovim` line) and checked again on focus. The earlier `high-contrast` scheme stays available through `:colorscheme high-contrast`.
+- `termtheme` is the terminals-only side of `zt` on every system: a theme, `auto` or `default` pins every terminal app `zt` switches and no argument shows what each one is on.
+- The example `scenes.toml` changes the scene every 5 minutes, plays the typo tone and has the new `[ambient]` (off) and `[follow]` sections, which need Zacess Scenes 0.5.0.
+
 ## [2.3.1] - 2026-10-30
 
 ### Fixed

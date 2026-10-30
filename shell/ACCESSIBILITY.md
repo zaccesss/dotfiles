@@ -29,10 +29,14 @@ The terminal itself sets the final shades. [terminal](../terminal/terminal) inst
 > theme.
 
 > [!TIP]
-> `termtheme` sets only the terminal's light and dark behaviour, on every platform.
+> `termtheme` sets only the terminals, on every platform, while the editors keep following `zt`.
 > `termtheme dark` or `termtheme light` keeps the Zacess Deep Contrast pair on one mode whatever the
-> system does, `termtheme auto` follows the system's light and dark setting and `termtheme` on its
-> own shows which mode is on. It drives Terminal.app on macOS, Ptyxis on Linux and Windows Terminal.
+> system does, `termtheme <theme>` takes any of the eight Zacess themes, `termtheme auto` follows the
+> system's light and dark setting, `termtheme default` goes back to each terminal's own theme and
+> `termtheme follow` hands the terminals back to `zt`. `termtheme` on its own shows what each
+> terminal is on. It drives every terminal `zt` switches: Terminal.app, iTerm2, Ghostty, Kitty,
+> Alacritty and tmux on macOS, Ptyxis, Ghostty, Kitty, Alacritty and tmux on Linux and Windows
+> Terminal and Alacritty on Windows. `zt pin` keeps any other single app on a theme of its own.
 
 > [!WARNING]
 > The Starship prompt shows the same `>` symbol after every command, green after success and bright red after a failure, so that one signal relies on colour alone. With red and green hard to tell apart, change `error_symbol` in `starship.toml` to a different character, for example `[x](bold bright-red)`.

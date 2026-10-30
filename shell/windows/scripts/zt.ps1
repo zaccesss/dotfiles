@@ -9,6 +9,11 @@
 #   zt undo [--all]            back to the theme before the last change (on every device with --all)
 #   zt sync                    apply a change sent with --all from another device (run at shell start)
 #   zt highlight [default]     the Windows text highlight again from the theme or Windows' own back
+#   zt pin <app> <theme>       keep one app on its own theme while the rest follow zt; the theme can
+#                              also be auto [dark] [light] or the app's own: default, default-dark or
+#                              default-light. "terminals" as the app pins every terminal app at once
+#   zt unpin <app|terminals|--all>  the app follows zt again, switched to the zt state straight away
+#   zt current terminals       what each terminal app is on, with any pins (termtheme shows this)
 #
 # each tool is edited in place and only for its theme setting; a tool that is not installed is
 # skipped. the JetBrains IDEs, Eclipse, STM32CubeIDE and the apps with their own apply script
@@ -18,7 +23,8 @@
 # their next start (a startup.m block and Studio's team settings file). the Windows text highlight (Hilight and HilightText under Control Panel\Colors)
 # takes the theme's selection colour from the generated Windows Terminal scheme and applies at the
 # next sign in. scripts/zt.py is the macOS and Linux version; both keep the same state file
-# format, which Neovim reads. zt.cmd and zacess-theme.cmd run this from Command Prompt.
+# format, which Neovim reads. They share the pins file beside it too. zt.cmd and zacess-theme.cmd run
+# this from Command Prompt.
 
 $ErrorActionPreference = 'Stop'
 
@@ -298,12 +304,19 @@ function Set-WindowsTerminal($Fixed, $Dark, $Light, $Now) {
     Write-Result 'Windows Terminal' $message
 }
 
+# what a default pin leaves on the emptied import line, so switching back can put the import there
+$AlacrittyMark = '# zacess: own colours, zt puts the theme import back here'
+
 function Set-Alacritty($Fixed, $Dark, $Light, $Now) {
     $conf = Join-Path $env:APPDATA 'alacritty\alacritty.toml'
     if (-not (Test-Path $conf)) { return Write-Result 'Alacritty' 'not installed, skipped' $false }
     $theme = if ($Fixed) { $Fixed } else { $Now }
     $text = [IO.File]::ReadAllText($conf)
-    if ($text -notmatch 'zacess-[\w-]+\.toml') { return Write-Result 'Alacritty' 'no Zacess import in alacritty.toml, skipped' $false }
+    if ($text -notmatch 'zacess-[\w-]+\.toml') {
+        # a default pin left the marker in place of the import, so the import goes back there
+        if (-not $text.Contains($AlacrittyMark)) { return Write-Result 'Alacritty' 'no Zacess import in alacritty.toml, skipped' $false }
+        $text = ([regex]('(?m)^import\s*=\s*\[\s*\]\s*' + [regex]::Escape($AlacrittyMark) + '[^\r\n]*')).Replace($text, "import = [`"zacess-$($theme.Id).toml`"]", 1)
+    }
     [IO.File]::WriteAllText($conf, ([regex]'zacess-[\w-]+\.toml').Replace($text, "zacess-$($theme.Id).toml", 1))
     $note = if ($Fixed) { '' } else { ' (Alacritty cannot follow the system, so this matches it now)' }
     Write-Result 'Alacritty' "$($theme.Name)$note"
@@ -418,6 +431,260 @@ function Set-MicrochipStudio($Fixed, $Dark, $Light, $Now) {
 function Set-KiCad($Fixed, $Dark, $Light, $Now) { Invoke-AppScript 'KiCad' 'editors\kicad\windows\apply.ps1' $Fixed $Now 'kicad' }
 function Set-Vivado($Fixed, $Dark, $Light, $Now) { Invoke-AppScript 'Vivado' 'editors\vivado\windows\apply.ps1' $Fixed $Now 'vivado' }
 function Set-Processing($Fixed, $Dark, $Light, $Now) { Invoke-AppScript 'Processing' 'editors\processing\windows\apply.ps1' $Fixed $Now 'Processing' }
+
+# ---------------------------------------------------------------------------------------------------
+# pins: one app kept on its own theme while every other app follows zt. The pins file sits beside the
+# state file, one app per line followed by its value: a Zacess theme id, "auto <dark id> <light id>"
+# to follow the system on its own or the app's own built-in theme as "default" (following the
+# system where the app can), "default-dark" or "default-light". A switch, an undo and a sync run each
+# pinned app with its pin instead of the zt state, so a pin holds until zt unpin. scripts/zt.py
+# keeps the same format
+# ---------------------------------------------------------------------------------------------------
+
+$PinsFile = Join-Path $env:LOCALAPPDATA 'zacess\pins'
+$DefaultValues = @('default', 'default-dark', 'default-light')
+$VSCodeDefaults = @{ dark = 'Default Dark Modern'; light = 'Default Light Modern' }
+$ZedDefaults = @{ dark = 'One Dark'; light = 'One Light' }
+# the schemes Windows Terminal ships with: Campbell is its own default, One Half Light its light one
+$TerminalDefaults = @{ dark = 'Campbell'; light = 'One Half Light' }
+
+# every app a pin can name: the tools that switch it, other names for it and the default values it
+# supports. An app with none can still be pinned to a Zacess theme or auto
+$PinApps = [ordered]@{
+    'vscode' = @{ Tools = @('Set-VSCode'); Aliases = @('code', 'vs-code', 'visual-studio-code'); Defaults = $DefaultValues }
+    'zed' = @{ Tools = @('Set-Zed'); Aliases = @(); Defaults = $DefaultValues }
+    'jetbrains' = @{ Tools = @('Set-JetBrains'); Aliases = @('idea', 'intellij', 'pycharm', 'webstorm', 'clion', 'rider'); Defaults = @('default') }
+    'neovim' = @{ Tools = @('Set-Neovim'); Aliases = @('nvim', 'vim'); Defaults = $DefaultValues }
+    'eclipse' = @{ Tools = @('Set-Eclipse'); Aliases = @(); Defaults = @() }
+    'stm32cubeide' = @{ Tools = @('Set-STM32CubeIDE'); Aliases = @('stm32'); Defaults = @() }
+    'kicad' = @{ Tools = @('Set-KiCad'); Aliases = @(); Defaults = @() }
+    'vivado' = @{ Tools = @('Set-Vivado'); Aliases = @(); Defaults = @() }
+    'windows-terminal' = @{ Tools = @('Set-WindowsTerminal'); Aliases = @('wt', 'terminal', 'console'); Defaults = $DefaultValues }
+    'alacritty' = @{ Tools = @('Set-Alacritty'); Aliases = @(); Defaults = @('default') }
+    'arduino' = @{ Tools = @('Set-ArduinoIDE'); Aliases = @('arduino-ide'); Defaults = @() }
+    'notepad++' = @{ Tools = @('Set-NotepadPlusPlus'); Aliases = @('notepadplusplus', 'npp'); Defaults = @() }
+    'thonny' = @{ Tools = @('Set-Thonny'); Aliases = @(); Defaults = @() }
+    'ltspice' = @{ Tools = @('Set-LTspice'); Aliases = @(); Defaults = @() }
+    'proteus' = @{ Tools = @('Set-Proteus'); Aliases = @(); Defaults = @() }
+    'zotero' = @{ Tools = @('Set-Zotero'); Aliases = @(); Defaults = @() }
+    'obsidian' = @{ Tools = @('Set-Obsidian'); Aliases = @(); Defaults = @() }
+    'matlab' = @{ Tools = @('Set-MATLAB'); Aliases = @(); Defaults = @() }
+    'processing' = @{ Tools = @('Set-Processing'); Aliases = @(); Defaults = @() }
+    'microchip-studio' = @{ Tools = @('Set-MicrochipStudio'); Aliases = @('microchip'); Defaults = @() }
+    'highlight' = @{ Tools = @('Set-Highlight'); Aliases = @('selection'); Defaults = @('default') }
+}
+# termtheme and zt pin terminals: every terminal app zt switches on Windows
+$Terminals = @('windows-terminal', 'alacritty')
+$ToolApp = @{}
+foreach ($app in $PinApps.Keys) { foreach ($tool in $PinApps[$app].Tools) { $ToolApp[$tool] = $app } }
+# the labels zt prints, for zt doctor and zt current to find a pinned app
+$LabelApp = @{
+    'vs code' = 'vscode'; 'zed' = 'zed'; 'jetbrains' = 'jetbrains'; 'neovim' = 'neovim'; 'eclipse' = 'eclipse'
+    'stm32cubeide' = 'stm32cubeide'; 'kicad' = 'kicad'; 'vivado' = 'vivado'; 'windows terminal' = 'windows-terminal'
+    'alacritty' = 'alacritty'; 'arduino ide' = 'arduino'; 'notepad++' = 'notepad++'; 'thonny' = 'thonny'
+    'ltspice' = 'ltspice'; 'proteus' = 'proteus'; 'zotero' = 'zotero'; 'obsidian' = 'obsidian'; 'matlab' = 'matlab'
+    'processing' = 'processing'; 'microchip studio' = 'microchip-studio'; 'highlight' = 'highlight'
+}
+
+function Find-App([string]$Word) {
+    $key = $Word.Trim().ToLowerInvariant()
+    foreach ($app in $PinApps.Keys) { if ($key -eq $app -or $PinApps[$app].Aliases -contains $key) { return $app } }
+    return $null
+}
+
+function Get-LabelApp([string]$Label) {
+    $key = $Label.Trim().ToLowerInvariant()
+    if ($LabelApp.ContainsKey($key)) { return $LabelApp[$key] }
+    # a JetBrains IDE's folder is shown under its own name
+    $base = Join-Path $env:APPDATA 'JetBrains'
+    if ((Test-Path $base) -and (Get-ChildItem $base -Directory | Where-Object { $_.Name.ToLowerInvariant() -eq $key })) { return 'jetbrains' }
+    return $null
+}
+
+function Read-Pins {
+    $pins = [ordered]@{}
+    if (-not [IO.File]::Exists($PinsFile)) { return $pins }
+    foreach ($line in [IO.File]::ReadAllLines($PinsFile)) {
+        $parts = @($line.Trim() -split '\s+' | Where-Object { $_ })
+        if ($parts.Count -ge 2 -and -not $parts[0].StartsWith('#') -and $PinApps.Contains($parts[0])) {
+            $pins[$parts[0]] = ($parts[1..($parts.Count - 1)] -join ' ')
+        }
+    }
+    return $pins
+}
+
+function Write-Pins($Pins) {
+    if (-not $Pins.Count) { if ([IO.File]::Exists($PinsFile)) { Remove-Item $PinsFile }; return }
+    $lines = @('# zt pins: an app, then the theme it keeps: a Zacess theme id, auto <dark> <light>,',
+        '# default, default-dark or default-light. Written by zt pin and zt unpin')
+    $lines += @($Pins.Keys | Sort-Object | ForEach-Object { "$_ $($Pins[$_])" })
+    Write-Atomic $PinsFile (($lines -join "`n") + "`n")
+}
+
+# a pin's value from the words after the app: a theme, auto with an optional pair or a default.
+# returns the value or throws with the reason
+function ConvertTo-PinValue([string[]]$Words) {
+    if (-not $Words.Count) { throw 'a pin needs a theme, auto, default, default-dark or default-light' }
+    $first = $Words[0].ToLowerInvariant()
+    if ($first -in $DefaultValues -and $Words.Count -eq 1) { return $first }
+    if ($first -eq 'auto') {
+        $dark = Find-Theme $(if ($Words.Count -gt 1) { $Words[1] } else { 'deep-contrast-dark' })
+        $light = Find-Theme $(if ($Words.Count -gt 2) { $Words[2] } else { 'deep-contrast-light' })
+        if (-not $dark -or -not $light -or $Words.Count -gt 3) { throw 'auto takes a dark theme and a light theme. Run zt list for the names' }
+        return "auto $($dark.Id) $($light.Id)"
+    }
+    $theme = Find-Theme ($Words -join ' ')
+    if (-not $theme) { throw "unknown theme: $($Words -join ' '). Run zt list for the names" }
+    return $theme.Id
+}
+
+function Get-PinText([string]$Value) {
+    switch ($Value) {
+        'default' { return 'its own theme, following the system where it can' }
+        'default-dark' { return 'its own dark theme' }
+        'default-light' { return 'its own light theme' }
+    }
+    $parts = $Value -split '\s+'
+    if ($parts[0] -eq 'auto') {
+        # a hand-edited auto line may leave out the pair, which then means the Deep Contrast pair
+        $darkId = if ($parts.Count -gt 1) { $parts[1] } else { 'deep-contrast-dark' }
+        $lightId = if ($parts.Count -gt 2) { $parts[2] } else { 'deep-contrast-light' }
+        return "following the system: $(Get-ThemeName $darkId) or $(Get-ThemeName $lightId)"
+    }
+    return Get-ThemeName $parts[0]
+}
+
+function Set-VSCodeSettingsDefault([string]$Label, [string]$Path, [string]$Mode) {
+    if ($Mode -eq 'default') {
+        $now = if (Test-SystemDark) { $VSCodeDefaults.dark } else { $VSCodeDefaults.light }
+        Edit-Json $Path @{ 'workbench.colorTheme' = (ConvertTo-JsonValue $now); 'window.autoDetectColorScheme' = 'true'
+            'workbench.preferredDarkColorTheme' = (ConvertTo-JsonValue $VSCodeDefaults.dark)
+            'workbench.preferredLightColorTheme' = (ConvertTo-JsonValue $VSCodeDefaults.light) }
+        return Write-Result $Label "its own theme, following the system: $($VSCodeDefaults.dark) or $($VSCodeDefaults.light)"
+    }
+    $name = $VSCodeDefaults[$Mode.Split('-')[1]]
+    Edit-Json $Path @{ 'workbench.colorTheme' = (ConvertTo-JsonValue $name); 'window.autoDetectColorScheme' = 'false' }
+    Write-Result $Label "its own theme, $name"
+}
+
+function Set-VSCodeDefault([string]$Mode) {
+    $path = Join-Path $env:APPDATA 'Code\User\settings.json'
+    if (-not (Test-Path $path)) { return Write-Result 'VS Code' 'not installed, skipped' $false }
+    Set-VSCodeSettingsDefault 'VS Code' $path $Mode
+}
+
+function Set-ZedDefault([string]$Mode) {
+    $path = Join-Path $env:APPDATA 'Zed\settings.json'
+    if (-not (Test-Path $path)) { return Write-Result 'Zed' 'not installed, skipped' $false }
+    $look = if ($Mode -eq 'default') { 'system' } else { $Mode.Split('-')[1] }
+    Edit-Json $path @{ 'theme' = "{ `"mode`": `"$look`", `"light`": `"$($ZedDefaults.light)`", `"dark`": `"$($ZedDefaults.dark)`" }" }
+    $text = if ($look -eq 'system') { "following the system: $($ZedDefaults.dark) or $($ZedDefaults.light)" } else { $ZedDefaults[$look] }
+    Write-Result 'Zed' "its own theme, $text"
+}
+
+function Set-JetBrainsDefault([string]$Mode) {
+    $base = Join-Path $env:APPDATA 'JetBrains'
+    $dirs = @(if (Test-Path $base) { Get-ChildItem $base -Directory | Where-Object { Test-Path (Join-Path $_.FullName 'options') } })
+    if (-not $dirs) { return Write-Result 'JetBrains' 'not installed, skipped' $false }
+    $ides = 'idea64', 'pycharm64', 'webstorm64', 'clion64', 'dataspell64', 'goland64', 'phpstorm64', 'rubymine64', 'rustrover64', 'rider64', 'studio64'
+    if (Get-Process -Name $ides -ErrorAction SilentlyContinue) {
+        return Write-Result 'JetBrains' 'an IDE is open, skipped: close it and run zt again' $false
+    }
+    foreach ($dir in $dirs) {
+        # with no theme named and Sync with OS on, each IDE uses its own light and dark pair
+        $laf = Join-Path $dir.FullName 'options\laf.xml'
+        if (Test-Path $laf) {
+            [xml]$doc = Get-Content -Raw $laf
+            $comp = $doc.DocumentElement.SelectSingleNode("component[@name='LafManager']")
+            if ($comp) {
+                foreach ($child in @($comp.ChildNodes)) {
+                    if ($child.Name -in 'laf', 'lafs-to-previous-schemes' -or $child.Name -like 'preferred-*') { $null = $comp.RemoveChild($child) }
+                }
+                $comp.SetAttribute('autodetect', 'true')
+                $doc.Save($laf)
+            }
+        }
+        $schemeFile = Join-Path $dir.FullName 'options\colors.scheme.xml'
+        if (Test-Path $schemeFile) {
+            [xml]$doc = Get-Content -Raw $schemeFile
+            $node = $doc.DocumentElement.SelectSingleNode("component[@name='EditorColorsManagerImpl']/global_color_scheme")
+            if ($node) { $null = $node.ParentNode.RemoveChild($node); $doc.Save($schemeFile) }
+        }
+        Write-Result "  $($dir.Name)" 'its own theme, Sync with OS'
+    }
+}
+
+function Set-WindowsTerminalDefault([string]$Mode) {
+    $paths = @(
+        (Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json'),
+        (Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json'),
+        (Join-Path $env:LOCALAPPDATA 'Microsoft\Windows Terminal\settings.json')
+    ) | Where-Object { Test-Path $_ }
+    if (-not $paths) { return Write-Result 'Windows Terminal' 'not installed, skipped' $false }
+    $value = if ($Mode -eq 'default') { [pscustomobject]@{ dark = $TerminalDefaults.dark; light = $TerminalDefaults.light } } else { $TerminalDefaults[$Mode.Split('-')[1]] }
+    foreach ($path in $paths) {
+        $settings = Get-Content -Raw $path | ConvertFrom-Json
+        if (-not $settings.profiles.PSObject.Properties['defaults']) {
+            $settings.profiles | Add-Member -NotePropertyName defaults -NotePropertyValue ([pscustomobject]@{})
+        }
+        $settings.profiles.defaults | Add-Member -Force -NotePropertyName colorScheme -NotePropertyValue $value
+        $settings | ConvertTo-Json -Depth 32 | Set-Content -Path $path -Encoding utf8
+    }
+    $text = if ($Mode -eq 'default') { "following the system: $($TerminalDefaults.dark) or $($TerminalDefaults.light)" } else { $value }
+    Write-Result 'Windows Terminal' "its own schemes, $text"
+}
+
+function Set-AlacrittyDefault([string]$Mode) {
+    $conf = Join-Path $env:APPDATA 'alacritty\alacritty.toml'
+    if (-not (Test-Path $conf)) { return Write-Result 'Alacritty' 'not installed, skipped' $false }
+    $text = [IO.File]::ReadAllText($conf)
+    if ($text -match 'zacess-[\w-]+\.toml') {
+        $text = $text -replace '"[^"]*zacess-[\w-]+\.toml"\s*,?\s*', ''
+        $text = ([regex]'(?m)^(import\s*=\s*\[\s*\])[ \t]*$').Replace($text, "`$1 $AlacrittyMark", 1)
+        [IO.File]::WriteAllText($conf, $text)
+    }
+    Write-Result 'Alacritty' 'its own colours'
+}
+
+$HighlightDefaulted = Join-Path $env:LOCALAPPDATA 'zacess\highlight.pinned-default'
+
+# restored once when pinned; later switches leave the highlight alone, since restoring again with the
+# record gone would put back Windows' own colours over one chosen by hand since
+function Set-HighlightDefault([string]$Mode) {
+    if (Test-Path $HighlightDefaulted) { return Write-Result 'Highlight' 'its own, left as it is' $false }
+    Restore-Highlight
+    Write-Atomic $HighlightDefaulted "1`n"
+}
+
+# the function that sets each tool's own theme
+$DefaultHandlers = @{
+    'Set-VSCode' = 'Set-VSCodeDefault'; 'Set-Zed' = 'Set-ZedDefault'
+    'Set-JetBrains' = 'Set-JetBrainsDefault'; 'Set-WindowsTerminal' = 'Set-WindowsTerminalDefault'
+    'Set-Alacritty' = 'Set-AlacrittyDefault'; 'Set-Highlight' = 'Set-HighlightDefault'
+}
+
+# runs one tool with its app's pin rather than the zt state
+function Invoke-Pin([string]$Tool, [string]$Value) {
+    if ($Value -in $DefaultValues) {
+        if ($DefaultHandlers.ContainsKey($Tool)) { & $DefaultHandlers[$Tool] $Value }
+        return
+    }
+    $pinPair = ConvertFrom-StateText $Value
+    & $Tool $pinPair.Fixed $pinPair.Dark $pinPair.Light $pinPair.Now
+}
+
+function Show-Pins($Only) {
+    $pins = Read-Pins
+    $shown = @($pins.Keys | Where-Object { -not $Only -or $Only -contains $_ })
+    if ($shown.Count) {
+        # apps sharing a value, as termtheme leaves every terminal, are named together
+        $groups = [ordered]@{}
+        foreach ($app in ($shown | Sort-Object)) { $groups[$pins[$app]] = @($groups[$pins[$app]]) + $app | Where-Object { $_ } }
+        Write-Host ("${Bold}Pinned${Reset}: " + (($groups.Keys | ForEach-Object { "$($groups[$_] -join ', ') on $(Get-PinText $_)" }) -join '; '))
+    } elseif (-not $Only) {
+        Write-Host 'Pinned: nothing, every app follows zt'
+    }
+}
 
 function Get-ThemeName([string]$Id) {
     if (-not $Id) { return 'not set' }
@@ -744,9 +1011,19 @@ function Get-CurrentState {
     return $script:Current.ToArray()
 }
 
-function Show-Current {
-    Write-Host "zt state: $(Get-StateText)"
-    foreach ($item in Get-CurrentState) { Write-Result $item.Tool $item.Text $false }
+function Show-Current($Only) {
+    if (-not $Only) { Write-Host "zt state: $(Get-StateText)" }
+    Show-Pins $Only
+    $pins = Read-Pins
+    foreach ($item in Get-CurrentState) {
+        $app = Get-LabelApp $item.Tool
+        if ($Only -and $Only -notcontains $app) { continue }
+        $text = $item.Text
+        if ($app -eq 'neovim' -and $pins.Contains('neovim')) { $text = "pinned to $(Get-PinText $pins.neovim)" }
+        elseif ($app -and $pins.Contains($app)) { $text += " (pinned to $(Get-PinText $pins[$app]))" }
+        Write-Result $item.Tool $text $false
+    }
+    if ($Only) { return }
     $push = Read-JsonFile (Get-SharedFile)
     if ($push) {
         $what = if ($push.undo_of) { 'undo of the last push' } else { $push.state }
@@ -910,6 +1187,10 @@ function Test-Agrees($Pair, [string]$Text) {
 
 function Test-Setting($Pair, [string]$Tool, $Text) {
     if ($null -eq $Text -or $Tool -eq 'Highlight') { return }
+    $app = Get-LabelApp $Tool
+    $pins = Read-Pins
+    # a pinned app is meant to differ from the zt state
+    if ($app -and $pins.Contains($app)) { return Write-Doctor $Tool 'ok' "pinned to $(Get-PinText $pins[$app]): $Text" }
     if ($Text.StartsWith('could not read') -or $Text.Contains('not a Zacess')) { return Write-Doctor $Tool 'drift' $Text }
     # Microchip Studio records only its dark or light environment, never the Zacess theme, so the
     # environment matching the active theme's appearance is all that can be checked
@@ -1016,7 +1297,12 @@ function Invoke-Doctor {
         Test-Files 'Alacritty' $pairs 'the theme files match the repo'
     }
     $highlight = Get-CurrentHighlight
-    if ($highlight) {
+    $pins = Read-Pins
+    if ($highlight -and $pins.Contains('highlight') -and $pins.highlight -in $DefaultValues) {
+        Write-Doctor 'Highlight' 'ok' "pinned to Windows' own: $highlight"
+    } elseif ($highlight) {
+        # a theme pin is checked against that theme's selection
+        if ($pins.Contains('highlight')) { $pair = ConvertFrom-StateText $pins.highlight }
         $expected = (Get-SelectionColour $pair.Now).Background
         if ($highlight.Contains($expected)) { Write-Doctor 'Highlight' 'ok' $highlight }
         else { Write-Doctor 'Highlight' 'drift' "$highlight, $($pair.Now.Name)'s selection is $expected" }
@@ -1041,7 +1327,12 @@ switch ($command) {
         exit 0
     }
     'current' {
-        try { Show-Current } catch { [Console]::Error.WriteLine("could not read a setting: $($_.Exception.Message)") }
+        $only = $null
+        if ($args.Count -gt 1) {
+            $only = if ($args[1] -eq 'terminals') { $Terminals } else { @(Find-App $args[1]) | Where-Object { $_ } }
+            if (-not $only) { [Console]::Error.WriteLine("Unknown app: $($args[1])"); exit 1 }
+        }
+        try { Show-Current $only } catch { [Console]::Error.WriteLine("could not read a setting: $($_.Exception.Message)") }
         exit 0
     }
     'doctor' {
@@ -1065,7 +1356,63 @@ $before = Read-Text $StateFile
 $quiet = $false
 $send = $false
 $after = @()
+# zt pin and zt unpin run only the apps they name, on the zt state or their pin
+$onlyApps = $null
 switch ($words[0]) {
+    'pin' {
+        if ($words.Count -lt 3) {
+            [Console]::Error.WriteLine("Usage: zt pin <app> <theme|auto [dark] [light]|default|default-dark|default-light>`nApps: $($PinApps.Keys -join ', '). terminals pins $($Terminals -join ', ')")
+            exit 1
+        }
+        $group = $words[1] -eq 'terminals'
+        $app = if ($group) { $null } else { Find-App $words[1] }
+        if (-not $group -and -not $app) {
+            [Console]::Error.WriteLine("Unknown app: $($words[1]). The apps are $($PinApps.Keys -join ', '). terminals pins every terminal.")
+            exit 1
+        }
+        try { $value = ConvertTo-PinValue @($words[2..($words.Count - 1)]) } catch { [Console]::Error.WriteLine($_.Exception.Message); exit 1 }
+        $names = if ($group) { $Terminals } else { @($app) }
+        $chosen = @(); $skipped = @()
+        foreach ($name in $names) {
+            if ($value -in $DefaultValues -and $PinApps[$name].Defaults -notcontains $value) { $skipped += "$name (no built-in theme of that kind zt can set)" }
+            else { $chosen += $name }
+        }
+        if (-not $group -and $skipped) {
+            $supported = $PinApps[$app].Defaults
+            if ($supported) { [Console]::Error.WriteLine("$app has no built-in $($value.Split('-')[-1]) theme zt can switch to; it supports $($supported -join ', ').") }
+            else { [Console]::Error.WriteLine("$app has no built-in theme zt can switch to, so it can be pinned to a Zacess theme or auto only.") }
+            exit 1
+        }
+        # a fresh highlight pin starts over: a default pin restores once again
+        if ($chosen -contains 'highlight' -and (Test-Path $HighlightDefaulted)) { Remove-Item $HighlightDefaulted }
+        $pins = Read-Pins
+        $state = if ($before) { $before } else { 'deep-contrast-dark' }
+        # an auto pin that matches zt's own auto state is the same as no pin
+        $same = $value.StartsWith('auto') -and $state -eq $value
+        foreach ($name in $chosen) { if ($same) { $pins.Remove($name) } else { $pins[$name] = $value } }
+        Write-Pins $pins
+        if ($same) { Write-Host "${Bold}Following zt again${Reset}: $($chosen -join ', ') (zt already follows the system with that pair)" }
+        else { Write-Host "${Bold}Pinned${Reset} $($chosen -join ', ') to $(Get-PinText $value)" }
+        if ($skipped) { Write-Host "  ${Skip}left as they were: $($skipped -join '; ')${Reset}" }
+        $onlyApps = $chosen; $target = $state; $quiet = $true
+    }
+    'unpin' {
+        if ($words.Count -lt 2 -and -not $all) { [Console]::Error.WriteLine('Usage: zt unpin <app|terminals|--all>'); exit 1 }
+        $pins = Read-Pins
+        $names = if ($all) { @($pins.Keys) }
+            elseif ($words[1] -eq 'terminals') { @($Terminals | Where-Object { $pins.Contains($_) }) }
+            else {
+                $app = Find-App $words[1]
+                if (-not $app) { [Console]::Error.WriteLine("Unknown app: $($words[1]). The apps are $($PinApps.Keys -join ', ')."); exit 1 }
+                @($app | Where-Object { $pins.Contains($_) })
+            }
+        if (-not $names) { Write-Host 'Nothing pinned there'; exit 0 }
+        foreach ($name in $names) { $pins.Remove($name) }
+        Write-Pins $pins
+        if ($names -contains 'highlight' -and (Test-Path $HighlightDefaulted)) { Remove-Item $HighlightDefaulted }
+        Write-Host "${Bold}Following zt again${Reset}: $($names -join ', ')"
+        $onlyApps = $names; $target = if ($before) { $before } else { 'deep-contrast-dark' }; $quiet = $true
+    }
     'undo' {
         if (-not $all) {
             $target = Read-Text $PreviousFile
@@ -1116,10 +1463,14 @@ switch ($words[0]) {
 
 $pair = ConvertFrom-StateText $target
 $fixed = $pair.Fixed; $dark = $pair.Dark; $light = $pair.Light; $now = $pair.Now
-if ($before -and $before -ne $target) { Write-Atomic $PreviousFile $before }
+if ($before -and $before -ne $target -and -not $onlyApps) { Write-Atomic $PreviousFile $before }
+$Pins = Read-Pins
+# a pin run prints its own lines, so it keeps quiet only about the heading
+$showLines = -not $quiet -or $onlyApps
 if (-not $quiet) {
     if ($fixed) { Write-Host "${Bold}$($fixed.Name)${Reset} everywhere, not following the system" }
     else { Write-Host "${Bold}Following the system${Reset}: $($dark.Name) in dark mode, $($light.Name) in light mode (now $(if ($now.Dark) { 'dark' } else { 'light' }))" }
+    if ($Pins.Count) { Write-Host "  ${Skip}pinned, kept on their own theme: $(@($Pins.Keys | Sort-Object) -join ', ')${Reset}" }
 }
 
 # every tool runs at once in a runspace pool, so a switch takes about as long as the slowest tool.
@@ -1153,18 +1504,35 @@ $errors = [IO.StringWriter]::new()
 $iss.Variables.Add([Management.Automation.Runspaces.SessionStateVariableEntry]::new('ZtErrors', $true, ''))
 $console = [Console]::Error
 [Console]::SetError([IO.TextWriter]::Synchronized($errors))
+# zt pin and zt unpin run only the tools of the apps they name
+$run = if ($onlyApps) {
+    @(foreach ($group in $groups) {
+        $kept = @(@($group) | Where-Object { $onlyApps -contains $ToolApp[$_] })
+        if ($kept.Count) { , $kept }
+    })
+} else { $groups }
 $pool = [runspacefactory]::CreateRunspacePool($iss)
-$null = $pool.SetMaxRunspaces($groups.Count)
+$null = $pool.SetMaxRunspaces([Math]::Max(1, $run.Count))
 $pool.Open()
 try {
-    $jobs = foreach ($group in $groups) {
+    $jobs = foreach ($group in $run) {
         $ps = [powershell]::Create()
         $ps.RunspacePool = $pool
         $null = $ps.AddScript({
             param($Tools, $Fixed, $Dark, $Light, $Now)
             foreach ($tool in $Tools) {
                 try {
-                    & $tool $Fixed $Dark $Light $Now
+                    $app = $ToolApp[$tool]
+                    if ($app -and $Pins.Contains($app) -and $app -ne 'neovim') {
+                        Invoke-Pin $tool $Pins[$app]
+                    } elseif ($app -eq 'neovim' -and $Pins.Contains('neovim')) {
+                        # Neovim's state file is zt's own state, so it is written either way and the
+                        # pin is read by Neovim itself
+                        & $tool $Fixed $Dark $Light $Now 6>$null
+                        Write-Result 'Neovim' "pinned to $(Get-PinText $Pins.neovim), on next focus or start"
+                    } else {
+                        & $tool $Fixed $Dark $Light $Now
+                    }
                 } catch {
                     # one broken config never stops the other tools
                     Write-Result ($tool -replace '^Set-', '') "failed: $($_.Exception.Message)" $false
@@ -1175,7 +1543,7 @@ try {
     }
     foreach ($job in $jobs) {
         try { $null = $job.Shell.EndInvoke($job.Handle) } catch { Write-Result $job.Name "failed: $($_.Exception.InnerException.Message)" $false }
-        if (-not $quiet) { foreach ($record in $job.Shell.Streams.Information) { Write-Host $record.MessageData.ToString() } }
+        if ($showLines) { foreach ($record in $job.Shell.Streams.Information) { Write-Host $record.MessageData.ToString() } }
         $job.Shell.Dispose()
     }
 } finally {

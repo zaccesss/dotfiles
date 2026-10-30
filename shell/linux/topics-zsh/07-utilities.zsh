@@ -142,10 +142,13 @@ zipf() {
     zip -r "${target%/}.zip" "$target"
 }
 
-# termtheme: Ptyxis' light or dark High Contrast palette. auto follows the desktop's light and dark
-# setting; dark and light pin one. Inside OrbStack the terminal belongs to the Mac, so it says so
+# termtheme: the terminals-only side of zt. A theme pins every terminal app zt switches (Ptyxis,
+# Ghostty, Kitty, Alacritty and tmux) while the editors keep following zt. auto pins them to the
+# desktop's light and dark, default to each terminal's own theme and follow hands them back to zt.
+# dark and light keep their old meaning, the Zacess Deep Contrast pair, since that is the habit;
+# zacess-dark and zacess-light reach the themes zt calls dark and light. No argument shows what
+# each terminal is on. Inside OrbStack or WSL the terminal belongs to the other system, so it says so
 termtheme() {
-    local mode="${1:-status}"
     if [[ -d /opt/orbstack-guest ]]; then
         echo "This shell runs in the Mac's terminal; run termtheme on the Mac instead"
         return 0
@@ -154,21 +157,19 @@ termtheme() {
         echo "This shell runs in Windows Terminal; run termtheme in PowerShell instead"
         return 0
     fi
-    if ! gsettings list-keys org.gnome.Ptyxis 2>/dev/null | grep -qx interface-style; then
-        echo -e "${RED}Ptyxis is not installed; termtheme sets Ptyxis, the terminal in Ubuntu 25.10 and later${RESET}"
-        return 1
-    fi
-    case "$mode" in
-        auto) gsettings set org.gnome.Ptyxis interface-style system
-              echo -e "${GREEN}Ptyxis now follows the desktop's light and dark${RESET}" ;;
-        dark|light) gsettings set org.gnome.Ptyxis interface-style "$mode"
-              echo -e "${GREEN}Ptyxis stays ${mode}${RESET}" ;;
-        status) case "$(gsettings get org.gnome.Ptyxis interface-style)" in
-                    "'system'") echo "auto: following the desktop's light and dark" ;;
-                    *) echo "fixed: $(gsettings get org.gnome.Ptyxis interface-style | tr -d "'")" ;;
-                esac ;;
-        *) echo "Usage: termtheme [dark|light|auto]  (no argument shows the current mode)"
-           return 1 ;;
+    # the words are matched in any case, as PowerShell's termtheme and zt itself do
+    local word
+    word=$(printf '%s' "${1:-}" | tr '[:upper:]' '[:lower:]')
+    case "$word" in
+        "") zt current terminals ;;
+        -h|--help|help)
+            echo "Usage: termtheme [<theme>|dark|light|auto [dark] [light]|default|default-dark|default-light|follow]"
+            echo "  a theme pins every terminal to it (zt list shows the eight), dark and light are the Deep Contrast pair,"
+            echo "  auto follows the system, default is each terminal's own theme and follow hands them back to zt" ;;
+        dark) zt pin terminals deep-contrast-dark ;;
+        light) zt pin terminals deep-contrast-light ;;
+        follow|unpin) zt unpin terminals ;;
+        *) zt pin terminals "$@" ;;
     esac
 }
 

@@ -10,13 +10,20 @@
     zt doctor                      every installed theme file against the repo copy, exit 1 on drift
     zt highlight [default]         the system text highlight again from the theme or the system's own back
     zt sync                        apply a change sent with --all from another device (run at shell start)
+    zt pin <app> <theme>           keep one app on its own theme while the rest follow zt; the theme can
+                                   also be auto [dark] [light] or the app's own: default, default-dark or
+                                   default-light. "terminals" as the app pins every terminal app at once
+    zt unpin <app|terminals|--all> the app follows zt again, switched to the zt state straight away
+    zt current terminals           what each terminal app is on, with any pins (termtheme shows this)
 
 Each tool is edited in place and only for its theme setting; a tool that is not installed is skipped.
 Tools that keep settings in memory (JetBrains IDEs, Eclipse, STM32CubeIDE, KiCad, Processing, Nextpad++,
 Vivado, Arduino IDE, Thonny, MATLAB, LTspice, Zotero and Obsidian) are only changed while they are closed,
 since they write their settings back on exit. tmux takes its colours from a theme file linked into the
 state folder and the system text highlight (macOS, KDE Plasma or GNOME) takes the theme's selection
-colour, read from the generated terminal theme. Windows has its own version in windows/scripts/zt.ps1.
+colour, read from the generated terminal theme. Pins live in the pins file beside the state file and
+every switch, undo and sync runs a pinned app with its pin. Windows has its own version in
+windows/scripts/zt.ps1.
 """
 
 import concurrent.futures
@@ -447,6 +454,33 @@ def eclipse_like(label, workspace, themes, process, fixed, now):
     report(label, theme.name + note)
 
 
+def set_terminal_profile(name, basic_too=False):
+    """Terminal.app's default, startup and open Zacess tabs on one profile, with the switching agent stopped.
+    Tabs on the Basic profile are left alone unless basic_too, which undoing a default pin sets, since
+    a Basic tab is otherwise someone's own choice."""
+    uid = os.getuid()
+    run("launchctl", "bootout", f"gui/{uid}/{TERMINAL_AGENT}")
+    if TERMINAL_AGENT_PLIST.exists():
+        TERMINAL_AGENT_PLIST.unlink()
+    if pgrep("-x", "Terminal"):
+        script = f'''tell application "Terminal"
+            set default settings to settings set "{name}"
+            set startup settings to settings set "{name}"
+            repeat with w in windows
+                try
+                    repeat with t in tabs of w
+                        set n to name of current settings of t
+                        if n starts with "Zacess" or n starts with "High Contrast"{' or n is "Basic"' if basic_too else ''} then set current settings of t to settings set "{name}"
+                    end repeat
+                end try
+            end repeat
+        end tell'''
+        run("osascript", "-e", script)
+    else:
+        run("defaults", "write", "com.apple.Terminal", "Default Window Settings", "-string", name)
+        run("defaults", "write", "com.apple.Terminal", "Startup Window Settings", "-string", name)
+
+
 def terminal_app(fixed, dark, light, now):
     if not MAC:
         return
@@ -454,27 +488,8 @@ def terminal_app(fixed, dark, light, now):
     wanted = fixed or now
     if f'"{wanted.name}" =' not in profiles:
         return report("Terminal.app", "Zacess profiles not installed (run terminal/mac/install.sh), skipped", False)
-    uid = os.getuid()
-    run("launchctl", "bootout", f"gui/{uid}/{TERMINAL_AGENT}")
-    if TERMINAL_AGENT_PLIST.exists():
-        TERMINAL_AGENT_PLIST.unlink()
-    if pgrep("-x", "Terminal"):
-        script = f'''tell application "Terminal"
-            set default settings to settings set "{wanted.name}"
-            set startup settings to settings set "{wanted.name}"
-            repeat with w in windows
-                try
-                    repeat with t in tabs of w
-                        set n to name of current settings of t
-                        if n starts with "Zacess" or n starts with "High Contrast" then set current settings of t to settings set "{wanted.name}"
-                    end repeat
-                end try
-            end repeat
-        end tell'''
-        run("osascript", "-e", script)
-    else:
-        run("defaults", "write", "com.apple.Terminal", "Default Window Settings", "-string", wanted.name)
-        run("defaults", "write", "com.apple.Terminal", "Startup Window Settings", "-string", wanted.name)
+    # undoing a default pin hands back the Basic tabs that pin made
+    set_terminal_profile(wanted.name, basic_too=getattr(_lines, "undo_default", False))
     if fixed:
         return report("Terminal.app", fixed.name)
     if f'"{dark.name}" =' not in profiles or f'"{light.name}" =' not in profiles:
@@ -493,7 +508,7 @@ def terminal_app(fixed, dark, light, now):
 </dict>
 </plist>
 ''')
-    run("launchctl", "bootstrap", f"gui/{uid}", str(TERMINAL_AGENT_PLIST))
+    run("launchctl", "bootstrap", f"gui/{os.getuid()}", str(TERMINAL_AGENT_PLIST))
     report("Terminal.app", f"following the system: {dark.name} or {light.name}")
 
 
@@ -561,6 +576,10 @@ def kitty(fixed, dark, light, now):
     report("Kitty", fixed.name if fixed else f"following the system: {dark.name} or {light.name}")
 
 
+# what a default pin leaves on the emptied import line, so switching back can put the import there
+ALACRITTY_MARK = "# zacess: own colours, zt puts the theme import back here"
+
+
 def alacritty(fixed, dark, light, now):
     conf = XDG_CONFIG / "alacritty" / "alacritty.toml"
     if not conf.exists():
@@ -568,7 +587,11 @@ def alacritty(fixed, dark, light, now):
     wanted = fixed or now
     text = conf.read_text()
     if not re.search(r"zacess-[\w-]+\.toml", text):
-        return report("Alacritty", "no Zacess import in alacritty.toml, skipped", False)
+        # a default pin left the marker below in place of the import, so the import goes back there
+        if ALACRITTY_MARK not in text:
+            return report("Alacritty", "no Zacess import in alacritty.toml, skipped", False)
+        text = re.sub(r"^import\s*=\s*\[\s*\]\s*" + re.escape(ALACRITTY_MARK) + r"[^\n]*$",
+                      f'import = ["zacess-{wanted.id}.toml"]', text, count=1, flags=re.M)
     conf.write_text(re.sub(r"zacess-[\w-]+\.toml", f"zacess-{wanted.id}.toml", text, count=1))
     note = "" if fixed else " (Alacritty cannot follow the system, so this matches it now)"
     report("Alacritty", wanted.name + note)
@@ -590,6 +613,49 @@ def ghostty(fixed, dark, light, now):
     conf.write_text(text)
     report("Ghostty", (fixed.name if fixed else f"following the system: {dark.name} or {light.name}")
            + ", in new windows")
+
+
+PTYXIS_PALETTES = Path(os.environ.get("XDG_DATA_HOME") or HOME / ".local" / "share") / "org.gnome.Ptyxis" / "palettes"
+
+
+def ptyxis_profile():
+    """The gsettings path of Ptyxis' default profile (None when Ptyxis is not set up)."""
+    if MAC or not shutil.which("gsettings"):
+        return None
+    if "interface-style" not in run("gsettings", "list-keys", "org.gnome.Ptyxis").stdout.split():
+        return None
+    uuid_value = run("gsettings", "get", "org.gnome.Ptyxis", "default-profile-uuid").stdout.strip().strip("'")
+    return f"org.gnome.Ptyxis.Profile:/org/gnome/Ptyxis/Profiles/{uuid_value}/" if uuid_value else None
+
+
+def set_ptyxis(profile, palette, style):
+    run("gsettings", "set", profile, "palette-name", palette)
+    run("gsettings", "set", "org.gnome.Ptyxis", "interface-style", style)
+
+
+def ptyxis(fixed, dark, light, now):
+    profile = ptyxis_profile()
+    if profile is None:
+        return
+    wanted = fixed or now
+    if not (PTYXIS_PALETTES / f"zacess-{wanted.id}.palette").exists():
+        return report("Ptyxis", "Zacess palettes not installed (terminal/terminal/linux/ptyxis), skipped", False)
+    # a palette holds one look and the Zacess ones come one per theme, so Ptyxis is matched to the
+    # theme for the current appearance, the way Alacritty is
+    set_ptyxis(profile, f"zacess-{wanted.id}", wanted.appearance)
+    note = "" if fixed else " (Ptyxis cannot follow the system with two palettes, so this matches it now)"
+    report("Ptyxis", wanted.name + note)
+
+
+def current_ptyxis():
+    profile = ptyxis_profile()
+    if profile is None:
+        return None
+    palette = run("gsettings", "get", profile, "palette-name").stdout.strip().strip("'")
+    style = run("gsettings", "get", "org.gnome.Ptyxis", "interface-style").stdout.strip().strip("'")
+    if palette.startswith("zacess-"):
+        return f"fixed: {name_of(palette)}"
+    return f"its own {palette or 'default'} palette, " + ("following the system" if style == "system" else style)
 
 
 def warp(fixed, dark, light, now):
@@ -988,8 +1054,480 @@ def current_highlight():
 
 
 TOOLS = [vscode, zed, jetbrains, neovim, tmux, eclipse, stm32cubeide, kicad, processing, nextpad, vivado,
-         arduino, thonny, matlab, ltspice, zotero, obsidian, terminal_app, iterm2, kitty, alacritty, ghostty, warp,
-         highlight]
+         arduino, thonny, matlab, ltspice, zotero, obsidian, terminal_app, iterm2, kitty, alacritty, ghostty, ptyxis,
+         warp, highlight]
+
+
+# ---------------------------------------------------------------------------------------------------
+# pins: one app kept on its own theme while every other app follows zt. The pins file sits beside the
+# state file, one app per line followed by its value: a Zacess theme id, "auto <dark id> <light id>"
+# to follow the system on its own or the app's own built-in theme as "default" (following the
+# system where the app can), "default-dark" or "default-light". A switch, an undo and a sync run each
+# pinned app with its pin instead of the zt state, so a pin holds until zt unpin
+# ---------------------------------------------------------------------------------------------------
+
+PINS_FILE = STATE_FILE.parent / "pins"
+DEFAULT_VALUES = ("default", "default-dark", "default-light")
+VSCODE_DEFAULTS = {"dark": "Default Dark Modern", "light": "Default Light Modern"}
+ZED_DEFAULTS = {"dark": "One Dark", "light": "One Light"}
+# Ghostty bundles the iTerm2 colour schemes, which include the plain built-in pair
+GHOSTTY_DEFAULTS = {"dark": "Builtin Dark", "light": "Builtin Light"}
+
+
+def vscode_default(mode):
+    path = vscode_settings()
+    if not path.exists():
+        return report("VS Code", "not installed, skipped", False)
+    if mode == "default":
+        dark, light = VSCODE_DEFAULTS["dark"], VSCODE_DEFAULTS["light"]
+        edit_jsonc(path, {"workbench.colorTheme": dark if system_is_dark() else light,
+                          "window.autoDetectColorScheme": True,
+                          "workbench.preferredDarkColorTheme": dark,
+                          "workbench.preferredLightColorTheme": light})
+        return report("VS Code", f"its own theme, following the system: {dark} or {light}")
+    name = VSCODE_DEFAULTS[mode.split("-")[1]]
+    edit_jsonc(path, {"workbench.colorTheme": name, "window.autoDetectColorScheme": False})
+    report("VS Code", f"its own theme, {name}")
+
+
+def zed_default(mode):
+    path = XDG_CONFIG / "zed" / "settings.json"
+    if not path.exists():
+        return report("Zed", "not installed, skipped", False)
+    look = "system" if mode == "default" else mode.split("-")[1]
+    edit_jsonc(path, {"theme": {"mode": look, "light": ZED_DEFAULTS["light"], "dark": ZED_DEFAULTS["dark"]}})
+    report("Zed", "its own theme, " + ("following the system: One Dark or One Light" if look == "system"
+                                       else ZED_DEFAULTS[look]))
+
+
+def jetbrains_default(mode):
+    dirs = jetbrains_dirs()
+    if not dirs:
+        return report("JetBrains", "not installed, skipped", False)
+    if running(JETBRAINS_PROCESS):
+        return report("JetBrains", "an IDE is open, skipped: close it and run zt again", False)
+    for d, _ in dirs:
+        # with no theme named and Sync with OS on, each IDE uses its own light and dark pair
+        laf = d / "options" / "laf.xml"
+        if laf.exists():
+            root = ET.parse(laf).getroot()
+            comp = root.find("component[@name='LafManager']")
+            if comp is not None:
+                for child in list(comp):
+                    if child.tag in ("laf", "lafs-to-previous-schemes") or child.tag.startswith("preferred-"):
+                        comp.remove(child)
+                comp.set("autodetect", "true")
+                ET.indent(root, space="  ")
+                ET.ElementTree(root).write(laf, encoding="unicode")
+        scheme = d / "options" / "colors.scheme.xml"
+        if scheme.exists():
+            root = ET.parse(scheme).getroot()
+            comp = root.find("component[@name='EditorColorsManagerImpl']")
+            node = comp.find("global_color_scheme") if comp is not None else None
+            if node is not None:
+                comp.remove(node)
+                ET.indent(root, space="  ")
+                ET.ElementTree(root).write(scheme, encoding="unicode")
+        report(f"  {d.name}", "its own theme, Sync with OS")
+
+
+def neovim_pin_report(value):
+    report("Neovim", f"pinned to {describe_pin(value)}, on next focus or start")
+
+
+def tmux_default(mode):
+    if TMUX_LINK.is_symlink() or TMUX_LINK.exists():
+        source = TMUX_LINK.resolve() if TMUX_LINK.is_symlink() else TMUX_LINK
+        keys = re.findall(r"^set(?:w)? -g (\S+)", source.read_text(), flags=re.M) if source.exists() else []
+        TMUX_LINK.unlink()
+        if shutil.which("tmux") and run("tmux", "list-sessions").returncode == 0:
+            # the running server forgets the theme's colours, falling back to tmux.conf's own
+            for key in keys:
+                run("tmux", "set", "-gu", key)
+            run("tmux", "source-file", str(HOME / ".tmux.conf"))
+    report("tmux", "its own colours, the terminal's text and background")
+
+
+def terminal_app_default(mode):
+    if not MAC:
+        return
+    set_terminal_profile("Basic")
+    report("Terminal.app", "its own Basic profile, which follows the system")
+
+
+def iterm_default_guid():
+    out = run("defaults", "export", "com.googlecode.iterm2", "-").stdout
+    try:
+        prefs = plistlib.loads(out.encode())
+    except Exception:  # an unreadable or empty export means no Default profile to find
+        return None
+    for bookmark in prefs.get("New Bookmarks", []):
+        if bookmark.get("Name") == "Default":
+            return bookmark.get("Guid")
+    return None
+
+
+def iterm2_default(mode):
+    if not MAC:
+        return
+    guid = iterm_default_guid()
+    if not guid:
+        return report("iTerm2", "no Default profile found, skipped", False)
+    auto_file = ITERM_PROFILES / "zacess-auto.json"
+    if auto_file.exists():
+        auto_file.unlink()
+    run("defaults", "write", "com.googlecode.iterm2", "Default Bookmark Guid", "-string", guid)
+    note = " (iTerm2 is open: new windows use it after a restart)" if pgrep("-x", "iTerm2") else ""
+    report("iTerm2", "its own Default profile" + note)
+
+
+def kitty_default(mode):
+    folder = Path(os.environ.get("KITTY_CONFIG_DIRECTORY") or XDG_CONFIG / "kitty")
+    conf = folder / "kitty.conf"
+    if not conf.exists():
+        return report("Kitty", "not installed, skipped", False)
+    conf.write_text(re.sub(r"^include[ \t]+zacess-[\w-]+\.conf[ \t]*\n?", "", conf.read_text(), flags=re.M))
+    for name in ("dark-theme.auto.conf", "light-theme.auto.conf", "no-preference-theme.auto.conf"):
+        target = folder / name
+        if target.exists() and target.read_text().startswith("# Zacess"):
+            target.unlink()
+    run("pkill", "-USR1", "-x", "kitty")
+    report("Kitty", "its own colours")
+
+
+def alacritty_default(mode):
+    conf = XDG_CONFIG / "alacritty" / "alacritty.toml"
+    if not conf.exists():
+        return report("Alacritty", "not installed, skipped", False)
+    text = conf.read_text()
+    if re.search(r"zacess-[\w-]+\.toml", text):
+        text = re.sub(r'"[^"]*zacess-[\w-]+\.toml"\s*,?\s*', "", text)
+        text = re.sub(r"^(import\s*=\s*\[\s*\])[ \t]*$", r"\1 " + ALACRITTY_MARK, text, count=1, flags=re.M)
+        conf.write_text(text)
+    report("Alacritty", "its own colours")
+
+
+def ghostty_default(mode):
+    conf = XDG_CONFIG / "ghostty" / "config"
+    if not conf.exists():
+        return report("Ghostty", "not installed, skipped", False)
+    if mode == "default":
+        value = f"light:{GHOSTTY_DEFAULTS['light']},dark:{GHOSTTY_DEFAULTS['dark']}"
+    else:
+        value = GHOSTTY_DEFAULTS[mode.split("-")[1]]
+    text = conf.read_text()
+    if re.search(r"^theme\s*=.*$", text, flags=re.M):
+        text = re.sub(r"^theme\s*=.*$", f"theme = {value}", text, count=1, flags=re.M)
+    else:
+        text = text.rstrip("\n") + f"\ntheme = {value}\n"
+    conf.write_text(text)
+    report("Ghostty", f"its own theme, {value}, in new windows")
+
+
+def ptyxis_default(mode):
+    profile = ptyxis_profile()
+    if profile is None:
+        return
+    style = "system" if mode == "default" else mode.split("-")[1]
+    # gnome is the palette Ptyxis starts with, holding a light and a dark look
+    set_ptyxis(profile, "gnome", style)
+    report("Ptyxis", "its own GNOME palette, " + ("following the system" if style == "system" else style))
+
+
+HIGHLIGHT_DEFAULTED = STATE_FILE.parent / "highlight.pinned-default"
+
+
+def highlight_default(mode):
+    # restored once when pinned; later switches leave the highlight alone, since restoring again
+    # with the record gone would clear a highlight chosen by hand since
+    if HIGHLIGHT_DEFAULTED.exists():
+        return report("Highlight", "its own, left as it is", False)
+    restore_highlight()
+    HIGHLIGHT_DEFAULTED.parent.mkdir(parents=True, exist_ok=True)
+    HIGHLIGHT_DEFAULTED.write_text("1\n")
+
+
+# every app a pin can name: (tool, aliases, default handler, the default values it supports). An app
+# with no default handler can still be pinned to a Zacess theme or auto
+PIN_APPS = {
+    "vscode": (vscode, ("code", "vs-code", "visual-studio-code"), vscode_default, DEFAULT_VALUES),
+    "zed": (zed, (), zed_default, DEFAULT_VALUES),
+    "jetbrains": (jetbrains, ("idea", "intellij", "pycharm", "webstorm", "clion", "rider"), jetbrains_default,
+                  ("default",)),
+    "neovim": (neovim, ("nvim", "vim"), None, DEFAULT_VALUES),
+    "tmux": (tmux, (), tmux_default, ("default",)),
+    "eclipse": (eclipse, (), None, ()),
+    "stm32cubeide": (stm32cubeide, ("stm32",), None, ()),
+    "kicad": (kicad, (), None, ()),
+    "processing": (processing, (), None, ()),
+    "nextpad": (nextpad, ("nextpad++",), None, ()),
+    "vivado": (vivado, (), None, ()),
+    "arduino": (arduino, ("arduino-ide",), None, ()),
+    "thonny": (thonny, (), None, ()),
+    "matlab": (matlab, (), None, ()),
+    "ltspice": (ltspice, (), None, ()),
+    "zotero": (zotero, (), None, ()),
+    "obsidian": (obsidian, (), None, ()),
+    "terminal": (terminal_app, ("terminal.app", "apple-terminal", "terminal-app"), terminal_app_default, ("default",)),
+    "iterm2": (iterm2, ("iterm", "iterm.app"), iterm2_default, ("default",)),
+    "kitty": (kitty, (), kitty_default, ("default",)),
+    "alacritty": (alacritty, (), alacritty_default, ("default",)),
+    "ghostty": (ghostty, (), ghostty_default, DEFAULT_VALUES),
+    "ptyxis": (ptyxis, (), ptyxis_default, DEFAULT_VALUES),
+    "warp": (warp, (), None, ()),
+    "highlight": (highlight, ("selection",), highlight_default, ("default",)),
+}
+# termtheme and zt pin terminals: every terminal app zt switches on this system
+TERMINALS = ("terminal", "iterm2", "ghostty", "kitty", "alacritty", "warp", "tmux") if MAC else \
+    ("ptyxis", "ghostty", "kitty", "alacritty", "tmux")
+TOOL_APP = {entry[0]: app for app, entry in PIN_APPS.items()}
+# the labels zt prints, for zt doctor and zt current to find a pinned app
+LABEL_APP = {"vs code": "vscode", "zed": "zed", "jetbrains": "jetbrains", "neovim": "neovim", "zacess.nvim": "neovim",
+             "tmux": "tmux", "tmux server": "tmux", "eclipse": "eclipse", "stm32cubeide": "stm32cubeide",
+             "kicad": "kicad", "processing": "processing", "nextpad++": "nextpad", "vivado": "vivado",
+             "arduino ide": "arduino", "thonny": "thonny", "matlab": "matlab", "ltspice": "ltspice",
+             "zotero": "zotero", "obsidian": "obsidian", "terminal.app": "terminal", "iterm2": "iterm2",
+             "kitty": "kitty", "alacritty": "alacritty", "ghostty": "ghostty", "ptyxis": "ptyxis", "warp": "warp",
+             "highlight": "highlight"}
+
+
+def app_for_label(label):
+    key = label.strip().lower()
+    if key in LABEL_APP:
+        return LABEL_APP[key]
+    # a JetBrains IDE's folder is shown under its own name
+    if any(key == d.name.lower() for d, _ in jetbrains_dirs()):
+        return "jetbrains"
+    return None
+
+
+# apps that exist on one system only, so a pin elsewhere is refused rather than quietly doing nothing
+MAC_ONLY = {"terminal", "iterm2", "nextpad"}
+LINUX_ONLY = {"ptyxis", "vivado"}
+
+
+def on_this_system(app):
+    return not ((app in MAC_ONLY and not MAC) or (app in LINUX_ONLY and MAC))
+
+
+def find_app(word):
+    """The app a word names. Aliases point at an app of this system first: "console" is Ptyxis on
+    Linux and Terminal.app on macOS, "terminal" is Terminal.app on macOS and Ptyxis on Linux."""
+    key = word.strip().lower()
+    if key in ("terminal", "console"):
+        return "terminal" if MAC else "ptyxis"
+    for app, (_, aliases, _, _) in PIN_APPS.items():
+        if key == app or key in aliases:
+            return app
+    return None
+
+
+def read_pins():
+    pins = {}
+    if not PINS_FILE.exists():
+        return pins
+    for line in PINS_FILE.read_text().splitlines():
+        words = line.split()
+        if len(words) >= 2 and not words[0].startswith("#") and words[0] in PIN_APPS:
+            pins[words[0]] = " ".join(words[1:])
+    return pins
+
+
+def write_pins(pins):
+    lines = ["# zt pins: an app, then the theme it keeps: a Zacess theme id, auto <dark> <light>,",
+             "# default, default-dark or default-light. Written by zt pin and zt unpin"]
+    lines += [f"{app} {value}" for app, value in sorted(pins.items())]
+    if pins:
+        write_atomic(PINS_FILE, "\n".join(lines) + "\n")
+    elif PINS_FILE.exists():
+        PINS_FILE.unlink()
+
+
+def parse_pin_value(words):
+    """A pin's value from the words after the app: a theme, auto with an optional pair or a default."""
+    if not words:
+        return None, "a pin needs a theme, auto, default, default-dark or default-light"
+    first = words[0].lower()
+    if first in DEFAULT_VALUES and len(words) == 1:
+        return first, None
+    if first == "auto":
+        dark = find_theme(words[1]) if len(words) > 1 else find_theme(DEFAULT_DARK)
+        light = find_theme(words[2]) if len(words) > 2 else find_theme(DEFAULT_LIGHT)
+        if not dark or not light or len(words) > 3:
+            return None, "auto takes a dark theme and a light theme. Run zt list for the names"
+        return f"auto {dark.id} {light.id}", None
+    theme = find_theme(" ".join(words))
+    if not theme:
+        return None, f"unknown theme: {' '.join(words)}. Run zt list for the names"
+    return theme.id, None
+
+
+def pair_for(value):
+    """(fixed or None, dark, light, now) for a state file's text or a pin's theme value."""
+    words = value.split()
+    if words and words[0] == "auto":
+        dark = (find_theme(words[1]) if len(words) > 1 else None) or find_theme(DEFAULT_DARK)
+        light = (find_theme(words[2]) if len(words) > 2 else None) or find_theme(DEFAULT_LIGHT)
+        return None, dark, light, dark if system_is_dark() else light
+    fixed = (find_theme(words[0]) if words else None) or find_theme(DEFAULT_DARK)
+    dark = fixed if fixed.dark else find_theme(DEFAULT_DARK)
+    light = fixed if not fixed.dark else find_theme(DEFAULT_LIGHT)
+    return fixed, dark, light, fixed
+
+
+def describe_pin(value):
+    words = value.split()
+    if value in DEFAULT_VALUES:
+        return {"default": "its own theme, following the system where it can",
+                "default-dark": "its own dark theme", "default-light": "its own light theme"}[value]
+    if words and words[0] == "auto":
+        # a hand-edited auto line may leave out the pair, which then means the Deep Contrast pair
+        dark = words[1] if len(words) > 1 else DEFAULT_DARK
+        light = words[2] if len(words) > 2 else DEFAULT_LIGHT
+        return f"following the system: {name_of(dark)} or {name_of(light)}"
+    return name_of(words[0] if words else DEFAULT_DARK)
+
+
+def apply_pin(app, value):
+    """Run one app with its pin rather than the zt state."""
+    tool, _, default, _ = PIN_APPS[app]
+    if app == "neovim":
+        # Neovim reads its pin from the pins file itself (config/theme.lua), so nothing is written
+        return neovim_pin_report(value)
+    if value in DEFAULT_VALUES:
+        return default(value)
+    tool(*pair_for(value))
+
+
+def run_pinned(apps_values, undone_defaults=()):
+    """Apply several pins at once, printing their lines in order. undone_defaults names the apps
+    whose default pin was just removed, so their own theme is replaced as well."""
+    def one(item):
+        _lines.buffer = []
+        app, value = item
+        _lines.undo_default = app in undone_defaults
+        try:
+            if value is None:
+                PIN_APPS[app][0](*active_pair())
+            else:
+                apply_pin(app, value)
+        except Exception as error:  # one broken config never stops the others
+            report(app, f"failed: {error}", False)
+        return _lines.buffer
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, len(apps_values))) as pool:
+        for lines in pool.map(one, apps_values):
+            for line in lines:
+                print(line)
+
+
+def pin(argv):
+    """zt pin <app|terminals> <value>: keep one app (or every terminal) on its own theme."""
+    if len(argv) < 2:
+        print("Usage: zt pin <app> <theme|auto [dark] [light]|default|default-dark|default-light>\n"
+              f"Apps: {', '.join(PIN_APPS)}. terminals pins {', '.join(TERMINALS)}", file=sys.stderr)
+        return 1
+    group = argv[0].lower() == "terminals"
+    app = None if group else find_app(argv[0])
+    if not group and not app:
+        print(f"Unknown app: {argv[0]}. The apps are {', '.join(PIN_APPS)}. terminals pins every terminal.",
+              file=sys.stderr)
+        return 1
+    if app and not on_this_system(app):
+        print(f"{app} is not an app zt switches on {'macOS' if MAC else 'Linux'}, so it cannot be pinned here.",
+              file=sys.stderr)
+        return 1
+    value, error = parse_pin_value(argv[1:])
+    if error:
+        print(error, file=sys.stderr)
+        return 1
+    apps = list(TERMINALS) if group else [app]
+    pins = read_pins()
+    chosen, skipped = [], []
+    for name in apps:
+        if name == "warp":
+            # Warp's theme is only ever set by hand, so a pin would promise something zt cannot do
+            skipped.append(f"{name} (set by hand in its settings)")
+            continue
+        if value in DEFAULT_VALUES and value not in PIN_APPS[name][3]:
+            skipped.append(f"{name} (no built-in theme of that kind zt can set)")
+            continue
+        chosen.append(name)
+    if not group and skipped:
+        app_name = apps[0]
+        if app_name == "warp":
+            print("Warp's theme is set by hand in Settings > Appearance > Themes, so zt cannot pin it.",
+                  file=sys.stderr)
+        elif PIN_APPS[app_name][3]:
+            print(f"{app_name} has no built-in {value.split('-')[-1]} theme zt can switch to; it supports "
+                  f"{', '.join(PIN_APPS[app_name][3])}.", file=sys.stderr)
+        else:
+            print(f"{app_name} has no built-in theme zt can switch to, so it can be pinned to a Zacess theme "
+                  "or auto only.", file=sys.stderr)
+        return 1
+    state = current_state() or DEFAULT_DARK
+    following_same = value.startswith("auto") and state == value
+    if "highlight" in chosen:
+        # a fresh pin starts over: a default pin restores once again
+        HIGHLIGHT_DEFAULTED.unlink(missing_ok=True)
+    for name in chosen:
+        if following_same:
+            # an auto pin that matches zt's own auto state is the same as no pin
+            pins.pop(name, None)
+        else:
+            pins[name] = value
+    write_pins(pins)
+    print(f"{BOLD}Pinned{RESET} {', '.join(chosen)} to {describe_pin(value)}" if not following_same else
+          f"{BOLD}Following zt again{RESET}: {', '.join(chosen)} (zt already follows the system with that pair)")
+    if skipped:
+        print(f"  {SKIP}left as they were: {'; '.join(skipped)}{RESET}")
+    run_pinned([(name, None if following_same else value) for name in chosen])
+    return 0
+
+
+def unpin(argv):
+    """zt unpin <app|terminals|--all>: the app follows zt again and is switched to the zt state now."""
+    if not argv:
+        print("Usage: zt unpin <app|terminals|--all>", file=sys.stderr)
+        return 1
+    pins = read_pins()
+    word = argv[0].lower()
+    if word == "--all":
+        apps = list(pins)
+    elif word == "terminals":
+        apps = [name for name in TERMINALS if name in pins]
+    else:
+        app = find_app(word)
+        if not app:
+            print(f"Unknown app: {argv[0]}. The apps are {', '.join(PIN_APPS)}.", file=sys.stderr)
+            return 1
+        apps = [app] if app in pins else []
+    if not apps:
+        print("Nothing pinned there")
+        return 0
+    undone_defaults = {name for name in apps if pins.get(name) in DEFAULT_VALUES}
+    for name in apps:
+        pins.pop(name, None)
+    write_pins(pins)
+    if "highlight" in apps:
+        HIGHLIGHT_DEFAULTED.unlink(missing_ok=True)
+    print(f"{BOLD}Following zt again{RESET}: {', '.join(apps)}")
+    run_pinned([(name, None) for name in apps], undone_defaults)
+    return 0
+
+
+def show_pins(only=None):
+    pins = read_pins()
+    shown = {app: value for app, value in pins.items() if only is None or app in only}
+    if shown:
+        # apps sharing a value, as termtheme leaves every terminal, are named together
+        groups = {}
+        for app, value in sorted(shown.items()):
+            groups.setdefault(value, []).append(app)
+        print(f"{BOLD}Pinned{RESET}: " + "; ".join(f"{', '.join(apps)} on {describe_pin(value)}"
+                                                   for value, apps in groups.items()))
+    elif only is None:
+        print("Pinned: nothing, every app follows zt")
 
 
 def name_of(theme_id):
@@ -1341,10 +1879,35 @@ def current_ghostty():
     return f"fixed: {name_of(value)}"
 
 
-def show_current():
-    print(current_neovim().replace("fixed:", "zt state: fixed", 1).replace("following the system", "zt state: following the system", 1))
+def show_current(only=None):
+    """Every tool's theme now (only the apps named when given, as termtheme shows the terminals)."""
+    pins = read_pins()
+    if only is None:
+        print(current_neovim().replace("fixed:", "zt state: fixed", 1).replace("following the system", "zt state: following the system", 1))
+    show_pins(only)
+
+    def shown(tool, text):
+        app = app_for_label(tool)
+        if only is not None and app not in only:
+            return
+        if app in pins:
+            text += f" (pinned to {describe_pin(pins[app])})"
+        report(tool, text, False)
+    if only is not None and set(only) <= set(TERMINALS):
+        for tool, reader in [("Terminal.app", current_terminal_app), ("iTerm2", current_iterm2),
+                             ("Kitty", current_kitty), ("Alacritty", current_alacritty),
+                             ("Ghostty", current_ghostty), ("Ptyxis", current_ptyxis), ("tmux", current_tmux)]:
+            try:
+                value = reader()
+            except Exception as error:  # a config that cannot be read is reported, never fatal
+                value = f"could not read: {error}"
+            if value:
+                shown(tool, value)
+        if MAC and (HOME / ".warp").is_dir():
+            shown("Warp", "set by hand: Settings > Appearance > Themes")
+        return
     shared = shared_file()
-    push = read_json(shared) if shared else None
+    push = read_json(shared) if shared and only is None else None
     if push:
         seen = ALL_SEEN.read_text().strip() if ALL_SEEN.exists() else ""
         what = "undo of the last push" if push.get("undo_of") else push.get("state", "")
@@ -1357,17 +1920,21 @@ def show_current():
                ("LTspice", current_ltspice), ("Zotero", current_zotero), ("Obsidian", current_obsidian),
                ("Terminal.app", current_terminal_app), ("iTerm2", current_iterm2),
                ("Kitty", current_kitty), ("Alacritty", current_alacritty), ("Ghostty", current_ghostty),
-               ("tmux", current_tmux), ("Highlight", current_highlight)]
+               ("Ptyxis", current_ptyxis), ("tmux", current_tmux), ("Highlight", current_highlight)]
     for tool, reader in readers:
         try:
             value = reader()
         except Exception as error:  # a config that cannot be read is reported, never fatal
             value = f"could not read: {error}"
+        if tool == "Neovim" and "neovim" in pins:
+            if only is None or "neovim" in only:
+                report(tool, f"pinned to {describe_pin(pins['neovim'])}", False)
+            continue
         if value:
-            report(tool, value, False)
+            shown(tool, value)
         if tool == "Zed":
             for ide, text in current_jetbrains():
-                report(f"  {ide}", text, False)
+                shown(f"  {ide}", text)
 
 
 # ---------------------------------------------------------------------------------------------------
@@ -1389,12 +1956,21 @@ def active_pair():
     return fixed, dark, light, fixed
 
 
+def doctor_for_pin(d, value):
+    """A view of the doctor on a pin's pair, whose lines still count towards the same total."""
+    view = Doctor(*pair_for(value))
+    view.pins = d.pins
+    view.line = d.line
+    return view
+
+
 class Doctor:
     def __init__(self, fixed, dark, light, now):
         self.fixed, self.dark, self.light, self.now = fixed, dark, light, now
         # the themes whose files the active mode relies on
         self.wanted = [now] if fixed else [dark, light]
         self.drift = 0
+        self.pins = read_pins()
 
     def line(self, tool, status, text):
         colour = {"ok": OK, "drift": DRIFT}.get(status, SKIP)
@@ -1415,6 +1991,10 @@ class Doctor:
     def setting(self, tool, text):
         if text is None:
             return
+        app = app_for_label(tool)
+        if app in self.pins:
+            # a pinned app is meant to differ from the zt state
+            return self.line(tool, "ok", f"pinned to {describe_pin(self.pins[app])}: {text}")
         if text.startswith("could not read") or "not a Zacess" in text:
             return self.line(tool, "drift", text)
         self.line(tool, "ok" if self.agrees(text) else "drift", text)
@@ -1588,6 +2168,12 @@ def doctor_iterm2(d):
     if not MAC or not (ITERM_PROFILES / "zacess.json").exists():
         return
     d.setting("iTerm2", current_iterm2())
+    pinned = d.pins.get("iterm2")
+    if pinned:
+        # the Zacess Auto profile only matters for an auto pin, checked against that pin's pair
+        if pinned in DEFAULT_VALUES or not pinned.startswith("auto"):
+            return d.files("iTerm2", [(ITERM_PROFILES / "zacess.json", source)], "the dynamic profiles match the repo")
+        d = doctor_for_pin(d, pinned)
     if not d.fixed:
         profiles = {p["Name"]: p for p in json.loads(source.read_text())["Profiles"]}
         wanted = json.dumps({"Profiles": [iterm_auto_profile(profiles, d.dark, d.light)]}, indent=2) + "\n"
@@ -1619,7 +2205,13 @@ def doctor_tmux(d):
     if not conf.exists() or repo is None:
         return
     d.setting("tmux", current_tmux())
-    theme_file = repo_copy(REPO_ROOT / "terminal" / "tmux", "themes", f"zacess-{d.now.id}.conf")
+    shown = d.now
+    if "tmux" in d.pins:
+        value = d.pins["tmux"]
+        if value in DEFAULT_VALUES:
+            return d.files("tmux", [(conf, repo)], "tmux.conf matches the repo (pinned to its own colours)")
+        shown = pair_for(value)[3]
+    theme_file = repo_copy(REPO_ROOT / "terminal" / "tmux", "themes", f"zacess-{shown.id}.conf")
     pairs = [(conf, repo)] + ([(TMUX_LINK, theme_file)] if theme_file else [])
     d.files("tmux", pairs, "tmux.conf and the linked theme file match the repo")
     if theme_file and shutil.which("tmux") and run("tmux", "list-sessions").returncode == 0:
@@ -1650,6 +2242,12 @@ def doctor_highlight(d):
     text = current_highlight()
     if text is None:
         return
+    if "highlight" in d.pins:
+        value = d.pins["highlight"]
+        if value in DEFAULT_VALUES:
+            return d.line("Highlight", "ok", f"pinned to the system's own: {text}")
+        # a theme pin is checked against that theme's selection
+        d = doctor_for_pin(d, value)
     if desktop_is_kde() and not MAC:
         ok = d.dark.name in text and d.light.name in text
         return d.line("Highlight", "ok" if ok else "drift", text)
@@ -1677,6 +2275,11 @@ def main(argv):
     if not argv or argv[0] in ("-h", "--help", "help"):
         print(__doc__.strip())
         return 0
+    # pin and unpin come first: --all there means every pin, not every device
+    if argv[0] == "pin":
+        return pin(argv[1:])
+    if argv[0] == "unpin":
+        return unpin(argv[1:])
     every = "--all" in argv
     argv = [word for word in argv if word != "--all"]
     if not argv:
@@ -1702,8 +2305,19 @@ def main(argv):
             print(f"  {theme.short:<11} {theme.name}{mark}")
         return 0
     if command == "current":
+        if argv[1:] == ["terminals"]:
+            show_current(set(TERMINALS))
+            return 0
+        if argv[1:]:
+            app = find_app(argv[1])
+            if not app:
+                print(f"Unknown app: {argv[1]}", file=sys.stderr)
+                return 1
+            show_current({app})
+            return 0
         show_current()
         return 0
+
     if command == "undo":
         return undo(every)
     if command == "sync":
@@ -1751,16 +2365,29 @@ def apply_state(state, quiet=False):
         PREVIOUS_FILE.parent.mkdir(parents=True, exist_ok=True)
         PREVIOUS_FILE.write_text(before + "\n")
 
+    pins = read_pins()
+
     def run_tool(tool):
         _lines.buffer = []
+        app = TOOL_APP.get(tool)
         try:
-            tool(fixed, dark, light, now)
+            if app in pins and app != "neovim":
+                apply_pin(app, pins[app])
+            else:
+                # Neovim's state file is zt's own state, so it is written either way and the pin
+                # is read by Neovim itself
+                tool(fixed, dark, light, now)
+                if app in pins:
+                    _lines.buffer = [line for line in _lines.buffer if "Neovim" not in line]
+                    neovim_pin_report(pins[app])
         except Exception as error:  # one broken config never stops the other tools
             report(tool.__name__, f"failed: {error}", False)
         return _lines.buffer
 
     if not quiet:
         print(heading)
+        if pins:
+            print(f"  {SKIP}pinned, kept on their own theme: {', '.join(sorted(pins))}{RESET}")
     # every tool edits its own files, so they all run at once: a switch takes as long as the
     # slowest tool rather than the sum of them all
     with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, len(TOOLS))) as pool:

@@ -1,14 +1,14 @@
--- the High Contrast scheme lives in colors/high-contrast.lua and uses the terminal's own 16 colours, so it needs no
--- plugin. Applying it here keeps it the last word on colours once the plugins have loaded. Light and dark come from
--- the terminal palette itself, so there is nothing to switch when the system appearance changes.
+-- the eight Zacess colour schemes come from zacess.nvim, pinned to its release. config/theme.lua picks
+-- one from the state file the zt command writes, Zacess Deep Contrast Dark when there is none. The
+-- earlier colors/high-contrast.lua stays available through :colorscheme high-contrast.
 return {
 	{
-		dir = vim.fn.stdpath("config"),
-		name = "high-contrast",
+		"zacesshq/zacess.nvim",
+		version = "0.6.0",
 		lazy = false,
 		priority = 1000,
 		config = function()
-			vim.cmd.colorscheme("high-contrast")
+			require("config.theme").setup()
 		end,
 	},
 }

@@ -7,7 +7,8 @@ The config favours a readable screen and short, consistent key sequences. Every 
 
 ## Vision
 
-- The colour scheme is `high-contrast` (`colors/high-contrast.lua`). Every colour in it is one of the terminal's own 16, so Neovim shows exactly the terminal's palette and follows it between light and dark mode.
+- The colour scheme is `zacess-deep-contrast-dark` from [zacess.nvim](https://github.com/zacesshq/zacess.nvim) 0.6.0: white on pure black with deep, fully saturated colours, every syntax colour at 9:1 or more. All eight Zacess schemes are installed. `lua/config/theme.lua` reads the theme the `zt` command sets, so Neovim switches with the terminal and the other editors; `zt auto` makes it follow the system appearance, checked again whenever Neovim regains focus.
+- Running `:colorscheme` by hand keeps that scheme until `:ZacessFollow` hands control back to `zt`.
 - Meaning never rests on colour alone. Selection, search matches, the status line mode block and menus use reverse video. Keywords and errors are bold. Diagnostics are underlined in the text.
 - Absolute and relative line numbers are both shown, so a motion such as `5j` needs no counting by eye.
 - The sign column is always reserved, so diagnostics never push the text sideways.
@@ -16,13 +17,15 @@ The config favours a readable screen and short, consistent key sequences. Every 
 - Eight lines of context stay visible above and below the cursor. Half-page jumps keep the cursor centred.
 
 > [!IMPORTANT]
-> The colour scheme is only as clear as the terminal's own palette, since it draws with the terminal's 16 colours (`termguicolors` is off). The High Contrast profile in [terminal](../../terminal/terminal) is designed for it. Any palette whose colours read well on its background works too.
+> The Zacess schemes use exact colours, so `termguicolors` is on and the terminal needs true colour support. Without it Neovim rounds each colour to the nearest of 256 and the contrast is no longer what was measured. The earlier `high-contrast` scheme, which draws only with the terminal's 16 colours, stays available through `:colorscheme high-contrast`.
 
 ## Keyboard and motor
 
 - The leader key is Space, the largest key on the keyboard.
 - `j k` leaves insert mode without reaching for Esc.
-- `Ctrl+H`, `Ctrl+J`, `Ctrl+K` and `Ctrl+L` move between windows, the same letters [tmux](../../terminal/tmux) uses for panes.
+- `Ctrl+H`, `Ctrl+J`, `Ctrl+K` and `Ctrl+L` move between windows and on into [tmux](../../terminal/tmux) panes, through vim-tmux-navigator, so one set of keys covers the whole screen.
+- The start screen, file tree, lazygit window, indent guides and messages from snacks.nvim take the Zacess colour scheme's colours. Its scrolling, dimming and animations are turned off and the indent guides never animate, so nothing on screen moves by itself.
+- Formatting on save only uses a formatter that is installed, a project's own first, so a file's layout never changes in a way the project did not ask for.
 - The mouse works in every mode.
 - Search uses smart case: lowercase matches any case, a capital letter makes it exact.
 - The system clipboard is shared with every other app.
