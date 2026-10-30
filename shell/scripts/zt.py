@@ -628,9 +628,19 @@ def ptyxis_profile():
     return f"org.gnome.Ptyxis.Profile:/org/gnome/Ptyxis/Profiles/{uuid_value}/" if uuid_value else None
 
 
+def ptyxis_palette_key(profile):
+    """The profile key that names the palette: `palette` from Ptyxis 50, `palette-name` before it.
+    Setting a key a version does not have fails without a word, so the profile is asked first."""
+    schema = profile.split(":", 1)[0]
+    keys = run("gsettings", "list-keys", schema).stdout.split()
+    return "palette" if "palette" in keys else "palette-name"
+
+
 def set_ptyxis(profile, palette, style):
-    run("gsettings", "set", profile, "palette-name", palette)
-    run("gsettings", "set", "org.gnome.Ptyxis", "interface-style", style)
+    """Sets the palette and the light or dark style; False when gsettings refused either."""
+    first = run("gsettings", "set", profile, ptyxis_palette_key(profile), palette)
+    second = run("gsettings", "set", "org.gnome.Ptyxis", "interface-style", style)
+    return first.returncode == 0 and second.returncode == 0
 
 
 def ptyxis(fixed, dark, light, now):
@@ -642,7 +652,8 @@ def ptyxis(fixed, dark, light, now):
         return report("Ptyxis", "Zacess palettes not installed (terminal/terminal/linux/ptyxis), skipped", False)
     # a palette holds one look and the Zacess ones come one per theme, so Ptyxis is matched to the
     # theme for the current appearance, the way Alacritty is
-    set_ptyxis(profile, f"zacess-{wanted.id}", wanted.appearance)
+    if not set_ptyxis(profile, f"zacess-{wanted.id}", wanted.appearance):
+        return report("Ptyxis", "gsettings refused the palette, so Ptyxis was not changed", False)
     note = "" if fixed else " (Ptyxis cannot follow the system with two palettes, so this matches it now)"
     report("Ptyxis", wanted.name + note)
 
@@ -651,7 +662,7 @@ def current_ptyxis():
     profile = ptyxis_profile()
     if profile is None:
         return None
-    palette = run("gsettings", "get", profile, "palette-name").stdout.strip().strip("'")
+    palette = run("gsettings", "get", profile, ptyxis_palette_key(profile)).stdout.strip().strip("'")
     style = run("gsettings", "get", "org.gnome.Ptyxis", "interface-style").stdout.strip().strip("'")
     if palette.startswith("zacess-"):
         return f"fixed: {name_of(palette)}"
@@ -2197,6 +2208,9 @@ def doctor_terminal_files(d):
         pairs = [(installed_dir / pattern.format(id=t.id), TERMINAL_THEMES / OS_FOLDER / folder / pattern.format(id=t.id))
                  for t in d.wanted]
         d.files(tool, pairs, f"the {' and '.join(t.name for t in d.wanted)} theme files match the repo")
+    # Ptyxis keeps its palette in gsettings rather than a file, so only its setting is checked
+    if PTYXIS_PALETTES.is_dir():
+        d.setting("Ptyxis", current_ptyxis())
 
 
 def doctor_tmux(d):

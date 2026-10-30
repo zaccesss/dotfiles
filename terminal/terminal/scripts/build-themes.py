@@ -228,7 +228,9 @@ def terminal_app(t):
         "TextBoldColor": ns_colour(t["foreground"]),
         "CursorColor": ns_colour(t["cursor"]),
         "SelectionColor": ns_colour(t["selection_background"]),
-        "Font": ns_font("SFMonoTerminal-Regular", 12),
+        # Geist Mono with the Nerd Font icons, the font every other terminal here uses. SF Mono has
+        # none of the icons the prompt and Neovim draw. Terminal.app does not borrow them either
+        "Font": ns_font("GeistMonoNFM", 12),
         "FontAntialias": True,
         # bold keeps the normal colour rather than switching to the bright row
         "UseBrightBold": False,

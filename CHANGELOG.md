@@ -8,6 +8,17 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+## [2.4.1] - 2026-10-30
+
+### Fixed
+
+- tmux shows a session name of up to 40 characters, since `ide` names each session after its project folder. The default of 10 cut longer names short.
+- The mouse wheel over a Zacess scene pane no longer enters tmux's scroll mode, which froze the picture until `q`.
+- Terminal.app's eight Zacess profiles use GeistMono Nerd Font, the font every other terminal here uses. SF Mono has none of the icons the prompt and Neovim draw, so they showed as boxes. Terminal.app does not borrow them from another font either.
+- On Linux `~/.cargo/bin` joins `PATH` even when cargo came from the package manager, which has no `~/.cargo/env`, so `cargo install` tools such as bacon are found.
+- `zt doctor` checks Ptyxis on Linux, so a Ptyxis still on its own palette counts as drift instead of passing unseen.
+- `zt` themes Ptyxis 50, which renamed its `palette-name` setting to `palette`. A refused palette change is now reported rather than shown as a success.
+
 ## [2.4.0] - 2026-10-30
 
 ### Added

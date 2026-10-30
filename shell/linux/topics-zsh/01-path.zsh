@@ -19,6 +19,8 @@ export PYENV_ROOT="$HOME/.pyenv"
 
 # Cargo (Rust)
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+# cargo from apt has no env file, yet cargo install still puts tools such as bacon in ~/.cargo/bin
+[[ -d "$HOME/.cargo/bin" && ":$PATH:" != *":$HOME/.cargo/bin:"* ]] && export PATH="$HOME/.cargo/bin:$PATH"
 
 # swiftly (Swift toolchains), in its default location under ~/.local/share/swiftly
 [[ -f "$HOME/.local/share/swiftly/env.sh" ]] && source "$HOME/.local/share/swiftly/env.sh"
