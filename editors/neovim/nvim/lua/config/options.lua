@@ -6,7 +6,7 @@ opt.mouse = "a"
 opt.clipboard = "unnamedplus" -- share the system clipboard, matching every other app
 opt.ignorecase = true
 opt.smartcase = true -- case-sensitive only when the search itself has a capital letter
-opt.termguicolors = false -- use the terminal's own 16 colours, so Neovim matches the terminal palette exactly
+opt.termguicolors = true -- the Zacess schemes use exact colours, so Neovim needs true colour from the terminal
 opt.signcolumn = "yes" -- always reserve the gutter so LSP diagnostics never shift text
 opt.cursorline = true -- the current line is marked across the text and its number, not by the cursor alone
 opt.updatetime = 250
@@ -22,7 +22,7 @@ opt.shiftwidth = 2
 opt.expandtab = true
 opt.smartindent = true
 
--- real per-language exceptions, tabstop 2 is wrong for these.
+-- Real per-language exceptions, tabstop 2 is wrong for these.
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "python", "c", "cpp" },
 	callback = function()

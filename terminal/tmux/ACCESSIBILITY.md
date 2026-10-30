@@ -20,6 +20,9 @@ The bindings keep tmux's defaults where tutorials rely on them and shorten the a
 - Resizing with `H`, `J`, `K` and `L` repeats while the key is held, without pressing the prefix again each time.
 - `|` and `-` split panes, matching the shape of the split.
 - Mouse support is on, so a pane can be clicked into or resized by dragging instead of with a key chord.
+- `Ctrl+H`, `Ctrl+J`, `Ctrl+K` and `Ctrl+L` move between tmux panes and Neovim splits alike, so one set of keys works across the whole screen. In a shell pane the prefix first sends the key on to the shell, such as `Ctrl+B` then `Ctrl+L` to clear the screen.
+- `ide` always builds the same layout: Neovim on top, the shell bottom left and a scene bottom right, so every project opens in a predictable shape. The git window's tab is green and the editor's cyan. Each tab's name is written out too, so the colour is never the only signal.
+- The scene in `ide` changes only when a command finishes and never more than three times a second. Under reduced motion it moves less, as every Zacess scene does.
 - Esc reacts after 10 ms rather than 500 ms, so it never lags in Neovim.
 - Sessions save every 15 minutes and come back after a restart, so a layout never has to be rebuilt by hand.
 

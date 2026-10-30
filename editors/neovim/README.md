@@ -41,6 +41,6 @@ config path, launch once to let `lazy.nvim` install everything.
 
 | Path | Contents |
 | --- | --- |
-| [`ACCESSIBILITY.md`](ACCESSIBILITY.md) | The high-contrast theme, readable layout and short key sequences |
+| [`ACCESSIBILITY.md`](ACCESSIBILITY.md) | The Zacess colour schemes, readable layout and short key sequences |
 | [`nvim/`](nvim/) | The config. Installs to `~/.config/nvim/` on macOS and Linux, `%LOCALAPPDATA%\nvim\` on Windows |
 | [`guides/`](guides/) | Setup walkthrough and full reference |

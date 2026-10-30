@@ -32,7 +32,7 @@ nvim
 ```
 
 `lazy.nvim` bootstraps itself and installs every plugin automatically. Once that finishes, Mason
-installs the four LSP servers. Watch the bottom status line, this takes a couple of minutes on a
+installs the language servers (five everywhere, more where their runtime is installed). Watch the bottom status line, this takes a couple of minutes on a
 fresh install and needs an internet connection.
 
 `telescope-fzf-native` compiles a small C library for faster fuzzy sorting. It builds with `make`

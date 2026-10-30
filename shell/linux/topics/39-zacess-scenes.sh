@@ -2,7 +2,7 @@
 # Zacess Scenes
 # calm animated scenes in the terminal in the Zacess theme zt last set, plus a build watcher.
 # apps/zacess-scenes/setup.sh installs the program and bacon and links scenes.toml.
-#   zs                    a random calm scene
+#   zs                    a random calm scene, then another every five minutes
 #   zs <scene>            one scene by name (zs list shows them all)
 #   zs list               every scene and sound set
 #   zs sounds [set] [event]  one sound set; with no set, every set's pass tone in turn
@@ -10,7 +10,9 @@
 #   zs new <name>         start a Lua scene of your own
 #   zs snap <scene>       an SVG still of a scene
 #   zs themes             the themes and which one is active
-#   zw / zwc / zwt / zwa  watch a Rust build: check, clippy, test, check-all
+#   zsf                   follow the shells in this tmux session: calm while commands work
+#   zw                    watch the project here, in any language, rerun on each save
+#   zwc / zwt / zwa       watch a Rust build with bacon: clippy, test, check-all
 # =============================================================================
 
 zs() {
@@ -24,7 +26,7 @@ zs() {
             local -a calm
             mapfile -t calm < <(zacess-scenes list | awk '$2 == "pass" || $2 == "general" {print $1}')
             if ((${#calm[@]})); then
-                zacess-scenes "${calm[RANDOM % ${#calm[@]}]}"
+                zacess-scenes "${calm[RANDOM % ${#calm[@]}]}" --shuffle
             else
                 zacess-scenes sea
             fi
@@ -55,7 +57,13 @@ zacess-scene() {
     zs "$@"
 }
 
+zsf() { zacess-scenes follow "$@"; }
 zw() { zacess-scenes watch "$@"; }
 zwc() { zacess-scenes watch clippy "$@"; }
 zwt() { zacess-scenes watch test "$@"; }
 zwa() { zacess-scenes watch check-all "$@"; }
+
+# a scene running zacess-scenes follow shows how each command in this shell ended. The hook writes
+# one line per finished command; an older zacess-scenes without follow mode prints nothing here
+_zacess_follow_init="$(zacess-scenes follow init bash 2>/dev/null)" && eval "$_zacess_follow_init"
+unset _zacess_follow_init

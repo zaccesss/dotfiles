@@ -2,7 +2,7 @@
 # Zacess Scenes
 # calm animated scenes in the terminal in the Zacess theme zt last set, plus a build watcher.
 # apps\zacess-scenes\setup.ps1 installs the program and bacon and links scenes.toml.
-#   zs                    a random calm scene
+#   zs                    a random calm scene, then another every five minutes
 #   zs <scene>            one scene by name (zs list shows them all)
 #   zs list               every scene and sound set
 #   zs sounds [set] [event]  one sound set; with no set, every set's pass tone in turn
@@ -10,7 +10,9 @@
 #   zs new <name>         start a Lua scene of your own
 #   zs snap <scene>       an SVG still of a scene
 #   zs themes             the themes and which one is active
-#   zw / zwc / zwt / zwa  watch a Rust build: check, clippy, test, check-all
+#   zsf                   follow the shells in this tmux session: calm while commands work
+#   zw                    watch the project here, in any language, rerun on each save
+#   zwc / zwt / zwa       watch a Rust build with bacon: clippy, test, check-all
 # =============================================================================
 
 # zt keeps its theme in %LOCALAPPDATA%\zacess\theme on Windows, where Zacess Scenes does not look,
@@ -45,7 +47,7 @@ function zs {
             # the original and pass scenes are the calm ones; fail scenes are left for failures
             $calm = @(zacess-scenes list | ForEach-Object { $f = -split $_; if ($f.Count -ge 2 -and ($f[1] -eq 'pass' -or $f[1] -eq 'general')) { $f[0] } })
             $pick = if ($calm.Count) { $calm | Get-Random } else { 'sea' }
-            Invoke-ZacessScenes $pick
+            Invoke-ZacessScenes $pick --shuffle
         }
         'sounds' {
             $rest = @($args | Select-Object -Skip 1)
@@ -75,7 +77,17 @@ function zs {
 # the full name, as with zt and zacess-theme
 function zacess-scene { zs @args }
 
+function zsf { Invoke-ZacessScenes follow @args }
 function zw { Invoke-ZacessScenes watch @args }
 function zwc { Invoke-ZacessScenes watch clippy @args }
 function zwt { Invoke-ZacessScenes watch test @args }
 function zwa { Invoke-ZacessScenes watch check-all @args }
+
+# a scene running zacess-scenes follow shows how each command in this shell ended. The hook wraps
+# the prompt set up before it, so it loads after the prompt topic; an older zacess-scenes without
+# follow mode prints nothing here
+if (Get-Command zacess-scenes -ErrorAction SilentlyContinue) {
+    $zacessFollowInit = zacess-scenes follow init powershell 2>$null | Out-String
+    if ($LASTEXITCODE -eq 0 -and $zacessFollowInit.Trim()) { Invoke-Expression $zacessFollowInit }
+    Remove-Variable zacessFollowInit -ErrorAction SilentlyContinue
+}

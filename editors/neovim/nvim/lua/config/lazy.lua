@@ -16,6 +16,30 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- lazy-lock.json is the repo's copy, shared by every machine. lazy rewrites it from the plugins
+-- installed here after an install or a clean too, which quietly put a machine's older commits back
+-- over newer pins from the repo. lazy writes it after its own events fire, so the file is
+-- remembered at start and put back as nvim exits unless an update or a sync ran in this session
+local lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json"
+local function read_lock()
+	return vim.fn.filereadable(lockfile) == 1 and vim.fn.readfile(lockfile, "b") or nil
+end
+local pinned = read_lock()
+local moved = false
+vim.api.nvim_create_autocmd("User", {
+	pattern = { "LazyUpdatePre", "LazySyncPre" },
+	callback = function()
+		moved = true
+	end,
+})
+vim.api.nvim_create_autocmd("VimLeavePre", {
+	callback = function()
+		if not moved and pinned and not vim.deep_equal(read_lock(), pinned) then
+			vim.fn.writefile(pinned, lockfile, "b")
+		end
+	end,
+})
+
 require("lazy").setup("plugins", {
 	install = { colorscheme = { "high-contrast" } },
 	checker = { enabled = true, notify = false }, -- silent background update check, no popup spam

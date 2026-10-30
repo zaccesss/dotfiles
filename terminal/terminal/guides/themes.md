@@ -20,7 +20,9 @@ setting unless that is turned on, so the theme stays where it was put.
 
 The `zt` command in [shell](../../../shell) switches every installed terminal and editor at once:
 `zt deep-light`, `zt deep-dark`, `zt list`, `zt current`. `zt auto` turns on following the system
-appearance where a terminal supports it. `zt <theme>` turns it off again. By hand:
+appearance where a terminal supports it. `zt <theme>` turns it off again. `termtheme <theme>` sets
+the terminals alone and leaves the editors on `zt`. `termtheme default` puts each terminal back on
+its own built-in theme. By hand:
 
 | Terminal | Fixed theme | Following the system |
 | --- | --- | --- |
@@ -31,7 +33,7 @@ appearance where a terminal supports it. `zt <theme>` turns it off again. By han
 | Ghostty | The `theme` line in its config | `zt auto` writes `theme = light:...,dark:...`, which Ghostty follows |
 | tmux | The theme file `zt` links into `~/.local/state/zacess/tmux.conf`, which `tmux.conf` sources | Not supported: `zt auto` links the theme matching the appearance at that moment |
 | Windows Terminal | `profiles.defaults.colorScheme` set to one scheme name | `colorScheme` as a `dark` and `light` pair |
-| Ptyxis | Preferences > Profile > Palette | Each palette file carries the same colours in both halves, so it stays fixed; switch the palette by hand |
+| Ptyxis | Preferences > Profile > Palette by hand. `zt <theme>` on Linux sets the default profile's palette and its light or dark style | Each palette file carries the same colours in both halves, so it stays fixed: `zt auto` sets the palette matching the desktop at that moment |
 | GNOME Terminal | `dconf load` the theme's file onto a profile | Not supported |
 | Hyper | Carries Zacess Deep Contrast Dark only | Not supported |
 

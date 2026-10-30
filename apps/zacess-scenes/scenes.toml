@@ -11,8 +11,8 @@ pass = ["koi-pond", "lanterns", "tea", "winter-cabin", "constellations", "aurora
 # slow failure scenes
 fail = ["storm", "flood", "fog"]
 rotation = "shuffle"
-# minutes before the next scene
-interval = 10
+# minutes before the next scene, in the watch and follow modes and in a scene run on its own
+interval = 5
 motion = "calm"
 
 [sound]
@@ -21,5 +21,19 @@ set = "bells"
 volume = 40
 quiet_hours = "22:00-07:00"
 
+[sound.events]
+# a soft tone when a followed shell could not find a command
+typo = true
+
 [notifications]
 enabled = false
+
+[ambient]
+# a quiet background sound that suits the scene; a turns it on while a scene runs and [ and ]
+# change its volume
+enabled = false
+volume = 20
+
+[follow]
+# every command in a followed shell counts, typos included
+min_seconds = 0

@@ -146,42 +146,26 @@ function zipf {
     Compress-Archive -Path $Target -DestinationPath "$($Target.TrimEnd('\', '/')).zip"
 }
 
-# termtheme: Windows Terminal alone, between the Zacess Deep Contrast schemes. auto follows Windows' light
-# and dark setting through the scheme pair; dark and light pin one scheme. zt switches every tool
-# at once, Windows Terminal included
+# termtheme: the terminals-only side of zt. A theme pins every terminal app zt switches (Windows
+# Terminal and Alacritty) while the editors keep following zt; auto pins them to Windows' light and
+# dark, default to each terminal's own theme and follow hands them back to zt. dark and light keep
+# their old meaning, the Zacess Deep Contrast pair, since that is the habit; zacess-dark and
+# zacess-light reach the themes zt calls dark and light. No argument shows what each terminal is on
 function termtheme {
-    param(
-        [ValidateSet('dark', 'light', 'auto', 'status')][string]$Mode = 'status',
-        [string]$SettingsPath = (Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json')
-    )
-    $settingsPath = $SettingsPath
-    if (-not (Test-Path $settingsPath)) {
-        Write-Host 'Windows Terminal has no settings file yet; open it once first' -ForegroundColor Red
-        return
+    $words = @($args)
+    if (-not $words.Count) { zt current terminals; return }
+    switch ($words[0]) {
+        { $_ -in '-h', '--help', 'help' } {
+            'Usage: termtheme [<theme>|dark|light|auto [dark] [light]|default|default-dark|default-light|follow]'
+            '  a theme pins every terminal to it (zt list shows the eight), dark and light are the Deep Contrast pair,'
+            '  auto follows Windows, default is each terminal''s own theme and follow hands them back to zt'
+            return
+        }
+        'dark' { zt pin terminals deep-contrast-dark; return }
+        'light' { zt pin terminals deep-contrast-light; return }
+        { $_ -in 'follow', 'unpin' } { zt unpin terminals; return }
+        default { zt pin terminals @words }
     }
-    # the file allows // comments, which ConvertFrom-Json in Windows PowerShell 5.1 rejects
-    $settings = (Get-Content -Raw $settingsPath) -replace '(?m)^\s*//.*$', '' | ConvertFrom-Json
-    if (-not $settings.profiles.PSObject.Properties['defaults']) {
-        $settings.profiles | Add-Member -NotePropertyName defaults -NotePropertyValue ([pscustomobject]@{})
-    }
-    $defaults = $settings.profiles.defaults
-
-    if ($Mode -eq 'status') {
-        $scheme = $defaults.PSObject.Properties['colorScheme']
-        if ($scheme -and $scheme.Value -is [pscustomobject]) { 'auto: following Windows light and dark' }
-        elseif ($scheme) { "fixed: $($scheme.Value)" }
-        else { 'no Zacess scheme set' }
-        return
-    }
-
-    $value = switch ($Mode) {
-        'dark' { 'Zacess Deep Contrast Dark' }
-        'light' { 'Zacess Deep Contrast Light' }
-        'auto' { [pscustomobject]@{ dark = 'Zacess Deep Contrast Dark'; light = 'Zacess Deep Contrast Light' } }
-    }
-    $defaults | Add-Member -Force -NotePropertyName colorScheme -NotePropertyValue $value
-    $settings | ConvertTo-Json -Depth 32 | Set-Content -Path $settingsPath -Encoding utf8
-    Write-Host "Windows Terminal set to $Mode" -ForegroundColor Green
 }
 
 # update: everything in one go (winget, global npm packages and uv tools). lists what is out of

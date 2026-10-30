@@ -7,10 +7,10 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		dependencies = { "mason.nvim", "neovim/nvim-lspconfig" },
 		opts = {
-			-- clangd for C and C++, pyright for Python, ts_ls for TypeScript and JavaScript, lua_ls
-			-- for this config itself. These are lspconfig server names,
+			-- clangd for C/C++ (microcontroller work), pyright for Python, ts_ls for the Next.js/
+			-- TypeScript side, lua_ls for this config itself. These are lspconfig server names,
 			-- mason-lspconfig maps each to its own real Mason registry package name internally.
-			ensure_installed = { "clangd", "pyright", "ts_ls", "lua_ls" },
+			ensure_installed = require("config.servers").list(),
 		},
 	},
 	{
@@ -19,9 +19,9 @@ return {
 		config = function()
 			-- nvim-lspconfig's old require("lspconfig")[server].setup() framework is deprecated as
 			-- of Neovim 0.11, removed in nvim-lspconfig v3. vim.lsp.config/vim.lsp.enable are the
-			-- native replacement.
+			-- native replacement, confirmed against a real 0.12.5 install rather than assumed.
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			local servers = { "clangd", "pyright", "ts_ls", "lua_ls" }
+			local servers = require("config.servers").list()
 			for _, server in ipairs(servers) do
 				vim.lsp.config(server, { capabilities = capabilities })
 			end

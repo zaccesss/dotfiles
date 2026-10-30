@@ -273,7 +273,7 @@ unconditional line, since not everyone has these 5 tools installed yet.
 | `ez` | eza: syntax-aware `ls` with icons and git status |
 | `ezl` | eza: long listing, hidden files, git status (`-lah --git`) |
 | `ezt` | eza: tree view, 2 levels deep |
-| `zt <theme>` | Zacess: switch every editor, terminal and app to one of the eight Zacess themes (`zt auto` follows the system, `zt list` and `zt current` show the themes and what each tool is on). Also `zacess-theme` |
+| `zt <theme>` | Zacess: switch every editor, terminal and app to one of the eight Zacess themes (`zt auto` follows the system, `zt list` and `zt current` show the themes and what each tool is on, `zt pin <app> <theme>` keeps one app on its own theme and `zt unpin` hands it back). Also `zacess-theme` |
 | `zs [scene]` | Zacess Scenes: a random calm scene or one by name in the theme `zt` last set. `zs list` shows every scene and sound set, `zs sounds [set]` plays them, `zs config` opens `scenes.toml`, `zs new <name>` starts a Lua scene and `zs snap <scene>` writes an SVG still. Also `zacess-scene` |
 | `zw [job]` | Zacess Scenes watch mode: a calm scene while a Rust build passes and a storm while it fails, with sounds. `zwc` runs Clippy, `zwt` the tests and `zwa` check-all |
 | `zg [game]` | Zacess Games: the menu or one of the fourteen games by name in the theme `zt` last set, with Tab completion of the names. `zg list` shows every game and its best score, `zg sounds` plays every effect and each game's music and `zg snap` writes SVG stills. `+` and `-` set the effects, `]` and `[` the music and `0` mutes. Also `zacess-game` |

@@ -1,8 +1,8 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	-- pinned to master: the default "main" branch is a rewrite that dropped the
-	-- nvim-treesitter.configs module this config uses. master is still the stable, documented API
-	-- most setups target.
+	-- Pinned to master: the default "main" branch is a rewrite that dropped the
+	-- nvim-treesitter.configs module this config uses, confirmed by hitting the real load error
+	-- against a live install. master is still the stable, documented API most setups target.
 	branch = "master",
 	build = ":TSUpdate",
 	config = function()

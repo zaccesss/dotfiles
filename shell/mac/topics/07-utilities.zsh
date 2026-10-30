@@ -151,72 +151,26 @@ zipf() {
     zip -r "${target%/}.zip" "$target"
 }
 
-# termtheme: Terminal.app alone, between the Zacess Deep Contrast profiles. auto follows macOS light
-# and dark through the login helper the terminal config repo builds; dark and light stop the helper
-# and pin one profile. zt in 38-zacess-theme.zsh switches every tool at once, this terminal included
+# termtheme: the terminals-only side of zt. A theme pins every terminal app zt switches
+# (Terminal.app, iTerm2, Ghostty, Kitty, Alacritty and tmux; Warp is set by hand) while the editors
+# keep following zt. auto pins them to the system's light and dark, default to each terminal's own
+# theme and follow hands them back to zt. dark and light keep their old meaning, the Zacess Deep
+# Contrast pair, since that is the habit; zacess-dark and zacess-light reach the themes zt calls
+# dark and light. No argument shows what each terminal is on
 termtheme() {
-    local label="local.terminal-config.appearance"
-    local plist="$HOME/Library/LaunchAgents/${label}.plist"
-    local helper="$HOME/.local/bin/terminal-appearance"
-    local name
-    case "${1:-status}" in
-        auto)
-            if [[ ! -x "$helper" ]]; then
-                echo "${RED}The helper is not built yet; run mac/install.sh from the terminal config repo first${RESET}"
-                return 1
-            fi
-            mkdir -p "$(dirname "$plist")"
-            cat > "$plist" <<PLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>Label</key><string>${label}</string>
-    <key>ProgramArguments</key><array><string>${helper}</string></array>
-    <key>RunAtLoad</key><true/>
-    <key>KeepAlive</key><true/>
-</dict>
-</plist>
-PLIST
-            launchctl bootout "gui/$(id -u)/${label}" 2>/dev/null
-            launchctl bootstrap "gui/$(id -u)" "$plist"
-            echo "${GREEN}Terminal now follows macOS light and dark${RESET}"
-            ;;
-        dark|light)
-            launchctl bootout "gui/$(id -u)/${label}" 2>/dev/null
-            rm -f "$plist"
-            [[ "$1" == dark ]] && name="Zacess Deep Contrast Dark" || name="Zacess Deep Contrast Light"
-            # -a: macOS pgrep leaves out its own ancestors otherwise, so run from a Terminal tab
-            # it would report Terminal as closed
-            if pgrep -a -x Terminal >/dev/null; then
-                osascript -e "tell application \"Terminal\"
-                    set default settings to settings set \"$name\"
-                    set startup settings to settings set \"$name\"
-                    repeat with w in windows
-                        try
-                            repeat with t in tabs of w
-                                if name of current settings of t starts with \"High Contrast\" or name of current settings of t starts with \"Zacess\" then set current settings of t to settings set \"$name\"
-                            end repeat
-                        end try
-                    end repeat
-                end tell" >/dev/null
-            else
-                defaults write com.apple.Terminal "Default Window Settings" "$name"
-                defaults write com.apple.Terminal "Startup Window Settings" "$name"
-            fi
-            echo "${GREEN}Terminal stays on ${name}${RESET}"
-            ;;
-        status)
-            if launchctl print "gui/$(id -u)/${label}" >/dev/null 2>&1; then
-                echo "auto: following macOS light and dark"
-            else
-                echo "fixed: $(defaults read com.apple.Terminal 'Default Window Settings' 2>/dev/null)"
-            fi
-            ;;
-        *)
-            echo "Usage: termtheme [dark|light|auto]  (no argument shows the current mode)"
-            return 1
-            ;;
+    # the words are matched in any case, as PowerShell's termtheme and zt itself do
+    local word
+    word=$(printf '%s' "${1:-}" | tr '[:upper:]' '[:lower:]')
+    case "$word" in
+        "") zt current terminals ;;
+        -h|--help|help)
+            echo "Usage: termtheme [<theme>|dark|light|auto [dark] [light]|default|default-dark|default-light|follow]"
+            echo "  a theme pins every terminal to it (zt list shows the eight), dark and light are the Deep Contrast pair,"
+            echo "  auto follows the system, default is each terminal's own theme and follow hands them back to zt" ;;
+        dark) zt pin terminals deep-contrast-dark ;;
+        light) zt pin terminals deep-contrast-light ;;
+        follow|unpin) zt unpin terminals ;;
+        *) zt pin terminals "$@" ;;
     esac
 }
 
