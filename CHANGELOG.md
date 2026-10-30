@@ -8,6 +8,10 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+### Fixed
+
+- The Zacess Scenes and Games setup rejected every download on Fedora as a checksum mismatch, because Fedora has `sha256sum` but no `shasum`. Both setups now use `sha256sum` when it exists and `shasum` otherwise.
+
 ## [2.3.0] - 2026-10-29
 
 ### Added
