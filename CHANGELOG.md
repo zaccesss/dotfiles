@@ -8,6 +8,8 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+## [2.4.0] - 2026-10-30
+
 ### Added
 
 - `ide` (or `ide <folder>`) opens a project in its own tmux session: Neovim on the top 70 percent, a shell bottom left, a Zacess Scenes follow scene bottom right and a `git` window running lazygit in a repository. Running it again goes back to the open session. `Ctrl+B` then `f` lists the folders in `IDE_ROOTS` with fzf and opens the one picked.
