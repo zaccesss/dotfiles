@@ -47,8 +47,14 @@ install_games() {
     printf 'Installing Zacess Games %s...\n' "$tag"
     curl -fsSL -o "$work/$archive" "https://github.com/$REPO/releases/download/$tag/$archive"
     curl -fsSL -o "$work/$archive.sha256" "https://github.com/$REPO/releases/download/$tag/$archive.sha256"
-    # the .sha256 file holds the digest and the archive name, as shasum -c expects
-    if ! (cd "$work" && shasum -a 256 -c "$archive.sha256" >/dev/null 2>&1); then
+    # the .sha256 file holds the digest and the archive name, which both checkers accept. Fedora
+    # ships sha256sum without shasum and macOS ships shasum without sha256sum, so use whichever exists
+    if command -v sha256sum >/dev/null 2>&1; then
+        sumcheck=(sha256sum -c)
+    else
+        sumcheck=(shasum -a 256 -c)
+    fi
+    if ! (cd "$work" && "${sumcheck[@]}" "$archive.sha256" >/dev/null 2>&1); then
         printf 'The Zacess Games download does not match its checksum, so it was not installed.\n'
         return 1
     fi
