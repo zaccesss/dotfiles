@@ -5,12 +5,12 @@
 
 ## What's here
 
-- [`settings.json`](settings.json) - interface and editor font sizes, the terminal font and the theme, fixed on
+- [`settings.json`](settings.json): interface and editor font sizes, the terminal font and the theme, fixed on
   `Zacess Deep Contrast Dark` with `Zacess Deep Contrast Light` as its light counterpart, plus
   `auto_install_extensions` so Zed installs both theme extensions on its own. Identical on every
   platform.
-- [`extensions.txt`](extensions.txt) - the two theme extensions, one `id@version` per line.
-- [`shared/themes/zacess.json`](shared/themes/zacess.json) - all ten Zacess themes in one Zed
+- [`extensions.txt`](extensions.txt): the two theme extensions, one `id@version` per line.
+- [`shared/themes/zacess.json`](shared/themes/zacess.json): all ten Zacess themes in one Zed
   theme family, the file [Zacess Themes](https://github.com/zacesshq/themes) ships in
   `editors/zed/themes`, copied from the release that adds Warm Dark and Warm Light ahead of its
   tag. [`shared/theme-package.json`](shared/theme-package.json) records the release it came from
