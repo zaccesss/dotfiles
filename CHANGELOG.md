@@ -8,6 +8,10 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+### Changed
+
+- Community files follow the [AI policy](https://github.com/zaccesss/ai-policy): pull requests declare AI use and issue forms ask whether AI helped. Security reports go to security@isaacadjei.me.
+
 ## [2.5.0] - 2026-11-01
 
 ### Added

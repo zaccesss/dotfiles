@@ -66,3 +66,7 @@ what happened.
 
 > [!NOTE]
 > I keep one shared contributing guide for all my projects, covering software, hardware, writing and everything in between: [zaccesss/contribute](https://github.com/zaccesss/contribute) or on [my site](https://isaacadjei.me/contribute). This file takes precedence where the two differ.
+
+## Using AI
+
+AI tools are welcome within my [AI policy](https://github.com/zaccesss/ai-policy), also [on my site](https://isaacadjei.me/ai-policy). **Every pull request must say how AI was used, even when the answer is None.** Write your own issue and pull request titles and descriptions, understand everything you submit and test it before you open it.
