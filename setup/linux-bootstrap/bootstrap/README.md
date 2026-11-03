@@ -40,7 +40,7 @@ Arduino IDE, KiCad, LTspice (under Wine), MATLAB, Processing, Thonny, Vivado, Ob
 An app counts as installed once it has written its own settings (a workspace for Eclipse and
 STM32CubeIDE, a config folder with `options/` for a JetBrains IDE, a settings file or profile for
 the rest); Zed counts once `zed` is on `PATH` or its config folder exists; KiCad, Processing and
-Vivado check for themselves. Obsidian needs its vault named in `OBSIDIAN_VAULT`. The theme is the
+Vivado check for themselves. Obsidian needs a vault at `~/Obsidian/Vault` or where `OBSIDIAN_VAULT` points. The theme is the
 one `zt` last set (`~/.local/state/zacess/theme`), with the light or dark half picked by the
 desktop's appearance when `zt` follows the system. Zed's script installs the theme file and sets the
 theme in its `settings.json`; the JetBrains script installs the theme plugin and the tracked

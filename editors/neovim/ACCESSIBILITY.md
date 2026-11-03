@@ -7,7 +7,7 @@ The config favours a readable screen and short, consistent key sequences. Every 
 
 ## Vision
 
-- The colour scheme is `zacess-deep-contrast-dark` from [zacess.nvim](https://github.com/zacesshq/zacess.nvim) 0.6.0: white on pure black with deep, fully saturated colours, every syntax colour at 9:1 or more. All eight Zacess schemes are installed. `lua/config/theme.lua` reads the theme the `zt` command sets, so Neovim switches with the terminal and the other editors; `zt auto` makes it follow the system appearance, checked again whenever Neovim regains focus.
+- The colour scheme is `zacess-deep-contrast-dark` from [zacess.nvim](https://github.com/zacesshq/zacess.nvim) 0.8.0: white on pure black with deep, fully saturated colours, every syntax colour at 9:1 or more. All eight Zacess schemes are installed. `lua/config/theme.lua` reads the theme the `zt` command sets, so Neovim switches with the terminal and the other editors; `zt auto` makes it follow the system appearance, checked again whenever Neovim regains focus.
 - Running `:colorscheme` by hand keeps that scheme until `:ZacessFollow` hands control back to `zt`.
 - Meaning never rests on colour alone. Selection, search matches, the status line mode block and menus use reverse video. Keywords and errors are bold. Diagnostics are underlined in the text.
 - Absolute and relative line numbers are both shown, so a motion such as `5j` needs no counting by eye.

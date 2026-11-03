@@ -20,7 +20,7 @@ Each tool is edited in place and only for its theme setting; a tool that is not 
 Tools that keep settings in memory (JetBrains IDEs, Eclipse, STM32CubeIDE, KiCad, Processing, Nextpad++,
 Vivado, Arduino IDE, Thonny, MATLAB, LTspice, Zotero and Obsidian) are only changed while they are closed,
 since they write their settings back on exit. tmux takes its colours from a theme file linked into the
-state folder and the system text highlight (macOS, KDE Plasma or GNOME) takes the theme's selection
+state folder, nano from one linked into ~/.config/nano and the system text highlight (macOS, KDE Plasma or GNOME) takes the theme's selection
 colour, read from the generated terminal theme. Pins live in the pins file beside the state file and
 every switch, undo and sync runs a pinned app with its pin. Windows has its own version in
 windows/scripts/zt.ps1.
@@ -768,9 +768,10 @@ def zotero_profile():
 
 
 def obsidian_paths():
-    # a vault can live anywhere, so it is named once in OBSIDIAN_VAULT, which the apply scripts read
-    # too. with none set, Obsidian is left alone
-    vault = Path(os.environ["OBSIDIAN_VAULT"]).expanduser() if os.environ.get("OBSIDIAN_VAULT") else None
+    # the vault defaults to ~/Obsidian/Vault, a plain folder outside any cloud-synced one, since two
+    # sync engines on one folder produce conflict copies; OBSIDIAN_VAULT names another, as the apply
+    # scripts allow. with no .obsidian folder there, Obsidian is left alone
+    vault = Path(os.environ.get("OBSIDIAN_VAULT") or HOME / "Obsidian" / "Vault").expanduser()
     if MAC:
         return vault, HOME / "Library" / "Application Support" / "obsidian" / "obsidian.json"
     flatpak = HOME / ".var" / "app" / "md.obsidian.Obsidian"
@@ -907,6 +908,46 @@ def btop(fixed, dark, light, now):
     # btop rereads btop.conf on SIGUSR2, so an open one takes the theme now
     signalled = run("pkill", "-USR2", "-x", "btop").returncode == 0 if shutil.which("pkill") else False
     report("btop", f"{theme.name}{note}, " + ("applied to the open btop" if signalled else "at its next start"))
+
+
+# nano: a generated colour file per Zacess theme in terminal/nano/themes, linked to the one path
+# editors/nano/nanorc includes. nano reads its files only at start, so there is nothing to reload.
+# Apple's /usr/bin/nano is Pico and reads no nanorc, so only a GNU nano counts as installed
+NANO_LINK = XDG_CONFIG / "nano" / "zacess-theme.nanorc"
+
+
+def gnu_nano():
+    # Pico opens an editor on --version once TERM is set and leaves at once without one, while GNU
+    # nano prints its version either way, so it is asked without TERM, with no input and a time limit
+    if not shutil.which("nano"):
+        return False
+    env = {key: value for key, value in os.environ.items() if key != "TERM"}
+    try:
+        return "GNU nano" in run("nano", "--version", env=env, stdin=subprocess.DEVNULL, timeout=5).stdout
+    except subprocess.TimeoutExpired:
+        return False
+
+
+def nano(fixed, dark, light, now):
+    theme = fixed or now
+    source = REPO_ROOT / "terminal" / "nano" / "themes" / f"zacess-{theme.id}.nanorc"
+    if not source.exists():
+        return report("nano", "no theme files in terminal/nano, skipped", False)
+    NANO_LINK.parent.mkdir(parents=True, exist_ok=True)
+    if NANO_LINK.is_symlink() or NANO_LINK.exists():
+        NANO_LINK.unlink()
+    NANO_LINK.symlink_to(source)
+    note = "" if fixed else " (nano cannot follow the system, so this matches it now)"
+    if not gnu_nano():
+        return report("nano", f"{theme.name}{note}, GNU nano not installed, saved for later", False)
+    report("nano", f"{theme.name}{note}, at its next start")
+
+
+def current_nano():
+    if not NANO_LINK.is_symlink():
+        return "no theme file linked yet (run zt <theme>)" if gnu_nano() else None
+    m = re.search(r"zacess-([\w-]+)\.nanorc$", os.readlink(NANO_LINK))
+    return f"fixed: {name_of(m.group(1)) if m else 'a file that is not a Zacess theme'}"
 
 
 def current_tmux():
@@ -1128,7 +1169,7 @@ def current_highlight():
     return None
 
 
-TOOLS = [vscode, zed, jetbrains, neovim, tmux, btop, eclipse, stm32cubeide, kicad, processing, nextpad, vivado,
+TOOLS = [vscode, zed, jetbrains, neovim, tmux, btop, nano, eclipse, stm32cubeide, kicad, processing, nextpad, vivado,
          arduino, thonny, matlab, ltspice, zotero, obsidian, terminal_app, iterm2, kitty, alacritty, ghostty, ptyxis,
          warp, highlight]
 
@@ -1332,6 +1373,7 @@ PIN_APPS = {
     "neovim": (neovim, ("nvim", "vim"), None, DEFAULT_VALUES),
     "tmux": (tmux, (), tmux_default, ("default",)),
     "btop": (btop, (), None, ()),
+    "nano": (nano, (), None, ()),
     "eclipse": (eclipse, (), None, ()),
     "stm32cubeide": (stm32cubeide, ("stm32",), None, ()),
     "kicad": (kicad, (), None, ()),
@@ -1359,7 +1401,7 @@ TERMINALS = ("terminal", "iterm2", "ghostty", "kitty", "alacritty", "warp", "tmu
 TOOL_APP = {entry[0]: app for app, entry in PIN_APPS.items()}
 # the labels zt prints, for zt doctor and zt current to find a pinned app
 LABEL_APP = {"vs code": "vscode", "zed": "zed", "jetbrains": "jetbrains", "neovim": "neovim", "zacess.nvim": "neovim",
-             "tmux": "tmux", "tmux server": "tmux", "btop": "btop", "eclipse": "eclipse", "stm32cubeide": "stm32cubeide",
+             "tmux": "tmux", "tmux server": "tmux", "btop": "btop", "nano": "nano", "eclipse": "eclipse", "stm32cubeide": "stm32cubeide",
              "kicad": "kicad", "processing": "processing", "nextpad++": "nextpad", "vivado": "vivado",
              "arduino ide": "arduino", "thonny": "thonny", "matlab": "matlab", "ltspice": "ltspice",
              "zotero": "zotero", "obsidian": "obsidian", "terminal.app": "terminal", "iterm2": "iterm2",
@@ -1784,6 +1826,18 @@ def current_ltspice():
     return "not a Zacess theme"
 
 
+def current_btop():
+    conf = BTOP_DIR / "btop.conf"
+    if not conf.exists():
+        return None
+    match = re.search(r'^color_theme\s*=\s*"?([^"\n]+?)"?\s*$', conf.read_text(), re.M)
+    if not match:
+        return "btop's own default"
+    name = Path(match.group(1)).stem
+    theme = find_theme(name.replace("zacess-", "")) if name.startswith("zacess-") else None
+    return f"fixed: {theme.name}" if theme else f"not a Zacess theme ({name})"
+
+
 def current_zotero():
     profile = zotero_profile()
     if profile is None:
@@ -1994,7 +2048,8 @@ def show_current(only=None):
                ("Processing", current_processing), ("Nextpad++", current_nextpad), ("Vivado", current_vivado),
                ("Arduino IDE", current_arduino), ("Thonny", current_thonny), ("MATLAB", current_matlab),
                ("LTspice", current_ltspice), ("Zotero", current_zotero), ("Obsidian", current_obsidian),
-               ("Terminal.app", current_terminal_app), ("iTerm2", current_iterm2),
+               ("btop", current_btop), ("nano", current_nano), ("Terminal.app", current_terminal_app),
+               ("iTerm2", current_iterm2),
                ("Kitty", current_kitty), ("Alacritty", current_alacritty), ("Ghostty", current_ghostty),
                ("Ptyxis", current_ptyxis), ("tmux", current_tmux), ("Highlight", current_highlight)]
     for tool, reader in readers:
@@ -2177,7 +2232,8 @@ def doctor_apps(d):
     readers = [("Eclipse", current_eclipse), ("STM32CubeIDE", current_stm32cubeide), ("KiCad", current_kicad),
                ("Processing", current_processing), ("Nextpad++", current_nextpad), ("Vivado", current_vivado),
                ("Arduino IDE", current_arduino), ("Thonny", current_thonny), ("MATLAB", current_matlab),
-               ("LTspice", current_ltspice), ("Zotero", current_zotero), ("Obsidian", current_obsidian)]
+               ("LTspice", current_ltspice), ("Zotero", current_zotero), ("Obsidian", current_obsidian),
+               ("btop", current_btop)]
     for tool, reader in readers:
         try:
             d.setting(tool, reader())
@@ -2278,6 +2334,17 @@ def doctor_terminal_files(d):
         d.setting("Ptyxis", current_ptyxis())
 
 
+def doctor_nano(d):
+    d.setting("nano", current_nano())
+    if not NANO_LINK.is_symlink():
+        return
+    shown = d.now
+    if "nano" in d.pins:
+        shown = pair_for(d.pins["nano"])[3]
+    theme_file = REPO_ROOT / "terminal" / "nano" / "themes" / f"zacess-{shown.id}.nanorc"
+    d.files("nano", [(NANO_LINK, theme_file)], "the linked theme file matches the repo")
+
+
 def doctor_tmux(d):
     conf = HOME / ".tmux.conf"
     repo = repo_copy(REPO_ROOT / "terminal" / "tmux", "tmux.conf")
@@ -2341,7 +2408,7 @@ def doctor():
     print(f"{BOLD}zt state{RESET}: " + (f"fixed {now.name}" if fixed
                                         else f"following the system: {dark.name} or {light.name} (now {now.name})"))
     for check in (doctor_vscode, doctor_zed, doctor_jetbrains, doctor_neovim, doctor_apps, doctor_terminal_app,
-                  doctor_iterm2, doctor_terminal_files, doctor_tmux, doctor_xcode, doctor_highlight):
+                  doctor_iterm2, doctor_terminal_files, doctor_tmux, doctor_nano, doctor_xcode, doctor_highlight):
         try:
             check(d)
         except Exception as error:  # one unreadable config is drift, never a crash

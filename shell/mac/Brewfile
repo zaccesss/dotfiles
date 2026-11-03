@@ -15,6 +15,7 @@ brew "jp2a" # Convert JPG images to ASCII
 brew "libpq" # Postgres C API library
 brew "librsvg" # Library to render SVG files using Cairo
 brew "lychee" # Fast, async, resource-friendly link checker
+brew "nano" # Free (GNU) replacement for the Pico text editor, since Apple's nano is Pico and reads no nanorc
 brew "node" # Open-source, cross-platform JavaScript runtime environment
 brew "openjdk" # Development kit for the Java programming language
 brew "php@8.4" # PHP 8.4, keg-only so its bin folder has to go on PATH, see guides/mac.md

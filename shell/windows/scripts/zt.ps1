@@ -423,6 +423,51 @@ function Set-Btop($Fixed, $Dark, $Light, $Now) {
     Write-Result 'btop' "$($theme.Name)$note$open"
 }
 
+# nano, the GNU nano inside Git for Windows: a generated colour file per Zacess theme in
+# terminal\nano\themes, linked to the one path editors\nano\nanorc includes. Git Bash reads
+# ~\.config\nano as ~/.config/nano. nano reads its files only at start, so there is nothing to reload
+$NanoLink = Join-Path $HOME '.config\nano\zacess-theme.nanorc'
+
+function Get-NanoExe {
+    $command = Get-Command nano -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($command) { return $command.Source }
+    # Git for Windows keeps nano under usr\bin, which is not on the PowerShell PATH
+    $git = Get-Command git -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+    if (-not $git) { return $null }
+    $exe = Join-Path (Split-Path (Split-Path $git.Source)) 'usr\bin\nano.exe'
+    if (Test-Path -LiteralPath $exe) { return $exe }
+    return $null
+}
+
+function Set-Nano($Fixed, $Dark, $Light, $Now) {
+    $theme = if ($Fixed) { $Fixed } else { $Now }
+    $source = Join-Path $RepoRoot "terminal\nano\themes\zacess-$($theme.Id).nanorc"
+    if (-not (Test-Path $source)) { return Write-Result 'nano' 'no theme files in terminal\nano, skipped' $false }
+    New-Item -ItemType Directory -Force (Split-Path $NanoLink) | Out-Null
+    if (Test-Path -LiteralPath $NanoLink) { Remove-Item -LiteralPath $NanoLink -Force }
+    try {
+        New-Item -ItemType SymbolicLink -Path $NanoLink -Target $source -ErrorAction Stop | Out-Null
+    } catch {
+        # a file link needs Developer Mode or an elevated shell; a copy still works until the next switch
+        Copy-Item -LiteralPath $source $NanoLink
+    }
+    $note = if ($Fixed) { '' } else { ' (nano cannot follow the system, so this matches it now)' }
+    if (-not (Get-NanoExe)) { return Write-Result 'nano' "$($theme.Name)$note, nano not installed, saved for later" $false }
+    Write-Result 'nano' "$($theme.Name)$note, at its next start"
+}
+
+function Get-CurrentNano {
+    $item = Get-Item -LiteralPath $NanoLink -Force -ErrorAction SilentlyContinue
+    if (-not $item) { if (Get-NanoExe) { return 'no theme file linked yet (run zt <theme>)' } else { return $null } }
+    # a copy made without Developer Mode has no target, so its first line names the theme instead
+    $name = if ($item.LinkType -eq 'SymbolicLink') { [IO.Path]::GetFileNameWithoutExtension(@($item.Target)[0]) }
+            else { ((Get-Content -LiteralPath $NanoLink -TotalCount 1) -replace '^#\s*', '') }
+    if ($name -like 'zacess-*') { return "fixed: $(Get-ThemeName ($name -replace '^zacess-', ''))" }
+    $theme = $Themes | Where-Object { $_.Name -eq $name } | Select-Object -First 1
+    if ($theme) { return "fixed: $($theme.Name)" }
+    return 'fixed: a file that is not a Zacess theme'
+}
+
 # the apps below have an apply script of their own beside their settings, which finds the app,
 # refuses while it is open and changes only its own keys, so zt runs that script. none of them can
 # follow the system, so following it sets the theme for the current mode
@@ -496,11 +541,14 @@ function Set-Zotero($Fixed, $Dark, $Light, $Now) {
     Invoke-AppScript 'Zotero' 'apps\zotero\windows\apply.ps1' $Fixed $Now 'zotero'
 }
 
-# a vault can live anywhere, so it is named once in OBSIDIAN_VAULT, which the apply script reads too.
-# a synced vault carries its theme settings to every machine, so each machine's zt changes the same files
+# the vault defaults to ~\Obsidian\Vault, a plain folder outside any cloud-synced one; OBSIDIAN_VAULT
+# names another, as the apply script allows. a synced vault carries its theme settings to every
+# machine, so each machine's zt changes the same files
+function Get-ObsidianVault { if ($env:OBSIDIAN_VAULT) { $env:OBSIDIAN_VAULT } else { Join-Path $HOME 'Obsidian\Vault' } }
+
 function Set-Obsidian($Fixed, $Dark, $Light, $Now) {
     if (-not (Test-Path (Join-Path $env:LOCALAPPDATA 'Programs\Obsidian\Obsidian.exe'))) { return Write-Result 'Obsidian' 'not installed, skipped' $false }
-    if (-not $env:OBSIDIAN_VAULT) { return Write-Result 'Obsidian' 'no vault named in OBSIDIAN_VAULT, skipped' $false }
+    if (-not (Test-Path (Join-Path (Get-ObsidianVault) '.obsidian'))) { return Write-Result 'Obsidian' "no vault at $(Get-ObsidianVault), skipped" $false }
     Invoke-AppScript 'Obsidian' 'apps\obsidian\windows\apply.ps1' $Fixed $Now 'Obsidian'
 }
 
@@ -564,6 +612,7 @@ $PinApps = [ordered]@{
     'alacritty' = @{ Tools = @('Set-Alacritty'); Aliases = @(); Defaults = @('default') }
     'tmux' = @{ Tools = @('Set-Tmux'); Aliases = @('psmux'); Defaults = @() }
     'btop' = @{ Tools = @('Set-Btop'); Aliases = @('btop4win'); Defaults = @() }
+    'nano' = @{ Tools = @('Set-Nano'); Aliases = @(); Defaults = @() }
     'arduino' = @{ Tools = @('Set-ArduinoIDE'); Aliases = @('arduino-ide'); Defaults = @() }
     'notepad++' = @{ Tools = @('Set-NotepadPlusPlus'); Aliases = @('notepadplusplus', 'npp'); Defaults = @() }
     'thonny' = @{ Tools = @('Set-Thonny'); Aliases = @(); Defaults = @() }
@@ -584,7 +633,7 @@ foreach ($app in $PinApps.Keys) { foreach ($tool in $PinApps[$app].Tools) { $Too
 $LabelApp = @{
     'vs code' = 'vscode'; 'zed' = 'zed'; 'jetbrains' = 'jetbrains'; 'neovim' = 'neovim'; 'eclipse' = 'eclipse'
     'stm32cubeide' = 'stm32cubeide'; 'kicad' = 'kicad'; 'vivado' = 'vivado'; 'windows terminal' = 'windows-terminal'
-    'alacritty' = 'alacritty'; 'tmux' = 'tmux'; 'btop' = 'btop'; 'arduino ide' = 'arduino'; 'notepad++' = 'notepad++'; 'thonny' = 'thonny'
+    'alacritty' = 'alacritty'; 'tmux' = 'tmux'; 'btop' = 'btop'; 'nano' = 'nano'; 'arduino ide' = 'arduino'; 'notepad++' = 'notepad++'; 'thonny' = 'thonny'
     'ltspice' = 'ltspice'; 'proteus' = 'proteus'; 'zotero' = 'zotero'; 'obsidian' = 'obsidian'; 'matlab' = 'matlab'
     'processing' = 'processing'; 'microchip studio' = 'microchip-studio'; 'highlight' = 'highlight'
 }
@@ -1091,8 +1140,8 @@ function Get-CurrentState {
         Add-Current 'Zotero' $(if ($names) { "fixed: $mode mode for $($names -join ' or ')" } else { 'not a Zacess theme' })
     }
 
-    $vault = if ($env:OBSIDIAN_VAULT) { Join-Path $env:OBSIDIAN_VAULT '.obsidian' }
-    if ($vault -and (Test-Path (Join-Path $vault 'appearance.json'))) {
+    $vault = Join-Path (Get-ObsidianVault) '.obsidian'
+    if (Test-Path (Join-Path $vault 'appearance.json')) {
         $look = Get-Content -Raw (Join-Path $vault 'appearance.json') | ConvertFrom-Json
         $style = Join-Path $vault 'plugins\obsidian-style-settings\data.json'
         $contrast = if (Test-Path $style) { (Get-Content -Raw $style | ConvertFrom-Json).'zacess-theme@@zacess-contrast' }
@@ -1101,6 +1150,21 @@ function Get-CurrentState {
                 elseif ($look.theme -eq 'obsidian') { 'fixed: Zacess Dark' } else { 'fixed: Zacess Light' }
         Add-Current 'Obsidian' $text
     }
+
+    # btop4win: the theme btop.conf points at, so zt current and zt doctor see it as zt.py does
+    $btopDir = @(Get-BtopDirs) | Select-Object -First 1
+    if ($btopDir -and (Test-Path -LiteralPath (Join-Path $btopDir 'btop.conf'))) {
+        $line = [IO.File]::ReadAllLines((Join-Path $btopDir 'btop.conf')) | Where-Object { $_ -match '^color_theme\s*=' } | Select-Object -First 1
+        $text = if (-not $line) { "btop's own default" }
+                else {
+                    $stem = [IO.Path]::GetFileNameWithoutExtension((($line -split '=', 2)[1].Trim().Trim('"')))
+                    if ($stem -like 'zacess-*') { "fixed: $(Get-ThemeName ($stem -replace '^zacess-', ''))" } else { "not a Zacess theme ($stem)" }
+                }
+        Add-Current 'btop' $text
+    }
+
+    $nano = Get-CurrentNano
+    if ($nano) { Add-Current 'nano' $nano }
 
     $matlab = Get-CurrentMATLAB
     if ($matlab -and $matlab.Pending -and -not ($matlab.Theme -and $matlab.Theme.Name -eq $matlab.Pending)) {
@@ -1392,6 +1456,11 @@ function Invoke-Doctor {
     }
     $nvim = Join-Path $env:LOCALAPPDATA 'nvim'
     if (Test-Path $nvim) { Test-Files 'Neovim' @(, @($nvim, (Join-Path $RepoRoot 'editors\neovim\windows\nvim'))) 'the config files match the repo' }
+    if (Test-Path -LiteralPath $NanoLink) {
+        $pins = Read-Pins
+        $shown = if ($pins.Contains('nano')) { (ConvertFrom-StateText $pins.nano).Now } else { $pair.Now }
+        Test-Files 'nano' @(, @($NanoLink, (Join-Path $RepoRoot "terminal\nano\themes\zacess-$($shown.Id).nanorc"))) 'the linked theme file matches the repo'
+    }
     $fragment = Join-Path $env:LOCALAPPDATA 'Microsoft\Windows Terminal\Fragments\Zacess\zacess.json'
     if (Test-Path $fragment) { Test-Files 'Windows Terminal' @(, @($fragment, (Join-Path $RepoRoot 'terminal\terminal\windows\windows-terminal\zacess.json'))) 'the scheme fragment matches the repo' }
     $alacritty = Join-Path $env:APPDATA 'alacritty'
@@ -1579,7 +1648,7 @@ if (-not $quiet) {
 # every tool runs at once in a runspace pool, so a switch takes about as long as the slowest tool.
 # each group's lines are collected and printed in this order, so the output reads as it always has
 $groups = @('Set-VSCode', 'Set-Zed', 'Set-JetBrains', 'Set-Neovim', 'Set-Eclipse', 'Set-STM32CubeIDE', 'Set-KiCad', 'Set-Vivado',
-    'Set-WindowsTerminal', 'Set-Alacritty', 'Set-Tmux', 'Set-Btop', 'Set-ArduinoIDE', 'Set-NotepadPlusPlus', 'Set-Thonny', 'Set-LTspice', 'Set-Proteus', 'Set-Zotero',
+    'Set-WindowsTerminal', 'Set-Alacritty', 'Set-Tmux', 'Set-Btop', 'Set-Nano', 'Set-ArduinoIDE', 'Set-NotepadPlusPlus', 'Set-Thonny', 'Set-LTspice', 'Set-Proteus', 'Set-Zotero',
     'Set-Obsidian', 'Set-MATLAB', 'Set-Processing', 'Set-MicrochipStudio', 'Set-Highlight')
 
 # each runspace starts with this script's functions and top-level values

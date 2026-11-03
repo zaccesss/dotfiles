@@ -8,9 +8,26 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+## [2.6.0] - 2026-11-03
+
+### Added
+
+- nano, the same on every machine: `editors/nano/nanorc` for GNU nano (Homebrew's on macOS, where Apple's own `nano` is Pico and reads no configuration file, the packaged one on Linux and WSL and the one inside Git for Windows) with line numbers, soft wrap at spaces, four-space tabs, auto indent, the mouse, the cursor position on the status line and nano's shipped syntax definitions from wherever the machine keeps them. `Ctrl+S` saves, `Ctrl+Q` quits, `Ctrl+Z` undoes, `Ctrl+Y` redoes and `Ctrl+F` finds, as in VS Code, with nano's own keys kept. Every option is one nano 6.0 understands. `build-themes.py` generates a colour file per Zacess theme into `terminal/nano/themes`, measured as nano shows it (the nearest cube colour) and held to 4.5:1 for text; `zt` links the current one to `~/.config/nano/zacess-theme.nanorc` on every switch, lists nano in `zt current` and `zt doctor` and takes `zt pin nano <theme>`, on Windows too. `brew "nano"` joins the Brewfile and each bootstrap links the config: the Mac once Homebrew's nano exists (the Brewfile stage links it on a fresh Mac), Linux with the `configs` extra and Windows at `~\.nanorc`.
+- `zt current` and `zt doctor` list btop, read from `btop.conf`, on macOS, Linux and Windows.
+- The Windows bootstrap installs psmux and links `~/.tmux.conf` to the psmux config, so a new Windows PC gets the same tmux setup.
+
 ### Changed
 
+- The Obsidian vault defaults to `~/Obsidian/Vault` on every platform (`%USERPROFILE%\Obsidian\Vault` on Windows), a plain folder outside any cloud-synced one, since two sync engines on one folder produce conflict copies. The apply scripts, `zt` and the three bootstraps all look there and `OBSIDIAN_VAULT` names another vault, as before.
+- Every theme pin moves to Zacess Themes 0.8.0: the JetBrains, Arduino IDE, Zed and Obsidian packages with their new digests, the VS Code extension list, zacess.nvim and the terminal palette. No editor or terminal colour changes, since 0.6.1 to 0.8.0 only added documentation and the btop themes.
 - Community files follow the [AI policy](https://github.com/zaccesss/ai-policy): pull requests declare AI use and issue forms ask whether AI helped. Security reports go to security@isaacadjei.me.
+
+### Fixed
+
+- The Linux Obsidian apply script no longer mistakes its own shell for a running Obsidian: it asks `flatpak ps` instead of matching the Flatpak id against every command line.
+- The Windows bootstrap's apps stage no longer launches MATLAB and Microchip Studio on every run: it passes `-Pending` so the theme is queued for their next start. It applies the theme `zt` last set (read from `%LOCALAPPDATA%\zacess\theme`) instead of forcing Deep Contrast Dark.
+- The Windows bootstrap's VS Code stage no longer dies on an up-to-date machine: the outdated list is wrapped in `@()` so `.Count` exists when nothing is outdated.
+- Routine tidy-up.
 
 ## [2.5.0] - 2026-11-01
 

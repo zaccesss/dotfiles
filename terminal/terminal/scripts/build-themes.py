@@ -8,8 +8,9 @@ follows the system light and dark setting: the theme stays fixed until it is cha
 with the `zt` command in the dotfiles. The tmux folder beside this one gets a theme file per
 theme too (status bar, message line, copy mode and pane borders), which `zt` links into place.
 Every file this script writes is generated, so run sync-palette.py or edit the palette and run
-this script again rather than editing an output by hand. `--check` exits non-zero when a committed
-file is out of date or a colour drops below its contrast floor, which CI runs.
+this script again rather than editing an output by hand. The btop and nano folders beside the tmux
+one get a theme file per theme as well. `--check` exits non-zero when a committed file is out of
+date or a colour drops below its contrast floor, which CI runs.
 """
 
 import json
@@ -137,6 +138,59 @@ def btop(t):
         ("process_start", cyan), ("process_mid", blue), ("process_end", magenta),
     ]
     lines = [f"# {t['name']}", f"# {HEADER}", ""] + [f'theme[{key}]="{value}"' for key, value in values]
+    return "\n".join(lines) + "\n"
+
+
+def nano_colour(hex_colour):
+    """A colour in nano's #rgb form and the colour nano really shows for it.
+
+    nano 6 takes a colour as three hex digits and picks the nearest of the 216 colours in the
+    xterm 6x6x6 cube, through the same level table as its closest_index_color(), so the contrast
+    checks below measure the colour on screen rather than the one in the palette.
+    """
+    level = [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5]
+    cube = [0, 95, 135, 175, 215, 255]
+    digits = [int(hex_colour[i], 16) for i in (1, 3, 5)]
+    return "#" + "".join(f"{d:x}" for d in digits), "#" + "".join(f"{cube[level[d]]:02x}" for d in digits)
+
+
+def nano_slots(t):
+    """nano's interface colour options for a theme: (option, attribute, foreground, background, floor).
+
+    A background of None leaves the terminal's own, so the text sits on the real theme background
+    as btop's does. The title bar, prompts, status line and key tags take the accent pair, errors
+    the theme's red with whichever of its foreground and background reads better on it, selected
+    text the selection pair and a search match the find match highlight.
+    """
+    ui = t["ui"]
+    c = colours16(t)
+    red = t["foreground"] if 1 in t["background_role"] else c[1]
+    _, red_shown = nano_colour(red)
+    on_red = max((t["foreground"], t["background"]), key=lambda h: contrast(nano_colour(h)[1], red_shown))
+    # every text slot is held to 4.5:1 as shown, since snapping to the cube can take a pair that
+    # the palette holds at 7:1 a little under it; the scrollbar is not text and keeps 3:1
+    return [
+        ("titlecolor", "bold", ui["accent_foreground"], ui["accent"], 4.5),
+        ("statuscolor", "", ui["accent_foreground"], ui["accent"], 4.5),
+        ("promptcolor", "", ui["accent_foreground"], ui["accent"], 4.5),
+        ("minicolor", "", ui["accent_foreground"], ui["accent"], 4.5),
+        ("errorcolor", "bold", on_red, red, 4.5),
+        ("keycolor", "bold", ui["accent_foreground"], ui["accent"], 4.5),
+        ("functioncolor", "", t["foreground"], None, 4.5),
+        ("numbercolor", "", ui["muted"], None, 4.5),
+        ("selectedcolor", "", t["selection_foreground"], t["selection_background"], 4.5),
+        ("spotlightcolor", "", t["foreground"], ui["find_match"], 4.5),
+        ("scrollercolor", "", ui["muted"], None, 3),
+    ]
+
+
+def nano(t):
+    # nano reads one colour file per theme through the include line in editors/nano/nanorc, which
+    # zt points at the current theme. Every option here exists in nano 6.0
+    lines = [f"# {t['name']}", f"# {HEADER}", ""]
+    for option, attribute, fg, bg, _ in nano_slots(t):
+        value = nano_colour(fg)[0] + (f",{nano_colour(bg)[0]}" if bg else "")
+        lines.append(f"set {option} {attribute + ',' if attribute else ''}{value}")
     return "\n".join(lines) + "\n"
 
 
@@ -381,6 +435,11 @@ def outputs():
     if btop_root.is_dir():
         for t in THEMES:
             files[str(Path("..") / "btop" / "themes" / f"{slug(t)}.theme")] = btop(t)
+    # nano, beside this folder too: one flat themes/ folder, read by GNU nano on every system
+    nano_root = ROOT.parent / "nano"
+    if nano_root.is_dir():
+        for t in THEMES:
+            files[str(Path("..") / "nano" / "themes" / f"{slug(t)}.nanorc")] = nano(t)
     files["mac/iterm2/zacess.json"] = iterm()
     for t in THEMES:
         files[f"mac/terminal-app/{t['name']}.terminal"] = terminal_app(t)
@@ -424,6 +483,9 @@ def low_contrast():
             if i in t["background_role"]:
                 continue
             checks.append((f"color{i}", value, t["background"], 4.5 if i in t["dim"] else 7))
+        # nano shows the nearest cube colour, so each of its slots is measured as shown
+        for option, _, fg, bg, floor in nano_slots(t):
+            checks.append((f"nano {option}", nano_colour(fg)[1], nano_colour(bg)[1] if bg else t["background"], floor))
         # the palette's values are whole hex steps, so a ratio a hair under the floor still counts
         problems += [f"{t['name']} {name} {ratio:.2f}:1" for name, fg, bg, floor in checks
                      if (ratio := contrast(fg, bg)) < floor - 0.05]

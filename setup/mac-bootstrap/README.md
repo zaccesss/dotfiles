@@ -1,7 +1,7 @@
 # Mac Bootstrap
 
 [![CI](https://github.com/zaccesss/dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/zaccesss/dotfiles/actions/workflows/ci.yml)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Licence: Apache 2.0](https://img.shields.io/badge/licence-Apache%202.0-blue.svg)](LICENSE)
 
 One command that turns a new Mac into a complete development machine and keeps an existing one in
 line. It covers the Xcode command line tools, Homebrew with every app and tool in the Brewfile, the
@@ -31,7 +31,7 @@ ask for a password. It only acts where something is missing.
 | Xcode tools | Installs the command line tools (git, clang, make, the macOS SDK) if missing |
 | Homebrew | Installs Homebrew if missing, plus the GitHub CLI |
 | Dotfiles | Signs in to GitHub, clones the dotfiles and points the shell profile and prompt at them |
-| Configs | Links the tool configs in the dotfiles (tmux, Neovim, Git hooks, VS Code settings, Zed settings, lazygit, ripgrep and fzf) into place, copies starting Git and SSH configs, then gives Terminal.app and iTerm2 the High Contrast palette |
+| Configs | Links the tool configs in the dotfiles (tmux, Neovim, Git hooks, VS Code settings, Zed settings, lazygit, ripgrep and fzf) into place, copies starting Git and SSH configs, then gives Terminal.app and iTerm2 the High Contrast palette. nano's config is linked once Homebrew's GNU nano is installed, since Apple's nano is Pico and reads no configuration file |
 | Brewfile | Installs everything in the dotfiles' Brewfile without upgrading what is already there |
 | Toolchains | Selects Rust's stable toolchain and checks every everyday tool is on `PATH` |
 | Settings | Applies the macOS settings captured in the [defaults](../defaults) folder, writing only the ones that differ |

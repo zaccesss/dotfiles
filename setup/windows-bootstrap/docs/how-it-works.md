@@ -55,6 +55,7 @@ cheap file links for a normal user:
 | Neovim | `%LOCALAPPDATA%\nvim` is a junction to the [neovim](../../../editors/neovim) folder's `nvim` |
 | VS Code settings and keybindings | A symbolic link with Developer Mode on, otherwise a copy with a warning |
 | lazygit | The same, at `%APPDATA%\lazygit\config.yml` |
+| nano | The same, at `%USERPROFILE%\.nanorc`, from the [nano](../../../editors/nano/) folder, read by the GNU nano inside Git for Windows from Git Bash |
 | ripgrep | `RIPGREP_CONFIG_PATH` points at the [cli-tools](../../../terminal/cli-tools) folder's file |
 
 Anything replaced is moved to the Recycle Bin. VS Code's global snippets are linked the same way as its settings. `argv.json` is left to VS Code,

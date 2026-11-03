@@ -1,7 +1,7 @@
 # Linux Bootstrap
 
 [![CI](https://github.com/zaccesss/dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/zaccesss/dotfiles/actions/workflows/ci.yml)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Licence: Apache 2.0](https://img.shields.io/badge/licence-Apache%202.0-blue.svg)](LICENSE)
 
 One command that turns a fresh Ubuntu install into a complete development machine with language
 toolchains, embedded and electronics tools, cloud and DevOps tools, everyday terminal tools and

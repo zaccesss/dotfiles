@@ -18,18 +18,18 @@ In a synced vault the `.obsidian` folder travels with it, so the theme and the v
 Quit Obsidian first: it writes these files while it runs, so the scripts refuse to run while it is open.
 
 ```powershell
-pwsh -File windows\apply.ps1 -Vault "$HOME\Documents\MyVault"
+pwsh -File windows\apply.ps1
 pwsh -File windows\apply.ps1 -Theme cream -Vault "$HOME\Documents\MyVault"
 ```
 
 ```bash
-mac/apply.sh ~/Documents/MyVault
+mac/apply.sh
 mac/apply.sh --theme cream ~/Documents/MyVault
-linux/apply.sh ~/Documents/MyVault
+linux/apply.sh
 linux/apply.sh --theme cream ~/Documents/MyVault
 ```
 
-The vault is the folder passed to the script (`-Vault` on Windows). With none passed, the scripts use the `OBSIDIAN_VAULT` environment variable, which `zt` reads too, so setting it once lets `zt` switch Obsidian with the other apps:
+The vault defaults to `~/Obsidian/Vault` on every platform (`%USERPROFILE%\Obsidian\Vault` on Windows), a plain folder outside any cloud-synced folder, since two sync engines on one folder produce conflict copies. Another vault is the folder passed to the script (`-Vault` on Windows) or, with none passed, the `OBSIDIAN_VAULT` environment variable, which `zt` and the bootstraps read too, so setting it once moves every script to it:
 
 ```bash
 export OBSIDIAN_VAULT="$HOME/Documents/MyVault"

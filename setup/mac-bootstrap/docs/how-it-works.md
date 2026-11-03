@@ -34,6 +34,9 @@ copied once if missing, since they hold your own identity. It then installs the 
 and runs the [terminal](../../../terminal/terminal) folder's installer for the High Contrast palette. Anything already there that is
 not a link is moved to the Bin first. VS Code's global snippets are linked the same way. `~/.vscode/argv.json` is left to VS Code, which
 writes its own crash reporter id into it.
+`~/.config/nano/nanorc` is linked only once Homebrew's GNU nano exists: Apple's `/usr/bin/nano`
+is Pico 5.09, which reads no configuration file at all, so on a fresh Mac the link is made by the
+Brewfile stage straight after nano is installed.
 
 ### 4. Brewfile
 
@@ -75,7 +78,7 @@ Dark.
 | LTspice | `LTspice.app` is in `/Applications` | `editors/ltspice/mac/apply.sh` |
 | MATLAB | A `MATLAB_R20*.app` is in `/Applications` or `matlab` is on `PATH` | `editors/matlab/mac/apply.sh` |
 | Thonny | Thonny has been started once | `editors/thonny/mac/apply.sh` |
-| Obsidian | `OBSIDIAN_VAULT` names a vault Obsidian has opened | `apps/obsidian/mac/apply.sh` |
+| Obsidian | A vault is at `~/Obsidian/Vault` or where `OBSIDIAN_VAULT` points | `apps/obsidian/mac/apply.sh` |
 | Zotero | A Zotero profile exists | `apps/zotero/mac/apply.sh` |
 | Rectangle | `Rectangle.app` is in `/Applications` | Copies `apps/rectangle/mac/RectangleConfig.json` into Rectangle's support folder, only if no Rectangle config was ever offered there. Rectangle asks before applying it on its next start |
 

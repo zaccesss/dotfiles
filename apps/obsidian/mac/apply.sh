@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # sets up Obsidian with the Zacess theme in one vault and opens that vault by default.
 # usage: apply.sh [--theme <theme>] [vault folder]
-#   (the vault defaults to OBSIDIAN_VAULT, the same variable zt reads)
+#   (the vault defaults to OBSIDIAN_VAULT, the same variable zt reads, then ~/Obsidian/Vault, a
+#   plain folder outside any cloud-synced one)
 #
 # --theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
 # hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
@@ -42,9 +43,9 @@ if ! name="$(theme_name "$theme")"; then
   exit 1
 fi
 
-vault="${1:-${OBSIDIAN_VAULT:-}}"
-if [ -z "$vault" ]; then
-  echo "Name the vault: pass its folder or set OBSIDIAN_VAULT, for example ~/Documents/MyVault." >&2
+vault="${1:-${OBSIDIAN_VAULT:-$HOME/Obsidian/Vault}}"
+if [ ! -d "$vault/.obsidian" ]; then
+  echo "No Obsidian vault at $vault (no .obsidian folder). Pass the vault folder or set OBSIDIAN_VAULT." >&2
   exit 1
 fi
 list="$HOME/Library/Application Support/obsidian/obsidian.json"

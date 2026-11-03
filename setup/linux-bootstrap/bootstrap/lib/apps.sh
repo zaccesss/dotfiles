@@ -182,12 +182,13 @@ apply_installed_apps() {
 
     apply_app Vivado editors/vivado/linux/apply.sh theme
 
-    # a vault can live anywhere, so it is named once in OBSIDIAN_VAULT, which zt and the apply
+    # the vault defaults to ~/Obsidian/Vault; OBSIDIAN_VAULT names another, as zt and the apply
     # script read too
-    if [[ -n "${OBSIDIAN_VAULT:-}" && -d "${OBSIDIAN_VAULT}/.obsidian" ]]; then
+    local vault="${OBSIDIAN_VAULT:-${HOME}/Obsidian/Vault}"
+    if [[ -d "${vault}/.obsidian" ]]; then
         apply_app Obsidian apps/obsidian/linux/apply.sh theme
     else
-        skip_app Obsidian "no vault named in OBSIDIAN_VAULT"
+        skip_app Obsidian "no vault at ${vault}"
     fi
 
     if any_exists "${HOME}"/.zotero/zotero/*/prefs.js "${HOME}"/.var/app/org.zotero.Zotero/.zotero/zotero/*/prefs.js; then

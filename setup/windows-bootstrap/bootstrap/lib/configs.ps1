@@ -70,6 +70,14 @@ function Install-ConfigRepos {
     # which through a link would land in the repository
     Set-FileLink -Source (Join-Path $dotfiles 'terminal\cli-tools\lazygit\config.yml') -Target (Join-Path $appData 'lazygit\config.yml')
 
+    # psmux, the Windows tmux, reads ~/.tmux.conf. The windows folder holds the psmux version of the
+    # config. zt links the theme it sources once the first theme is applied
+    Set-FileLink -Source (Join-Path $dotfiles 'terminal\tmux\windows\tmux.conf') -Target (Join-Path $HOME '.tmux.conf')
+
+    # the GNU nano inside Git for Windows reads ~/.nanorc from Git Bash, where ~ is the profile
+    # folder. zt links the theme file the nanorc includes once the first theme is applied
+    Set-FileLink -Source (Join-Path $dotfiles 'editors\nano\nanorc') -Target (Join-Path $HOME '.nanorc')
+
     # Windows Terminal loads extra colour schemes from a fragment folder, so the eight Zacess schemes
     # arrive without touching its own settings file; only the default scheme is set there
     $fragments = Join-Path $localAppData 'Microsoft\Windows Terminal\Fragments'

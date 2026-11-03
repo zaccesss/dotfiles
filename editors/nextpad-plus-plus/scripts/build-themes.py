@@ -21,8 +21,8 @@ import sys
 import urllib.request
 import xml.etree.ElementTree as ET
 
-PALETTE_URL = "https://raw.githubusercontent.com/zacesshq/themes/v0.6.0/palette/zacess.json"
-PALETTE_SHA256 = "2907de45bc1403661aa447b3eb08a592e814c2ecf8f3cd0d1101e884548442f4"
+PALETTE_URL = "https://raw.githubusercontent.com/zacesshq/themes/v0.8.0/palette/zacess.json"
+PALETTE_SHA256 = "e9f26a8bf7ed78e64f7817ef61f74b9d522869e30f985fe3e90b51c3e80ced4a"
 MODEL = pathlib.Path("/Applications/Nextpad++.app/Contents/Resources/stylers.model.xml")
 ORDER = ["deep-contrast-dark", "deep-contrast-light", "high-contrast-dark", "high-contrast-light",
          "dark", "light", "cream", "yellow-on-black"]

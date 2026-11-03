@@ -52,8 +52,9 @@ function Install-VSCodeExtensions {
     $wanted = Get-WantedExtensions -ListPath $list
     $versions = @(code --list-extensions --show-versions)
     $installed = @($versions | ForEach-Object { ($_ -split '@')[0].ToLowerInvariant() })
-    $outdated = Get-OutdatedExtensions -ListPath $list -Installed $versions
     $missing = @($wanted | Where-Object { $installed -notcontains $_ })
+    # wrapped so an up-to-date machine, where the function returns nothing, still has a .Count
+    $outdated = @(Get-OutdatedExtensions -ListPath $list -Installed $versions)
 
     if ($missing.Count -eq 0 -and $outdated.Count -eq 0) {
         Write-Ok "All $($wanted.Count) VS Code extensions are installed at their pinned version or newer"

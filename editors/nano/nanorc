@@ -1,0 +1,45 @@
+## nano, the same on every machine: Homebrew's GNU nano on macOS, the packaged nano on Linux and
+## the nano inside Git for Windows. Apple's /usr/bin/nano is Pico, which reads no configuration
+## file at all, so it never sees this.
+##
+## every option here exists in nano 6.0 (the oldest nano on a supported machine). nano stops at
+## start with an error for an option it does not know, so nothing newer goes in.
+
+## the editor
+set linenumbers
+set softwrap
+set atblanks
+set tabsize 4
+set tabstospaces
+set autoindent
+set smarthome
+set constantshow
+set indicator
+set mouse
+set zap
+set trimblanks
+set historylog
+set positionlog
+set stateflags
+
+## the VS Code keys nano can take. nano's own stay beside them: Ctrl+C still shows the cursor
+## position, Ctrl+X still exits, Ctrl+O still writes out and Ctrl+W still searches. Ctrl+T then
+## Ctrl+Z suspends nano, since Ctrl+Z alone is undo here
+bind ^S savefile main
+bind ^Q exit all
+bind ^Z undo main
+bind ^Y redo main
+bind ^F whereis main
+
+## the colours of the Zacess theme zt last set. zt links the theme file here, one of the eight in
+## terminal/nano/themes. an include that matches nothing is skipped, so nano starts without colours
+## on a machine before its first zt rather than with an error
+include "~/.config/nano/zacess-theme.nanorc"
+
+## the syntax definitions nano ships, from wherever this machine keeps them: Linux and Git for
+## Windows, Homebrew on Apple silicon, Homebrew on an Intel Mac. a folder that is not there matches
+## nothing and is skipped. the definitions use the terminal's own colour names, so they follow the
+## Zacess palette the terminal is on
+include "/usr/share/nano/*.nanorc"
+include "/opt/homebrew/share/nano/*.nanorc"
+include "/usr/local/share/nano/*.nanorc"

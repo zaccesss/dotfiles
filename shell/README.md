@@ -3,7 +3,7 @@
 > Shell profiles, aliases and developer environment configuration for macOS, Windows and Linux.
 
 [![CI](https://github.com/zaccesss/dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/zaccesss/dotfiles/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](../LICENSE)
+[![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](../LICENSE)
 
 ---
 

@@ -1,6 +1,7 @@
 # sets up Obsidian with the Zacess theme in one vault and opens that vault by default.
 # usage: .\apply.ps1 [-Theme <theme>] [-Vault <vault folder>]
-#   (the vault defaults to OBSIDIAN_VAULT, the same variable zt reads)
+#   (the vault defaults to OBSIDIAN_VAULT, the same variable zt reads, then %USERPROFILE%\Obsidian\Vault,
+#   a plain folder outside any cloud-synced one)
 #
 # -Theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
 # hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
@@ -12,7 +13,7 @@
 # this folder holds every value it writes.
 param(
     [string]$Theme = 'deep-dark',
-    [string]$Vault = $env:OBSIDIAN_VAULT
+    [string]$Vault = $(if ($env:OBSIDIAN_VAULT) { $env:OBSIDIAN_VAULT } else { Join-Path $HOME 'Obsidian\Vault' })
 )
 
 $ErrorActionPreference = 'Stop'
@@ -33,13 +34,9 @@ if (-not $name) {
     [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow.')
     exit 1
 }
-if (-not $Vault) {
-    [Console]::Error.WriteLine('Name the vault: pass -Vault or set OBSIDIAN_VAULT, for example $HOME\Documents\MyVault.')
-    exit 1
-}
 $dot = Join-Path $Vault '.obsidian'
 if (-not (Test-Path $dot)) {
-    [Console]::Error.WriteLine("No Obsidian vault at $Vault (no .obsidian folder).")
+    [Console]::Error.WriteLine("No Obsidian vault at $Vault (no .obsidian folder). Pass -Vault or set OBSIDIAN_VAULT.")
     exit 1
 }
 # Obsidian writes appearance.json and obsidian.json back while it runs

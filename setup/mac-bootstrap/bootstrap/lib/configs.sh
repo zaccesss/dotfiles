@@ -24,6 +24,19 @@ readonly CONFIG_TEMPLATES=(
     "git/ssh|mac/config|${HOME}/.ssh/config"
 )
 
+# nano's config is linked only once Homebrew's GNU nano is there: Apple's /usr/bin/nano is Pico,
+# which reads no configuration file. The Brewfile stage installs nano after this one, so it calls
+# this again and a fresh Mac gets the link in the same run. Tests point this at a stub
+link_nano_config() {
+    local gnu_nano="${MAC_BOOTSTRAP_GNU_NANO:-${HOMEBREW_PREFIX}/bin/nano}"
+
+    if [[ -x "$gnu_nano" ]]; then
+        link_file "${DOTFILES_DIR}/editors/nano/nanorc" "${HOME}/.config/nano/nanorc"
+    else
+        log_info "GNU nano is not installed yet (Apple's nano is Pico), so its config is left for the Brewfile stage"
+    fi
+}
+
 install_config_repos() {
     local entry folder inside target
 
@@ -34,6 +47,7 @@ install_config_repos() {
         IFS='|' read -r folder inside target <<< "$entry"
         link_file "${DOTFILES_DIR}/${folder}/${inside}" "$target"
     done
+    link_nano_config
 
     for entry in "${CONFIG_TEMPLATES[@]}"
     do
