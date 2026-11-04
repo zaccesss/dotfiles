@@ -4,9 +4,9 @@ The same high contrast theme on every machine, set once in the vault.
 
 ## Vision
 
-- The default is the Zacess theme's Deep Contrast Dark variant. All eight Zacess themes are available, light ones included, from **Settings > Style Settings > Zacess**. Measured contrast is in the [Zacess Themes accessibility statement](https://github.com/zacesshq/themes/blob/main/ACCESSIBILITY.md).
+- The default is Zacess Deep Contrast Dark: the Zacess Deep Contrast theme with Obsidian's dark base colour scheme. All eight Zacess looks are available, light ones included: the four Zacess themes are installed and each carries a light and a dark look, chosen under **Settings > Appearance**. Measured contrast is in the [Zacess Themes accessibility statement](https://github.com/zacesshq/themes/blob/main/ACCESSIBILITY.md).
 - Code blocks and inline code use GeistMono Nerd Font, the font every editor uses.
-- Links are underlined as well as coloured in the Zacess theme, so colour is never the only signal.
+- Links are underlined as well as coloured in the Zacess themes. The active tab, the open file and a selected row carry a bar, so colour is never the only signal.
 
 ## Predictability
 

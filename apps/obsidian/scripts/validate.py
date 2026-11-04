@@ -1,9 +1,10 @@
 """Checks the Obsidian folder without Obsidian: run from anywhere, exits non-zero on a problem.
 
-- shared/themes.json maps all eight Zacess themes to Obsidian's dark or light base and a Style
-  Settings variant
-- shared/theme-package.json pins a release zip by version and a 64-character SHA-256 digest
-- shared/appearance.json names the Zacess theme and Geist Mono
+- shared/themes.json maps all eight Zacess looks to the community theme that carries each (cssTheme)
+  and Obsidian's dark (obsidian) or light (moonstone) base colour scheme
+- shared/theme-package.json pins one release zip per theme by version and a 64-character SHA-256
+  digest. Every theme themes.json names has a package
+- shared/appearance.json names Geist Mono and leaves the theme to themes.json
 - shared/apply.py parses as Python
 """
 
@@ -20,20 +21,37 @@ problems = []
 
 themes = json.loads((root / "shared" / "themes.json").read_text(encoding="utf-8"))
 if sorted(themes) != sorted(NAMES):
-    problems.append("themes.json: does not hold exactly the eight Zacess themes")
+    problems.append("themes.json: does not hold exactly the eight Zacess looks")
 for name, choice in themes.items():
-    if choice.get("base") not in ("obsidian", "moonstone"):
-        problems.append(f"themes.json: {name} base is not obsidian (dark) or moonstone (light)")
-    if not str(choice.get("contrast", "")).startswith("zacess-"):
-        problems.append(f"themes.json: {name} has no Zacess Style Settings variant")
+    if choice.get("theme") not in ("obsidian", "moonstone"):
+        problems.append(f"themes.json: {name} theme is not obsidian (dark) or moonstone (light)")
+    if not str(choice.get("cssTheme", "")).startswith("Zacess"):
+        problems.append(f"themes.json: {name} names no Zacess community theme")
 package = json.loads((root / "shared" / "theme-package.json").read_text(encoding="utf-8"))
-if not re.fullmatch(r"[0-9a-f]{64}", package["sha256"]):
-    problems.append("theme-package.json: sha256 is not a 64-character lowercase hex digest")
-if not package["url"].endswith(f"/releases/download/v{package['version']}/{package['name']}-{package['version']}.zip"):
-    problems.append("theme-package.json: url does not point at the pinned version's release asset")
+version = package.get("version", "")
+if not re.fullmatch(r"\d+\.\d+\.\d+", version):
+    problems.append("theme-package.json: version is not x.y.z")
+folders = []
+for entry in package.get("themes", []):
+    folders.append(entry.get("folder"))
+    if not re.fullmatch(r"[0-9a-f]{64}", entry.get("sha256", "")):
+        problems.append(f"theme-package.json: {entry.get('folder')} sha256 is not a 64-character lowercase hex digest")
+    expected = f"/releases/download/v{version}/{entry.get('name')}-{version}.zip"
+    if not entry.get("url", "").startswith("https://github.com/zacesshq/") or not entry.get("url", "").endswith(expected):
+        problems.append(f"theme-package.json: {entry.get('folder')} url does not point at the pinned version's release asset")
+if len(folders) != len(set(folders)):
+    problems.append("theme-package.json: a theme folder is listed twice")
+for name, choice in themes.items():
+    if choice.get("cssTheme") not in folders:
+        problems.append(f"themes.json: {name} names {choice.get('cssTheme')}, which theme-package.json does not install")
+for folder in folders:
+    if not any(choice.get("cssTheme") == folder for choice in themes.values()):
+        problems.append(f"theme-package.json: {folder} is installed but no look in themes.json uses it")
 appearance = json.loads((root / "shared" / "appearance.json").read_text(encoding="utf-8"))
-if appearance.get("cssTheme") != package["folder"] or "GeistMono" not in appearance.get("monospaceFontFamily", ""):
-    problems.append("appearance.json: does not name the Zacess theme and Geist Mono")
+if "GeistMono" not in appearance.get("monospaceFontFamily", ""):
+    problems.append("appearance.json: does not name Geist Mono")
+if "cssTheme" in appearance or "theme" in appearance:
+    problems.append("appearance.json: sets a theme, which themes.json decides per look")
 try:
     ast.parse((root / "shared" / "apply.py").read_text(encoding="utf-8"))
 except SyntaxError as error:

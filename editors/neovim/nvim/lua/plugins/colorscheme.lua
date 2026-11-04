@@ -4,7 +4,7 @@
 return {
 	{
 		"zacesshq/zacess.nvim",
-		version = "0.8.0",
+		version = "0.10.0",
 		lazy = false,
 		priority = 1000,
 		config = function()

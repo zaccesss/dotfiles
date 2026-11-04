@@ -8,6 +8,14 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+## [2.7.0] - 2026-11-04
+
+### Changed
+
+- Obsidian runs on the four Zacess community themes of Zacess Themes 0.9.0 and later (Zacess, Zacess Cream, Zacess High Contrast and Zacess Deep Contrast) instead of one theme with a Style Settings option. The apply scripts install all four into the vault's `.obsidian/themes`, each from its own release zip checked against its digest. They set `cssTheme` to the theme that carries the chosen look and `theme` to its dark (`obsidian`) or light (`moonstone`) half: Zacess Deep Contrast Dark is Zacess Deep Contrast plus `obsidian`, Zacess Cream is Zacess Cream plus `moonstone` and Zacess Yellow on Black is Zacess Cream plus `obsidian`. `zt current` and `zt doctor` read both fields back on macOS, Linux and Windows and name a vault on Adapt to system as following the system between the theme's two looks. The Style Settings plugin is no longer needed, so nothing is written for it.
+- Every theme pin moves to Zacess Themes 0.10.0: the JetBrains, Arduino IDE, Zed and Obsidian packages with their new digests, the VS Code extension list, zacess.nvim with its lock, the terminal palette and the Nextpad++ palette. No editor or terminal colour changes, since 0.9.0 and 0.10.0 only changed the Obsidian themes.
+- Routine tidy-up.
+
 ## [2.6.0] - 2026-11-03
 
 ### Added

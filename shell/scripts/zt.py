@@ -1860,15 +1860,23 @@ def current_obsidian():
     if not dot.is_dir():
         return None
     appearance = json.loads((dot / "appearance.json").read_text())
-    style = dot / "plugins" / "obsidian-style-settings" / "data.json"
-    contrast = json.loads(style.read_text()).get("zacess-theme@@zacess-contrast") if style.exists() else None
-    if appearance.get("cssTheme") != "Zacess":
-        return f"fixed: {appearance.get('cssTheme') or 'default'}"
+    css, base = appearance.get("cssTheme"), appearance.get("theme")
+    font = appearance.get("monospaceFontFamily", "default font")
+    # each Zacess community theme carries a light and a dark look, so the look is the pair of
+    # cssTheme (the theme) and theme (obsidian for dark, moonstone for light) in appearance.json
     themes = json.loads((APPS / "obsidian" / "shared" / "themes.json").read_text())
-    for name, choice in themes.items():
-        if choice["base"] == appearance.get("theme") and choice["contrast"] == contrast:
-            return f"fixed: {name}, {appearance.get('monospaceFontFamily', 'default font')}"
-    return f"Zacess with no contrast choice ({appearance.get('theme')})"
+    looks = {name: choice for name, choice in themes.items() if choice["cssTheme"] == css}
+    if not looks:
+        return f"fixed: {css or 'default'} theme, not a Zacess theme"
+    for name, choice in looks.items():
+        if choice["theme"] == base:
+            return f"fixed: {name}, {font}"
+    if base == "system":
+        # Adapt to system: Obsidian picks the theme's light or dark look itself
+        light = next(n for n, c in looks.items() if c["theme"] == "moonstone")
+        dark = next(n for n, c in looks.items() if c["theme"] == "obsidian")
+        return f"following the system: {dark} or {light}, {font}"
+    return f"fixed: {css} with an unknown base colour scheme ({base}), {font}"
 
 
 def current_zed():

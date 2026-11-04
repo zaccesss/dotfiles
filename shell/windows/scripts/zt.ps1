@@ -1143,11 +1143,21 @@ function Get-CurrentState {
     $vault = Join-Path (Get-ObsidianVault) '.obsidian'
     if (Test-Path (Join-Path $vault 'appearance.json')) {
         $look = Get-Content -Raw (Join-Path $vault 'appearance.json') | ConvertFrom-Json
-        $style = Join-Path $vault 'plugins\obsidian-style-settings\data.json'
-        $contrast = if (Test-Path $style) { (Get-Content -Raw $style | ConvertFrom-Json).'zacess-theme@@zacess-contrast' }
-        $text = if ($look.cssTheme -ne 'Zacess') { "fixed: $($look.cssTheme) theme" }
-                elseif ($contrast -and $contrast -ne 'zacess-follow') { "fixed: $(Get-ThemeName ($contrast -replace '^zacess-', ''))" }
-                elseif ($look.theme -eq 'obsidian') { 'fixed: Zacess Dark' } else { 'fixed: Zacess Light' }
+        $font = if ($look.monospaceFontFamily) { $look.monospaceFontFamily } else { 'default font' }
+        # each Zacess community theme carries a light and a dark look, so the look is the pair of
+        # cssTheme (the theme) and theme (obsidian for dark, moonstone for light) in appearance.json
+        $map = Get-Content -Raw (Join-Path $RepoRoot 'apps\obsidian\shared\themes.json') | ConvertFrom-Json
+        $looks = @($map.PSObject.Properties | Where-Object { $_.Value.cssTheme -eq $look.cssTheme })
+        $match = $looks | Where-Object { $_.Value.theme -eq $look.theme } | Select-Object -First 1
+        $text = if (-not $looks) { "fixed: $(if ($look.cssTheme) { $look.cssTheme } else { 'default' }) theme, not a Zacess theme" }
+                elseif ($match) { "fixed: $($match.Name), $font" }
+                elseif ($look.theme -eq 'system') {
+                    # Adapt to system: Obsidian picks the theme's light or dark look itself
+                    $dark = ($looks | Where-Object { $_.Value.theme -eq 'obsidian' } | Select-Object -First 1).Name
+                    $light = ($looks | Where-Object { $_.Value.theme -eq 'moonstone' } | Select-Object -First 1).Name
+                    "following the system: $dark or $light, $font"
+                }
+                else { "fixed: $($look.cssTheme) with an unknown base colour scheme ($($look.theme)), $font" }
         Add-Current 'Obsidian' $text
     }
 

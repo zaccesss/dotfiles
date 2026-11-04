@@ -1,12 +1,14 @@
-"""Installs the Zacess Obsidian theme into a vault, picks a variant and opens that vault by default (macOS and Linux).
+"""Installs the four Zacess Obsidian themes into a vault, picks one look and opens that vault by default (macOS and Linux).
 
 usage: python3 apply.py <full theme name> <vault folder> <obsidian.json path>
 
-The pinned theme release (theme-package.json) is downloaded, checked against its digest and
-unpacked into the vault's .obsidian/themes. appearance.json and the Style Settings choice are
-merged key by key. obsidian.json, this machine's vault list, marks the vault as the one that
-opens. Only the keys this script owns change and nothing is backed up: this folder holds every
-value it writes. The apply scripts check Obsidian is closed first, since it writes these files while it runs.
+The four pinned theme packages (theme-package.json) are downloaded, checked against their digests
+and unpacked into the vault's .obsidian/themes, one folder per theme. appearance.json is merged key
+by key: cssTheme names the theme that carries the chosen look and theme picks its dark (obsidian)
+or light (moonstone) half, since each Zacess Obsidian theme follows Obsidian's own base colour
+scheme between its two looks. obsidian.json, this machine's vault list, marks the vault as the one
+that opens. Only the keys this script owns change and nothing is backed up: this folder holds
+every value it writes. The apply scripts check Obsidian is closed first, since it writes these files while it runs.
 """
 
 import hashlib
@@ -41,30 +43,29 @@ def merge(path, want, label):
         path.write_text(json.dumps(merged, indent=2) + "\n", encoding="utf-8")
 
 
-package = json.loads((here / "theme-package.json").read_text(encoding="utf-8"))
-with urllib.request.urlopen(package["url"]) as response:
-    data = response.read()
-if hashlib.sha256(data).hexdigest().upper() != package["sha256"].upper():
-    sys.exit("The Zacess Obsidian download does not match its pinned checksum, so it was not installed")
-target = dot / "themes" / package["folder"]
-target.mkdir(parents=True, exist_ok=True)
-with zipfile.ZipFile(io.BytesIO(data)) as z:
-    for member in z.infolist():
-        if member.is_dir():
-            continue
-        content = z.read(member)
-        dest = target / pathlib.PurePosixPath(member.filename).name
-        status = "added    " if not dest.exists() else ("unchanged" if dest.read_bytes() == content else "changed  ")
-        if status != "unchanged":
-            dest.write_bytes(content)
-        print(f"  {status}  themes/{package['folder']}  {dest.name}")
+# every theme goes in, not only the chosen one, so switching looks later needs no download and
+# Obsidian's theme picker lists all four
+for package in json.loads((here / "theme-package.json").read_text(encoding="utf-8"))["themes"]:
+    with urllib.request.urlopen(package["url"]) as response:
+        data = response.read()
+    if hashlib.sha256(data).hexdigest().lower() != package["sha256"].lower():
+        sys.exit(f"The {package['folder']} download does not match its pinned checksum, so nothing was installed from it")
+    target = dot / "themes" / package["folder"]
+    target.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(io.BytesIO(data)) as z:
+        for member in z.infolist():
+            if member.is_dir():
+                continue
+            content = z.read(member)
+            dest = target / pathlib.PurePosixPath(member.filename).name
+            status = "added    " if not dest.exists() else ("unchanged" if dest.read_bytes() == content else "changed  ")
+            if status != "unchanged":
+                dest.write_bytes(content)
+            print(f"  {status}  themes/{package['folder']}  {dest.name}")
 
-choice = themes[name]
 appearance = json.loads((here / "appearance.json").read_text(encoding="utf-8"))
-appearance["theme"] = choice["base"]
+appearance.update(themes[name])
 merge(dot / "appearance.json", appearance, "appearance.json")
-merge(dot / "plugins" / "obsidian-style-settings" / "data.json",
-      {"zacess-theme@@zacess-contrast": choice["contrast"]}, "style settings")
 
 # this machine's vault list: the vault is the one marked open, so Obsidian starts in it
 listing = json.loads(vault_list.read_text(encoding="utf-8")) if vault_list.exists() else {"vaults": {}}

@@ -36,7 +36,6 @@ the list of style names and slots is followed.
 | Notepad++ stylers model | The [notepad-plus-plus](editors/notepad-plus-plus) and [nextpad-plus-plus](editors/nextpad-plus-plus) builds read the language and style list from Notepad++'s `DarkModeDefault.xml` and the `stylers.model.xml` that ships with Nextpad++ | [notepad-plus-plus/notepad-plus-plus](https://github.com/notepad-plus-plus/notepad-plus-plus) |
 | Thonny plugin API | The [thonny](editors/thonny) plugin registers its themes through Thonny's plugin API and builds on Thonny's Clean themes | [thonny/thonny](https://github.com/thonny/thonny) |
 | Dracula for Vivado and LTspice | The published Dracula themes show which entry is a background, a line or text in the [vivado](editors/vivado) and [ltspice](editors/ltspice) themes | [dracula/vivado](https://github.com/dracula/vivado) and [Dracula for LTspice](https://draculatheme.com/ltspice) |
-| Style Settings | The [obsidian](apps/obsidian) setup picks the Zacess variant through this Obsidian plugin | [mgmeyers/obsidian-style-settings](https://github.com/mgmeyers/obsidian-style-settings) |
 
 ## Bundled third-party file
 

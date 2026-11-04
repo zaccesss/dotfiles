@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
-# sets up Obsidian with the Zacess theme in one vault and opens that vault by default.
+# sets up Obsidian with the four Zacess themes in one vault, picks one look and opens that vault
+# by default.
 # usage: apply.sh [--theme <theme>] [vault folder]
 #   (the vault defaults to OBSIDIAN_VAULT, the same variable zt reads, then ~/Obsidian/Vault, a
 #   plain folder outside any cloud-synced one)
 #
-# --theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
+# --theme picks one of the eight Zacess looks by short name (deep-dark, deep-light, hc-dark,
 # hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
-# deep-dark. the work is done by ../shared/apply.py; nothing is backed up. the vault list is
-# ~/Library/Application Support/obsidian/obsidian.json. in a synced vault the .obsidian folder
-# travels with it, so the theme files, appearance.json and the Style Settings choice are shared
-# with every machine that opens it.
+# deep-dark. each look is one half of a community theme (Zacess, Zacess Cream, Zacess High Contrast
+# or Zacess Deep Contrast) chosen by Obsidian's base colour scheme, so appearance.json gets both
+# cssTheme and theme. the work is done by ../shared/apply.py; nothing is backed up. the vault list
+# is ~/Library/Application Support/obsidian/obsidian.json. in a synced vault the .obsidian folder
+# travels with it, so the theme files and appearance.json are shared with every machine that opens it.
 set -euo pipefail
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

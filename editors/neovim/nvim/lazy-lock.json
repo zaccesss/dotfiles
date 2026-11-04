@@ -26,5 +26,5 @@
   "vim-tmux-navigator": { "branch": "master", "commit": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432" },
   "vim-wakatime": { "branch": "master", "commit": "98cb7a8a09f8a0cb225b5955bf491ffb9860569f" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
-  "zacess.nvim": { "branch": "main", "commit": "d2c6e453fc7b8189906dff7990581a3663e9ffc4" }
+  "zacess.nvim": { "branch": "main", "commit": "dae702696609e7747cadc00e3f299e0dae1f539f" }
 }

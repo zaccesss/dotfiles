@@ -1,16 +1,19 @@
-# sets up Obsidian with the Zacess theme in one vault and opens that vault by default.
+# sets up Obsidian with the four Zacess themes in one vault, picks one look and opens that vault
+# by default.
 # usage: .\apply.ps1 [-Theme <theme>] [-Vault <vault folder>]
 #   (the vault defaults to OBSIDIAN_VAULT, the same variable zt reads, then %USERPROFILE%\Obsidian\Vault,
 #   a plain folder outside any cloud-synced one)
 #
-# -Theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
+# -Theme picks one of the eight Zacess looks by short name (deep-dark, deep-light, hc-dark,
 # hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
-# deep-dark.
+# deep-dark. each look is one half of a community theme (Zacess, Zacess Cream, Zacess High Contrast
+# or Zacess Deep Contrast) chosen by Obsidian's base colour scheme, so appearance.json gets both
+# cssTheme and theme.
 #
-# in a synced vault the .obsidian folder travels with it, so the theme files, appearance.json and
-# the Style Settings choice are shared by every machine. obsidian.json, which says which vault
-# opens, is this machine's own. only the keys this script owns change and nothing is backed up:
-# this folder holds every value it writes.
+# in a synced vault the .obsidian folder travels with it, so the theme files and appearance.json
+# are shared by every machine. obsidian.json, which says which vault opens, is this machine's own.
+# only the keys this script owns change and nothing is backed up: this folder holds every value it
+# writes.
 param(
     [string]$Theme = 'deep-dark',
     [string]$Vault = $(if ($env:OBSIDIAN_VAULT) { $env:OBSIDIAN_VAULT } else { Join-Path $HOME 'Obsidian\Vault' })
@@ -70,34 +73,39 @@ function Merge-Json([string]$path, [hashtable]$want, [string]$label) {
     }
 }
 
-# the pinned theme release, checked against its digest, unpacked into .obsidian\themes\Zacess
-$package = Get-Content (Join-Path $shared 'theme-package.json') -Raw | ConvertFrom-Json
-$themeDir = Join-Path $dot "themes\$($package.folder)"
-$download = Join-Path ([IO.Path]::GetTempPath()) "zacess-obsidian-$PID.zip"
-$unpack = Join-Path ([IO.Path]::GetTempPath()) "zacess-obsidian-$PID"
-try {
-    Invoke-WebRequest -Uri $package.url -OutFile $download -UseBasicParsing
-    if ((Get-FileHash $download -Algorithm SHA256).Hash -ne $package.sha256) {
-        [Console]::Error.WriteLine('The Zacess Obsidian download does not match its pinned checksum, so it was not installed')
-        exit 1
+# the four pinned theme packages, each checked against its digest and unpacked into
+# .obsidian\themes\<theme name>. every theme goes in, not only the chosen one, so switching looks
+# later needs no download and Obsidian's theme picker lists all four
+$packages = Get-Content (Join-Path $shared 'theme-package.json') -Raw | ConvertFrom-Json
+foreach ($package in $packages.themes) {
+    $themeDir = Join-Path $dot "themes\$($package.folder)"
+    $download = Join-Path ([IO.Path]::GetTempPath()) "$($package.name)-$PID.zip"
+    $unpack = Join-Path ([IO.Path]::GetTempPath()) "$($package.name)-$PID"
+    try {
+        Invoke-WebRequest -Uri $package.url -OutFile $download -UseBasicParsing
+        if ((Get-FileHash $download -Algorithm SHA256).Hash -ne $package.sha256) {
+            [Console]::Error.WriteLine("The $($package.folder) download does not match its pinned checksum, so nothing was installed from it")
+            exit 1
+        }
+        Expand-Archive -LiteralPath $download -DestinationPath $unpack -Force
+        New-Item -ItemType Directory -Force $themeDir | Out-Null
+        foreach ($file in Get-ChildItem $unpack -File) {
+            $dest = Join-Path $themeDir $file.Name
+            $status = if (-not (Test-Path $dest)) { 'added    ' } elseif ((Get-FileHash $dest).Hash -eq (Get-FileHash $file.FullName).Hash) { 'unchanged' } else { 'changed  ' }
+            if ($status -ne 'unchanged') { Copy-Item $file.FullName $dest -Force }
+            Write-Output "  $status  themes\$($package.folder)  $($file.Name)"
+        }
+    } finally {
+        Remove-Item $download, $unpack -Recurse -Force -ErrorAction SilentlyContinue
     }
-    Expand-Archive -LiteralPath $download -DestinationPath $unpack -Force
-    New-Item -ItemType Directory -Force $themeDir | Out-Null
-    foreach ($file in Get-ChildItem $unpack -File) {
-        $dest = Join-Path $themeDir $file.Name
-        $status = if (-not (Test-Path $dest)) { 'added    ' } elseif ((Get-FileHash $dest).Hash -eq (Get-FileHash $file.FullName).Hash) { 'unchanged' } else { 'changed  ' }
-        if ($status -ne 'unchanged') { Copy-Item $file.FullName $dest -Force }
-        Write-Output "  $status  themes\$($package.folder)  $($file.Name)"
-    }
-} finally {
-    Remove-Item $download, $unpack -Recurse -Force -ErrorAction SilentlyContinue
 }
 
+# the chosen look: the theme that carries it and its dark or light half
 $choice = (Get-Content (Join-Path $shared 'themes.json') -Raw | ConvertFrom-Json).$name
 $appearance = Get-Content (Join-Path $shared 'appearance.json') -Raw | ConvertFrom-Json -AsHashtable
-$appearance['theme'] = $choice.base
+$appearance['cssTheme'] = $choice.cssTheme
+$appearance['theme'] = $choice.theme
 Merge-Json (Join-Path $dot 'appearance.json') $appearance 'appearance.json'
-Merge-Json (Join-Path $dot 'plugins\obsidian-style-settings\data.json') @{ 'zacess-theme@@zacess-contrast' = $choice.contrast } 'style settings'
 
 # this machine's vault list: the vault is the one marked open, so Obsidian starts in it
 $list = Join-Path $env:APPDATA 'obsidian\obsidian.json'
