@@ -1,7 +1,7 @@
 {
   "name": "zacess-themes",
-  "version": "0.10.0",
-  "source": "https://github.com/zacesshq/themes/blob/v0.10.0/editors/zed/themes/zacess.json",
+  "version": "0.11.0",
+  "source": "https://github.com/zacesshq/themes/blob/v0.11.0/editors/zed/themes/zacess.json",
   "file": "zacess.json",
   "themes": [
     "Zacess Deep Contrast Dark",

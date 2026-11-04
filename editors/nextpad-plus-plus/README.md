@@ -17,7 +17,7 @@ Every other override stays, the text size included.
 
 ## The themes
 
-[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/themes/`](shared/themes/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 0.10.0 and the `stylers.model.xml` that ships inside Nextpad++, which lists every language and token style the app knows. Each style takes a palette colour by what its name says it is: a comment, a string, a number, a keyword, a type, a function, an operator, a tag and so on. Bold and italic follow the palette (keywords and control flow bold, comments and parameters italic). Every style sits on the theme's own background. A newer Nextpad++ with more languages is covered by running the build again.
+[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/themes/`](shared/themes/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 0.11.0 and the `stylers.model.xml` that ships inside Nextpad++, which lists every language and token style the app knows. Each style takes a palette colour by what its name says it is: a comment, a string, a number, a keyword, a type, a function, an operator, a tag and so on. Bold and italic follow the palette (keywords and control flow bold, comments and parameters italic). Every style sits on the theme's own background. A newer Nextpad++ with more languages is covered by running the build again.
 
 The same files work in Notepad++ on Windows, which reads the same format, so a Notepad++ setup can take them from `shared/themes/` as they are.
 

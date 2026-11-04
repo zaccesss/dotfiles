@@ -8,6 +8,16 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+## [2.9.0] - 2026-11-04
+
+### Changed
+
+- Every theme pin moves to Zacess Themes 0.11.0: the JetBrains, Arduino IDE, Zed and Obsidian packages with their new digests, the VS Code extension list, zacess.nvim, the Nextpad++ palette digest and the terminal palette version. The Obsidian themes now pass the community directory's lint; nothing else in the themes changed since 0.10.0.
+
+### Fixed
+
+- The Windows bootstrap's apps stage reads an `auto <dark> <light>` state line as the theme of the pair Windows is showing now, the way `zt` does. It passed the word `auto` to every apply script, which each refused as an unknown theme, so a machine on `zt auto` had its apps skipped on every run.
+
 ## [2.8.0] - 2026-11-04
 
 ### Fixed

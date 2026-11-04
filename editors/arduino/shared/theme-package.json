@@ -1,8 +1,8 @@
 {
   "name": "zacess-themes",
-  "version": "0.10.0",
-  "url": "https://github.com/zacesshq/themes/releases/download/v0.10.0/zacess-themes-0.10.0.vsix",
-  "sha256": "064c593910c9ff23cef0f93ab8d475eb0f8ce5fc864ef432f92bcaf6fe79848f",
+  "version": "0.11.0",
+  "url": "https://github.com/zacesshq/themes/releases/download/v0.11.0/zacess-themes-0.11.0.vsix",
+  "sha256": "b1e712428583d470bd7a182e14e70b1a3978e5bbcf2b197def3ea4a45e825894",
   "themes": [
     "Zacess Deep Contrast Dark",
     "Zacess Deep Contrast Light",

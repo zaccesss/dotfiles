@@ -72,11 +72,18 @@ function Install-AppSettings {
 
     # pwsh runs the scripts, since several need PowerShell 7 and the bootstrap may run in 5.1
     $pwsh = (Get-Command pwsh -ErrorAction SilentlyContinue).Source
-    # the theme zt last applied, so the bootstrap never drags an app back to the default; the state
-    # file's first word is the theme key and every apply script accepts that key. the special-folder
-    # API rather than the environment variable, which is not set when the plan is checked elsewhere
+    # the theme zt last applied, so the bootstrap never drags an app back to the default. The state
+    # file holds either a theme key (every apply script accepts one) or "auto <dark> <light>", where
+    # the apply scripts need the one of the pair Windows is showing now (zt resolves it the same way).
+    # The special-folder API rather than the environment variable, which is not set when the plan
+    # is checked elsewhere
     $stateFile = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'zacess\theme'
-    $theme = if (Test-Path $stateFile) { ((([IO.File]::ReadAllText($stateFile)).Trim() -split '\s+')[0]) } else { $null }
+    $words = if (Test-Path $stateFile) { @((([IO.File]::ReadAllText($stateFile)).Trim() -split '\s+')) } else { @() }
+    $theme = $words[0]
+    if ($theme -eq 'auto') {
+        $light = Get-ItemPropertyValue 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'AppsUseLightTheme' -ErrorAction SilentlyContinue
+        $theme = if ($light -eq 1) { if ($words.Count -gt 2) { $words[2] } else { 'deep-light' } } else { if ($words.Count -gt 1) { $words[1] } else { 'deep-dark' } }
+    }
     if (-not $theme) { $theme = 'deep-dark' }
     foreach ($app in Get-AppScripts) {
         $script = Join-Path $Repo $app.Script
