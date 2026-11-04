@@ -1,29 +1,29 @@
 {
-  "version": "0.11.0",
+  "version": "0.12.0",
   "themes": [
     {
       "name": "zacess-obsidian",
       "folder": "Zacess",
-      "url": "https://github.com/zacesshq/themes/releases/download/v0.11.0/zacess-obsidian-0.11.0.zip",
-      "sha256": "3bd4f3cab20b537eb50d8b306c88c13e413cc4cd467e4bfca616e13e9d2050e1"
+      "url": "https://github.com/zacesshq/themes/releases/download/v0.12.0/zacess-obsidian-0.12.0.zip",
+      "sha256": "2f22622f7197deb7ca965d2b97e882dddffed5ecbfd3a3c7b2d032cad0905cea"
     },
     {
       "name": "zacess-cream-obsidian",
       "folder": "Zacess Cream",
-      "url": "https://github.com/zacesshq/themes/releases/download/v0.11.0/zacess-cream-obsidian-0.11.0.zip",
-      "sha256": "f54e4a906c7fdeb32e62581454d1e3d70a2ffcb2181ba544722f807d77affa06"
+      "url": "https://github.com/zacesshq/themes/releases/download/v0.12.0/zacess-cream-obsidian-0.12.0.zip",
+      "sha256": "a80a8621271eb7d00bae45390ce9482280abb8aa35954e04e72960ac4c9e70e6"
     },
     {
       "name": "zacess-high-contrast-obsidian",
       "folder": "Zacess High Contrast",
-      "url": "https://github.com/zacesshq/themes/releases/download/v0.11.0/zacess-high-contrast-obsidian-0.11.0.zip",
-      "sha256": "ae2df7f01fb1e344233b7e2fc9a4a813fef04468c4d0dfdc0ffb3367a346c50d"
+      "url": "https://github.com/zacesshq/themes/releases/download/v0.12.0/zacess-high-contrast-obsidian-0.12.0.zip",
+      "sha256": "575026fb8886258c6fee5e6a7662536642899b57e8114f4b5e98e64dbf7aa037"
     },
     {
       "name": "zacess-deep-contrast-obsidian",
       "folder": "Zacess Deep Contrast",
-      "url": "https://github.com/zacesshq/themes/releases/download/v0.11.0/zacess-deep-contrast-obsidian-0.11.0.zip",
-      "sha256": "26af4611f539a4c7050a4b24f0a667fdaab5d428a48563e83e637d0ca44f5063"
+      "url": "https://github.com/zacesshq/themes/releases/download/v0.12.0/zacess-deep-contrast-obsidian-0.12.0.zip",
+      "sha256": "803e5ce632c0a1fbabe8ecd53715d91b481c7df117bf18322be4392e65a669d1"
     }
   ]
 }

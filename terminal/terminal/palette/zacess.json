@@ -1,7 +1,7 @@
 {
   "source": {
     "repository": "zacesshq/themes",
-    "version": "0.11.0",
+    "version": "0.12.0",
     "file": "palette/zacess.json",
     "note": "copied by scripts/sync-palette.py: the terminal colours and the interface tokens the generated files use"
   },

@@ -8,6 +8,12 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+## [2.10.0] - 2026-11-04
+
+### Changed
+
+- Every theme pin moves to Zacess Themes 0.12.0 (the btop process list rows; nothing pinned here changed): the JetBrains, Arduino IDE, Zed and Obsidian packages with their new digests, the VS Code extension list, zacess.nvim, the Nextpad++ palette digest and the terminal palette version.
+
 ## [2.9.1] - 2026-11-04
 
 ### Fixed
