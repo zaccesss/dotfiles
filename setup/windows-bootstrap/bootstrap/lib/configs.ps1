@@ -74,9 +74,9 @@ function Install-ConfigRepos {
     # config. zt links the theme it sources once the first theme is applied
     Set-FileLink -Source (Join-Path $dotfiles 'terminal\tmux\windows\tmux.conf') -Target (Join-Path $HOME '.tmux.conf')
 
-    # the GNU nano inside Git for Windows reads ~/.nanorc from Git Bash, where ~ is the profile
-    # folder. zt links the theme file the nanorc includes once the first theme is applied
-    Set-FileLink -Source (Join-Path $dotfiles 'editors\nano\nanorc') -Target (Join-Path $HOME '.nanorc')
+    # nano's rc file (~\.nanorc, read by the GNU nano inside Git for Windows) is not linked: zt
+    # writes it per machine, with the theme's colours and Git's syntax folder, the first time a
+    # theme is set
 
     # Windows Terminal loads extra colour schemes from a fragment folder, so the eight Zacess schemes
     # arrive without touching its own settings file; only the default scheme is set there

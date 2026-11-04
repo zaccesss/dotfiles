@@ -321,13 +321,12 @@ mkdir -p "$VERIFY_DIR"
     PATH="$VERIFY_DIR" verify_devtools >/dev/null
     HOME="$WORK_DIR/home" PATH="$VERIFY_DIR" verify_git_integration >/dev/null
 
-    # the configs extra links each config of the dotfiles; nano's goes with the rest, since GNU
-    # nano is packaged on every supported Linux
+    # nano's rc file is written by zt per machine, so the configs extra never links it
     # shellcheck source=bootstrap/lib/optional.sh
     source "$REPO_ROOT/bootstrap/lib/optional.sh"
-    printf '%s\n' "${CONFIG_LINKS[@]}" | grep -q "^editors/nano|nanorc|$HOME/.config/nano/nanorc\$" \
-        || fail "the configs extra does not link nano's config"
-    pass "the configs extra links nano's config into ~/.config/nano"
+    printf '%s\n' "${CONFIG_LINKS[@]}" | grep -q "^editors/nano|" \
+        && fail "the configs extra links nano's config, which zt writes instead"
+    pass "the configs extra leaves nano's rc file to zt"
 
     # a check that passes with a command missing would make the run above meaningless
     rm "$VERIFY_DIR/eza"

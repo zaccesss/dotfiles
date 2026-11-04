@@ -423,10 +423,16 @@ function Set-Btop($Fixed, $Dark, $Light, $Now) {
     Write-Result 'btop' "$($theme.Name)$note$open"
 }
 
-# nano, the GNU nano inside Git for Windows: a generated colour file per Zacess theme in
-# terminal\nano\themes, linked to the one path editors\nano\nanorc includes. Git Bash reads
-# ~\.config\nano as ~/.config/nano. nano reads its files only at start, so there is nothing to reload
-$NanoLink = Join-Path $HOME '.config\nano\zacess-theme.nanorc'
+# nano, the GNU nano inside Git for Windows: its rc file is generated rather than linked. nano
+# takes set commands only in its main rc file and never in an included one. an include whose glob
+# matches nothing is an error that stops the start. so the file holds the shared base from
+# editors\nano\nanorc, the colours of the chosen theme from terminal\nano\themes and one include
+# line for Git's syntax folder when it is there. Git Bash reads ~\.nanorc as ~/.nanorc. nano reads
+# its files only at start, so there is nothing to reload
+$NanoRc = Join-Path $HOME '.nanorc'
+$NanoMarker = '## zacess theme: '
+# the link the first design made, removed when the file is first written so nothing stale remains
+$NanoOldLink = Join-Path $HOME '.config\nano\zacess-theme.nanorc'
 
 function Get-NanoExe {
     $command = Get-Command nano -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
@@ -439,33 +445,66 @@ function Get-NanoExe {
     return $null
 }
 
+function Get-NanoSyntaxFolder {
+    # Git for Windows keeps nano's syntax definitions under usr\share\nano beside usr\bin, a folder
+    # its nano sees as /usr/share/nano
+    $exe = Get-NanoExe
+    if (-not $exe) { return $null }
+    $folder = Join-Path (Split-Path (Split-Path (Split-Path $exe))) 'usr\share\nano'
+    if (Get-ChildItem -LiteralPath $folder -Filter '*.nanorc' -ErrorAction SilentlyContinue | Select-Object -First 1) { return $folder }
+    return $null
+}
+
+function Get-NanoRcText($Theme) {
+    $base = Join-Path $RepoRoot 'editors\nano\nanorc'
+    $colours = Join-Path $RepoRoot "terminal\nano\themes\zacess-$($Theme.Id).nanorc"
+    if (-not (Test-Path -LiteralPath $base) -or -not (Test-Path -LiteralPath $colours)) { return $null }
+    # LF throughout, whatever the checkout's line endings: nano reads either and one form keeps the
+    # doctor's comparison exact
+    $read = { param($path) ([IO.File]::ReadAllText($path) -replace "`r`n", "`n").TrimEnd("`n") }
+    $set = @((& $read $colours) -split "`n" | Where-Object { $_ -and -not $_.StartsWith('#') })
+    $lines = @("$NanoMarker$($Theme.Id)",
+               '## written by zt from editors/nano/nanorc and terminal/nano/themes in the dotfiles.',
+               '## edit those and run zt again rather than this file', '',
+               (& $read $base), '',
+               "## the colours of $($Theme.Name), set by zt. nano accepts these only in its main rc file",
+               ($set -join "`n"), '')
+    if (Get-NanoSyntaxFolder) {
+        $lines += @("## the syntax definitions this machine's nano ships. they use the terminal's own colour",
+                    '## names, so they follow the palette the terminal is on', 'include "/usr/share/nano/*.nanorc"', '')
+    } else {
+        $lines += @("## this machine's nano ships no syntax definitions, so nothing is included", '')
+    }
+    return ($lines -join "`n")
+}
+
 function Set-Nano($Fixed, $Dark, $Light, $Now) {
     $theme = if ($Fixed) { $Fixed } else { $Now }
-    $source = Join-Path $RepoRoot "terminal\nano\themes\zacess-$($theme.Id).nanorc"
-    if (-not (Test-Path $source)) { return Write-Result 'nano' 'no theme files in terminal\nano, skipped' $false }
-    New-Item -ItemType Directory -Force (Split-Path $NanoLink) | Out-Null
-    if (Test-Path -LiteralPath $NanoLink) { Remove-Item -LiteralPath $NanoLink -Force }
-    try {
-        New-Item -ItemType SymbolicLink -Path $NanoLink -Target $source -ErrorAction Stop | Out-Null
-    } catch {
-        # a file link needs Developer Mode or an elevated shell; a copy still works until the next switch
-        Copy-Item -LiteralPath $source $NanoLink
-    }
+    $text = Get-NanoRcText $theme
+    if ($null -eq $text) { return Write-Result 'nano' 'no theme files in terminal\nano, skipped' $false }
+    $item = Get-Item -LiteralPath $NanoRc -Force -ErrorAction SilentlyContinue
+    if ($item -and $item.LinkType) { Remove-Item -LiteralPath $NanoRc -Force }
+    if (Test-Path -LiteralPath $NanoOldLink) { Remove-Item -LiteralPath $NanoOldLink -Force }
+    # UTF-8 without a byte order mark, which nano would read as text
+    [IO.File]::WriteAllText($NanoRc, $text, [Text.UTF8Encoding]::new($false))
     $note = if ($Fixed) { '' } else { ' (nano cannot follow the system, so this matches it now)' }
     if (-not (Get-NanoExe)) { return Write-Result 'nano' "$($theme.Name)$note, nano not installed, saved for later" $false }
     Write-Result 'nano' "$($theme.Name)$note, at its next start"
 }
 
+function Get-NanoRcTheme {
+    # the theme id named by the marker on the first line of the rc file zt wrote; nothing without one
+    if (-not (Test-Path -LiteralPath $NanoRc -PathType Leaf)) { return $null }
+    $first = [string](Get-Content -LiteralPath $NanoRc -TotalCount 1)
+    if ($first.StartsWith($NanoMarker)) { return $first.Substring($NanoMarker.Length).Trim() }
+    return $null
+}
+
 function Get-CurrentNano {
-    $item = Get-Item -LiteralPath $NanoLink -Force -ErrorAction SilentlyContinue
-    if (-not $item) { if (Get-NanoExe) { return 'no theme file linked yet (run zt <theme>)' } else { return $null } }
-    # a copy made without Developer Mode has no target, so its first line names the theme instead
-    $name = if ($item.LinkType -eq 'SymbolicLink') { [IO.Path]::GetFileNameWithoutExtension(@($item.Target)[0]) }
-            else { ((Get-Content -LiteralPath $NanoLink -TotalCount 1) -replace '^#\s*', '') }
-    if ($name -like 'zacess-*') { return "fixed: $(Get-ThemeName ($name -replace '^zacess-', ''))" }
-    $theme = $Themes | Where-Object { $_.Name -eq $name } | Select-Object -First 1
-    if ($theme) { return "fixed: $($theme.Name)" }
-    return 'fixed: a file that is not a Zacess theme'
+    if (-not (Test-Path -LiteralPath $NanoRc)) { if (Get-NanoExe) { return 'no rc file written yet (run zt <theme>)' } else { return $null } }
+    $id = Get-NanoRcTheme
+    if (-not $id) { return 'not a Zacess theme: a nanorc zt did not write (run zt <theme>)' }
+    return "fixed: $(Get-ThemeName $id)"
 }
 
 # the apps below have an apply script of their own beside their settings, which finds the app,
@@ -1465,11 +1504,32 @@ function Invoke-Doctor {
         Test-Files 'Zed' $pairs 'settings match the repo'
     }
     $nvim = Join-Path $env:LOCALAPPDATA 'nvim'
-    if (Test-Path $nvim) { Test-Files 'Neovim' @(, @($nvim, (Join-Path $RepoRoot 'editors\neovim\windows\nvim'))) 'the config files match the repo' }
-    if (Test-Path -LiteralPath $NanoLink) {
+    if (Test-Path $nvim) {
+        Test-Files 'Neovim' @(, @($nvim, (Join-Path $RepoRoot 'editors\neovim\windows\nvim'))) 'the config files match the repo'
+        # the installed zacess.nvim against the commit lazy-lock.json pins, so a plugin that was never
+        # restored after a pin moved is seen. lazy.nvim keeps its clones under Neovim's data folder
+        $lock = Join-Path $RepoRoot 'editors\neovim\windows\nvim\lazy-lock.json'
+        $plugin = Join-Path $env:LOCALAPPDATA 'nvim-data\lazy\zacess.nvim'
+        if ((Test-Path -LiteralPath $lock) -and (Test-Path -LiteralPath $plugin -PathType Container) -and (Get-Command git -CommandType Application -ErrorAction SilentlyContinue)) {
+            $entry = (Get-Content -LiteralPath $lock -Raw | ConvertFrom-Json).'zacess.nvim'
+            $locked = if ($entry -and $entry.commit) { [string]$entry.commit } else { '' }
+            # stderr is folded into the output so a plugin folder that is not a clone cannot stop the doctor
+            $head = [string](git -C $plugin rev-parse HEAD 2>&1 | Select-Object -First 1)
+            if ($LASTEXITCODE -ne 0) { $head = '' }
+            if ($locked -and $head) {
+                Write-Doctor 'zacess.nvim' $(if ($head -eq $locked) { 'ok' } else { 'drift' }) "installed $($head.Substring(0, 7)), lazy-lock.json pins $($locked.Substring(0, 7))"
+            }
+        }
+    }
+    if (Test-Path -LiteralPath $NanoRc -PathType Leaf) {
         $pins = Read-Pins
         $shown = if ($pins.Contains('nano')) { (ConvertFrom-StateText $pins.nano).Now } else { $pair.Now }
-        Test-Files 'nano' @(, @($NanoLink, (Join-Path $RepoRoot "terminal\nano\themes\zacess-$($shown.Id).nanorc"))) 'the linked theme file matches the repo'
+        $wanted = Get-NanoRcText $shown
+        if ($null -ne $wanted) {
+            $have = [IO.File]::ReadAllText($NanoRc) -replace "`r`n", "`n"
+            if ($have -ne $wanted) { Write-Doctor 'nano' 'drift' "$($NanoRc.Replace($env:USERPROFILE, '~')) differs from what zt would write now" }
+            else { Write-Doctor 'nano' 'ok' 'the rc file matches what zt would write now' }
+        }
     }
     $fragment = Join-Path $env:LOCALAPPDATA 'Microsoft\Windows Terminal\Fragments\Zacess\zacess.json'
     if (Test-Path $fragment) { Test-Files 'Windows Terminal' @(, @($fragment, (Join-Path $RepoRoot 'terminal\terminal\windows\windows-terminal\zacess.json'))) 'the scheme fragment matches the repo' }

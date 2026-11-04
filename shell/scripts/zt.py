@@ -20,7 +20,7 @@ Each tool is edited in place and only for its theme setting; a tool that is not 
 Tools that keep settings in memory (JetBrains IDEs, Eclipse, STM32CubeIDE, KiCad, Processing, Nextpad++,
 Vivado, Arduino IDE, Thonny, MATLAB, LTspice, Zotero and Obsidian) are only changed while they are closed,
 since they write their settings back on exit. tmux takes its colours from a theme file linked into the
-state folder, nano from one linked into ~/.config/nano and the system text highlight (macOS, KDE Plasma or GNOME) takes the theme's selection
+state folder, nano reads an rc file zt writes into ~/.config/nano and the system text highlight (macOS, KDE Plasma or GNOME) takes the theme's selection
 colour, read from the generated terminal theme. Pins live in the pins file beside the state file and
 every switch, undo and sync runs a pinned app with its pin. Windows has its own version in
 windows/scripts/zt.ps1.
@@ -910,10 +910,17 @@ def btop(fixed, dark, light, now):
     report("btop", f"{theme.name}{note}, " + ("applied to the open btop" if signalled else "at its next start"))
 
 
-# nano: a generated colour file per Zacess theme in terminal/nano/themes, linked to the one path
-# editors/nano/nanorc includes. nano reads its files only at start, so there is nothing to reload.
-# Apple's /usr/bin/nano is Pico and reads no nanorc, so only a GNU nano counts as installed
-NANO_LINK = XDG_CONFIG / "nano" / "zacess-theme.nanorc"
+# nano: its rc file is generated rather than linked. nano takes set commands only in its main rc
+# file and never in an included one. an include whose glob matches nothing is an error that stops
+# the start. so the file holds the shared base from editors/nano/nanorc, the colours of the chosen
+# theme from terminal/nano/themes and one include line for the syntax folder this machine has.
+# nano reads its files only at start, so there is nothing to reload. Apple's /usr/bin/nano is Pico
+# and reads no nanorc, so only a GNU nano counts as installed
+NANO_RC = XDG_CONFIG / "nano" / "nanorc"
+NANO_MARKER = "## zacess theme: "
+# the link the first design made, removed when the file is first written so nothing stale remains
+NANO_OLD_LINK = XDG_CONFIG / "nano" / "zacess-theme.nanorc"
+NANO_SYNTAX_FOLDERS = [Path("/usr/share/nano"), Path("/opt/homebrew/share/nano"), Path("/usr/local/share/nano")]
 
 
 def gnu_nano():
@@ -928,26 +935,70 @@ def gnu_nano():
         return False
 
 
+def nano_syntax_folder():
+    """The folder of syntax definitions the nano on this machine ships; None when it has none."""
+    found = shutil.which("nano")
+    # the nano on PATH first, through the unresolved path so a Homebrew upgrade keeps the same folder
+    folders = ([Path(found).parent.parent / "share" / "nano"] if found else []) + NANO_SYNTAX_FOLDERS
+    for folder in folders:
+        if any(folder.glob("*.nanorc")):
+            return folder
+    return None
+
+
+def nano_rc_text(theme):
+    """The rc file zt writes for a theme on this machine; None when a source file is missing."""
+    base = REPO_ROOT / "editors" / "nano" / "nanorc"
+    colours = REPO_ROOT / "terminal" / "nano" / "themes" / f"zacess-{theme.id}.nanorc"
+    if not base.exists() or not colours.exists():
+        return None
+    syntax = nano_syntax_folder()
+    lines = [f"{NANO_MARKER}{theme.id}",
+             "## written by zt from editors/nano/nanorc and terminal/nano/themes in the dotfiles.",
+             "## edit those and run zt again rather than this file", "",
+             base.read_text().rstrip("\n"), "",
+             f"## the colours of {theme.name}, set by zt. nano accepts these only in its main rc file",
+             "\n".join(line for line in colours.read_text().splitlines() if not line.startswith("#")).strip(), ""]
+    if syntax:
+        lines += ["## the syntax definitions this machine's nano ships. they use the terminal's own colour",
+                  "## names, so they follow the palette the terminal is on", f'include "{syntax}/*.nanorc"', ""]
+    else:
+        lines += ["## this machine's nano ships no syntax definitions, so nothing is included", ""]
+    return "\n".join(lines)
+
+
 def nano(fixed, dark, light, now):
     theme = fixed or now
-    source = REPO_ROOT / "terminal" / "nano" / "themes" / f"zacess-{theme.id}.nanorc"
-    if not source.exists():
+    text = nano_rc_text(theme)
+    if text is None:
         return report("nano", "no theme files in terminal/nano, skipped", False)
-    NANO_LINK.parent.mkdir(parents=True, exist_ok=True)
-    if NANO_LINK.is_symlink() or NANO_LINK.exists():
-        NANO_LINK.unlink()
-    NANO_LINK.symlink_to(source)
+    NANO_RC.parent.mkdir(parents=True, exist_ok=True)
+    if NANO_RC.is_symlink():
+        NANO_RC.unlink()
+    if NANO_OLD_LINK.is_symlink():
+        NANO_OLD_LINK.unlink()
+    NANO_RC.write_text(text)
     note = "" if fixed else " (nano cannot follow the system, so this matches it now)"
     if not gnu_nano():
         return report("nano", f"{theme.name}{note}, GNU nano not installed, saved for later", False)
     report("nano", f"{theme.name}{note}, at its next start")
 
 
+def nano_rc_theme():
+    """The theme id named by the marker in the rc file zt wrote; None without one."""
+    if not NANO_RC.is_file():
+        return None
+    m = re.match(rf"^{re.escape(NANO_MARKER)}([\w-]+)$", NANO_RC.read_text().split("\n", 1)[0])
+    return m.group(1) if m else None
+
+
 def current_nano():
-    if not NANO_LINK.is_symlink():
-        return "no theme file linked yet (run zt <theme>)" if gnu_nano() else None
-    m = re.search(r"zacess-([\w-]+)\.nanorc$", os.readlink(NANO_LINK))
-    return f"fixed: {name_of(m.group(1)) if m else 'a file that is not a Zacess theme'}"
+    if not NANO_RC.exists():
+        return "no rc file written yet (run zt <theme>)" if gnu_nano() else None
+    theme_id = nano_rc_theme()
+    if theme_id is None:
+        return "not a Zacess theme: a nanorc zt did not write (run zt <theme>)"
+    return f"fixed: {name_of(theme_id)}"
 
 
 def current_tmux():
@@ -2344,13 +2395,17 @@ def doctor_terminal_files(d):
 
 def doctor_nano(d):
     d.setting("nano", current_nano())
-    if not NANO_LINK.is_symlink():
+    if not NANO_RC.is_file():
         return
     shown = d.now
     if "nano" in d.pins:
         shown = pair_for(d.pins["nano"])[3]
-    theme_file = REPO_ROOT / "terminal" / "nano" / "themes" / f"zacess-{shown.id}.nanorc"
-    d.files("nano", [(NANO_LINK, theme_file)], "the linked theme file matches the repo")
+    wanted = nano_rc_text(shown)
+    if wanted is None:
+        return
+    if NANO_RC.read_text() != wanted:
+        return d.line("nano", "drift", f"{str(NANO_RC).replace(str(HOME), '~')} differs from what zt would write now")
+    d.line("nano", "ok", "the rc file matches what zt would write now")
 
 
 def doctor_tmux(d):

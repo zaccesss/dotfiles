@@ -34,9 +34,10 @@ copied once if missing, since they hold your own identity. It then installs the 
 and runs the [terminal](../../../terminal/terminal) folder's installer for the High Contrast palette. Anything already there that is
 not a link is moved to the Bin first. VS Code's global snippets are linked the same way. `~/.vscode/argv.json` is left to VS Code, which
 writes its own crash reporter id into it.
-`~/.config/nano/nanorc` is linked only once Homebrew's GNU nano exists: Apple's `/usr/bin/nano`
-is Pico 5.09, which reads no configuration file at all, so on a fresh Mac the link is made by the
-Brewfile stage straight after nano is installed.
+`~/.config/nano/nanorc` is not linked: GNU nano accepts its colour settings only in its main rc
+file, so `zt` writes that file for this machine (the shared settings, the theme's colours and the
+syntax folder Homebrew's nano ships) the first time a theme is set. Apple's `/usr/bin/nano` is
+Pico 5.09, which reads no configuration file at all; the Brewfile stage installs GNU nano.
 
 ### 4. Brewfile
 

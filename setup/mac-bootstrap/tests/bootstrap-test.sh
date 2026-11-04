@@ -156,19 +156,11 @@ done
 for copy in .gitconfig .ssh/config; do
     [[ -f "$HOME_DIR/$copy" && ! -L "$HOME_DIR/$copy" ]] || fail "$copy was not copied as a starting point"
 done
-# Apple's nano is Pico and reads no nanorc, so without GNU nano the config stays unlinked
-[[ ! -e "$HOME_DIR/.config/nano/nanorc" ]] || fail "nano's config was linked without GNU nano installed"
-assert_contains "GNU nano is not installed yet" "$output"
+# nano's rc file is written by zt per machine, never linked by the bootstrap
+[[ ! -e "$HOME_DIR/.config/nano/nanorc" ]] || fail "nano's config was linked, which zt writes instead"
 pass "a full run completes every stage, links the config folders, copies the personal templates and keeps a hand-written zshrc"
 
-# with GNU nano at the Homebrew prefix the config is linked, by the Brewfile stage on a fresh Mac
-make_stub nano
-output="$(BREW_CHECK_EXIT=1 MAC_BOOTSTRAP_GNU_NANO="$STUBS/nano" run_bootstrap 2>&1)" || true
-[[ -L "$HOME_DIR/.config/nano/nanorc" ]] || fail "nano's config was not linked once GNU nano was installed"
-[[ "$(readlink "$HOME_DIR/.config/nano/nanorc")" == "$HOME_DIR/repos/dotfiles/editors/nano/nanorc" ]] || fail "nanorc does not point at the editors/nano folder"
-pass "nano's config is linked once GNU nano is installed"
-
-output="$(MAC_BOOTSTRAP_GNU_NANO="$STUBS/nano" run_bootstrap 2>&1)"
+output="$(run_bootstrap 2>&1)"
 calls="$(cat "$CALLS")"
 assert_contains "Already linked" "$output"
 assert_contains "already installed" "$output"

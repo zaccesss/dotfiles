@@ -16,7 +16,7 @@ Every interface colour comes from the Zacess palette through [`build-themes.py`]
 | Error bar | The theme's red under whichever of its foreground and background reads better | 4.5:1 |
 | Scrollbar | Muted text, not text itself | 3:1 |
 
-Syntax highlighting uses nano's own definitions, which name the terminal's sixteen colours, so it has the contrast of the terminal palette the Zacess theme set.
+Syntax highlighting uses nano's own definitions, which name the terminal's sixteen colours, so it has the contrast of the terminal palette the Zacess theme set. The colours reach nano through the rc file `zt` writes per machine, since nano takes them only in its main rc file; `zt doctor` reports when that file differs from what `zt` would write.
 
 ## Colour is never the only signal
 

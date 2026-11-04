@@ -61,6 +61,4 @@ install_brewfile() {
     brew bundle check --file="$BREWFILE" --no-upgrade
     log_success "Everything in the Brewfile is installed"
 
-    # the Brewfile has just put GNU nano in place, so the config the configs stage left can be linked now
-    link_nano_config
 }

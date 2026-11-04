@@ -185,9 +185,10 @@ def nano_slots(t):
 
 
 def nano(t):
-    # nano reads one colour file per theme through the include line in editors/nano/nanorc, which
-    # zt points at the current theme. Every option here exists in nano 6.0
-    lines = [f"# {t['name']}", f"# {HEADER}", ""]
+    # a colour fragment, not a file nano reads: nano accepts set commands only in its main rc file,
+    # so zt copies these lines into the rc file it writes per machine. Every option exists in nano 6.0
+    lines = [f"# {t['name']}", f"# {HEADER}",
+             "# a fragment zt copies into nano's own rc file: nano accepts set only there, never in an include", ""]
     for option, attribute, fg, bg, _ in nano_slots(t):
         value = nano_colour(fg)[0] + (f",{nano_colour(bg)[0]}" if bg else "")
         lines.append(f"set {option} {attribute + ',' if attribute else ''}{value}")

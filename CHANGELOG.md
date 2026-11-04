@@ -8,6 +8,13 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+## [2.8.0] - 2026-11-04
+
+### Fixed
+
+- nano's theme reaches it on every machine. GNU nano (8.7 on Windows, 9.3 on macOS) accepts its interface colours (`set titlecolor` and the rest) only in its main rc file and refuses them in an included one, so the eight colour files linked into `~/.config/nano/zacess-theme.nanorc` never loaded. An `include` whose pattern matches nothing is an error that makes nano wait for Enter, which the three syntax-folder includes raised on every machine for the folders it lacks. `zt` now writes nano's rc file itself (`~/.config/nano/nanorc` on macOS, Linux and WSL, `~/.nanorc` on Windows): the shared base from `editors/nano/nanorc`, the chosen theme's colours from its fragment in `terminal/nano/themes` and one `include` line for the syntax folder this machine's nano ships (none when there is no such folder). A marker on the first line names the theme for `zt current`, `zt doctor` reports drift when the file differs from what `zt` would write now and `zt pin nano <theme>` works as before. The bootstraps no longer link a nanorc; the first `zt <theme>` writes it. The Linux bootstrap installs nano, which the Ubuntu container and OrbStack images leave out. Every theme's generated file was started by nano 9.3 on macOS and 8.7 on Ubuntu with no error.
+- `zt doctor` on Windows checks the installed zacess.nvim plugin against the commit `lazy-lock.json` pins, as it already did on macOS and Linux, so a plugin that was never restored after a pin moved is reported.
+
 ## [2.7.0] - 2026-11-04
 
 ### Changed

@@ -23,4 +23,4 @@ Every editor and IDE I use, set up with the same Zacess themes, Geist Mono and o
 | [proteus](proteus) | The Zacess colours for Proteus's schematic templates, PCB layout and graphs, with Proteus's own colours one command away | Windows |
 | [xcode](xcode) | The eight Zacess themes, the recorded editor settings and the key bindings file, installed by one script | macOS |
 | [neovim](neovim) | Pure Lua config with lazy.nvim, LSP through Mason, treesitter, Telescope and completion | macOS, Linux and Windows |
-| [nano](nano) | One nanorc for GNU nano everywhere, VS Code's keys where nano takes them and the eight Zacess themes set by `zt` | macOS (Homebrew's nano), Linux and Windows (Git for Windows) |
+| [nano](nano) | One shared nanorc for GNU nano everywhere, VS Code's keys where nano takes them and the eight Zacess themes; `zt` writes nano's rc file per machine | macOS (Homebrew's nano), Linux and Windows (Git for Windows) |

@@ -10,6 +10,7 @@ readonly CLI_PACKAGES=(
     zsh
     zsh-syntax-highlighting
     neovim
+    nano
     vim
     tmux
     screen
@@ -81,6 +82,7 @@ install_lazygit() {
 readonly CLI_COMMANDS=(
     zsh
     nvim
+    nano
     vim
     tmux
     screen

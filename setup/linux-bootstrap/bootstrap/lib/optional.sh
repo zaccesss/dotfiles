@@ -272,8 +272,8 @@ readonly CONFIG_LINKS=(
     "git/git-hooks|linux|${HOME}/.git-hooks"
     "terminal/cli-tools|lazygit/config.yml|${HOME}/.config/lazygit/config.yml"
     "terminal/cli-tools|ripgrep/ripgreprc|${HOME}/.ripgreprc"
-    # GNU nano is packaged on every supported Linux and WSL; the theme file it includes is linked by zt
-    "editors/nano|nanorc|${HOME}/.config/nano/nanorc"
+    # nano's rc file is not linked: zt writes it per machine, with the theme's colours and the
+    # syntax folder this machine has, the first time a theme is set
 )
 
 # desktop only: VS Code and the terminal run on the host for WSL and container-style machines. The

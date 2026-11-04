@@ -2,6 +2,12 @@
 ## the nano inside Git for Windows. Apple's /usr/bin/nano is Pico, which reads no configuration
 ## file at all, so it never sees this.
 ##
+## this is the shared base, not the file nano reads. zt writes nano's own rc file (~/.config/nano/nanorc
+## on macOS, Linux and WSL, ~/.nanorc on Windows) as a copy of this file followed by the colours of
+## the Zacess theme it last set and one include line for the syntax definitions this machine has.
+## nano accepts set commands only in its main rc file and never in an included one. an include
+## that matches nothing is an error. so the file is generated per machine rather than linked.
+##
 ## every option here exists in nano 6.0 (the oldest nano on a supported machine). nano stops at
 ## start with an error for an option it does not know, so nothing newer goes in.
 
@@ -30,16 +36,3 @@ bind ^Q exit all
 bind ^Z undo main
 bind ^Y redo main
 bind ^F whereis main
-
-## the colours of the Zacess theme zt last set. zt links the theme file here, one of the eight in
-## terminal/nano/themes. an include that matches nothing is skipped, so nano starts without colours
-## on a machine before its first zt rather than with an error
-include "~/.config/nano/zacess-theme.nanorc"
-
-## the syntax definitions nano ships, from wherever this machine keeps them: Linux and Git for
-## Windows, Homebrew on Apple silicon, Homebrew on an Intel Mac. a folder that is not there matches
-## nothing and is skipped. the definitions use the terminal's own colour names, so they follow the
-## Zacess palette the terminal is on
-include "/usr/share/nano/*.nanorc"
-include "/opt/homebrew/share/nano/*.nanorc"
-include "/usr/local/share/nano/*.nanorc"

@@ -31,7 +31,7 @@ ask for a password. It only acts where something is missing.
 | Xcode tools | Installs the command line tools (git, clang, make, the macOS SDK) if missing |
 | Homebrew | Installs Homebrew if missing, plus the GitHub CLI |
 | Dotfiles | Signs in to GitHub, clones the dotfiles and points the shell profile and prompt at them |
-| Configs | Links the tool configs in the dotfiles (tmux, Neovim, Git hooks, VS Code settings, Zed settings, lazygit, ripgrep and fzf) into place, copies starting Git and SSH configs, then gives Terminal.app and iTerm2 the High Contrast palette. nano's config is linked once Homebrew's GNU nano is installed, since Apple's nano is Pico and reads no configuration file |
+| Configs | Links the tool configs in the dotfiles (tmux, Neovim, Git hooks, VS Code settings, Zed settings, lazygit, ripgrep and fzf) into place, copies starting Git and SSH configs, then gives Terminal.app and iTerm2 the High Contrast palette. nano's rc file is not linked: `zt` writes it for this machine the first time a theme is set |
 | Brewfile | Installs everything in the dotfiles' Brewfile without upgrading what is already there |
 | Toolchains | Selects Rust's stable toolchain and checks every everyday tool is on `PATH` |
 | Settings | Applies the macOS settings captured in the [defaults](../defaults) folder, writing only the ones that differ |

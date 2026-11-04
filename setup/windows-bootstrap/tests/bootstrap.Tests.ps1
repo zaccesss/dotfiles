@@ -313,8 +313,8 @@ Describe 'plan mode' {
             $output | Should -Match "Completed stage: $stage"
         }
         $output | Should -Match 'Would clone dotfiles into'
-        # nano's config is read by the GNU nano inside Git for Windows, so it is linked like tmux's
-        $output | Should -Match 'Would link .*\.nanorc to .*editors.nano.nanorc'
+        # nano's rc file is written by zt per machine, never linked by the bootstrap
+        $output | Should -Not -Match 'Would link .*\.nanorc'
         Test-Path $env:WINDOWS_BOOTSTRAP_REPOS_DIR | Should -BeFalse
     }
 
