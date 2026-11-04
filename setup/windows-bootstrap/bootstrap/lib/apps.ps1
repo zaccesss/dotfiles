@@ -78,8 +78,9 @@ function Install-AppSettings {
     # The special-folder API rather than the environment variable, which is not set when the plan
     # is checked elsewhere
     $stateFile = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'zacess\theme'
-    $words = if (Test-Path $stateFile) { @((([IO.File]::ReadAllText($stateFile)).Trim() -split '\s+')) } else { @() }
-    $theme = $words[0]
+    # typed, because an if expression unrolls a one-element array into a string, whose [0] is one character
+    [string[]]$words = if (Test-Path $stateFile) { @((([IO.File]::ReadAllText($stateFile)).Trim() -split '\s+')) } else { @() }
+    $theme = if ($words.Count) { $words[0] } else { $null }
     if ($theme -eq 'auto') {
         $light = Get-ItemPropertyValue 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'AppsUseLightTheme' -ErrorAction SilentlyContinue
         $theme = if ($light -eq 1) { if ($words.Count -gt 2) { $words[2] } else { 'deep-light' } } else { if ($words.Count -gt 1) { $words[1] } else { 'deep-dark' } }

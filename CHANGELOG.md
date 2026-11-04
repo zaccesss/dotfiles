@@ -8,6 +8,12 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+## [2.9.1] - 2026-11-04
+
+### Fixed
+
+- The Windows bootstrap's apps stage passes the theme zt last set to every apply script again. Reading the state file through an `if` expression unrolled a one-word file into a string, so the stage sent the first character (`d`) as the theme and every themed app was skipped with an unknown theme warning.
+
 ## [2.9.0] - 2026-11-04
 
 ### Changed
