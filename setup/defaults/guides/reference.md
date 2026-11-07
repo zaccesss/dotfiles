@@ -118,6 +118,12 @@ not guessed or copied from a popular dotfiles script. The tables below explain w
 | `IsAnalog` | `false` | The menu bar clock is digital, not an analogue face. |
 | `FlashDateSeparators` | `false` | The colon between hours and minutes does not flash once per second. |
 
+## Terminal
+
+| Setting | Real value | What it does |
+| --- | --- | --- |
+| `NSQuitAlwaysKeepsWindows` | `false` | Terminal opens a fresh window on launch instead of restoring the last session and its old output. |
+
 ## Why `defaults write`, not a `.plist` file
 
 macOS system preferences have no single import format. `defaults write` is the command macOS's own

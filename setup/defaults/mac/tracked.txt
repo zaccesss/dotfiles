@@ -72,6 +72,9 @@ com.apple.menuextra.clock ShowAMPM
 com.apple.menuextra.clock IsAnalog
 com.apple.menuextra.clock FlashDateSeparators
 
+# Terminal: open a fresh window on launch instead of restoring the last session
+com.apple.Terminal NSQuitAlwaysKeepsWindows
+
 # accessibility. macOS may refuse writes here from a script; the script then lists each one so
 # it can be set in System Settings, Accessibility
 com.apple.universalaccess increaseContrast

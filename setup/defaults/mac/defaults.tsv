@@ -30,6 +30,7 @@ com.apple.menuextra.clock	ShowDayOfWeek	boolean	1
 com.apple.menuextra.clock	ShowAMPM	boolean	1
 com.apple.menuextra.clock	IsAnalog	boolean	0
 com.apple.menuextra.clock	FlashDateSeparators	boolean	0
+com.apple.Terminal	NSQuitAlwaysKeepsWindows	boolean	0
 com.apple.universalaccess	increaseContrast	boolean	0
 com.apple.universalaccess	reduceTransparency	boolean	0
 com.apple.universalaccess	mouseDriverCursorSize	float	2
