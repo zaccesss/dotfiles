@@ -130,6 +130,11 @@ right_format = "$time"
 # folders that slow, so ordinary folders still draw the prompt at once
 scan_timeout = 500
 
+# git and node answer the version and status checks slower than the 500 ms default while the
+# machine is busy (long builds, many terminals), which prints a timeout warning above every
+# prompt; 2 s only waits that long when they are slow, so a normal prompt still draws at once
+command_timeout = 2000
+
 # disable cloud modules that are not needed so startup stays fast
 [aws]
 disabled = true

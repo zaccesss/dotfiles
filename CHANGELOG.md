@@ -8,6 +8,11 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+### Fixed
+
+- Starship no longer prints `Executing command ... timed out` on a slow first prompt: `command_timeout` is 2000 ms on macOS, Linux and Windows, up from the 500 ms default.
+- Terminal.app opens a fresh window on launch instead of restoring the last session: the Mac defaults track `com.apple.Terminal NSQuitAlwaysKeepsWindows` set to false.
+
 ## [2.10.0] - 2026-11-04
 
 ### Changed
