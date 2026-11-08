@@ -78,7 +78,7 @@ function Install-ConfigRepos {
     # writes it per machine, with the theme's colours and Git's syntax folder, the first time a
     # theme is set
 
-    # Windows Terminal loads extra colour schemes from a fragment folder, so the eight Zacess schemes
+    # Windows Terminal loads extra colour schemes from a fragment folder, so the ten Zacess schemes
     # arrive without touching its own settings file; only the default scheme is set there
     $fragments = Join-Path $localAppData 'Microsoft\Windows Terminal\Fragments'
     # the earlier High Contrast fragment points at a file the terminal folder no longer has, which

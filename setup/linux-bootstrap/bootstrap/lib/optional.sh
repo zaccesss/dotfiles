@@ -293,6 +293,8 @@ readonly DESKTOP_CONFIG_LINKS=(
     "terminal/terminal|linux/ptyxis/zacess-light.palette|${HOME}/.local/share/org.gnome.Ptyxis/palettes/zacess-light.palette"
     "terminal/terminal|linux/ptyxis/zacess-cream.palette|${HOME}/.local/share/org.gnome.Ptyxis/palettes/zacess-cream.palette"
     "terminal/terminal|linux/ptyxis/zacess-yellow-on-black.palette|${HOME}/.local/share/org.gnome.Ptyxis/palettes/zacess-yellow-on-black.palette"
+    "terminal/terminal|linux/ptyxis/zacess-warm-dark.palette|${HOME}/.local/share/org.gnome.Ptyxis/palettes/zacess-warm-dark.palette"
+    "terminal/terminal|linux/ptyxis/zacess-warm-light.palette|${HOME}/.local/share/org.gnome.Ptyxis/palettes/zacess-warm-light.palette"
 )
 
 # these hold each person's own identity and hosts, so they are copied once as a starting point

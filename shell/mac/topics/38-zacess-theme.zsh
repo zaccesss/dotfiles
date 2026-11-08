@@ -1,6 +1,6 @@
 # =============================================================================
 # Zacess theme switching
-# zt switches every editor, terminal and app with a Zacess theme to one of the eight at once:
+# zt switches every editor, terminal and app with a Zacess theme to one of the ten at once:
 # VS Code, Zed, the JetBrains IDEs, Neovim, Eclipse, STM32CubeIDE, KiCad, Processing, Nextpad++,
 # Arduino IDE, Thonny, MATLAB, LTspice, Zotero, Obsidian, Terminal.app, iTerm2, Kitty, Alacritty
 # and Ghostty.

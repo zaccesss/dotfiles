@@ -90,7 +90,7 @@ What every installed extension does and when it actually gets used. Grouped the 
 
 ## Themes
 
-- **`zacess.zacess-themes`** - the eight Zacess colour themes. `Zacess Deep Contrast Dark` is the theme `settings.json` sets; the other seven, `Zacess Deep Contrast Light` among them, are in the theme picker.
+- **`zacess.zacess-themes`** - the ten Zacess colour themes. `Zacess Deep Contrast Dark` is the theme `settings.json` sets; the other seven, `Zacess Deep Contrast Light` among them, are in the theme picker.
 
 ## Editor quality of life
 

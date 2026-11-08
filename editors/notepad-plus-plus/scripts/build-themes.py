@@ -25,6 +25,8 @@ THEMES = {
     "zacess-light": ("Zacess Light", "light"),
     "zacess-cream": ("Zacess Cream", "light"),
     "zacess-yellow-on-black": ("Zacess Yellow on Black", "dark"),
+    "zacess-warm-dark": ("Zacess Warm Dark", "dark"),
+    "zacess-warm-light": ("Zacess Warm Light", "light"),
 }
 
 # windows looks fonts up by their GDI family name, which Nerd Fonts shortens to GeistMono NF

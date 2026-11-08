@@ -10,16 +10,17 @@
   `auto_install_extensions` so Zed installs both theme extensions on its own. Identical on every
   platform.
 - [`extensions.txt`](extensions.txt) - the two theme extensions, one `id@version` per line.
-- [`shared/themes/zacess.json`](shared/themes/zacess.json) - all eight Zacess themes in one Zed
+- [`shared/themes/zacess.json`](shared/themes/zacess.json) - all ten Zacess themes in one Zed
   theme family, the file [Zacess Themes](https://github.com/zacesshq/themes) ships in
-  `editors/zed/themes`, copied as released. [`shared/theme-package.json`](shared/theme-package.json)
-  records the release it came from and the eight theme names.
+  `editors/zed/themes`, copied from the release that adds Warm Dark and Warm Light ahead of its
+  tag. [`shared/theme-package.json`](shared/theme-package.json) records the release it came from
+  and the ten theme names.
 - [`shared/apply.py`](shared/apply.py) with `mac/apply.sh`, `linux/apply.sh` and
   `windows/apply.ps1` - install the theme file and set the theme, see [Apply](#apply).
 
 ## In action
 
-Zed in each of the eight Zacess themes, with the same file open.
+Zed in each of the ten Zacess themes, with the same file open.
 
 | Deep Contrast Dark | Deep Contrast Light |
 | --- | --- |
@@ -80,7 +81,7 @@ in the folder yet the script installs the theme file and says the settings are n
 
 `settings.json` lists `zacess-themes` under `auto_install_extensions`, so Zed installs the Zacess
 Themes extension on its own. The store still has 0.2.1, which lacks `Zacess Deep Contrast Dark` and
-`Zacess Deep Contrast Light`; the theme file in `shared/themes` is the 0.5.0 release, which has
+`Zacess Deep Contrast Light`; the theme file in `shared/themes` is the 1.0.0 release, which has
 them, so Zed shows every theme now. The script reads the installed extension's version from Zed's
 data folder. Once it reaches the version in `theme-package.json`, the script removes the local file
 instead, so the themes never load twice.
@@ -88,7 +89,7 @@ instead, so the themes never load twice.
 ## Check it worked
 
 1. Open the theme picker with `Cmd+K` then `Cmd+T` (`Ctrl+K` then `Ctrl+T` on Windows and Linux):
-   all eight Zacess theme names are listed.
+   all ten Zacess theme names are listed.
 2. Zed shows black backgrounds with white text in `Zacess Deep Contrast Dark`, with keywords bold
    blue, strings orange and comments green.
 3. `zt current` reports Zed as `fixed: Zacess Deep Contrast Dark`.
@@ -96,7 +97,7 @@ instead, so the themes never load twice.
 ## Validation
 
 [`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks the theme file parses
-and defines exactly the eight themes `theme-package.json` names, that the package points at the
+and defines exactly the ten themes `theme-package.json` names, that the package points at the
 pinned release's file, that `settings.json` names themes from the file, that `shared/apply.py`
 parses and that the two shell scripts match.
 

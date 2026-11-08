@@ -1,6 +1,6 @@
 """Checks the Zed folder without Zed: run from anywhere, exits non-zero on a problem.
 
-- shared/themes/*.json parse and together define exactly the eight themes theme-package.json names
+- shared/themes/*.json parse and together define exactly the ten themes theme-package.json names
 - theme-package.json pins a version and points at that version's file in the Zacess Themes repository
 - settings.json names a theme from the theme file for both halves of the pair
 - shared/apply.py parses as Python and mac/apply.sh and linux/apply.sh are the same file
@@ -29,8 +29,8 @@ for path in sorted((root / "shared" / "themes").glob("*.json")):
         defined.append(theme.get("name"))
 if sorted(defined) != sorted(package["themes"]):
     problems.append(f"shared/themes: the files define {sorted(defined)}, theme-package.json names {sorted(package['themes'])}")
-if len(package["themes"]) != 8:
-    problems.append("theme-package.json: expected the eight Zacess themes")
+if len(package["themes"]) != 10:
+    problems.append("theme-package.json: expected the ten Zacess themes")
 if not re.fullmatch(r"\d+\.\d+\.\d+", package["version"]):
     problems.append("theme-package.json: version is not x.y.z")
 expected = f"/themes/blob/v{package['version']}/editors/zed/themes/{package['file']}"

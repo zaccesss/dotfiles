@@ -1,4 +1,4 @@
-"""Builds the eight Zacess themes for Processing 4 in shared/themes from the Zacess palette.
+"""Builds the ten Zacess themes for Processing 4 in shared/themes from the Zacess palette.
 
 usage: python3 scripts/build-themes.py [palette.json]
 
@@ -17,10 +17,10 @@ import pathlib
 import sys
 import urllib.request
 
-PALETTE_URL = "https://raw.githubusercontent.com/zacesshq/themes/v0.5.0/palette/zacess.json"
-PALETTE_SHA256 = "4fe26dbd819605ec5a17141eb5994ef5e0cb0eb7a2fc5fab93cdc82a21cf40cf"
+PALETTE_URL = "https://raw.githubusercontent.com/zacesshq/themes/v1.0.0/palette/zacess.json"
+PALETTE_SHA256 = "7fd99f1a321df8270c32fa1eac2a6d27dbf5fc3bdf923756a2a8bc52669607a6"
 ORDER = ["deep-contrast-dark", "deep-contrast-light", "high-contrast-dark", "high-contrast-light",
-         "dark", "light", "cream", "yellow-on-black"]
+         "dark", "light", "cream", "yellow-on-black", "warm-dark", "warm-light"]
 # the first line marks a file as one of these themes, so the apply scripts only ever replace a
 # sketchbook theme.txt that they wrote themselves
 MARKER = "# Zacess theme for Processing"
@@ -251,7 +251,7 @@ def main():
     palette_styles = {name: token["style"] for name, token in palette["tokens"].items()}
     themes = {t["id"]: t for t in palette["themes"]}
     if sorted(themes) != sorted(ORDER):
-        sys.exit("the palette does not hold the eight expected Zacess themes")
+        sys.exit("the palette does not hold the ten expected Zacess themes")
     target = pathlib.Path(__file__).resolve().parent.parent / "shared" / "themes"
     target.mkdir(parents=True, exist_ok=True)
     for theme_id in ORDER:

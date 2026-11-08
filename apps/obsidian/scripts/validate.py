@@ -1,6 +1,6 @@
 """Checks the Obsidian folder without Obsidian: run from anywhere, exits non-zero on a problem.
 
-- shared/themes.json maps all eight Zacess looks to the community theme that carries each (cssTheme)
+- shared/themes.json maps all ten Zacess looks to the community theme that carries each (cssTheme)
   and Obsidian's dark (obsidian) or light (moonstone) base colour scheme
 - shared/theme-package.json pins one release zip per theme by version and a 64-character SHA-256
   digest. Every theme themes.json names has a package
@@ -15,13 +15,13 @@ import re
 import sys
 
 NAMES = ["Zacess Deep Contrast Dark", "Zacess Deep Contrast Light", "Zacess High Contrast Dark",
-         "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream", "Zacess Yellow on Black"]
+         "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream", "Zacess Yellow on Black", "Zacess Warm Dark", "Zacess Warm Light"]
 root = pathlib.Path(__file__).resolve().parent.parent
 problems = []
 
 themes = json.loads((root / "shared" / "themes.json").read_text(encoding="utf-8"))
 if sorted(themes) != sorted(NAMES):
-    problems.append("themes.json: does not hold exactly the eight Zacess looks")
+    problems.append("themes.json: does not hold exactly the ten Zacess looks")
 for name, choice in themes.items():
     if choice.get("theme") not in ("obsidian", "moonstone"):
         problems.append(f"themes.json: {name} theme is not obsidian (dark) or moonstone (light)")

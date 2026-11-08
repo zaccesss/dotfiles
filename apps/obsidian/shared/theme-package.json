@@ -1,29 +1,35 @@
 {
-  "version": "0.12.0",
+  "version": "1.0.0",
   "themes": [
     {
       "name": "zacess-obsidian",
       "folder": "Zacess",
-      "url": "https://github.com/zacesshq/themes/releases/download/v0.12.0/zacess-obsidian-0.12.0.zip",
-      "sha256": "2f22622f7197deb7ca965d2b97e882dddffed5ecbfd3a3c7b2d032cad0905cea"
+      "url": "https://github.com/zacesshq/themes/releases/download/v1.0.0/zacess-obsidian-1.0.0.zip",
+      "sha256": "fc2cbbb719e0e03d510cb92a5e01f340b31042161c8cf05ef962750888d03696"
     },
     {
       "name": "zacess-cream-obsidian",
       "folder": "Zacess Cream",
-      "url": "https://github.com/zacesshq/themes/releases/download/v0.12.0/zacess-cream-obsidian-0.12.0.zip",
-      "sha256": "a80a8621271eb7d00bae45390ce9482280abb8aa35954e04e72960ac4c9e70e6"
+      "url": "https://github.com/zacesshq/themes/releases/download/v1.0.0/zacess-cream-obsidian-1.0.0.zip",
+      "sha256": "b45bf15b0f332ea883f7d9f679194e6cc313c82e62bf438acd2324a18f3a0da3"
     },
     {
       "name": "zacess-high-contrast-obsidian",
       "folder": "Zacess High Contrast",
-      "url": "https://github.com/zacesshq/themes/releases/download/v0.12.0/zacess-high-contrast-obsidian-0.12.0.zip",
-      "sha256": "575026fb8886258c6fee5e6a7662536642899b57e8114f4b5e98e64dbf7aa037"
+      "url": "https://github.com/zacesshq/themes/releases/download/v1.0.0/zacess-high-contrast-obsidian-1.0.0.zip",
+      "sha256": "e9cc99bcd4f316a75053e7e894e1caf600a8d040b3f7b9c6dbcd896854236a29"
     },
     {
       "name": "zacess-deep-contrast-obsidian",
       "folder": "Zacess Deep Contrast",
-      "url": "https://github.com/zacesshq/themes/releases/download/v0.12.0/zacess-deep-contrast-obsidian-0.12.0.zip",
-      "sha256": "803e5ce632c0a1fbabe8ecd53715d91b481c7df117bf18322be4392e65a669d1"
+      "url": "https://github.com/zacesshq/themes/releases/download/v1.0.0/zacess-deep-contrast-obsidian-1.0.0.zip",
+      "sha256": "62fece4c6537131f5efa30e57e64a1087a165673c5a5ecdefebbe65e0c49accb"
+    },
+    {
+      "name": "zacess-warm-obsidian",
+      "folder": "Zacess Warm",
+      "url": "https://github.com/zacesshq/themes/releases/download/v1.0.0/zacess-warm-obsidian-1.0.0.zip",
+      "sha256": "6267fb19e85a622cc46abf2180e1460cd4c82dd07417cd6660f9d4c1ffb6a31e"
     }
   ]
 }

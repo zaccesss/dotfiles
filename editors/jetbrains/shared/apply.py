@@ -67,7 +67,7 @@ if args:
 theme = zt.find_theme(options.get("--theme", "deep-dark"))
 if theme is None:
     sys.exit(f"Unknown theme: {options['--theme']}\n"
-             "Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow.")
+             "Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light.")
 dark = theme if theme.dark else zt.find_theme(zt.DEFAULT_DARK)
 light = theme if not theme.dark else zt.find_theme(zt.DEFAULT_LIGHT)
 

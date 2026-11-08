@@ -1,6 +1,6 @@
 """Checks the KiCad folder without KiCad: run from anywhere, exits non-zero on a problem.
 
-- shared/colors holds the eight Zacess themes, each named after its file as KiCad expects
+- shared/colors holds the ten Zacess themes, each named after its file as KiCad expects
 - every schematic, board and GerbView colour key KiCad 10 reads is present and is a CSS colour
 - schematic text is at least 7:1 on the canvas and on a symbol's body fill in the Deep Contrast and
   High Contrast themes and at least 4.5:1 in the others; lines, layers and the grid are at least
@@ -21,7 +21,7 @@ root = pathlib.Path(__file__).resolve().parent.parent
 problems = []
 
 IDS = ["deep-contrast-dark", "deep-contrast-light", "high-contrast-dark", "high-contrast-light",
-       "dark", "light", "cream", "yellow-on-black"]
+       "dark", "light", "cream", "yellow-on-black", "warm-dark", "warm-light"]
 TEXT = ["fields", "hidden", "label_global", "label_hier", "label_local", "netclass_flag", "note",
         "private_note", "pin_name", "pin_number", "reference", "sheet_filename", "sheet_fields",
         "sheet_label", "sheet_name", "value", "op_voltages", "op_currents"]

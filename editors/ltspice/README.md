@@ -51,4 +51,4 @@ LTspice can write the start of its ini as UTF-16 and the rest as plain bytes, so
 
 ## Validation
 
-[`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks all eight themes exist, every line is a colour entry with a 24-bit value and every theme sets the same entries.
+[`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks all ten themes exist, every line is a colour entry with a 24-bit value and every theme sets the same entries.

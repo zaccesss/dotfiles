@@ -1,9 +1,9 @@
 # sets up Zacess Scenes on Windows: puts the newest release binary in ~\.local\bin after checking it
-# against its published checksum, installs bacon for watch mode with cargo and links scenes.toml into
-# %APPDATA%\zacess. Safe to run again.
+# against its published checksum, installs bacon for watch mode with cargo and links scenes.toml and
+# my Lua scenes into %APPDATA%\zacess. Safe to run again.
 #
-#   & apps\zacess-scenes\setup.ps1          install or update, then link the config
-#   & apps\zacess-scenes\setup.ps1 -Link    only link the config
+#   & apps\zacess-scenes\setup.ps1          install or update, then link the config and scenes
+#   & apps\zacess-scenes\setup.ps1 -Link    only link the config and scenes
 #
 # the bootstrap passes -Theme to every app script; Scenes follows the theme zt last set instead
 param([switch]$Link, [string]$Theme)
@@ -36,6 +36,34 @@ function Set-ScenesConfig {
         Copy-Item $source $target
         "Copied scenes.toml to $target (turn on Developer Mode to link it instead)"
     }
+}
+
+# each of my Lua scenes is linked on its own, so a scene started with zs new stays in the folder
+# beside them. Without Developer Mode they are copied, so run this again after changing one
+function Set-LuaScenes {
+    $dir = Join-Path $ConfigDir 'scenes'
+    New-Item -ItemType Directory -Force -Path $dir | Out-Null
+    $linked = $true
+    foreach ($scene in Get-ChildItem (Join-Path $PSScriptRoot 'scenes') -Filter *.lua -ErrorAction SilentlyContinue) {
+        $target = Join-Path $dir $scene.Name
+        $item = Get-Item $target -ErrorAction SilentlyContinue
+        if ($item -and -not $item.LinkType) {
+            # a scene of the same name made by hand goes to the Recycle Bin rather than being overwritten
+            Add-Type -AssemblyName Microsoft.VisualBasic
+            [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile($target, 'OnlyErrorDialogs', 'SendToRecycleBin')
+            "Moved the old $target to the Recycle Bin."
+        } elseif ($item) {
+            Remove-Item $target
+        }
+        try {
+            New-Item -ItemType SymbolicLink -Path $target -Target $scene.FullName -ErrorAction Stop | Out-Null
+        } catch {
+            Copy-Item $scene.FullName $target
+            $linked = $false
+        }
+    }
+    if ($linked) { "Linked the Lua scenes into $dir" }
+    else { "Copied the Lua scenes to $dir (turn on Developer Mode to link them instead)" }
 }
 
 function Install-Scenes {
@@ -82,3 +110,4 @@ if (-not $Link) {
     Install-Bacon
 }
 Set-ScenesConfig
+Set-LuaScenes

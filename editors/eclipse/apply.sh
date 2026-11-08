@@ -2,10 +2,11 @@
 # merges the tracked Eclipse preferences into one workspace's instance scope.
 # usage: apply.sh [--theme <theme> | --no-theme] [workspace]   (defaults to ~/eclipse-workspace)
 #
-# --theme imports one of the eight Zacess themes from theme/ (editor
+# --theme imports one of the ten Zacess themes from theme/ (editor
 # and Terminal view colours, plus the tab outlines for the two Deep Contrast
 # themes) and sets the matching Light or Dark workbench theme. It takes a short
-# name (deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow),
+# name (deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow,
+# warm-dark, warm-light),
 # an id (deep-contrast-dark) or the full name. the default is deep-dark.
 #
 # the values live in prefs/, which apply.ps1 reads too, so no value is written
@@ -41,6 +42,8 @@ theme_name() {
     light) echo "Zacess Light|light" ;;
     cream) echo "Zacess Cream|light" ;;
     yellow|yellow-on-black) echo "Zacess Yellow on Black|dark" ;;
+    warm-dark) echo "Zacess Warm Dark|dark" ;;
+    warm-light) echo "Zacess Warm Light|light" ;;
     *) return 1 ;;
   esac
 }
@@ -48,7 +51,7 @@ theme_name() {
 if [ -n "$theme" ]; then
   if ! picked="$(theme_name "$theme")"; then
     echo "Unknown theme: $theme" >&2
-    echo "Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow." >&2
+    echo "Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light." >&2
     exit 1
   fi
 fi

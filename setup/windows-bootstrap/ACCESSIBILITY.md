@@ -22,7 +22,7 @@ high-contrast colours and captured accessibility settings to every PC.
 - The settings stage applies the values captured in the defaults folder: pointer size, text
   scaling, window animations, high contrast, Sticky Keys and Filter Keys among them. It writes only
   values that differ and says when one needs a sign-out to take effect.
-- The configs stage gives Windows Terminal the terminal folder's eight Zacess schemes, with Zacess Deep
+- The configs stage gives Windows Terminal the terminal folder's ten Zacess schemes, with Zacess Deep
   Contrast Dark as the fixed default and bold text kept in its own colour. A Zacess scheme already
   chosen (with `zt`, say) is kept.
 - The dotfiles stage makes Command Prompt show the same banner and a prompt in the terminal's own

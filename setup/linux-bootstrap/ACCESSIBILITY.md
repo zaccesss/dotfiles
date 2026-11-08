@@ -2,7 +2,7 @@
 
 This bootstrap sets up a whole Ubuntu machine, so it decides how much of the system a person has to
 find and fix by hand afterwards. It keeps runs predictable and readable. The `configs` extra can
-also bring the eight Zacess terminal palettes, with Zacess Deep Contrast Dark as the one to pick.
+also bring the ten Zacess terminal palettes, with Zacess Deep Contrast Dark as the one to pick.
 
 > [!NOTE]
 > Some of these settings are preferences rather than requirements. Change them freely in your own
@@ -27,7 +27,7 @@ also bring the eight Zacess terminal palettes, with Zacess Deep Contrast Dark as
 ## On a desktop
 
 - The `configs` extra applies GNOME settings from
-  [defaults](../defaults) and links the eight Zacess palettes
+  [defaults](../defaults) and links the ten Zacess palettes
   from [terminal](../../terminal/terminal) for Ptyxis, the terminal in
   Ubuntu 25.10 and later. Pick Zacess Deep Contrast Dark once under Preferences > Profile > Palette:
   white on pure black with deep, fully saturated colours at 7:1 or more.

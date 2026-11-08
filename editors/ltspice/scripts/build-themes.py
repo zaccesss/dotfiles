@@ -25,6 +25,8 @@ THEMES = {
     "zacess-light": "Zacess Light",
     "zacess-cream": "Zacess Cream",
     "zacess-yellow-on-black": "Zacess Yellow on Black",
+    "zacess-warm-dark": "Zacess Warm Dark",
+    "zacess-warm-light": "Zacess Warm Light",
 }
 
 TRACES = ["terminal.ansiGreen", "terminal.ansiBlue", "terminal.ansiRed", "terminal.ansiCyan",

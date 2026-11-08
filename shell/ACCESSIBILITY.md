@@ -15,7 +15,7 @@ These dotfiles started from a practical need. With monocular vision, depth cues 
 | Colour vision differences | Status messages carry words as well as colour ("profile loaded", the error text itself). The colours were tested on dark and light terminal themes. Changing one colour in `02-colours` updates it across the whole profile |
 | Icon fonts | The Starship prompt's own symbols are plain ASCII (the `>` prompt character, `+` for jobs and `!`, `^` or `v` in git status), so it reads cleanly without a Nerd Font. The Node.js module shows the plain text `node` rather than Starship's default Nerd Font glyph. The terminals on my Mac use Monaco 12 in iTerm2 and Warp's default font at size 13, neither of them a Nerd Font |
 
-The terminal itself sets the final shades. [terminal](../terminal/terminal) installs the eight Zacess themes with Zacess Deep Contrast Dark as the default: white text on pure black with deep, fully saturated colours at 7:1 or more. Everything this profile prints follows whichever theme is on, since it only uses the named colours. The Command Prompt prompt and banner do the same.
+The terminal itself sets the final shades. [terminal](../terminal/terminal) installs the ten Zacess themes with Zacess Deep Contrast Dark as the default: white text on pure black with deep, fully saturated colours at 7:1 or more. Everything this profile prints follows whichever theme is on, since it only uses the named colours. The Command Prompt prompt and banner do the same.
 
 > [!TIP]
 > `zt` switches every editor and terminal to one Zacess theme in one command: `zt deep-light`,
@@ -31,7 +31,7 @@ The terminal itself sets the final shades. [terminal](../terminal/terminal) inst
 > [!TIP]
 > `termtheme` sets only the terminals, on every platform, while the editors keep following `zt`.
 > `termtheme dark` or `termtheme light` keeps the Zacess Deep Contrast pair on one mode whatever the
-> system does, `termtheme <theme>` takes any of the eight Zacess themes, `termtheme auto` follows the
+> system does, `termtheme <theme>` takes any of the ten Zacess themes, `termtheme auto` follows the
 > system's light and dark setting, `termtheme default` goes back to each terminal's own theme and
 > `termtheme follow` hands the terminals back to `zt`. `termtheme` on its own shows what each
 > terminal is on. It drives every terminal `zt` switches: Terminal.app, iTerm2, Ghostty, Kitty,

@@ -10,13 +10,13 @@ Standalone helper scripts that can be run from any platform.
 
 ## Theme switching
 
-`zt` switches every installed editor and terminal to one of the eight Zacess themes at once. Windows has the same command in [`windows/scripts/zt.ps1`](../windows/scripts/zt.ps1), with `zt.cmd` for Command Prompt.
+`zt` switches every installed editor and terminal to one of the ten Zacess themes at once. Windows has the same command in [`windows/scripts/zt.ps1`](../windows/scripts/zt.ps1), with `zt.cmd` for Command Prompt.
 
 | Command | What it does |
 | --- | --- |
 | `zt <theme>` | Fixes that theme everywhere and stops following the system. Takes a short name, an id or the full name |
 | `zt auto [dark] [light]` | Follows the system light and dark appearance, Zacess Deep Contrast Dark and Light unless two others are named |
-| `zt list` | The eight themes and their short names, the current one marked |
+| `zt list` | The ten themes and their short names, the current one marked |
 | `zt current` | The mode zt last set, then each installed tool's own setting read back: which theme, fixed or following the system |
 | `zt doctor` | Every installed theme file against the repo copy for the active theme and every tool's own setting against the state, one line per tool. Exits 1 on any drift, so a copy that stopped matching the repo or a tool switched by hand shows up |
 | `zt highlight [default]` | The system text highlight again from the active theme's selection colour; `default` puts the system's own highlight back |
@@ -24,7 +24,7 @@ Standalone helper scripts that can be run from any platform.
 | `zt unpin <app>` | The app follows `zt` again and is switched to the current state straight away. `terminals` unpins every terminal and `--all` every app |
 | `zt current terminals` | What each terminal app is on, with its pin. `zt current <app>` shows one app |
 
-Short names: `deep-dark`, `deep-light`, `hc-dark`, `hc-light`, `dark`, `light`, `cream` and `yellow`. `zacess-theme` is the same command under its full name.
+Short names: `deep-dark`, `deep-light`, `hc-dark`, `hc-light`, `dark`, `light`, `cream`, `yellow`, `warm-dark` and `warm-light`. `zacess-theme` is the same command under its full name.
 
 | Tool | Fixed theme | `zt auto` |
 | --- | --- | --- |

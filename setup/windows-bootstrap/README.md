@@ -33,7 +33,7 @@ If PowerShell refuses to run the script, allow local scripts for your user once:
 | winget | Installs anything missing from `packages/winget.json` without upgrading what is already there |
 | dotfiles | Signs in to GitHub, clones the dotfiles, points the PowerShell 7 profile and starship at them, puts `zt` on the `PATH` and makes Command Prompt run the dotfiles' start-up |
 | git | Copies a starting `.gitconfig` and SSH config if missing and links the Git hooks |
-| configs | Points Neovim, VS Code settings, lazygit, psmux (`~/.tmux.conf`) and ripgrep at their folders in the dotfiles (nano's rc file is written by `zt` rather than linked), installs Geist Mono Nerd Font for the user and for all users, then gives Windows Terminal the eight Zacess schemes with Zacess Deep Contrast Dark as the default and Geist Mono as its font |
+| configs | Points Neovim, VS Code settings, lazygit, psmux (`~/.tmux.conf`) and ripgrep at their folders in the dotfiles (nano's rc file is written by `zt` rather than linked), installs Geist Mono Nerd Font for the user and for all users, then gives Windows Terminal the ten Zacess schemes with Zacess Deep Contrast Dark as the default and Geist Mono as its font |
 | vscode | Installs missing VS Code extensions from the [vscode](../../editors/vscode) folder at their latest version |
 | settings | Applies the Windows settings captured in the [defaults](../defaults) folder, writing only what differs, then hides the dot folders in the home folder in File Explorer. Dot files stay shown, because Node and Electron apps cannot save over a hidden file on Windows |
 | wsl | Installs WSL2 with Ubuntu 26.04 (or 24.04) and explains the linux-bootstrap step |
@@ -65,7 +65,7 @@ The dotfiles and configs come from these folders of the dotfiles repository:
 | [neovim](../../editors/neovim) | Neovim with LSP, treesitter and Telescope |
 | [cli-tools](../../terminal/cli-tools) | ripgrep, fzf and lazygit defaults |
 | [vscode](../../editors/vscode) | VS Code settings, keybindings and extensions |
-| [terminal](../../terminal/terminal) | The eight Zacess schemes for Windows Terminal |
+| [terminal](../../terminal/terminal) | The ten Zacess schemes for Windows Terminal |
 | [defaults](../defaults) | Windows settings, captured and applied |
 
 The dotfiles repository is cloned once into `%USERPROFILE%\dev\github\repos\dotfiles` (change the parent

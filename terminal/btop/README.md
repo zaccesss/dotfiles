@@ -1,6 +1,6 @@
 # btop
 
-btop (btop4win on Windows) in the eight Zacess themes, so the system monitor matches the terminal
+btop (btop4win on Windows) in the ten Zacess themes, so the system monitor matches the terminal
 around it.
 
 ## What is here
@@ -15,7 +15,7 @@ around it.
 
 | System | Where btop reads its settings | What `zt` does |
 | --- | --- | --- |
-| macOS and Linux | `~/.config/btop/btop.conf` and `~/.config/btop/themes` | Links all eight themes into `themes`, points `color_theme` at the current one and sets `theme_background = True` |
+| macOS and Linux | `~/.config/btop/btop.conf` and `~/.config/btop/themes` | Links all ten themes into `themes`, points `color_theme` at the current one and sets `theme_background = True` |
 | Windows | `btop.conf` and `themes` beside `btop4win.exe` (under `WinGet\Packages` for a winget install, which links it on the PATH as `btop`) | The same, in the folder beside the exe |
 
 Only `color_theme` and `theme_background` are rewritten, so every other btop setting stays as it

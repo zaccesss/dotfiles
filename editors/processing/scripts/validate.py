@@ -1,10 +1,11 @@
 """Checks the Processing folder without Processing: run from anywhere, exits non-zero on a problem.
 
-- shared/themes holds the eight Zacess themes, each starting with the marker line the apply
+- shared/themes holds the ten Zacess themes, each starting with the marker line the apply
   scripts look for, every line a comment or key = value and every colour a six-digit hex value
 - every syntax colour and the editor, console, tab, status and error table text is at least 7:1
   on what it sits on in the Deep Contrast and High Contrast themes and at least 4.5:1 in the others;
-  the selection fill is held to 4.5:1 in every theme, Zacess Themes' own selection rule
+  on the current line every syntax colour is held to 4.5:1, the rule Zacess Themes 0.6.0 sets for
+  syntax. The selection fill is held to 4.5:1 in every theme, Zacess Themes' own selection rule
 - shared/preferences.txt names Geist Mono for the editor
 - mac/apply.sh and linux/apply.sh are the same file
 """
@@ -17,7 +18,7 @@ root = pathlib.Path(__file__).resolve().parent.parent
 problems = []
 
 IDS = ["deep-contrast-dark", "deep-contrast-light", "high-contrast-dark", "high-contrast-light",
-       "dark", "light", "cream", "yellow-on-black"]
+       "dark", "light", "cream", "yellow-on-black", "warm-dark", "warm-light"]
 MARKER = "# Zacess theme for Processing"
 TOKENS = [f"editor.token.{t}.style" for t in
           ["function1", "function2", "function3", "function4", "keyword1", "keyword2", "keyword3",
@@ -85,8 +86,9 @@ for theme_id in IDS:
             problems.append(f"{path.name}: {fg_key} or {bg_key} is missing")
             continue
         ratio = contrast(values[fg_key].split(",")[0], values[bg_key])
-        # the selection is a fill under the token's own colour, held to Zacess Themes' 4.5:1 selection rule
-        limit = 4.5 if bg_key == "editor.selection.color" else floor
+        # the selection is a fill under the token's own colour, held to Zacess Themes' 4.5:1 selection rule;
+        # the current line band takes Zacess Themes 0.6.0's 4.5:1 rule for syntax on it
+        limit = 4.5 if bg_key in ("editor.selection.color", "editor.line.highlight.color") else floor
         if ratio < limit:
             problems.append(f"{path.name}: {fg_key} is {ratio:.2f}:1 on {bg_key}, below {limit}:1")
 

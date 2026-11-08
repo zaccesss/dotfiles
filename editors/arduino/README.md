@@ -8,7 +8,7 @@ Arduino IDE 2 is built on Eclipse Theia, the same editor parts as VS Code. It ke
 
 | Setting | Value | Why |
 | --- | --- | --- |
-| `workbench.colorTheme` | `Zacess Deep Contrast Dark` | The default theme. `--theme` (`-Theme` on Windows) picks any of the eight |
+| `workbench.colorTheme` | `Zacess Deep Contrast Dark` | The default theme. `--theme` (`-Theme` on Windows) picks any of the ten |
 | `editor.fontFamily` | `'GeistMono Nerd Font', 'GeistMono NF', monospace` | Geist Mono's Nerd Font build, the font every editor uses. The second name is the one Windows' older font lookup knows, as a fallback |
 | `editor.fontSize` | `16` | Larger than the default 14 |
 | `files.autoSave` | `afterDelay` | Sketches save themselves, so nothing depends on saving before an upload |
@@ -19,7 +19,7 @@ Every key lives in [`shared/settings.json`](shared/settings.json). The scripts m
 
 ## The themes
 
-[`shared/theme-package.json`](shared/theme-package.json) pins Zacess Themes 0.12.0 by its release URL and SHA-256 digest. The apply script downloads it, checks the digest and puts `zacess-themes-0.12.0.vsix` in the `plugins` folder. Arduino IDE unpacks it into `deployedPlugins` on its next start. An older `zacess-themes-*.vsix` in the folder is removed, so the themes never load twice. To move to a new release, change the version, URL and digest together.
+[`shared/theme-package.json`](shared/theme-package.json) pins Zacess Themes 1.0.0 by its release URL and SHA-256 digest. The apply script downloads it, checks the digest and puts `zacess-themes-0.12.0.vsix` in the `plugins` folder. Arduino IDE unpacks it into `deployedPlugins` on its next start. An older `zacess-themes-*.vsix` in the folder is removed, so the themes never load twice. To move to a new release, change the version, URL and digest together.
 
 ## Where the settings live
 

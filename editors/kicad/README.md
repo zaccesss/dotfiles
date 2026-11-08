@@ -1,15 +1,15 @@
 # kicad
 
-KiCad colour themes: the eight Zacess themes for the schematic, symbol, PCB, footprint, GerbView and 3D viewer canvases, built from the Zacess palette and switched with one script on every platform.
+KiCad colour themes: the ten Zacess themes for the schematic, symbol, PCB, footprint, GerbView and 3D viewer canvases, built from the Zacess palette and switched with one script on every platform.
 
-KiCad keeps each colour theme as a JSON file in the `colors` folder of its settings and names it by the file's stem. Each editor picks its theme separately, with `appearance.color_theme` in its own settings file (`eeschema.json`, `pcbnew.json`, `fpedit.json`, `symbol_editor.json`, `gerbview.json`, `3d_viewer.json` and the rest). The apply scripts install all eight themes and point every editor at one of them.
+KiCad keeps each colour theme as a JSON file in the `colors` folder of its settings and names it by the file's stem. Each editor picks its theme separately, with `appearance.color_theme` in its own settings file (`eeschema.json`, `pcbnew.json`, `fpedit.json`, `symbol_editor.json`, `gerbview.json`, `3d_viewer.json` and the rest). The apply scripts install all ten themes and point every editor at one of them.
 
 ## What it sets
 
 | Setting | Value | Why |
 | --- | --- | --- |
-| `<config>/colors/zacess-*.json` | The eight Zacess themes | All eight show under **Preferences > Colors** in every editor |
-| `appearance.color_theme` | `zacess-deep-contrast-dark` | The default theme in each editor. `--theme` (`-Theme` on Windows) picks any of the eight |
+| `<config>/colors/zacess-*.json` | The ten Zacess themes | All ten show under **Preferences > Colors** in every editor |
+| `appearance.color_theme` | `zacess-deep-contrast-dark` | The default theme in each editor. `--theme` (`-Theme` on Windows) picks any of the ten |
 
 Nothing else in KiCad's settings changes.
 
@@ -17,7 +17,7 @@ KiCad has no setting for the font of its menus, panels or canvas text: the inter
 
 ## The themes
 
-[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/colors/`](shared/colors/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 0.5.0, downloaded and checked against its SHA-256 digest. Every colour key KiCad 10 reads is written, so a light theme never falls back to KiCad's dark defaults.
+[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/colors/`](shared/colors/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 1.0.0, downloaded and checked against its SHA-256 digest. Every colour key KiCad 10 reads is written, so a light theme never falls back to KiCad's dark defaults.
 
 | Part | Colours |
 | --- | --- |
@@ -60,7 +60,7 @@ The scripts print each theme file and settings file as `added`, `changed` or `un
 ## Check it worked
 
 1. Start the Schematic Editor. The canvas is black with green notes, orange wires and a grey drawing sheet in Deep Contrast Dark.
-2. **Preferences > Preferences > Schematic Editor > Colors** lists the eight Zacess themes, with Zacess Deep Contrast Dark selected.
+2. **Preferences > Preferences > Schematic Editor > Colors** lists the ten Zacess themes, with Zacess Deep Contrast Dark selected.
 
 ## Validation
 

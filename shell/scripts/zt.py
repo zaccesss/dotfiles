@@ -5,7 +5,7 @@
     zt <theme> --all               the same here, then on every other device as a terminal opens there
     zt undo [--all]                back to the theme before the last change (on every device with --all)
     zt auto [dark] [light]         follow the system light and dark appearance, Deep Contrast by default
-    zt list                        the eight themes and their short names
+    zt list                        the ten themes and their short names
     zt current                     the mode zt last set and what each tool is on now
     zt doctor                      every installed theme file against the repo copy, exit 1 on drift
     zt highlight [default]         the system text highlight again from the theme or the system's own back
@@ -51,6 +51,8 @@ THEMES = [
     ("light", "light", "Zacess Light", "light"),
     ("cream", "cream", "Zacess Cream", "light"),
     ("yellow-on-black", "yellow", "Zacess Yellow on Black", "dark"),
+    ("warm-dark", "warm-dark", "Zacess Warm Dark", "dark"),
+    ("warm-light", "warm-light", "Zacess Warm Light", "light"),
 ]
 DEFAULT_DARK = "deep-contrast-dark"
 DEFAULT_LIGHT = "deep-contrast-light"
@@ -869,7 +871,7 @@ def tmux(fixed, dark, light, now):
     report("tmux", f"{theme.name}{note}, {when}")
 
 
-# btop: a generated theme per Zacess theme in terminal/btop/themes. All eight are linked into btop's
+# btop: a generated theme per Zacess theme in terminal/btop/themes. All ten are linked into btop's
 # own themes folder, so they sit in its Options menu beside the built-in ones. btop.conf's
 # color_theme points at the current one. theme_background makes btop draw on the terminal's own
 # background. Only those two keys are rewritten, so every other btop setting stays as it is

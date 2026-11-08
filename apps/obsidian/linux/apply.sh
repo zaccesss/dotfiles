@@ -5,9 +5,9 @@
 #   (the vault defaults to OBSIDIAN_VAULT, the same variable zt reads, then ~/Obsidian/Vault, a
 #   plain folder outside any cloud-synced one)
 #
-# --theme picks one of the eight Zacess looks by short name (deep-dark, deep-light, hc-dark,
-# hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
-# deep-dark. each look is one half of a community theme (Zacess, Zacess Cream, Zacess High Contrast
+# --theme picks one of the ten Zacess looks by short name (deep-dark, deep-light, hc-dark,
+# hc-light, dark, light, cream, yellow, warm-dark, warm-light), id (deep-contrast-dark) or full
+# name. the default is deep-dark. each look is one half of a community theme (Zacess, Zacess Cream, Zacess High Contrast
 # or Zacess Deep Contrast) chosen by Obsidian's base colour scheme, so appearance.json gets both
 # cssTheme and theme. the work is done by ../shared/apply.py; nothing is backed up. the vault list
 # is ~/.config/obsidian/obsidian.json (the Flatpak's copy when md.obsidian.Obsidian is installed).
@@ -35,12 +35,14 @@ theme_name() {
     light) echo "Zacess Light" ;;
     cream) echo "Zacess Cream" ;;
     yellow|yellow-on-black) echo "Zacess Yellow on Black" ;;
+    warm-dark) echo "Zacess Warm Dark" ;;
+    warm-light) echo "Zacess Warm Light" ;;
     *) return 1 ;;
   esac
 }
 if ! name="$(theme_name "$theme")"; then
   echo "Unknown theme: $theme" >&2
-  echo "Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow." >&2
+  echo "Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light." >&2
   exit 1
 fi
 

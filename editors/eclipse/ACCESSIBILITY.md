@@ -18,7 +18,7 @@ reads and behaves like the other editors.
   `Ctrl+-` on Windows and Linux) zoom the editor text.
 - The editor and Terminal view use Zacess Deep Contrast Dark from
   [Zacess Themes](https://github.com/zacesshq/themes) with Eclipse's own **Dark** workbench theme:
-  white on pure black with deep, fully saturated colours. All eight Zacess themes are in `theme/`
+  white on pure black with deep, fully saturated colours. All ten Zacess themes are in `theme/`
   and the scripts import any of them. Measured contrast is in the
   [Zacess Themes accessibility statement](https://github.com/zacesshq/themes/blob/main/ACCESSIBILITY.md).
 - Eclipse cannot follow the system light and dark setting, so the theme stays fixed until another

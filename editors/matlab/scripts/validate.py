@@ -1,6 +1,6 @@
 """Checks the MATLAB folder without MATLAB: run from anywhere, exits non-zero on a problem.
 
-- shared/themes holds the eight Zacess themes, each with a Light or Dark desktop and RGB colours
+- shared/themes holds the ten Zacess themes, each with a Light or Dark desktop and RGB colours
 - every platform's fonts.json names Geist Mono
 - shared/zacess_apply.m defines the zacess_apply function
 - shared/schemes holds a colour scheme per theme for the same desktop, setting every colour in
@@ -14,7 +14,8 @@ import re
 import sys
 
 NAMES = ["Zacess Deep Contrast Dark", "Zacess Deep Contrast Light", "Zacess High Contrast Dark",
-         "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream", "Zacess Yellow on Black"]
+         "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream", "Zacess Yellow on Black",
+         "Zacess Warm Dark", "Zacess Warm Light"]
 root = pathlib.Path(__file__).resolve().parent.parent
 problems = []
 

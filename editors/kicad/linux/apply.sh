@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# installs the eight Zacess colour themes for KiCad and makes one of them the theme of every editor.
+# installs the ten Zacess colour themes for KiCad and makes one of them the theme of every editor.
 # usage: apply.sh [--theme <theme>] [--config-dir <dir>]
 #   (the config folder defaults to the newest version folder KiCad has made: ~/Library/Preferences/kicad/<version>
 #   on the Mac, ~/.config/kicad/<version> on Linux, then the Flathub copy; KICAD_CONFIG_HOME wins
 #   when it is set, as it does for KiCad itself)
 #
-# --theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
-# hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
+# --theme picks one of the ten Zacess themes by short name (deep-dark, deep-light, hc-dark,
+# hc-light, dark, light, cream, yellow, warm-dark, warm-light),
+# id (deep-contrast-dark) or full name. the default is
 # deep-dark.
 #
 # the theme files go into <config>/colors, where KiCad lists them under Preferences > Colors. the
@@ -43,13 +44,15 @@ theme_id() {
     light) echo "light" ;;
     cream) echo "cream" ;;
     yellow|yellow-on-black) echo "yellow-on-black" ;;
+    warm-dark) echo "warm-dark" ;;
+    warm-light) echo "warm-light" ;;
     *) return 1 ;;
   esac
 }
 
 if ! id="$(theme_id "$theme")"; then
   echo "Unknown theme: $theme" >&2
-  echo "Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow." >&2
+  echo "Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light." >&2
   exit 1
 fi
 

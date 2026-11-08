@@ -1,5 +1,5 @@
 # Recommended starter config, not yet applied since Ghostty is not installed on this machine.
-# All eight Zacess themes sit in this folder (zacess-*, from palette/zacess.json); copy them
+# All ten Zacess themes sit in this folder (zacess-*, from palette/zacess.json); copy them
 # into ~/.config/ghostty/themes and the theme line below picks one, Zacess Deep Contrast Dark
 # by default. `zt <theme>` in the dotfiles rewrites that line and `zt auto`
 # writes a light and dark pair, which Ghostty follows with the system.

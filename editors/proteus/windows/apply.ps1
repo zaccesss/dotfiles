@@ -1,13 +1,14 @@
 # sets Proteus 8's schematic, PCB layout and graph viewer colours to one of the Zacess themes.
 # usage: .\apply.ps1 [-Theme <theme>] [-Project <.pdsprj file or folder> ...]
 #
-# -Theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
-# hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
+# -Theme picks one of the ten Zacess themes by short name (deep-dark, deep-light, hc-dark,
+# hc-light, dark, light, cream, yellow, warm-dark, warm-light),
+# id (deep-contrast-dark) or full name. the default is
 # deep-dark. -Theme proteus puts back Proteus's own colours: its default schematic colours and its
 # Black Paper set for the PCB layout and graphs.
 #
 # PCB layout and graphs: every theme in ..\shared\themes becomes a colour set beside Proteus's own
-# Black Paper and White Paper, so all eight can be picked inside Proteus too. the chosen one
+# Black Paper and White Paper, so all ten can be picked inside Proteus too. the chosen one
 # becomes the active set. Proteus's own sets are never touched.
 #
 # schematic: Proteus copies its colours from a design template into each new design, so the
@@ -32,13 +33,14 @@ $themeNames = [ordered]@{
     'hc-light' = 'Zacess High Contrast Light'; 'high-contrast-light' = 'Zacess High Contrast Light'
     'dark' = 'Zacess Dark'; 'light' = 'Zacess Light'; 'cream' = 'Zacess Cream'
     'yellow' = 'Zacess Yellow on Black'; 'yellow-on-black' = 'Zacess Yellow on Black'
+    'warm-dark' = 'Zacess Warm Dark'; 'warm-light' = 'Zacess Warm Light'
 }
 $key = ($Theme.ToLowerInvariant() -replace '^zacess[ -]', '') -replace ' ', '-'
 # "proteus" puts back Proteus's own colours: its default schematic colours and its Black Paper set
 $name = if ($key -in 'proteus', 'default') { 'Proteus' } else { $themeNames[$key] }
 if (-not $name) {
     [Console]::Error.WriteLine("Unknown theme: $Theme")
-    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow or proteus.')
+    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark, warm-light or proteus.')
     exit 1
 }
 

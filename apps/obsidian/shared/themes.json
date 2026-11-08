@@ -6,5 +6,7 @@
   "Zacess Dark": { "cssTheme": "Zacess", "theme": "obsidian" },
   "Zacess Light": { "cssTheme": "Zacess", "theme": "moonstone" },
   "Zacess Cream": { "cssTheme": "Zacess Cream", "theme": "moonstone" },
-  "Zacess Yellow on Black": { "cssTheme": "Zacess Cream", "theme": "obsidian" }
+  "Zacess Yellow on Black": { "cssTheme": "Zacess Cream", "theme": "obsidian" },
+  "Zacess Warm Dark": { "cssTheme": "Zacess Warm", "theme": "obsidian" },
+  "Zacess Warm Light": { "cssTheme": "Zacess Warm", "theme": "moonstone" }
 }

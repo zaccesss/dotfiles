@@ -1,10 +1,11 @@
 """Checks the Vivado folder without Vivado: run from anywhere, exits non-zero on a problem.
 
-- shared/themes holds the eight Zacess themes, each with the eight CODE_EDITOR_* colours as
+- shared/themes holds the ten Zacess themes, each with the eight CODE_EDITOR_* colours as
   Vivado's short hex and syntax styles 0 to 20 with colours as signed Java ARGB integers
-- every text style is at least 7:1 on the editor background and the current line in the Deep
-  Contrast and High Contrast themes and at least 4.5:1 in the others; the selection fill is held to
-  4.5:1 in every theme, Zacess Themes' own selection rule
+- every text style is at least 7:1 on the editor background in the Deep Contrast and High Contrast
+  themes and at least 4.5:1 in the others; on the current line every text style is held to 4.5:1,
+  the rule Zacess Themes 0.6.0 sets for syntax. The selection fill is held to 4.5:1 in every
+  theme, Zacess Themes' own selection rule
 """
 
 import json
@@ -16,7 +17,7 @@ root = pathlib.Path(__file__).resolve().parent.parent
 problems = []
 
 IDS = ["deep-contrast-dark", "deep-contrast-light", "high-contrast-dark", "high-contrast-light",
-       "dark", "light", "cream", "yellow-on-black"]
+       "dark", "light", "cream", "yellow-on-black", "warm-dark", "warm-light"]
 COLOURS = ["CODE_EDITOR_BACKGROUND", "CODE_EDITOR_FOREGROUND", "CODE_EDITOR_CURSOR_COLOR",
            "CODE_EDITOR_LINE_HIGHLIGHT", "CODE_EDITOR_SELECTION_BACKGROUND",
            "CODE_EDITOR_FIND_HIGHLIGHT_BACKGROUND", "CODE_EDITOR_MATCHING_WORD_HIGHLIGHT_BACKGROUND",
@@ -68,8 +69,9 @@ for theme_id in IDS:
     floor = 7 if theme_id.startswith(("deep-", "high-")) else 4.5
     for surface in ("CODE_EDITOR_BACKGROUND", "CODE_EDITOR_LINE_HIGHLIGHT", "CODE_EDITOR_SELECTION_BACKGROUND"):
         bg = rgb_of_hex(colours[surface])
-        # the selection is a fill under the style's own colour, held to Zacess Themes' 4.5:1 selection rule
-        limit = 4.5 if surface == "CODE_EDITOR_SELECTION_BACKGROUND" else floor
+        # the selection is a fill under the style's own colour, held to Zacess Themes' 4.5:1 selection rule;
+        # the current line band takes Zacess Themes 0.6.0's 4.5:1 rule for syntax on it
+        limit = 4.5 if surface in ("CODE_EDITOR_SELECTION_BACKGROUND", "CODE_EDITOR_LINE_HIGHLIGHT") else floor
         for index in TEXT_STYLES:
             ratio = contrast(rgb_of_argb(styles[index]["foreground_color"]), bg)
             if ratio < limit:

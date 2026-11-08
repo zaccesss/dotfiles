@@ -6,5 +6,7 @@
   "Zacess Dark": { "browser.theme.toolbar-theme": 0, "extensions.zotero.reader.darkTheme": "dark" },
   "Zacess Light": { "browser.theme.toolbar-theme": 1, "extensions.zotero.reader.lightTheme": "snow" },
   "Zacess Cream": { "browser.theme.toolbar-theme": 1, "extensions.zotero.reader.lightTheme": "sepia" },
-  "Zacess Yellow on Black": { "browser.theme.toolbar-theme": 0, "extensions.zotero.reader.darkTheme": "black" }
+  "Zacess Yellow on Black": { "browser.theme.toolbar-theme": 0, "extensions.zotero.reader.darkTheme": "black" },
+  "Zacess Warm Dark": { "browser.theme.toolbar-theme": 0, "extensions.zotero.reader.darkTheme": "dark" },
+  "Zacess Warm Light": { "browser.theme.toolbar-theme": 1, "extensions.zotero.reader.lightTheme": "sepia" }
 }

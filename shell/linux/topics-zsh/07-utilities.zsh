@@ -164,7 +164,7 @@ termtheme() {
         "") zt current terminals ;;
         -h|--help|help)
             echo "Usage: termtheme [<theme>|dark|light|auto [dark] [light]|default|default-dark|default-light|follow]"
-            echo "  a theme pins every terminal to it (zt list shows the eight), dark and light are the Deep Contrast pair,"
+            echo "  a theme pins every terminal to it (zt list shows the ten), dark and light are the Deep Contrast pair,"
             echo "  auto follows the system, default is each terminal's own theme and follow hands them back to zt" ;;
         dark) zt pin terminals deep-contrast-dark ;;
         light) zt pin terminals deep-contrast-light ;;

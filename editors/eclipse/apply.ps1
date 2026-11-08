@@ -6,10 +6,11 @@
 # written out in more than one place. nothing is backed up: the repo holds
 # every value it writes. every key it does not track is left as it was.
 #
-# -Theme imports one of the eight Zacess themes from theme\ (editor
+# -Theme imports one of the ten Zacess themes from theme\ (editor
 # and Terminal view colours, plus the tab outlines for the two Deep Contrast
 # themes) and sets the matching Light or Dark workbench theme. It takes a short
-# name (deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow),
+# name (deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow,
+# warm-dark, warm-light),
 # an id (deep-contrast-dark) or the full name. the default is deep-dark.
 #
 # it also adds PowerShell 7 to the Terminal view's list of local shells.
@@ -31,6 +32,7 @@ $themeNames = [ordered]@{
     'hc-light' = @('Zacess High Contrast Light', 'light'); 'high-contrast-light' = @('Zacess High Contrast Light', 'light')
     'dark' = @('Zacess Dark', 'dark'); 'light' = @('Zacess Light', 'light'); 'cream' = @('Zacess Cream', 'light')
     'yellow' = @('Zacess Yellow on Black', 'dark'); 'yellow-on-black' = @('Zacess Yellow on Black', 'dark')
+    'warm-dark' = @('Zacess Warm Dark', 'dark'); 'warm-light' = @('Zacess Warm Light', 'light')
 }
 $picked = $null
 if (-not $NoTheme) {
@@ -38,7 +40,7 @@ if (-not $NoTheme) {
     $picked = $themeNames[$key]
     if (-not $picked) {
         [Console]::Error.WriteLine("Unknown theme: $Theme")
-        [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow.')
+        [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light.')
         exit 1
     }
 }

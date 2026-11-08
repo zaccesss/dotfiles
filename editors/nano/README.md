@@ -1,6 +1,6 @@
 # nano
 
-My nano settings: one shared `nanorc` for GNU nano on every machine, VS Code's keys where nano can take them and the eight Zacess themes, switched by `zt` like every other editor. nano's own rc file is written by `zt` per machine rather than linked, for the reasons under [Themes](#themes).
+My nano settings: one shared `nanorc` for GNU nano on every machine, VS Code's keys where nano can take them and the ten Zacess themes, switched by `zt` like every other editor. nano's own rc file is written by `zt` per machine rather than linked, for the reasons under [Themes](#themes).
 
 ## What it sets
 

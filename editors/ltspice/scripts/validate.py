@@ -1,6 +1,6 @@
 """Checks the LTspice folder without LTspice: run from anywhere, exits non-zero on a problem.
 
-- shared/themes holds the eight Zacess themes, each a [Colors] section of name=number lines
+- shared/themes holds the ten Zacess themes, each a [Colors] section of name=number lines
 - every colour is a 24-bit value and every theme sets the same entries
 - shared/apply.py parses as Python
 """
@@ -11,7 +11,8 @@ import re
 import sys
 
 NAMES = ["Zacess Deep Contrast Dark", "Zacess Deep Contrast Light", "Zacess High Contrast Dark",
-         "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream", "Zacess Yellow on Black"]
+         "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream", "Zacess Yellow on Black",
+         "Zacess Warm Dark", "Zacess Warm Light"]
 root = pathlib.Path(__file__).resolve().parent.parent
 problems = []
 

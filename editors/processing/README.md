@@ -1,6 +1,6 @@
 # processing
 
-Processing 4 setup: Geist Mono as the editor font plus the eight Zacess themes for the editor, console and toolbar, built from the Zacess palette.
+Processing 4 setup: Geist Mono as the editor font plus the ten Zacess themes for the editor, console and toolbar, built from the Zacess palette.
 
 Processing reads a theme as plain `key = value` lines. It loads its built-in theme first and then a `theme.txt` in the sketchbook folder on top, which is how a custom theme works. The apply scripts write the chosen Zacess theme there and set the editor font in `preferences.txt`.
 
@@ -8,14 +8,14 @@ Processing reads a theme as plain `key = value` lines. It loads its built-in the
 
 | Setting | Value | Why |
 | --- | --- | --- |
-| `<sketchbook>/theme.txt` | Zacess Deep Contrast Dark | The default theme. `--theme` picks any of the eight |
+| `<sketchbook>/theme.txt` | Zacess Deep Contrast Dark | The default theme. `--theme` picks any of the ten |
 | `editor.font.family` | `GeistMono Nerd Font Mono` | Geist Mono, the font every editor uses |
 
 Every other line of `preferences.txt` stays as it was, the built-in theme choice (`theme=`) and the font size included.
 
 ## The themes
 
-[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/themes/`](shared/themes/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 0.5.0, downloaded and checked against its SHA-256 digest. Every colour key Processing reads is written: the editor, the console, the tabs, the toolbar buttons, the error table and the Contribution Manager. The fonts in the theme are left to Processing.
+[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/themes/`](shared/themes/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 1.0.0, downloaded and checked against its SHA-256 digest. Every colour key Processing reads is written: the editor, the console, the tabs, the toolbar buttons, the error table and the Contribution Manager. The fonts in the theme are left to Processing.
 
 | Processing token | Zacess colour |
 | --- | --- |

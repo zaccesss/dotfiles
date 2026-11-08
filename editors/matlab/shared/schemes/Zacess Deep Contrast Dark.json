@@ -3,7 +3,7 @@
   "TextColor": "#FFFFFF",
   "BackgroundColor": "#000000",
   "HighlightCurrentLine": true,
-  "HighlightCurrentLineColor": "#141414",
+  "HighlightCurrentLineColor": "#262626",
   "ShowRightHandTextLimitLine": true,
   "RightHandTextLimitLineColor": "#8C8C8C",
   "MATLABSyntaxHighlightingColors": {
@@ -27,7 +27,7 @@
       "WarningsColor": "#E19E00",
       "InfoColor": "#1DB4FF",
       "AutofixHighlight": true,
-      "AutofixHighlightColor": "#141414"
+      "AutofixHighlightColor": "#262626"
     },
     "VariableAndFunctionColors": {
       "VariablesWithSharedScope": true,

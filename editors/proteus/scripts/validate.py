@@ -1,6 +1,6 @@
 """Checks the Proteus folder without Proteus: run from anywhere, exits non-zero on a problem.
 
-- shared/themes holds the eight Zacess themes with unique colour set names Proteus keeps whole
+- shared/themes holds the ten Zacess themes with unique colour set names Proteus keeps whole
   (it cuts a name to 20 characters when it saves its settings)
 - every PCB and graph value is a "(0xRR,0xGG,0xBB)" string, a number or a Yes/No show flag
 - every theme's schematic colours cover exactly the slots in shared/base/schematic_default.json
@@ -12,7 +12,8 @@ import re
 import sys
 
 NAMES = ["Zacess Deep Contrast Dark", "Zacess Deep Contrast Light", "Zacess High Contrast Dark",
-         "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream", "Zacess Yellow on Black"]
+         "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream", "Zacess Yellow on Black",
+         "Zacess Warm Dark", "Zacess Warm Light"]
 root = pathlib.Path(__file__).resolve().parent.parent
 problems = []
 

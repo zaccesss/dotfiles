@@ -9,10 +9,10 @@ Zotero 7 has no custom interface colours, so each Zacess theme maps to Zotero's 
 | Zacess theme | Zotero mode | Reader theme |
 | --- | --- | --- |
 | Deep Contrast Dark, High Contrast Dark, Yellow on Black | Dark | Black |
-| Dark | Dark | Dark |
+| Dark, Warm Dark | Dark | Dark |
 | Deep Contrast Light, High Contrast Light | Light | Original (white) |
 | Light | Light | Snow |
-| Cream | Light | Sepia |
+| Cream, Warm Light | Light | Sepia |
 
 [`shared/prefs.json`](shared/prefs.json) adds a larger interface font (`extensions.zotero.fontSize` 1.15) and 16-point notes.
 
@@ -55,4 +55,4 @@ Zotero's custom reader themes live in its synced database, not in prefs, so a Za
 
 ## Validation
 
-[`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks all eight themes map to a mode and one built-in reader theme and the apply script parses.
+[`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks all ten themes map to a mode and one built-in reader theme and the apply script parses.

@@ -1,4 +1,4 @@
-"""Builds the eight Zacess themes for Nextpad++ in shared/themes from the Zacess palette.
+"""Builds the ten Zacess themes for Nextpad++ in shared/themes from the Zacess palette.
 
 usage: python3 scripts/build-themes.py [--model stylers.model.xml] [palette.json]
 
@@ -21,11 +21,11 @@ import sys
 import urllib.request
 import xml.etree.ElementTree as ET
 
-PALETTE_URL = "https://raw.githubusercontent.com/zacesshq/themes/v0.12.0/palette/zacess.json"
-PALETTE_SHA256 = "d352781fec89796622c0372fc046b588f092483007960204981c9dcb8c28d1f4"
+PALETTE_URL = "https://raw.githubusercontent.com/zacesshq/themes/v1.0.0/palette/zacess.json"
+PALETTE_SHA256 = "7fd99f1a321df8270c32fa1eac2a6d27dbf5fc3bdf923756a2a8bc52669607a6"
 MODEL = pathlib.Path("/Applications/Nextpad++.app/Contents/Resources/stylers.model.xml")
 ORDER = ["deep-contrast-dark", "deep-contrast-light", "high-contrast-dark", "high-contrast-light",
-         "dark", "light", "cream", "yellow-on-black"]
+         "dark", "light", "cream", "yellow-on-black", "warm-dark", "warm-light"]
 FONT = "GeistMono Nerd Font Mono"
 
 # the first rule whose pattern matches a style's name decides its token, so the narrow names
@@ -171,7 +171,7 @@ def main():
     styles = {name: token["style"] for name, token in palette["tokens"].items()}
     themes = {t["id"]: t for t in palette["themes"]}
     if sorted(themes) != sorted(ORDER):
-        sys.exit("the palette does not hold the eight expected Zacess themes")
+        sys.exit("the palette does not hold the ten expected Zacess themes")
     target = pathlib.Path(__file__).resolve().parent.parent / "shared" / "themes"
     target.mkdir(parents=True, exist_ok=True)
     for theme_id in ORDER:

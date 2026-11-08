@@ -11,7 +11,7 @@ tiring to type.
 
 Every folder in this repository follows the same rules:
 
-- **One set of themes everywhere.** Terminals, editors and IDEs all use the eight Zacess themes,
+- **One set of themes everywhere.** Terminals, editors and IDEs all use the same Zacess themes,
   with Zacess Deep Contrast Dark as the default, so switching tools never changes how the screen
   reads. `zt` in the [shell](shell/README.md) switches every installed tool at once.
 - **Colour is never the only signal.** Status, errors and warnings carry words as well as colour.
@@ -37,6 +37,7 @@ Each folder says exactly what it changes and what it cannot change yet.
 | defaults | [setup/defaults/ACCESSIBILITY.md](setup/defaults/ACCESSIBILITY.md) |
 | terminal | [terminal/terminal/ACCESSIBILITY.md](terminal/terminal/ACCESSIBILITY.md) |
 | tmux | [terminal/tmux/ACCESSIBILITY.md](terminal/tmux/ACCESSIBILITY.md) |
+| btop | [terminal/btop/ACCESSIBILITY.md](terminal/btop/ACCESSIBILITY.md) |
 | cli-tools | [terminal/cli-tools/ACCESSIBILITY.md](terminal/cli-tools/ACCESSIBILITY.md) |
 | vscode | [editors/vscode/ACCESSIBILITY.md](editors/vscode/ACCESSIBILITY.md) |
 | zed | [editors/zed/ACCESSIBILITY.md](editors/zed/ACCESSIBILITY.md) |
@@ -56,10 +57,14 @@ Each folder says exactly what it changes and what it cannot change yet.
 | matlab | [editors/matlab/ACCESSIBILITY.md](editors/matlab/ACCESSIBILITY.md) |
 | ltspice | [editors/ltspice/ACCESSIBILITY.md](editors/ltspice/ACCESSIBILITY.md) |
 | proteus | [editors/proteus/ACCESSIBILITY.md](editors/proteus/ACCESSIBILITY.md) |
+| nano | [editors/nano/ACCESSIBILITY.md](editors/nano/ACCESSIBILITY.md) |
 | raycast | [apps/raycast/ACCESSIBILITY.md](apps/raycast/ACCESSIBILITY.md) |
 | rectangle | [apps/rectangle/ACCESSIBILITY.md](apps/rectangle/ACCESSIBILITY.md) |
 | obsidian | [apps/obsidian/ACCESSIBILITY.md](apps/obsidian/ACCESSIBILITY.md) |
 | zotero | [apps/zotero/ACCESSIBILITY.md](apps/zotero/ACCESSIBILITY.md) |
+| onedrive | [apps/onedrive/ACCESSIBILITY.md](apps/onedrive/ACCESSIBILITY.md) |
+| zacess-scenes | [apps/zacess-scenes/ACCESSIBILITY.md](apps/zacess-scenes/ACCESSIBILITY.md) |
+| zacess-games | [apps/zacess-games/ACCESSIBILITY.md](apps/zacess-games/ACCESSIBILITY.md) |
 | translucenttb | [apps/translucenttb/ACCESSIBILITY.md](apps/translucenttb/ACCESSIBILITY.md) |
 
 The gitconfig, git-hooks and ssh folders change nothing about how anything looks or is operated, so

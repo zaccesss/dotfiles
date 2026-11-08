@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-# puts one of the eight Zacess themes in Processing's sketchbook and sets Geist Mono as its editor font.
+# puts one of the ten Zacess themes in Processing's sketchbook and sets Geist Mono as its editor font.
 # usage: apply.sh [--theme <theme>] [--prefs <preferences.txt>]
 #   (preferences.txt defaults to ~/Library/Processing on the Mac, ~/.config/processing on Linux,
 #   then the Flathub copy)
 #
-# --theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
-# hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
+# --theme picks one of the ten Zacess themes by short name (deep-dark, deep-light, hc-dark,
+# hc-light, dark, light, cream, yellow, warm-dark, warm-light),
+# id (deep-contrast-dark) or full name. the default is
 # deep-dark.
 #
 # Processing loads theme.txt from the sketchbook folder over whichever built-in theme is picked,
@@ -42,13 +43,15 @@ theme_id() {
     light) echo "light" ;;
     cream) echo "cream" ;;
     yellow|yellow-on-black) echo "yellow-on-black" ;;
+    warm-dark) echo "warm-dark" ;;
+    warm-light) echo "warm-light" ;;
     *) return 1 ;;
   esac
 }
 
 if ! id="$(theme_id "$theme")"; then
   echo "Unknown theme: $theme" >&2
-  echo "Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow." >&2
+  echo "Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light." >&2
   exit 1
 fi
 

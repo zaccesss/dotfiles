@@ -5,6 +5,11 @@
 
 ## In action
 
+The whole setup in one session, in Zacess Deep Contrast Dark or Light to match the system
+theme. The shot links to a short animation of it.
+
+<a href="docs/demo/hero-dark.gif"><picture><source media="(prefers-color-scheme: light)" srcset="docs/demo/hero-light.webp"><source media="(prefers-color-scheme: dark)" srcset="docs/demo/hero-dark.webp"><img src="docs/demo/hero-dark.webp" alt="A tmux session in Zacess Deep Contrast, dark or light to match the system theme. Neovim runs across the top, its file tree listing the Zacess Scenes Lua files beside build-passed.lua open in the editor. Along the bottom, from left to right: a shell showing a five-line git log and a build that passed, btop with CPU load and network traffic, then the harbour scene from Zacess Scenes playing in the same theme"></picture></a>
+
 Screenshots in four Zacess themes, Deep Contrast Dark and Light, Yellow on Black and Cream,
 recorded in a demo project. Each one links to a short animation of the same scene.
 

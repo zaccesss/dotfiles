@@ -5,8 +5,9 @@
 # -ThemesOnly refreshes the theme file and leaves settings.json alone. zt uses it, since zt writes
 # the theme block itself and can also set it to follow the system.
 #
-# -Theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
-# hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
+# -Theme picks one of the ten Zacess themes by short name (deep-dark, deep-light, hc-dark,
+# hc-light, dark, light, cream, yellow, warm-dark, warm-light),
+# id (deep-contrast-dark) or full name. the default is
 # deep-dark.
 #
 # the theme file is the one Zacess Themes ships for Zed, kept in ..\shared\themes while the
@@ -35,12 +36,14 @@ $themes = @(
     @{ Id = 'light'; Short = 'light'; Name = 'Zacess Light'; Dark = $false }
     @{ Id = 'cream'; Short = 'cream'; Name = 'Zacess Cream'; Dark = $false }
     @{ Id = 'yellow-on-black'; Short = 'yellow'; Name = 'Zacess Yellow on Black'; Dark = $true }
+    @{ Id = 'warm-dark'; Short = 'warm-dark'; Name = 'Zacess Warm Dark'; Dark = $true }
+    @{ Id = 'warm-light'; Short = 'warm-light'; Name = 'Zacess Warm Light'; Dark = $false }
 )
 $key = ($Theme.Trim().ToLowerInvariant() -replace ' ', '-') -replace '^zacess-', ''
 $wanted = $themes | Where-Object { $_.Id -eq $key -or $_.Short -eq $key } | Select-Object -First 1
 if (-not $wanted) {
     [Console]::Error.WriteLine("Unknown theme: $Theme")
-    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow.')
+    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light.')
     exit 1
 }
 

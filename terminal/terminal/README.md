@@ -1,6 +1,6 @@
 # terminal
 
-> The eight Zacess colour themes for Terminal.app, iTerm2, Windows Terminal, Ptyxis, GNOME
+> The ten Zacess colour themes for Terminal.app, iTerm2, Windows Terminal, Ptyxis, GNOME
 > Terminal, Alacritty, Kitty and Hyper, with Zacess Deep Contrast Dark as the default, plus starter
 > configs with per-platform fonts.
 
@@ -45,7 +45,7 @@ and Cream.
 
 ## What's here
 
-Every terminal gets all eight Zacess themes from [Zacess Themes](https://github.com/zacesshq/themes),
+Every terminal gets all ten Zacess themes from [Zacess Themes](https://github.com/zacesshq/themes),
 with Zacess Deep Contrast Dark as the default: white on pure black with deep, fully saturated
 colours. The theme stays fixed whatever the system appearance until it is changed. The colours live
 in one file, [`palette/zacess.json`](palette/zacess.json).
@@ -73,7 +73,7 @@ on each platform. Palette and font choices are explained in [guides/reference.md
 | Path | Contents |
 | --- | --- |
 | [`ACCESSIBILITY.md`](ACCESSIBILITY.md) | Light and dark contrast, opaque windows and font sizing |
-| [`palette/`](palette/) | The eight Zacess themes' terminal colours, the single source for every colour |
+| [`palette/`](palette/) | The ten Zacess themes' terminal colours, the single source for every colour |
 | [`scripts/`](scripts/) | `build-themes.py` writes every theme file from the palette and `sync-palette.py` copies the palette from a pinned Zacess Themes release |
 | `<platform>/<terminal>/` | That terminal's config file for that platform |
 | [`guides/`](guides/) | Setup walkthrough and reference |

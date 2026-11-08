@@ -1,6 +1,6 @@
 # xcode
 
-> Xcode preferences for macOS: the eight Zacess colour themes, the recorded editor settings, the
+> Xcode preferences for macOS: the ten Zacess colour themes, the recorded editor settings, the
 > key bindings file and one script that installs them all.
 
 Xcode keeps its preferences in the `com.apple.dt.Xcode` defaults domain, mixed in with a long list
@@ -13,7 +13,7 @@ one key at a time.
 - [`prefs.txt`](prefs.txt) - the preferences, read from Xcode 27.1: the light and dark editor
   themes for Xcode 26 and earlier, the Xcode 27 theme setting, the key bindings set, predictive
   code completion off and automatic string catalog comments off.
-- [`theme/`](theme/) - the eight Zacess Xcode themes from
+- [`theme/`](theme/) - the ten Zacess Xcode themes from
   [Zacess Themes](https://github.com/zacesshq/themes) as `.xccolortheme` files, plus Zacess Deep
   Contrast Dark in Xcode 27's own `.xcworkspacecolortheme` format.
 - [`KeyBindings/`](KeyBindings/) - the key bindings set Xcode keeps in

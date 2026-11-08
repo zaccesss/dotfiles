@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# gives the AMD Vivado text editor one of the eight Zacess themes and Geist Mono.
+# gives the AMD Vivado text editor one of the ten Zacess themes and Geist Mono.
 # usage: apply.sh [--theme <theme>] [--config-dir <dir>]
 #   (the config folder defaults to the newest ~/.Xilinx/Vivado/<version>)
 #
-# --theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
-# hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
+# --theme picks one of the ten Zacess themes by short name (deep-dark, deep-light, hc-dark,
+# hc-light, dark, light, cream, yellow, warm-dark, warm-light),
+# id (deep-contrast-dark) or full name. the default is
 # deep-dark.
 #
 # Vivado keeps Tools > Settings in <config>/vivado.xml and writes it back on exit. this merges the
@@ -42,13 +43,15 @@ theme_id() {
     light) echo "light" ;;
     cream) echo "cream" ;;
     yellow|yellow-on-black) echo "yellow-on-black" ;;
+    warm-dark) echo "warm-dark" ;;
+    warm-light) echo "warm-light" ;;
     *) return 1 ;;
   esac
 }
 
 if ! id="$(theme_id "$theme")"; then
   echo "Unknown theme: $theme" >&2
-  echo "Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow." >&2
+  echo "Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light." >&2
   exit 1
 fi
 

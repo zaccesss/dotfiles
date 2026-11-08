@@ -47,7 +47,7 @@ Use each IDE's own Settings UI:
 ## 5. Use the Zacess Deep Contrast theme
 
 The Zacess Themes plugin ([JetBrains Marketplace](https://plugins.jetbrains.com/plugin/35082-zacess-themes),
-`com.zacess.themes`, in every list in `plugins/`) adds the eight Zacess themes, each with its own
+`com.zacess.themes`, in every list in `plugins/`) adds the ten Zacess themes, each with its own
 editor colour scheme, the IDE's terminal colours included.
 
 1. Settings > Plugins > Marketplace: install **Zacess Themes**.

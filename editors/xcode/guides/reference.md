@@ -28,7 +28,7 @@ Every other editor setting, such as line numbers, the page guide, trimming white
 
 ## Themes
 
-[`theme/`](../theme/) holds the eight Zacess Xcode themes from [Zacess Themes](https://github.com/zacesshq/themes), generated there from its palette. Each sets the colour and font of every syntax type Xcode colours, the editor background, cursor, selection and current line, the console and the scroll bar marks.
+[`theme/`](../theme/) holds the ten Zacess Xcode themes from [Zacess Themes](https://github.com/zacesshq/themes), generated there from its palette. Each sets the colour and font of every syntax type Xcode colours, the editor background, cursor, selection and current line, the console and the scroll bar marks.
 
 | Theme | macOS appearance |
 | --- | --- |
@@ -40,6 +40,8 @@ Every other editor setting, such as line numbers, the page guide, trimming white
 | Zacess High Contrast Light | Light |
 | Zacess Deep Contrast Dark | Dark |
 | Zacess Deep Contrast Light | Light |
+| Zacess Warm Dark | Dark |
+| Zacess Warm Light | Light |
 
 Xcode 27 has a new theme system. A classic `.xccolortheme` file only shows up once it is brought in through **Settings...**, **Themes**, **Import Classic Theme**, which writes a `.xcworkspacecolortheme` file and records the choice in `DVTWorkspaceThemeSettings`. Zacess Deep Contrast Dark is included in both forms, as Xcode wrote them on import, so `apply.sh` sets it up on a new Mac without importing again. It is marked to show in every appearance.
 
