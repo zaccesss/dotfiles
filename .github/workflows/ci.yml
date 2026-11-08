@@ -1265,8 +1265,8 @@ jobs:
                       print(f"::error file={path}::the root is not a dictionary")
                       bad = 1
           print(f"theme/: {len(themes)} classic themes parse")
-          if len(themes) != 8:
-              print(f"::error::expected 8 .xccolortheme files, found {len(themes)}")
+          if len(themes) != 10:
+              print(f"::error::expected 10 .xccolortheme files, found {len(themes)}")
               bad = 1
           for path in sorted(glob.glob("theme/*.xcworkspacecolortheme")):
               json.load(open(path))
