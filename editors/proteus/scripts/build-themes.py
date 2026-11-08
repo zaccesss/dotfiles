@@ -32,6 +32,8 @@ THEMES = {
     "zacess-light": ("Zacess Light", "light", "ZACESS_LIGHT"),
     "zacess-cream": ("Zacess Cream", "light", "ZACESS_CREAM"),
     "zacess-yellow-on-black": ("Zacess Yellow on Black", "dark", "ZACESS_YELLOW"),
+    "zacess-warm-dark": ("Zacess Warm Dark", "dark", "ZACESS_WARM_DARK"),
+    "zacess-warm-light": ("Zacess Warm Light", "light", "ZACESS_WARM_LIGHT"),
 }
 
 ANSI = ["Red", "Green", "Yellow", "Blue", "Magenta", "Cyan", "BrightRed", "BrightGreen", "BrightYellow",

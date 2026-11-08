@@ -12,9 +12,10 @@ other editors.
 
 - The editor uses Zacess Deep Contrast Dark from
   [Zacess Themes](https://github.com/zacesshq/themes) in Xcode 27: white on pure black with deep,
-  fully saturated colours. All eight Zacess themes are in `theme/` and the script installs every
+  fully saturated colours. All ten Zacess themes are in `theme/` and the script installs every
   one: Light, Dark, Yellow on Black, Cream, High Contrast Dark, High Contrast Light, Deep Contrast
-  Dark and Deep Contrast Light. Measured contrast is in the
+  Dark, Deep Contrast Light, Warm Dark and Warm Light. The Warm pair is the gentler option with a
+  4.5:1 floor; the other eight keep 7:1. Measured contrast is in the
   [Zacess Themes accessibility statement](https://github.com/zacesshq/themes/blob/main/ACCESSIBILITY.md).
 - Colour is never the only signal in the themes: keywords are bold, comments are italic and
   documentation tags are bold italic.

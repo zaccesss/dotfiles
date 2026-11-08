@@ -50,7 +50,7 @@ editing a central list.
 
 | Plugin | What it does |
 | --- | --- |
-| `zacess.nvim` | The eight Zacess colour schemes, pinned to 0.12.0. `lua/config/theme.lua` picks one from the `zt` state file (`~/.local/state/zacess/theme`, `%LOCALAPPDATA%\zacess\theme` on Windows). With no state file it uses Zacess Deep Contrast Dark. It checks the file again on focus. `:ZacessFollow` returns to it after a manual `:colorscheme` |
+| `zacess.nvim` | The ten Zacess colour schemes, pinned to 1.0.0. `lua/config/theme.lua` picks one from the `zt` state file (`~/.local/state/zacess/theme`, `%LOCALAPPDATA%\zacess\theme` on Windows). With no state file it uses Zacess Deep Contrast Dark. It checks the file again on focus. `:ZacessFollow` returns to it after a manual `:colorscheme` |
 | `colors/high-contrast.lua` | The earlier colour scheme (no plugin), kept for `:colorscheme high-contrast`: uses only the terminal's 16 colours |
 | `nvim-treesitter` | Syntax highlighting and indentation, pinned to `master`, see below |
 | `telescope.nvim` | Fuzzy finder, backed by `ripgrep` for grep and native fzf sort |

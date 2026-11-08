@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Copies the eight Zacess themes from a pinned Zacess Themes release into palette/zacess.json.
+"""Copies the ten Zacess themes from a pinned Zacess Themes release into palette/zacess.json.
 
     scripts/sync-palette.py                    the release pinned in palette/zacess.json
-    scripts/sync-palette.py --version 0.5.0    move the pin to that release and copy it
+    scripts/sync-palette.py --version 1.0.0    move the pin to that release and copy it
     scripts/sync-palette.py --from <clone>     read the release from a local clone's tag, offline
     scripts/sync-palette.py --palette-only     the palette and the generated files, leaving the editor pins
     scripts/sync-palette.py --check            exit 1 when the palette or a pin differs from the release
@@ -29,7 +29,7 @@ REPOSITORY = "zacesshq/themes"
 NVIM_REPOSITORY = "zacesshq/zacess.nvim"
 SHORT = {"deep-contrast-dark": "deep-dark", "deep-contrast-light": "deep-light", "high-contrast-dark": "hc-dark",
          "high-contrast-light": "hc-light", "dark": "dark", "light": "light", "cream": "cream",
-         "yellow-on-black": "yellow"}
+         "yellow-on-black": "yellow", "warm-dark": "warm-dark", "warm-light": "warm-light"}
 # palette key: the upstream ui token it copies. tmux's theme files and the contrast checks use these
 UI_TOKENS = {"surface": "surface", "surface_alt": "surfaceAlt", "muted": "muted", "border": "border",
              "border_active": "borderActive", "accent": "accent", "accent_foreground": "accentForeground",
@@ -81,6 +81,10 @@ def convert(upstream, version, current):
             "background_role": terminal.get("backgroundRole", []),
             "ui": {key: ui[token] for key, token in UI_TOKENS.items()},
         })
+        # a gentler theme (Warm Dark and Warm Light) sets its own WCAG AA text floor upstream, so
+        # build-themes.py measures it against that floor rather than the AAA one the rest keep
+        if "textContrast" in theme:
+            themes[-1]["text_contrast"] = theme["textContrast"]
     return {
         "source": {
             "repository": REPOSITORY,

@@ -1,7 +1,7 @@
 """Checks the Thonny folder without Thonny: run from anywhere, exits non-zero on a problem.
 
 - the generated plugin and shared/apply.py parse as Python
-- the plugin defines all eight Zacess themes
+- the plugin defines all ten Zacess themes
 - shared/settings.json names a Zacess theme and every platform's overlay names Geist Mono
 """
 
@@ -11,7 +11,8 @@ import pathlib
 import sys
 
 NAMES = ["Zacess Deep Contrast Dark", "Zacess Deep Contrast Light", "Zacess High Contrast Dark",
-         "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream", "Zacess Yellow on Black"]
+         "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream", "Zacess Yellow on Black",
+         "Zacess Warm Dark", "Zacess Warm Light"]
 root = pathlib.Path(__file__).resolve().parent.parent
 problems = []
 

@@ -1,9 +1,10 @@
-# puts one of the eight Zacess themes in Processing's sketchbook and sets Geist Mono as its editor font.
+# puts one of the ten Zacess themes in Processing's sketchbook and sets Geist Mono as its editor font.
 # usage: .\apply.ps1 [-Theme <theme>] [-Prefs <preferences.txt>]
 #   (preferences.txt defaults to %APPDATA%\Processing\preferences.txt)
 #
-# -Theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
-# hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
+# -Theme picks one of the ten Zacess themes by short name (deep-dark, deep-light, hc-dark,
+# hc-light, dark, light, cream, yellow, warm-dark, warm-light),
+# id (deep-contrast-dark) or full name. the default is
 # deep-dark.
 #
 # Processing loads theme.txt from the sketchbook folder over whichever built-in theme is picked,
@@ -25,12 +26,13 @@ $themeIds = @{
     'hc-light' = 'high-contrast-light'; 'high-contrast-light' = 'high-contrast-light'
     'dark' = 'dark'; 'light' = 'light'; 'cream' = 'cream'
     'yellow' = 'yellow-on-black'; 'yellow-on-black' = 'yellow-on-black'
+    'warm-dark' = 'warm-dark'; 'warm-light' = 'warm-light'
 }
 $key = ($Theme.ToLowerInvariant() -replace '^zacess[ -]', '') -replace ' ', '-'
 $id = $themeIds[$key]
 if (-not $id) {
     [Console]::Error.WriteLine("Unknown theme: $Theme")
-    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow.')
+    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light.')
     exit 1
 }
 

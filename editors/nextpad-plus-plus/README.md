@@ -1,6 +1,6 @@
 # nextpad-plus-plus
 
-Nextpad++ setup for macOS: the eight Zacess themes, built from the Zacess palette, with Geist Mono as the editor font.
+Nextpad++ setup for macOS: the ten Zacess themes, built from the Zacess palette, with Geist Mono as the editor font.
 
 Nextpad++ is a Mac port of Notepad++ and reads the same style files: one XML file per theme with a style for every language's tokens plus the editor-wide styles. It loads extra themes from `~/.nextpad++/themes` and keeps the active one, by name, in its own preferences (`org.nextpadplusplus.mac`). It only runs on macOS, so there is no Linux or Windows script.
 
@@ -8,8 +8,8 @@ Nextpad++ is a Mac port of Notepad++ and reads the same style files: one XML fil
 
 | Setting | Value | Why |
 | --- | --- | --- |
-| `~/.nextpad++/themes/Zacess *.xml` | The eight Zacess themes | All eight show under **Settings > Style Configurator** |
-| `NPPActiveTheme` | `Zacess Deep Contrast Dark` | The default theme. `--theme` picks any of the eight |
+| `~/.nextpad++/themes/Zacess *.xml` | The ten Zacess themes | All ten show under **Settings > Style Configurator** |
+| `NPPActiveTheme` | `Zacess Deep Contrast Dark` | The default theme. `--theme` picks any of the ten |
 | `styleFontName` | `GeistMono Nerd Font Mono` | Geist Mono, the font every editor uses |
 | `NPPStyleOverrides` | The Default Style's colour and font entries removed | An override made in the Style Configurator sits on top of every theme and would hide it |
 
@@ -17,7 +17,7 @@ Every other override stays, the text size included.
 
 ## The themes
 
-[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/themes/`](shared/themes/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 0.12.0 and the `stylers.model.xml` that ships inside Nextpad++, which lists every language and token style the app knows. Each style takes a palette colour by what its name says it is: a comment, a string, a number, a keyword, a type, a function, an operator, a tag and so on. Bold and italic follow the palette (keywords and control flow bold, comments and parameters italic). Every style sits on the theme's own background. A newer Nextpad++ with more languages is covered by running the build again.
+[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/themes/`](shared/themes/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 1.0.0 and the `stylers.model.xml` that ships inside Nextpad++, which lists every language and token style the app knows. Each style takes a palette colour by what its name says it is: a comment, a string, a number, a keyword, a type, a function, an operator, a tag and so on. Bold and italic follow the palette (keywords and control flow bold, comments and parameters italic). Every style sits on the theme's own background. A newer Nextpad++ with more languages is covered by running the build again.
 
 The same files work in Notepad++ on Windows, which reads the same format, so a Notepad++ setup can take them from `shared/themes/` as they are.
 

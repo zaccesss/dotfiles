@@ -6,3 +6,4 @@ What the example Zacess Scenes settings change on screen and in sound.
 - **The theme follows `zt`.** Scenes take the colours of the Zacess theme the terminal is on, so contrast is never lower than the theme's own.
 - **Sound is never the only signal.** Every tone in watch mode has the same state written on screen. Volume is 40 and quiet hours keep it silent from 22:00 to 07:00.
 - **Notifications.** Off in the example. With `[notifications] enabled = true` a desktop notification says when a build fails or is fixed, which screen readers announce.
+- **My own scenes follow the same rules.** The Lua scenes in `scenes/` name palette roles rather than colours, give every status a word as well as a colour, scroll text at a steady readable rate and slow down further under reduced motion. They pass the program's flash meter like the built-in scenes.

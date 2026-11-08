@@ -1,9 +1,13 @@
 # Accessibility
 
-Every config in this folder is chosen for readability first. Every terminal shares the eight Zacess themes with Zacess Deep Contrast Dark as the default, so switching terminals changes nothing about how text reads.
+Every config in this folder is chosen for readability first. Every terminal shares the ten Zacess themes with Zacess Deep Contrast Dark as the default, so switching terminals changes nothing about how text reads.
 
 > [!NOTE]
 > Some of these settings are preferences rather than requirements. Change them freely in your own copy. If a change would help other people too, open an issue or a pull request so I can consider it for everyone.
+
+> [!NOTE]
+> Zacess Warm Dark and Zacess Warm Light are the gentler pair, for anyone who finds high contrast
+> too intense. Their text and terminal colours are held to WCAG AA (4.5:1) rather than 7:1.
 
 ## Vision
 

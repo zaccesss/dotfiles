@@ -1,6 +1,6 @@
 # nano themes
 
-GNU nano in the eight Zacess themes, so the editor matches the terminal around it.
+GNU nano in the ten Zacess themes, so the editor matches the terminal around it.
 
 ## What is here
 

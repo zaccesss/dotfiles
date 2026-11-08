@@ -1,6 +1,6 @@
 """Checks the Nextpad++ folder without Nextpad++: run from anywhere, exits non-zero on a problem.
 
-- shared/themes holds the eight Zacess themes as Notepad++ style files that parse
+- shared/themes holds the ten Zacess themes as Notepad++ style files that parse
 - every style's text colour and the line numbers are at least 7:1 on the editor background in the
   Deep Contrast and High Contrast themes and at least 4.5:1 in the others
 - every style is at least 4.5:1 on the current line, the rule Zacess Themes 0.6.0 sets for syntax
@@ -19,7 +19,8 @@ problems = []
 NAMES = {"deep-contrast-dark": "Zacess Deep Contrast Dark", "deep-contrast-light": "Zacess Deep Contrast Light",
          "high-contrast-dark": "Zacess High Contrast Dark", "high-contrast-light": "Zacess High Contrast Light",
          "dark": "Zacess Dark", "light": "Zacess Light", "cream": "Zacess Cream",
-         "yellow-on-black": "Zacess Yellow on Black"}
+         "yellow-on-black": "Zacess Yellow on Black", "warm-dark": "Zacess Warm Dark",
+         "warm-light": "Zacess Warm Light"}
 FONT = "GeistMono Nerd Font Mono"
 
 

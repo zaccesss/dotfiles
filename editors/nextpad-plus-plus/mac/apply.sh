@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# installs the eight Zacess themes for Nextpad++ and makes one of them the active theme.
+# installs the ten Zacess themes for Nextpad++ and makes one of them the active theme.
 # usage: apply.sh [--theme <theme>]
 #
-# --theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
-# hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
+# --theme picks one of the ten Zacess themes by short name (deep-dark, deep-light, hc-dark,
+# hc-light, dark, light, cream, yellow, warm-dark, warm-light),
+# id (deep-contrast-dark) or full name. the default is
 # deep-dark.
 #
 # Nextpad++ reads extra themes from ~/.nextpad++/themes and keeps the active one, by name, in its
@@ -37,13 +38,15 @@ theme_name() {
     light) echo "Zacess Light" ;;
     cream) echo "Zacess Cream" ;;
     yellow|yellow-on-black) echo "Zacess Yellow on Black" ;;
+    warm-dark) echo "Zacess Warm Dark" ;;
+    warm-light) echo "Zacess Warm Light" ;;
     *) return 1 ;;
   esac
 }
 
 if ! name="$(theme_name "$theme")"; then
   echo "Unknown theme: $theme" >&2
-  echo "Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow." >&2
+  echo "Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light." >&2
   exit 1
 fi
 

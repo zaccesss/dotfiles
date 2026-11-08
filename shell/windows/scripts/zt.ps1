@@ -2,7 +2,7 @@
 #
 #   zt <theme>                 fix that theme everywhere and stop following the system
 #   zt auto [dark] [light]     follow the Windows light and dark setting, Deep Contrast by default
-#   zt list                    the eight themes and their short names
+#   zt list                    the ten themes and their short names
 #   zt current                 the mode zt last set and what each tool is on now
 #   zt doctor                  every installed theme file against the repo copy, exit 1 on drift
 #   zt <theme> --all           the same here, then on every other device as a terminal opens there
@@ -37,6 +37,8 @@ $Themes = @(
     @{ Id = 'light'; Short = 'light'; Name = 'Zacess Light'; Dark = $false }
     @{ Id = 'cream'; Short = 'cream'; Name = 'Zacess Cream'; Dark = $false }
     @{ Id = 'yellow-on-black'; Short = 'yellow'; Name = 'Zacess Yellow on Black'; Dark = $true }
+    @{ Id = 'warm-dark'; Short = 'warm-dark'; Name = 'Zacess Warm Dark'; Dark = $true }
+    @{ Id = 'warm-light'; Short = 'warm-light'; Name = 'Zacess Warm Light'; Dark = $false }
 )
 
 $StateFile = Join-Path $env:LOCALAPPDATA 'zacess\theme'
@@ -372,7 +374,7 @@ function Set-Tmux($Fixed, $Dark, $Light, $Now) {
 # a themes folder from the folder of the path it was started from, not a config folder. a winget
 # portable install keeps the exe under WinGet\Packages and puts a link to it, named btop.exe, in
 # WinGet\Links. btop started through that link reads WinGet\Links instead, so both folders get
-# the settings: the exe's own folder holds the themes (the shipped ones and the eight Zacess ones,
+# the settings: the exe's own folder holds the themes (the shipped ones and the ten Zacess ones,
 # linked in) and the link's folder gets a link to that themes folder. each btop.conf has only
 # color_theme and theme_background rewritten. Get-BtopDirs returns the exe's folder first
 function Get-BtopDirs {

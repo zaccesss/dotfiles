@@ -1,6 +1,6 @@
 # stm32cubeide
 
-> STM32CubeIDE preferences: the eight Zacess colour themes mapped to C, Geist Mono, 15 VS Code style key bindings and a merge script per platform that applies them to a workspace without touching anything else.
+> STM32CubeIDE preferences: the ten Zacess colour themes mapped to C, Geist Mono, 15 VS Code style key bindings and a merge script per platform that applies them to a workspace without touching anything else.
 
 STM32CubeIDE is ST's Eclipse-based IDE for STM32 microcontrollers. It sits on Eclipse (4.38 in STM32CubeIDE 2.2) with CDT for C and C++, so like Eclipse it keeps preferences in `.prefs` files inside each workspace's `.metadata` folder, mixed in with values it writes for itself (window state, recent files, debug probes, toolchain paths). Copying those files over would wipe all of that, so this folder tracks only the keys that were deliberately changed and merges them in. The Eclipse IDE counterpart is [eclipse](../eclipse). STM32CubeIDE gets its own folder because it edits C through CDT and keeps its own workspace.
 
@@ -8,7 +8,7 @@ STM32CubeIDE is ST's Eclipse-based IDE for STM32 microcontrollers. It sits on Ec
 
 - **`shared/prefs/`** - the tracked keys, one fragment per `.prefs` file: autosave every 20 seconds, line numbers, spaces for tabs at width 4, current line highlight, spell checking in British English (C files included) and the 15 key bindings. Every key explained in [guides/reference.md](guides/reference.md).
 - **`<platform>/prefs/`** - the editor, C editor and Terminal font for each platform: GeistMono Nerd Font at 18 points on the Mac and 14 on Windows and Linux, which matches on screen. The Terminal uses its Nerd Font Mono variant, whose icons fit one cell.
-- **`shared/theme/`** - the eight Zacess themes for STM32CubeIDE, built by [`scripts/build-themes.py`](scripts/build-themes.py) from the Zacess Eclipse themes: editor colours, C syntax and semantic colours, Doxygen comments and the Terminal palette, plus tab outlines for the two Deep Contrast themes. The apply scripts merge Zacess Deep Contrast Dark by default. `--theme` picks another.
+- **`shared/theme/`** - the ten Zacess themes for STM32CubeIDE, built by [`scripts/build-themes.py`](scripts/build-themes.py) from the Zacess Eclipse themes: editor colours, C syntax and semantic colours, Doxygen comments and the Terminal palette, plus tab outlines for the two Deep Contrast themes. The apply scripts merge Zacess Deep Contrast Dark by default. `--theme` picks another.
 - **`<platform>/apply.sh`** and **`windows/apply.ps1`** - find the workspace, merge the fragments and the chosen theme in key by key and print what changed. They refuse to run while STM32CubeIDE is open and make no backup: this folder holds every value they write and every other key is left as it was.
 - **`<platform>/README.md`** - installing STM32CubeIDE on that platform.
 
@@ -34,7 +34,7 @@ Replace `<platform>` with `mac` or `linux`. On Windows run `pwsh -File "$HOME\de
 | --- | --- |
 | [`ACCESSIBILITY.md`](ACCESSIBILITY.md) | The Zacess theme, font size, autosave, spell checking and the key bindings |
 | [`shared/prefs/`](shared/prefs/) | The tracked keys, merged on every platform |
-| [`shared/theme/`](shared/theme/) | The eight Zacess themes for STM32CubeIDE and the Deep Contrast tab outlines |
+| [`shared/theme/`](shared/theme/) | The ten Zacess themes for STM32CubeIDE and the Deep Contrast tab outlines |
 | [`scripts/`](scripts/) | `build-themes.py`, which builds `shared/theme/` from the Zacess Eclipse themes |
 | [`mac/`](mac/) | Merge script, the Mac font and the install steps |
 | [`linux/`](linux/) | Merge script, font and the install steps for Fedora, Ubuntu and Debian |

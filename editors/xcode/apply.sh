@@ -55,7 +55,7 @@ copy_file() {
   changes=$((changes + 1))
 }
 
-# the eight classic .xccolortheme files sit beside the .xcworkspacecolortheme
+# the ten classic .xccolortheme files sit beside the .xcworkspacecolortheme
 # that xcode 27 writes when one of them is imported, so a new mac needs no
 # manual import for the theme recorded in DVTWorkspaceThemeSettings
 echo "Themes"

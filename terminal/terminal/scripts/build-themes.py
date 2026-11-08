@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Writes every terminal's theme files from palette/zacess.json.
 
-The palette holds the terminal colours and interface tokens of the eight Zacess themes, copied from
+The palette holds the terminal colours and interface tokens of the ten Zacess themes, copied from
 the Zacess Themes release named in its `source` by scripts/sync-palette.py. Every terminal gets all
-eight, so any of them can be picked. Zacess Deep Contrast Dark is the default. No terminal
+ten, so any of them can be picked. Zacess Deep Contrast Dark is the default. No terminal
 follows the system light and dark setting: the theme stays fixed until it is changed by hand or
 with the `zt` command in the dotfiles. The tmux folder beside this one gets a theme file per
 theme too (status bar, message line, copy mode and pane borders), which `zt` links into place.
@@ -470,11 +470,14 @@ def low_contrast():
     problems = []
     for t in THEMES:
         ui = t["ui"]
+        # a theme that sets its own text floor upstream (Warm Dark and Warm Light at 4.5:1) is held
+        # to that one, the same rule Zacess Themes applies, so the gentler themes keep WCAG AA
+        text = t.get("text_contrast", 7)
         # the selection pair and the find match keep Zacess Themes' own 4.5:1 floors for text over a
         # highlight, the accent pair is text so it keeps 7:1 and borders are non-text at 3:1
-        checks = [("foreground", t["foreground"], t["background"], 7),
+        checks = [("foreground", t["foreground"], t["background"], text),
                   ("selection", t["selection_foreground"], t["selection_background"], 4.5),
-                  ("message line", ui["accent_foreground"], ui["accent"], 7),
+                  ("message line", ui["accent_foreground"], ui["accent"], text),
                   ("find match", t["foreground"], ui["find_match"], 4.5),
                   ("pane border", ui["border"], t["background"], 3),
                   ("active pane border", ui["border_active"], t["background"], 3),
@@ -483,7 +486,7 @@ def low_contrast():
         for i, value in enumerate(colours16(t)):
             if i in t["background_role"]:
                 continue
-            checks.append((f"color{i}", value, t["background"], 4.5 if i in t["dim"] else 7))
+            checks.append((f"color{i}", value, t["background"], min(4.5, text) if i in t["dim"] else text))
         # nano shows the nearest cube colour, so each of its slots is measured as shown
         for option, _, fg, bg, floor in nano_slots(t):
             checks.append((f"nano {option}", nano_colour(fg)[1], nano_colour(bg)[1] if bg else t["background"], floor))

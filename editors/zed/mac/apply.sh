@@ -4,8 +4,9 @@
 #   (the config folder defaults to ~/.config/zed or $XDG_CONFIG_HOME/zed when that is set; Linux also checks the
 #   Flatpak's copy)
 #
-# --theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
-# hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
+# --theme picks one of the ten Zacess themes by short name (deep-dark, deep-light, hc-dark,
+# hc-light, dark, light, cream, yellow, warm-dark, warm-light),
+# id (deep-contrast-dark) or full name. the default is
 # deep-dark.
 #
 # the work is done by ../shared/apply.py with the system python3. it reuses shell/scripts/zt.py

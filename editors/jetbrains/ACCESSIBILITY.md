@@ -15,7 +15,7 @@ The keymap is built so one set of muscle memory covers JetBrains IDEs and VS Cod
 
 ## Vision
 
-- The IDE theme and editor colour scheme are Zacess Deep Contrast Dark from the Zacess Themes plugin, which the apply scripts install into every IDE and set with `--theme` (`-Theme` on Windows): white on pure black with deep, fully saturated colours and yellow and cyan outlines. It stays fixed whatever the system appearance; **Sync with OS** switches to Zacess Deep Contrast Light in light mode. All eight Zacess themes come with the plugin.
+- The IDE theme and editor colour scheme are Zacess Deep Contrast Dark from the Zacess Themes plugin, which the apply scripts install into every IDE and set with `--theme` (`-Theme` on Windows): white on pure black with deep, fully saturated colours and yellow and cyan outlines. It stays fixed whatever the system appearance; **Sync with OS** switches to Zacess Deep Contrast Light in light mode. All ten Zacess themes come with the plugin.
 - The console and terminal take their colours from the theme. The earlier High Contrast schemes in `colors/` stay available.
 - The editor and the built-in terminal use GeistMono Nerd Font, the font every editor and terminal here uses, set by the two font files the apply scripts copy in. The size stays each IDE's own. A screen reader option sits under Settings > Appearance & Behavior > Appearance.
 

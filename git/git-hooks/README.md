@@ -13,7 +13,8 @@ settings, not something each tool has to opt into separately.
 
 ## In action
 
-Screenshots in four Zacess themes, Deep Contrast Dark and Light, Yellow on Black and Cream,
+Screenshots in six Zacess themes, Deep Contrast Dark and Light, Yellow on Black, Cream, Warm Dark
+and Warm Light,
 recorded in a demo project. Each one links to a short animation of the same scene.
 
 ### A blocked commit
@@ -26,9 +27,13 @@ recorded in a demo project. Each one links to a short animation of the same scen
 | --- | --- |
 | [![Yellow on Black: a commit stopped by the pre-commit hook because the staged file contains AWS's example access key ID](docs/demo/git-hooks-yellow-on-black.webp)](docs/demo/git-hooks-yellow-on-black.gif) | [![Cream: a commit stopped by the pre-commit hook because the staged file contains AWS's example access key ID](docs/demo/git-hooks-cream.webp)](docs/demo/git-hooks-cream.gif) |
 
+| Warm Dark | Warm Light |
+| --- | --- |
+| [![Warm Dark: a commit stopped by the pre-commit hook because the staged file contains AWS's example access key ID](docs/demo/git-hooks-warm-dark.webp)](docs/demo/git-hooks-warm-dark.gif) | [![Warm Light: a commit stopped by the pre-commit hook because the staged file contains AWS's example access key ID](docs/demo/git-hooks-warm-light.webp)](docs/demo/git-hooks-warm-light.gif) |
+
 The shots show the real config in a throwaway demo project, in
-[Zacess Themes](https://github.com/zacesshq/themes) Deep Contrast Dark and Light, Yellow on Black
-and Cream.
+[Zacess Themes](https://github.com/zacesshq/themes) Deep Contrast Dark and Light, Yellow on Black,
+Cream, Warm Dark and Warm Light.
 
 ## What's here
 

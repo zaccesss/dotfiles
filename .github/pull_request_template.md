@@ -12,6 +12,7 @@ A short, clear description of the change in your own words.
 - [ ] `terminal/terminal/`
 - [ ] `terminal/tmux/`
 - [ ] `terminal/btop/`
+- [ ] `terminal/nano/`
 - [ ] `terminal/cli-tools/`
 - [ ] `git/gitconfig/`
 - [ ] `git/git-hooks/`
@@ -34,10 +35,15 @@ A short, clear description of the change in your own words.
 - [ ] `editors/matlab/`
 - [ ] `editors/ltspice/`
 - [ ] `editors/proteus/`
+- [ ] `editors/nano/`
 - [ ] `apps/raycast/`
 - [ ] `apps/rectangle/`
 - [ ] `apps/obsidian/`
 - [ ] `apps/zotero/`
+- [ ] `apps/onedrive/`
+- [ ] `apps/zacess-scenes/`
+- [ ] `apps/zacess-games/`
+- [ ] `apps/translucenttb/`
 - [ ] The repository root or `.github/`
 
 If a change applies to macOS, Linux and Windows, confirm all three copies were updated, not just one.

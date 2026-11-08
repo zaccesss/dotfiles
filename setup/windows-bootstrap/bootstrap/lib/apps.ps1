@@ -78,8 +78,11 @@ function Install-AppSettings {
     # The special-folder API rather than the environment variable, which is not set when the plan
     # is checked elsewhere
     $stateFile = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'zacess\theme'
-    # typed, because an if expression unrolls a one-element array into a string, whose [0] is one character
-    [string[]]$words = if (Test-Path $stateFile) { @((([IO.File]::ReadAllText($stateFile)).Trim() -split '\s+')) } else { @() }
+    # typed and set in a statement of its own. An if expression unrolls a one-element array into a string whose [0]
+    # is one character. Since PowerShell 7.6 one that outputs an empty array gives a typed variable $null, which
+    # strict mode refuses to count
+    [string[]]$words = @()
+    if (Test-Path $stateFile) { $words = @(([IO.File]::ReadAllText($stateFile)).Trim() -split '\s+') }
     $theme = if ($words.Count) { $words[0] } else { $null }
     if ($theme -eq 'auto') {
         $light = Get-ItemPropertyValue 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'AppsUseLightTheme' -ErrorAction SilentlyContinue

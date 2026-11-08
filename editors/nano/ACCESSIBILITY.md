@@ -4,7 +4,7 @@
 
 ## Contrast
 
-Every interface colour comes from the Zacess palette through [`build-themes.py`](../../terminal/terminal/scripts/build-themes.py). nano takes a colour as three hex digits and shows the nearest of the 216 colours in the terminal's colour cube, so the generator measures each pair as nano shows it rather than as the palette has it. It stops if a text colour falls under 4.5:1. The lowest text contrast across the eight themes is 5.4:1 (the error bar on the light themes) and the title bar keeps at least 6.45:1.
+Every interface colour comes from the Zacess palette through [`build-themes.py`](../../terminal/terminal/scripts/build-themes.py). nano takes a colour as three hex digits and shows the nearest of the 216 colours in the terminal's colour cube, so the generator measures each pair as nano shows it rather than as the palette has it. It stops if a text colour falls under 4.5:1. The lowest text contrast across the ten themes is 5.4:1 (the error bar on the light themes) and the title bar keeps at least 6.45:1.
 
 | What | Colour slot | Floor |
 | --- | --- | --- |

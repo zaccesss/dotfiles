@@ -77,7 +77,7 @@ folders of the dotfiles repository, each written to be forked and adapted:
 | [ssh](../../git/ssh) | A starting `~/.ssh/config` |
 | [cli-tools](../../terminal/cli-tools) | ripgrep, fzf and lazygit defaults |
 | [vscode](../../editors/vscode) | VS Code settings and keybindings (desktops) |
-| [terminal](../../terminal/terminal) | The eight Zacess palettes for the Ptyxis terminal (desktops) |
+| [terminal](../../terminal/terminal) | The ten Zacess palettes for the Ptyxis terminal (desktops) |
 | [defaults](../defaults) | GNOME desktop preferences (desktops) |
 
 ```bash

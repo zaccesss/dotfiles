@@ -3,10 +3,11 @@
 #   (the workspace defaults to the newest %USERPROFILE%\STM32CubeIDE\workspace_<version>
 #   that STM32CubeIDE has opened)
 #
-# -Theme merges one of the eight Zacess themes from ..\shared\theme (editor, C
+# -Theme merges one of the ten Zacess themes from ..\shared\theme (editor, C
 # syntax and Terminal colours, plus the tab outlines for the two Deep Contrast
 # themes) and sets the matching Light or Dark workbench theme. It takes a short
-# name (deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow),
+# name (deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow,
+# warm-dark, warm-light),
 # an id (deep-contrast-dark) or the full name. the default is deep-dark.
 #
 # the values live in ..\shared\prefs, the same files mac/apply.sh and
@@ -47,6 +48,7 @@ $themeNames = [ordered]@{
     'hc-light' = @('Zacess High Contrast Light', 'light'); 'high-contrast-light' = @('Zacess High Contrast Light', 'light')
     'dark' = @('Zacess Dark', 'dark'); 'light' = @('Zacess Light', 'light'); 'cream' = @('Zacess Cream', 'light')
     'yellow' = @('Zacess Yellow on Black', 'dark'); 'yellow-on-black' = @('Zacess Yellow on Black', 'dark')
+    'warm-dark' = @('Zacess Warm Dark', 'dark'); 'warm-light' = @('Zacess Warm Light', 'light')
 }
 $picked = $null
 if (-not $NoTheme) {
@@ -54,7 +56,7 @@ if (-not $NoTheme) {
     $picked = $themeNames[$key]
     if (-not $picked) {
         [Console]::Error.WriteLine("Unknown theme: $Theme")
-        [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow.')
+        [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light.')
         exit 1
     }
 }

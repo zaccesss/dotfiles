@@ -56,7 +56,7 @@ status.notice.bgcolor = #232323
 status.error.fgcolor = #121212
 status.error.bgcolor = #FFCCC4
 status.warning.fgcolor = #121212
-status.warning.bgcolor = #FFD182
+status.warning.bgcolor = #EDC071
 
 ## Tabs above the editor
 header.text.selected.color = #F5F5F5
@@ -96,7 +96,7 @@ editor.bgcolor = #121212
 editor.gradient.top = #232323
 editor.gradient.bottom = #232323
 editor.line.highlight = true
-editor.line.highlight.color = #1F1F1F
+editor.line.highlight.color = #2F2F2F
 editor.caret.color = #FFD400
 editor.selection.color = #004769
 editor.eol_markers = false
@@ -110,11 +110,11 @@ editor.scrollbar.color = #232323
 editor.gutter.text.color = #F5F5F5
 editor.gutter.text.active.alpha = 100
 editor.gutter.text.inactive.alpha = 100
-editor.gutter.highlight.color = #1F1F1F
+editor.gutter.highlight.color = #2F2F2F
 editor.error.underline.color = #FFCCC4
-editor.warning.underline.color = #FFD182
+editor.warning.underline.color = #EDC071
 editor.column.error.color = #FFCCC4
-editor.column.warning.color = #FFD182
+editor.column.warning.color = #EDC071
 
 ## Errors table
 errors.header.bgcolor = #232323
@@ -127,7 +127,7 @@ errors.selection.bgcolor = #004769
 errors.selection.error.bgcolor = #004769
 errors.selection.warning.bgcolor = #004769
 errors.indicator.error.color = #FFCCC4
-errors.indicator.warning.color = #FFD182
+errors.indicator.warning.color = #EDC071
 
 ## Contribution Manager
 manager.tab.selected.color = #121212

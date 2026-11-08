@@ -1800,7 +1800,7 @@
         <WidgetStyle name="Find Mark Style" styleID="31" bgColor="FFD400" />
         <WidgetStyle name="Find status: Not found" styleID="0" fgColor="770004" />
         <WidgetStyle name="Find status: Message" styleID="0" fgColor="00357A" />
-        <WidgetStyle name="Find status: Search end reached" styleID="0" fgColor="513100" />
+        <WidgetStyle name="Find status: Search end reached" styleID="0" fgColor="803200" />
         <WidgetStyle name="Mark Style 1" styleID="25" bgColor="016969" />
         <WidgetStyle name="Mark Style 2" styleID="24" bgColor="815601" />
         <WidgetStyle name="Mark Style 3" styleID="23" bgColor="966501" />

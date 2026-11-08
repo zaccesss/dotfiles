@@ -15,7 +15,7 @@ does not exist. Restart the terminal afterwards.
 
 Alacritty imports `zacess-deep-contrast-dark.toml` from the same folder and Kitty includes
 `zacess-deep-contrast-dark.conf`, so copy the `zacess-*` files alongside the main config. Change
-that one line to switch theme. The eight themes and how each terminal switches are in
+that one line to switch theme. The ten themes and how each terminal switches are in
 [themes.md](themes.md).
 
 ### macOS
@@ -24,7 +24,7 @@ that one line to switch theme. The eight themes and how each terminal switches a
 ./mac/install.sh
 ```
 
-It adds a Terminal.app profile for each of the eight themes and makes Zacess Deep Contrast Dark the
+It adds a Terminal.app profile for each of the ten themes and makes Zacess Deep Contrast Dark the
 default, links the iTerm2 Dynamic Profiles and makes Zacess Deep Contrast Dark iTerm2's default,
 then links the Kitty, Alacritty and Ghostty theme files for any already set up. It also builds the
 helper that switches Terminal.app with the system, without starting it.
@@ -47,7 +47,7 @@ helper that switches Terminal.app with the system, without starting it.
 ### Windows Terminal
 
 Copy `windows/windows-terminal/zacess.json` to
-`%LOCALAPPDATA%\Microsoft\Windows Terminal\Fragments\Zacess\`, which adds all eight schemes, then
+`%LOCALAPPDATA%\Microsoft\Windows Terminal\Fragments\Zacess\`, which adds all ten schemes, then
 set the colour scheme in `settings.json`:
 
 ```json

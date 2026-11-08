@@ -55,4 +55,4 @@ MATLAB starts in `~/dev/projects/matlab`, the projects folder every editor share
 
 ## Validation
 
-[`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks all eight themes have a Light or Dark desktop and RGB colours, every theme has a scheme for the same desktop with every colour set, the add-on is pinned by commit and digest, every platform names Geist Mono and `zacess_apply.m` defines its function.
+[`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks all ten themes have a Light or Dark desktop and RGB colours, every theme has a scheme for the same desktop with every colour set, the add-on is pinned by commit and digest, every platform names Geist Mono and `zacess_apply.m` defines its function.

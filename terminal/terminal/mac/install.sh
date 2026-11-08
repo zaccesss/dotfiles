@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# installs all eight Zacess themes in every Mac terminal this repo covers and makes Zacess Deep
+# installs all ten Zacess themes in every Mac terminal this repo covers and makes Zacess Deep
 # Contrast Dark the default. Safe to run again: each step checks what is already in place first.
 # Terminal.app and iTerm2 are set up always; Kitty, Alacritty and Ghostty only when their config
 # folder already exists. Nothing follows the system appearance here: `zt auto` in the dotfiles turns
@@ -131,4 +131,4 @@ terminal_app
 appearance_helper
 iterm2
 optional_apps
-ok "All eight Zacess themes installed, ${DEFAULT_THEME} is the default"
+ok "All ten Zacess themes installed, ${DEFAULT_THEME} is the default"

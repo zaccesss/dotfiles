@@ -30,7 +30,7 @@ the same setup instead of drifting on its own defaults.
 
 ## In action
 
-IntelliJ IDEA and PyCharm in each of the eight Zacess themes, each IDE with one file open throughout.
+IntelliJ IDEA and PyCharm in each of the ten Zacess themes, each IDE with one file open throughout.
 
 ### IntelliJ IDEA
 

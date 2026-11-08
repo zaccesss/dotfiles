@@ -1,4 +1,4 @@
-# High-contrast starter config. All eight Zacess themes sit in this folder (zacess-*.toml, from
+# High-contrast starter config. All ten Zacess themes sit in this folder (zacess-*.toml, from
 # palette/zacess.json) and the import below picks one, Zacess Deep Contrast Dark by default.
 # Alacritty cannot follow the system light and dark setting, so change the import to switch.
 

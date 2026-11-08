@@ -1,8 +1,9 @@
 # imports one Zacess theme (fonts and colours) into Microchip Studio 7.
 # usage: .\apply.ps1 [-Theme <theme>] [-Studio <path to AtmelStudio.exe>] [-Close] [-Pending]
 #
-# -Theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
-# hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
+# -Theme picks one of the ten Zacess themes by short name (deep-dark, deep-light, hc-dark,
+# hc-light, dark, light, cream, yellow, warm-dark, warm-light),
+# id (deep-contrast-dark) or full name. the default is
 # deep-dark.
 #
 # Microchip Studio reads colours only through its own Import and Export Settings command, so the
@@ -33,12 +34,13 @@ $themeNames = [ordered]@{
     'hc-light' = @('Zacess High Contrast Light', 'light'); 'high-contrast-light' = @('Zacess High Contrast Light', 'light')
     'dark' = @('Zacess Dark', 'dark'); 'light' = @('Zacess Light', 'light'); 'cream' = @('Zacess Cream', 'light')
     'yellow' = @('Zacess Yellow on Black', 'dark'); 'yellow-on-black' = @('Zacess Yellow on Black', 'dark')
+    'warm-dark' = @('Zacess Warm Dark', 'dark'); 'warm-light' = @('Zacess Warm Light', 'light')
 }
 $key = ($Theme.ToLowerInvariant() -replace '^zacess[ -]', '') -replace ' ', '-'
 $picked = $themeNames[$key]
 if (-not $picked) {
     [Console]::Error.WriteLine("Unknown theme: $Theme")
-    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow.')
+    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light.')
     exit 1
 }
 $name, $mode = $picked

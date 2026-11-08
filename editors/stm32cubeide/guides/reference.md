@@ -73,7 +73,7 @@ The full binding list as stored, with the command and context ids, is the `org.e
 
 ## Colours
 
-`shared/theme/` holds the eight Zacess themes for STM32CubeIDE (`Zacess <name>.epf`) and the tab outline files for the two Deep Contrast themes. They are built by [`scripts/build-themes.py`](../scripts/build-themes.py) from the Zacess Eclipse themes in [Zacess Themes](https://github.com/zacesshq/themes) 0.5.0, so the palette and measured contrast are the same:
+`shared/theme/` holds the ten Zacess themes for STM32CubeIDE (`Zacess <name>.epf`) and the tab outline files for the two Deep Contrast themes. They are built by [`scripts/build-themes.py`](../scripts/build-themes.py) from the Zacess Eclipse themes in [Zacess Themes](https://github.com/zacesshq/themes) 1.0.0, so the palette and measured contrast are the same:
 
 - **Editor colours** (background, text, selection, current line, line numbers, markers) carry over unchanged.
 - **C syntax colours** come from the Java colour that plays the same part: keywords and types from Java keywords, strings and `#include` headers from strings, comments from comments and numbers from Java's number colour.
@@ -99,6 +99,8 @@ The apply scripts merge a theme after the tracked keys: each `/instance/<plugin>
 | `light` | Zacess Light | Light |
 | `cream` | Zacess Cream | Light |
 | `yellow` | Zacess Yellow on Black | Dark |
+| `warm-dark` | Zacess Warm Dark | Dark |
+| `warm-light` | Zacess Warm Light | Light |
 
 STM32CubeIDE has no setting to follow the system light and dark appearance, so the theme stays fixed. By hand, **File > Import > General > Preferences** imports any `.epf`, then **General > Appearance** picks Light or Dark and STM32CubeIDE restarts.
 

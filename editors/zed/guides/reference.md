@@ -26,7 +26,7 @@ file as JSON with comments and trailing commas, so a strict JSON parser rejects 
 | Extension | Version | Why |
 | --- | --- | --- |
 | `high-contrast-themes` | `0.1.0` | Adds `High Contrast VSCode` and nine other high-contrast dark themes to the picker. Not used by default. |
-| `zacess-themes` | `0.3.0` | Provides all eight Zacess themes, the two Deep Contrast themes among them. Zed's registry still serves 0.2.1, without the Deep Contrast pair, so the apply script installs the 0.5.0 theme file from `shared/themes` until the registry catches up (see the [README](../README.md#while-the-extension-store-catches-up)). |
+| `zacess-themes` | `0.3.0` | Provides all ten Zacess themes, the two Deep Contrast themes among them. Zed's registry still serves 0.2.1, without the Deep Contrast pair, so the apply script installs the 0.5.0 theme file from `shared/themes` until the registry catches up (see the [README](../README.md#while-the-extension-store-catches-up)). |
 
 Zed also installs the `html` extension on its own through its default `auto_install_extensions`
 setting, which Zed merges with the two entries here, so it is not listed.

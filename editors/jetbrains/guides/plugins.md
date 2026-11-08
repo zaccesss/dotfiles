@@ -41,7 +41,7 @@ PyCharm, WS for WebStorm, CL for CLion and DS for DataSpell.
 | --- | --- | --- |
 | `com.intellij.plugins.vscodekeymap` | Supplies the `VSCode OSX` and `VSCode` base keymaps that [`keymaps/`](../keymaps/) builds on | all |
 | `com.markskelton.one-dark-theme` | The One Dark colour theme | IU, CL, DS |
-| `com.zacess.themes` | The eight Zacess themes, each with its own editor scheme; Zacess Deep Contrast Dark is the one in use | all |
+| `com.zacess.themes` | The ten Zacess themes, each with its own editor scheme; Zacess Deep Contrast Dark is the one in use | all |
 | `org.editorconfig.editorconfigjetbrains` | Honours a project's `.editorconfig` file | CL, DS |
 | `com.jetbrains.performancePlugin` | JetBrains's internal performance testing and profiling tooling | PC, CL |
 

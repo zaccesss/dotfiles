@@ -7,7 +7,9 @@
 Every text colour in a btop theme here is the theme's own foreground, its muted text or one of its
 terminal colours, all taken from `palette/zacess.json`. The generator holds each of them to at
 least 4.5:1 against the theme's background and stops if one falls short. The lowest text contrast
-across the eight themes is 5.99:1 (Zacess Light) and the selected row keeps at least 7.48:1.
+across the ten themes is 5.99:1 (Zacess Light) and the selected row keeps at least 6.50:1 (Zacess
+Warm Light). Zacess Warm Dark and Zacess Warm Light set their own WCAG AA text floor of 4.5:1, so
+the 7:1 floors in the table below are held at 4.5:1 in those two.
 
 | What | Colour slot | Floor |
 | --- | --- | --- |

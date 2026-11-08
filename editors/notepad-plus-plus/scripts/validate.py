@@ -1,6 +1,6 @@
 """Checks the Notepad++ folder without Notepad++: run from anywhere, exits non-zero on a problem.
 
-- themes/ holds the eight Zacess themes, each well-formed XML
+- themes/ holds the ten Zacess themes, each well-formed XML
 - each theme's Default Style and Global override use GeistMono NF with six-digit hex colours
 """
 
@@ -10,7 +10,8 @@ import sys
 import xml.etree.ElementTree as ET
 
 NAMES = ["Zacess Deep Contrast Dark", "Zacess Deep Contrast Light", "Zacess High Contrast Dark",
-         "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream", "Zacess Yellow on Black"]
+         "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream", "Zacess Yellow on Black",
+         "Zacess Warm Dark", "Zacess Warm Light"]
 root = pathlib.Path(__file__).resolve().parent.parent
 problems = []
 

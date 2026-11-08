@@ -1,6 +1,6 @@
 """Checks the Zotero folder without Zotero: run from anywhere, exits non-zero on a problem.
 
-- shared/themes.json maps all eight Zacess themes to Zotero's dark (0) or light (1) mode and one
+- shared/themes.json maps all ten Zacess themes to Zotero's dark (0) or light (1) mode and one
   built-in reader theme
 - shared/prefs.json parses and shared/apply.py parses as Python
 """
@@ -11,14 +11,15 @@ import pathlib
 import sys
 
 NAMES = ["Zacess Deep Contrast Dark", "Zacess Deep Contrast Light", "Zacess High Contrast Dark",
-         "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream", "Zacess Yellow on Black"]
+         "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream", "Zacess Yellow on Black",
+         "Zacess Warm Dark", "Zacess Warm Light"]
 READER = {"", "black", "dark", "snow", "sepia"}
 root = pathlib.Path(__file__).resolve().parent.parent
 problems = []
 
 themes = json.loads((root / "shared" / "themes.json").read_text(encoding="utf-8"))
 if sorted(themes) != sorted(NAMES):
-    problems.append("themes.json: does not hold exactly the eight Zacess themes")
+    problems.append("themes.json: does not hold exactly the ten Zacess themes")
 for name, prefs in themes.items():
     if prefs.get("browser.theme.toolbar-theme") not in (0, 1):
         problems.append(f"themes.json: {name} has no dark or light mode")

@@ -24,7 +24,7 @@ The script:
 
 1. refuses to run while a process called `Xcode` is open (a dry run is allowed, since it writes
    nothing)
-2. copies the eight `.xccolortheme` files and the Xcode 27 `.xcworkspacecolortheme` file from
+2. copies the ten `.xccolortheme` files and the Xcode 27 `.xcworkspacecolortheme` file from
    [`theme/`](../theme/) into `~/Library/Developer/Xcode/UserData/FontAndColorThemes`
 3. copies [`KeyBindings/Default.idekeybindings`](../KeyBindings/Default.idekeybindings) into
    `~/Library/Developer/Xcode/UserData/KeyBindings`

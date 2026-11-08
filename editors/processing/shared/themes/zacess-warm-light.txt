@@ -1,0 +1,207 @@
+# Zacess theme for Processing: Zacess Warm Light
+# built by scripts/build-themes.py from the Zacess palette, do not edit by hand
+
+## Look and feel
+laf.mode = light
+laf.accent.color = #6D3B02
+label.link.color = #6D3B02
+
+## Toolbar
+toolbar.rollover.color = #342410
+toolbar.gradient.top = #E4D8BE
+toolbar.gradient.bottom = #E4D8BE
+mode.title.color = #342410
+mode.background.color = #E4D8BE
+mode.outline.color = #7E6F5F
+mode.popup.enabled.fgcolor = #342410
+mode.popup.enabled.bgcolor = #F4EAD5
+mode.popup.disabled.fgcolor = #483B2C
+mode.popup.disabled.bgcolor = #F4EAD5
+mode.popup.selected.fgcolor = #F4EAD5
+mode.popup.selected.bgcolor = #6D3B02
+toolbar.button.disabled.field = #E4D8BE
+toolbar.button.disabled.glyph = #483B2C
+toolbar.button.disabled.stroke = none
+toolbar.button.enabled.field = #F4EAD5
+toolbar.button.enabled.glyph = #6D3B02
+toolbar.button.enabled.stroke = #7E6F5F
+toolbar.button.pressed.field = #6D3B02
+toolbar.button.pressed.glyph = #F4EAD5
+toolbar.button.pressed.stroke = #342410
+toolbar.button.rollover.field = #A0D2FE
+toolbar.button.rollover.glyph = #342410
+toolbar.button.rollover.stroke = #7E6F5F
+toolbar.button.selected.field = #6D3B02
+toolbar.button.selected.glyph = #F4EAD5
+toolbar.button.selected.stroke = none
+toolbar.button.debug.disabled.field = #E4D8BE
+toolbar.button.debug.disabled.glyph = #483B2C
+toolbar.button.debug.disabled.stroke = none
+toolbar.button.debug.enabled.field = #F4EAD5
+toolbar.button.debug.enabled.glyph = #6D3B02
+toolbar.button.debug.enabled.stroke = #7E6F5F
+toolbar.button.debug.pressed.field = #6D3B02
+toolbar.button.debug.pressed.glyph = #F4EAD5
+toolbar.button.debug.pressed.stroke = #342410
+toolbar.button.debug.rollover.field = #A0D2FE
+toolbar.button.debug.rollover.glyph = #342410
+toolbar.button.debug.rollover.stroke = #7E6F5F
+toolbar.button.debug.selected.field = #6D3B02
+toolbar.button.debug.selected.glyph = #F4EAD5
+toolbar.button.debug.selected.stroke = none
+
+## Status bar
+status.notice.fgcolor = #342410
+status.notice.bgcolor = #E4D8BE
+status.error.fgcolor = #F4EAD5
+status.error.bgcolor = #710205
+status.warning.fgcolor = #F4EAD5
+status.warning.bgcolor = #623D02
+
+## Tabs above the editor
+header.text.selected.color = #342410
+header.text.unselected.color = #483B2C
+header.tab.arrow.color = #483B2C
+header.tab.selected.color = #F4EAD5
+header.tab.unselected.color = #E4D8BE
+header.tab.modified.color = #6D3B02
+header.gradient.top = #E4D8BE
+header.gradient.bottom = #E4D8BE
+
+## Tabs below the editor
+footer.text.selected.color = #342410
+footer.text.enabled.color = #483B2C
+footer.icon.selected.color = #342410
+footer.icon.enabled.color = #483B2C
+footer.gradient.top = #E4D8BE
+footer.gradient.bottom = #E4D8BE
+footer.tab.selected.color = #F4EAD5
+footer.tab.enabled.color = #E4D8BE
+footer.updates.text.color = #F4EAD5
+footer.updates.indicator.field.color = #6D3B02
+footer.updates.indicator.text.color = #F4EAD5
+
+## Console
+console.color = #F4EAD5
+console.output.color = #342410
+console.error.color = #710205
+console.scrollbar.thumb.enabled.color = #7E6F5F
+console.scrollbar.thumb.rollover.color = #483B2C
+console.scrollbar.thumb.pressed.color = #483B2C
+console.scrollbar.color = #E4D8BE
+
+## Editor
+editor.fgcolor = #342410
+editor.bgcolor = #F4EAD5
+editor.gradient.top = #E4D8BE
+editor.gradient.bottom = #E4D8BE
+editor.line.highlight = true
+editor.line.highlight.color = #D0CEC0
+editor.caret.color = #5B1301
+editor.selection.color = #A0D2FE
+editor.eol_markers = false
+editor.eol_markers.color = #827568
+editor.bracket.highlight = true
+editor.bracket.highlight.color = #6D3B02
+editor.scrollbar.thumb.enabled.color = #7E6F5F
+editor.scrollbar.thumb.rollover.color = #483B2C
+editor.scrollbar.thumb.pressed.color = #483B2C
+editor.scrollbar.color = #E4D8BE
+editor.gutter.text.color = #342410
+editor.gutter.text.active.alpha = 100
+editor.gutter.text.inactive.alpha = 100
+editor.gutter.highlight.color = #D0CEC0
+editor.error.underline.color = #710205
+editor.warning.underline.color = #623D02
+editor.column.error.color = #710205
+editor.column.warning.color = #623D02
+
+## Errors table
+errors.header.bgcolor = #E4D8BE
+errors.header.fgcolor = #342410
+errors.bgcolor = #F4EAD5
+errors.row.fgcolor = #342410
+errors.row.bgcolor = #F4EAD5
+errors.selection.fgcolor = #342410
+errors.selection.bgcolor = #A0D2FE
+errors.selection.error.bgcolor = #A0D2FE
+errors.selection.warning.bgcolor = #A0D2FE
+errors.indicator.error.color = #710205
+errors.indicator.warning.color = #623D02
+
+## Contribution Manager
+manager.tab.selected.color = #F4EAD5
+manager.tab.unselected.color = #E4D8BE
+manager.tab.text.selected.color = #342410
+manager.tab.text.unselected.color = #483B2C
+manager.tab.gradient.top = #E4D8BE
+manager.tab.gradient.bottom = #E4D8BE
+manager.tab.background = #E4D8BE
+manager.categories.enabled.fgcolor = #342410
+manager.categories.enabled.bgcolor = #F4EAD5
+manager.categories.disabled.fgcolor = #483B2C
+manager.categories.disabled.bgcolor = #F4EAD5
+manager.categories.selected.fgcolor = #F4EAD5
+manager.categories.selected.bgcolor = #6D3B02
+manager.error.close.icon.color = #342410
+manager.scrollbar.thumb.enabled.color = #7E6F5F
+manager.scrollbar.thumb.rollover.color = #483B2C
+manager.scrollbar.thumb.pressed.color = #483B2C
+manager.scrollbar.color = #E4D8BE
+manager.search.text.color = #342410
+manager.search.icon.color = #483B2C
+manager.search.background.color = #F4EAD5
+manager.search.caret.color = #5B1301
+manager.search.placeholder.color = #483B2C
+manager.search.selection.text.color = #342410
+manager.search.selection.background.color = #A0D2FE
+manager.list.background.color = #F4EAD5
+manager.list.header.fgcolor = #342410
+manager.list.header.bgcolor = #E4D8BE
+manager.list.section.color = #F4EAD5
+manager.list.selection.color = #A0D2FE
+manager.list.icon.color = #6D3B02
+manager.list.text.color = #342410
+manager.list.foundation.color = #6D3B02
+manager.list.incompatible.selection.color = #A0D2FE
+manager.list.incompatible.text.color = #483B2C
+manager.panel.background.color = #E4D8BE
+manager.panel.text.color = #342410
+manager.panel.link.color = #6D3B02
+manager.panel.foundation.color = #6D3B02
+manager.button.enabled.background.color = #6D3B02
+manager.button.enabled.text.color = #F4EAD5
+manager.button.enabled.icon.color = #F4EAD5
+manager.button.pressed.background.color = #342410
+manager.button.pressed.text.color = #F4EAD5
+manager.button.pressed.icon.color = #F4EAD5
+manager.button.disabled.background.color = #E4D8BE
+manager.button.disabled.text.color = #483B2C
+manager.button.disabled.icon.color = #483B2C
+manager.progress.complete.fgcolor = #F4EAD5
+manager.progress.complete.bgcolor = #6D3B02
+manager.progress.incomplete.fgcolor = #342410
+manager.progress.incomplete.bgcolor = #E4D8BE
+
+## Syntax: Java keywords, control flow, the API, types and constants
+editor.token.function1.style = #744F01,plain
+editor.token.function2.style = #744F01,plain
+editor.token.function3.style = #760244,bold
+editor.token.function4.style = #744F01,bold
+editor.token.keyword1.style = #832A01,bold
+editor.token.keyword2.style = #02318D,plain
+editor.token.keyword3.style = #760244,bold
+editor.token.keyword4.style = #962B70,plain
+editor.token.keyword5.style = #045247,plain
+editor.token.keyword6.style = #760244,bold
+editor.token.literal1.style = #04523A,plain
+editor.token.literal2.style = #962B70,plain
+editor.token.operator.style = #342410,plain
+editor.token.label.style = #8C4105,bold
+editor.token.comment1.style = #625240,plain
+editor.token.comment2.style = #625240,plain
+editor.token.invalid.style = #62020B,bold
+editor.completion.class.color = #045247
+editor.completion.field.color = #02318D
+editor.completion.local.color = #342410
+editor.completion.method.color = #744F01

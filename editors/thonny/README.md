@@ -1,12 +1,12 @@
 # thonny
 
-Thonny settings: all eight Zacess themes as a Thonny plugin, Geist Mono and larger editor text.
+Thonny settings: all ten Zacess themes as a Thonny plugin, Geist Mono and larger editor text.
 
 ## What it sets
 
 | Setting | Value | Why |
 | --- | --- | --- |
-| `[view] ui_theme` and `syntax_theme` | `Zacess Deep Contrast Dark` | The default theme. `-Theme` (`--theme` on Linux) picks any of the eight |
+| `[view] ui_theme` and `syntax_theme` | `Zacess Deep Contrast Dark` | The default theme. `-Theme` (`--theme` on Linux) picks any of the ten |
 | `[view] editor_font_family` and `io_font_family` | `GeistMono NF` on Windows, `GeistMono Nerd Font` elsewhere | Geist Mono's Nerd Font build. Tk on Windows looks fonts up by their short GDI name |
 | `[view] editor_font_size` and `io_font_size` | `16` | Larger than the default |
 | `[view] highlight_current_line` and `show_line_numbers` | `True` | Easier to keep your place |
@@ -54,4 +54,4 @@ Thonny starts in `~/dev/projects/python` (`[run] working_directory`), the projec
 
 ## Validation
 
-[`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks the plugin and apply script parse, the plugin defines all eight themes and every platform's settings name a Zacess theme and Geist Mono.
+[`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks the plugin and apply script parse, the plugin defines all ten themes and every platform's settings name a Zacess theme and Geist Mono.

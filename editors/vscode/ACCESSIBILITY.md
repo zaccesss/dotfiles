@@ -15,7 +15,7 @@ The settings put readability first and every custom shortcut follows one pattern
 - Text in the integrated terminal is held to 4.5:1 on whatever sits behind it (`terminal.integrated.minimumContrastRatio`), so a program's own colour pairs can never vanish.
 
 > [!TIP]
-> The theme stays on `Zacess Deep Contrast Dark` whatever the system appearance, since `window.autoDetectColorScheme` is `false`. All eight Zacess themes are in the theme picker (`Cmd+K Cmd+T`, `Ctrl+K Ctrl+T` on Windows and Linux). Set `window.autoDetectColorScheme` to `true` to switch between `Zacess Deep Contrast Dark` and `Zacess Deep Contrast Light` with the system instead.
+> The theme stays on `Zacess Deep Contrast Dark` whatever the system appearance, since `window.autoDetectColorScheme` is `false`. All ten Zacess themes are in the theme picker (`Cmd+K Cmd+T`, `Ctrl+K Ctrl+T` on Windows and Linux). Set `window.autoDetectColorScheme` to `true` to switch between `Zacess Deep Contrast Dark` and `Zacess Deep Contrast Light` with the system instead.
 
 ## Keyboard
 

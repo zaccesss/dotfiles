@@ -17,7 +17,7 @@
 
 ## In action
 
-VS Code in each of the eight Zacess themes, with the same file open.
+VS Code in each of the ten Zacess themes, with the same file open.
 
 | Deep Contrast Dark | Deep Contrast Light |
 | --- | --- |

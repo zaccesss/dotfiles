@@ -4,7 +4,7 @@ High contrast colours across the schematic, the PCB layout and the graphs, so Pr
 
 ## Vision
 
-- The default is Zacess Deep Contrast Dark: a black paper, white text and outlines and fully saturated wire, probe and layer colours. All eight Zacess themes are available, light ones included. Proteus's own colours come back with `-Theme proteus`.
+- The default is Zacess Deep Contrast Dark: a black paper, white text and outlines and fully saturated wire, probe and layer colours. All ten Zacess themes are available, light ones included. Proteus's own colours come back with `-Theme proteus`.
 - Selected parts take the theme's focus colour (yellow in Deep Contrast Dark), which no wire or outline uses, so a selection always stands out.
 - PCB layers keep their usual hues in every theme: top copper red and bottom copper blue. Layers can still be told apart by name in the layer list, so colour is never the only signal.
 - Measured contrast for each theme is in the [Zacess Themes accessibility statement](https://github.com/zacesshq/themes/blob/main/ACCESSIBILITY.md).

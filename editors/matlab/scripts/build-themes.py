@@ -27,6 +27,8 @@ THEMES = {
     "zacess-light": ("Zacess Light", "Light"),
     "zacess-cream": ("Zacess Cream", "Light"),
     "zacess-yellow-on-black": ("Zacess Yellow on Black", "Dark"),
+    "zacess-warm-dark": ("Zacess Warm Dark", "Dark"),
+    "zacess-warm-light": ("Zacess Warm Light", "Light"),
 }
 
 # matlab setting: the TextMate scope or VS Code colour it takes

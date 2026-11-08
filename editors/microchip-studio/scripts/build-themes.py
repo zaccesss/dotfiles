@@ -24,6 +24,8 @@ THEMES = {
     "zacess-light": ("Zacess Light", "light"),
     "zacess-cream": ("Zacess Cream", "light"),
     "zacess-yellow-on-black": ("Zacess Yellow on Black", "dark"),
+    "zacess-warm-dark": ("Zacess Warm Dark", "dark"),
+    "zacess-warm-light": ("Zacess Warm Light", "light"),
 }
 
 # the Visual Studio 2015 environment themes the window chrome follows

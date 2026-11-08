@@ -5,7 +5,7 @@
     "CODE_EDITOR_BACKGROUND": "fdf6e3",
     "CODE_EDITOR_FOREGROUND": "0",
     "CODE_EDITOR_CURSOR_COLOR": "0",
-    "CODE_EDITOR_LINE_HIGHLIGHT": "f3ead2",
+    "CODE_EDITOR_LINE_HIGHLIGHT": "c8dadd",
     "CODE_EDITOR_SELECTION_BACKGROUND": "c8a9ff",
     "CODE_EDITOR_FIND_HIGHLIGHT_BACKGROUND": "ffd400",
     "CODE_EDITOR_MATCHING_WORD_HIGHLIGHT_BACKGROUND": "c8a9ff",
@@ -127,12 +127,12 @@
       "font_style": "0",
       "effect": "0",
       "effect_color": "null",
-      "stripe_color": "-11456256"
+      "stripe_color": "-8375808"
     },
     {
       "style_index": "13",
       "foreground_color": "-16777216",
-      "background_color": "-791854",
+      "background_color": "-3613987",
       "font_style": "0",
       "effect": "0",
       "effect_color": "null",

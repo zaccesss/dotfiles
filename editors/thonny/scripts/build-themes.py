@@ -24,6 +24,8 @@ THEMES = {
     "zacess-light": ("Zacess Light", "light"),
     "zacess-cream": ("Zacess Cream", "light"),
     "zacess-yellow-on-black": ("Zacess Yellow on Black", "dark"),
+    "zacess-warm-dark": ("Zacess Warm Dark", "dark"),
+    "zacess-warm-light": ("Zacess Warm Light", "light"),
 }
 
 
@@ -152,7 +154,7 @@ def main():
         themes = {key: json.loads(z.read(f"extension/themes/{key}-color-theme.json")) for key in THEMES}
     entries = {name: (mode, syntax(themes[key]), ui(themes[key]), tabs(themes[key])) for key, (name, mode) in THEMES.items()}
     body = pprint.pformat(entries, width=100, sort_dicts=False)
-    source = f'''"""The eight Zacess themes for Thonny, built by scripts/build-themes.py from the Zacess VS Code
+    source = f'''"""The ten Zacess themes for Thonny, built by scripts/build-themes.py from the Zacess VS Code
 themes, do not edit by hand. Each registers a syntax theme and a UI theme of the same name."""
 
 from thonny import get_workbench

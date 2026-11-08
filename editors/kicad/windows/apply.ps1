@@ -1,10 +1,11 @@
-# installs the eight Zacess colour themes for KiCad and makes one of them the theme of every editor.
+# installs the ten Zacess colour themes for KiCad and makes one of them the theme of every editor.
 # usage: .\apply.ps1 [-Theme <theme>] [-ConfigDir <folder>]
 #   (the config folder defaults to the newest version folder under %APPDATA%\kicad; when
 #   KICAD_CONFIG_HOME is set it is used instead, as it is by KiCad itself)
 #
-# -Theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
-# hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
+# -Theme picks one of the ten Zacess themes by short name (deep-dark, deep-light, hc-dark,
+# hc-light, dark, light, cream, yellow, warm-dark, warm-light),
+# id (deep-contrast-dark) or full name. the default is
 # deep-dark.
 #
 # the theme files go into <config>\colors, where KiCad lists them under Preferences > Colors. the
@@ -27,12 +28,13 @@ $themeIds = [ordered]@{
     'hc-light' = 'high-contrast-light'; 'high-contrast-light' = 'high-contrast-light'
     'dark' = 'dark'; 'light' = 'light'; 'cream' = 'cream'
     'yellow' = 'yellow-on-black'; 'yellow-on-black' = 'yellow-on-black'
+    'warm-dark' = 'warm-dark'; 'warm-light' = 'warm-light'
 }
 $key = ($Theme.ToLowerInvariant() -replace '^zacess[ -]', '') -replace ' ', '-'
 $id = $themeIds[$key]
 if (-not $id) {
     [Console]::Error.WriteLine("Unknown theme: $Theme")
-    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow.')
+    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light.')
     exit 1
 }
 $chosen = "zacess-$id"

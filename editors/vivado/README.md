@@ -1,6 +1,6 @@
 # vivado
 
-AMD Vivado text editor setup for Windows and Linux: the eight Zacess themes for HDL, Tcl and constraint files, built from the Zacess palette, with Geist Mono as the editor font.
+AMD Vivado text editor setup for Windows and Linux: the ten Zacess themes for HDL, Tcl and constraint files, built from the Zacess palette, with Geist Mono as the editor font.
 
 > [!WARNING]
 > None of this has run against a real Vivado install yet. The file names and keys come from AMD's documentation and from a published Vivado theme, listed under [Sources](#sources). Check the result the first time Vivado is installed and fix anything that does not hold.
@@ -19,7 +19,7 @@ The font size already in `vivado.xml` is kept. That `vivado.xml` holds the **Too
 
 ## The themes
 
-[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/themes/`](shared/themes/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 0.5.0, downloaded and checked against its SHA-256 digest. Each theme is a small JSON file holding the editor colours and the 21 syntax styles. The token order follows the jEdit text area Vivado's editor descends from:
+[`scripts/build-themes.py`](scripts/build-themes.py) builds [`shared/themes/`](shared/themes/) from the palette of [Zacess Themes](https://github.com/zacesshq/themes) 1.0.0, downloaded and checked against its SHA-256 digest. Each theme is a small JSON file holding the editor colours and the 21 syntax styles. The token order follows the jEdit text area Vivado's editor descends from:
 
 | Style | Token | Zacess colour |
 | --- | --- | --- |

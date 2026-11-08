@@ -1,6 +1,6 @@
 # Zacess themes
 
-All eight Zacess themes, with the terminal colours from the
+All ten Zacess themes, with the terminal colours from the
 [Zacess Themes](https://github.com/zacesshq/themes) release pinned in `palette/zacess.json`, are
 installed in every terminal this folder covers. Zacess Deep Contrast Dark is the default. No terminal follows the system light and dark
 setting unless that is turned on, so the theme stays where it was put.
@@ -15,6 +15,8 @@ setting unless that is turned on, so the theme stays where it was put.
 | Zacess Light | `light` | Near-black on white |
 | Zacess Yellow on Black | `yellow` | Yellow text on black |
 | Zacess Cream | `cream` | Black on a cream background |
+| Zacess Warm Dark | `warm-dark` | Warm cream on a deep brown, earthy colours at WCAG AA (4.5:1) |
+| Zacess Warm Light | `warm-light` | Dark brown on warm paper, earthy colours at WCAG AA (4.5:1) |
 
 ## Switching theme
 
@@ -50,7 +52,10 @@ generated file is out of date or a colour drops below its contrast floor: text a
 background, every terminal colour at 7:1 except the slots a theme marks as dim (4.5:1, so the light
 themes stay vivid) and Deep Contrast Dark's ANSI black, which is true black for use as a background,
 the selection text and search matches at 4.5:1 over their highlight, the message line pair at 7:1
-and the pane borders at 3:1. Bold text keeps its colour in every terminal.
+and the pane borders at 3:1. Zacess Warm Dark and Zacess Warm Light set their own text floor of
+4.5:1 (WCAG AA) in the upstream palette, the gentler pair for anyone who finds high contrast too
+intense, so their text, terminal colours and message line are held to 4.5:1 instead of 7:1. Bold
+text keeps its colour in every terminal.
 
 Each theme's selection is a solid block with its own text colour, the pair Zacess Themes ships for
 terminals, so a selection is never a faint tint. `zt` reads that block from the generated terminal
@@ -178,6 +183,36 @@ Short name `deep-light`, light. Text `#000000` on `#ffffff` (21.0:1).
 | magenta | `#cd01cd` (4.7:1) | `#db009a` (4.7:1) |
 | cyan | `#016e78` (6.0:1) | `#0178c1` (4.7:1) |
 | white | `#595959` (7.0:1) | `#000000` (21.0:1) |
+
+### Zacess Warm Dark
+
+Short name `warm-dark`, dark. Text `#e5d5b6` on `#211b17` (11.8:1).
+
+| Colour | Normal | Bright |
+| --- | --- | --- |
+| black | `#ada398` (6.9:1) | `#b9b1a9` (8.0:1) |
+| red | `#fc9a8d` (8.2:1) | `#fee4e0` (14.1:1) |
+| green | `#a2be6f` (8.2:1) | `#d9f2b0` (14.0:1) |
+| yellow | `#e4b35b` (8.8:1) | `#ffe9b6` (14.3:1) |
+| blue | `#88b9e3` (8.2:1) | `#d7ecff` (14.0:1) |
+| magenta | `#dfa1ca` (8.2:1) | `#ffe1f4` (14.0:1) |
+| cyan | `#73c2b8` (8.2:1) | `#b1f7ed` (14.1:1) |
+| white | `#cbc1b1` (9.6:1) | `#fbf1dc` (15.2:1) |
+
+### Zacess Warm Light
+
+Short name `warm-light`, light. Text `#342410` on `#f4ead5` (12.5:1).
+
+| Colour | Normal | Bright |
+| --- | --- | --- |
+| black | `#342410` (12.5:1) | `#60574c` (5.9:1) |
+| red | `#8c1a16` (7.7:1) | `#a4332b` (5.7:1) |
+| green | `#275200` (7.7:1) | `#386616` (5.7:1) |
+| yellow | `#6a4603` (7.1:1) | `#845701` (5.3:1) |
+| blue | `#014b79` (7.7:1) | `#115f93` (5.7:1) |
+| magenta | `#742c60` (7.7:1) | `#8a4074` (5.7:1) |
+| cyan | `#05514d` (7.7:1) | `#066662` (5.7:1) |
+| white | `#574e44` (6.8:1) | `#342410` (12.5:1) |
 <!-- palette table end -->
 
 ## Where each terminal gets them
@@ -191,7 +226,7 @@ Short name `deep-light`, light. Text `#000000` on `#ffffff` (21.0:1).
 | Ghostty | `<platform>/ghostty/zacess-*` |
 | tmux | `../tmux/themes/zacess-*.conf`: the status bar, message line, copy mode, search matches and pane borders |
 | Hyper | `<platform>/hyper/hyper.js` |
-| Windows Terminal | [`windows/windows-terminal/zacess.json`](../windows/windows-terminal/zacess.json), a fragment with all eight schemes |
+| Windows Terminal | [`windows/windows-terminal/zacess.json`](../windows/windows-terminal/zacess.json), a fragment with all ten schemes |
 | Ptyxis | `linux/ptyxis/zacess-*.palette` |
 | GNOME Terminal | `linux/gnome-terminal/zacess-*.dconf` |
 

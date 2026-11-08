@@ -1,9 +1,10 @@
-# gives the AMD Vivado text editor one of the eight Zacess themes and Geist Mono.
+# gives the AMD Vivado text editor one of the ten Zacess themes and Geist Mono.
 # usage: .\apply.ps1 [-Theme <theme>] [-ConfigDir <folder>]
 #   (the config folder defaults to the newest %APPDATA%\Xilinx\Vivado\<version>)
 #
-# -Theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
-# hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
+# -Theme picks one of the ten Zacess themes by short name (deep-dark, deep-light, hc-dark,
+# hc-light, dark, light, cream, yellow, warm-dark, warm-light),
+# id (deep-contrast-dark) or full name. the default is
 # deep-dark.
 #
 # Vivado keeps Tools > Settings in <config>\vivado.xml and writes it back on exit. this merges the
@@ -29,12 +30,13 @@ $themeIds = [ordered]@{
     'hc-light' = 'high-contrast-light'; 'high-contrast-light' = 'high-contrast-light'
     'dark' = 'dark'; 'light' = 'light'; 'cream' = 'cream'
     'yellow' = 'yellow-on-black'; 'yellow-on-black' = 'yellow-on-black'
+    'warm-dark' = 'warm-dark'; 'warm-light' = 'warm-light'
 }
 $key = ($Theme.ToLowerInvariant() -replace '^zacess[ -]', '') -replace ' ', '-'
 $id = $themeIds[$key]
 if (-not $id) {
     [Console]::Error.WriteLine("Unknown theme: $Theme")
-    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow.')
+    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light.')
     exit 1
 }
 

@@ -4,9 +4,9 @@
 #   (the vault defaults to OBSIDIAN_VAULT, the same variable zt reads, then %USERPROFILE%\Obsidian\Vault,
 #   a plain folder outside any cloud-synced one)
 #
-# -Theme picks one of the eight Zacess looks by short name (deep-dark, deep-light, hc-dark,
-# hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
-# deep-dark. each look is one half of a community theme (Zacess, Zacess Cream, Zacess High Contrast
+# -Theme picks one of the ten Zacess looks by short name (deep-dark, deep-light, hc-dark,
+# hc-light, dark, light, cream, yellow, warm-dark, warm-light), id (deep-contrast-dark) or full
+# name. the default is deep-dark. each look is one half of a community theme (Zacess, Zacess Cream, Zacess High Contrast
 # or Zacess Deep Contrast) chosen by Obsidian's base colour scheme, so appearance.json gets both
 # cssTheme and theme.
 #
@@ -29,12 +29,13 @@ $themeNames = [ordered]@{
     'hc-light' = 'Zacess High Contrast Light'; 'high-contrast-light' = 'Zacess High Contrast Light'
     'dark' = 'Zacess Dark'; 'light' = 'Zacess Light'; 'cream' = 'Zacess Cream'
     'yellow' = 'Zacess Yellow on Black'; 'yellow-on-black' = 'Zacess Yellow on Black'
+    'warm-dark' = 'Zacess Warm Dark'; 'warm-light' = 'Zacess Warm Light'
 }
 $key = ($Theme.ToLowerInvariant() -replace '^zacess[ -]', '') -replace ' ', '-'
 $name = $themeNames[$key]
 if (-not $name) {
     [Console]::Error.WriteLine("Unknown theme: $Theme")
-    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow.')
+    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light.')
     exit 1
 }
 $dot = Join-Path $Vault '.obsidian'

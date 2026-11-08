@@ -15,7 +15,7 @@ import sys
 THEMES = [
     "Zacess Deep Contrast Dark", "Zacess Deep Contrast Light", "Zacess High Contrast Dark",
     "Zacess High Contrast Light", "Zacess Dark", "Zacess Light", "Zacess Cream",
-    "Zacess Yellow on Black",
+    "Zacess Yellow on Black", "Zacess Warm Dark", "Zacess Warm Light",
 ]
 
 # CDT syntax colour key: the JDT key it takes its colour and style from. CDT has no number

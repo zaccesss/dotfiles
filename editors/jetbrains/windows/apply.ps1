@@ -4,8 +4,9 @@
 #   (the root defaults to %APPDATA%\JetBrains; the IDEs themselves are looked for under
 #   %LOCALAPPDATA%\Programs, where Toolbox and the standalone installers put them)
 #
-# -Theme picks one of the eight Zacess themes by short name (deep-dark, deep-light, hc-dark,
-# hc-light, dark, light, cream, yellow), id (deep-contrast-dark) or full name. the default is
+# -Theme picks one of the ten Zacess themes by short name (deep-dark, deep-light, hc-dark,
+# hc-light, dark, light, cream, yellow, warm-dark, warm-light),
+# id (deep-contrast-dark) or full name. the default is
 # deep-dark.
 #
 # for every IDE that has been started once: a theme plugin older than the pin is replaced by the
@@ -44,12 +45,14 @@ $themes = @(
     @{ Id = 'light'; Short = 'light'; Name = 'Zacess Light'; Dark = $false }
     @{ Id = 'cream'; Short = 'cream'; Name = 'Zacess Cream'; Dark = $false }
     @{ Id = 'yellow-on-black'; Short = 'yellow'; Name = 'Zacess Yellow on Black'; Dark = $true }
+    @{ Id = 'warm-dark'; Short = 'warm-dark'; Name = 'Zacess Warm Dark'; Dark = $true }
+    @{ Id = 'warm-light'; Short = 'warm-light'; Name = 'Zacess Warm Light'; Dark = $false }
 )
 $key = ($Theme.Trim().ToLowerInvariant() -replace ' ', '-') -replace '^zacess-', ''
 $wanted = $themes | Where-Object { $_.Id -eq $key -or $_.Short -eq $key } | Select-Object -First 1
 if (-not $wanted) {
     [Console]::Error.WriteLine("Unknown theme: $Theme")
-    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream or yellow.')
+    [Console]::Error.WriteLine('Pick one of deep-dark, deep-light, hc-dark, hc-light, dark, light, cream, yellow, warm-dark or warm-light.')
     exit 1
 }
 

@@ -1,6 +1,6 @@
 # microchip-studio
 
-Microchip Studio 7 fonts and colours: the eight Zacess themes converted for it, with Geist Mono in the editor and the output windows.
+Microchip Studio 7 fonts and colours: the ten Zacess themes converted for it, with Geist Mono in the editor and the output windows.
 
 Microchip Studio (formerly Atmel Studio) is the Visual Studio 2015 shell with Microchip's AVR and SAM tools. It is Windows only. On macOS and Linux the route is MPLAB X, which is not set up here yet.
 
@@ -21,7 +21,7 @@ Comments are not italic: Visual Studio 2015 has no italic style.
 [`themes/`](themes/) holds one `.vssettings` file per Zacess theme, built by [`scripts/build-themes.py`](scripts/build-themes.py) from the Zacess Themes `.vsix`. Each file holds only the Fonts and Colors category, so importing it changes nothing else. Rebuild after a Zacess Themes release:
 
 ```bash
-python scripts/build-themes.py zacess-themes-0.5.0.vsix
+python scripts/build-themes.py zacess-themes-1.0.0.vsix
 ```
 
 ## Apply

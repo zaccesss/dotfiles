@@ -8,6 +8,18 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+## [2.11.0] - 2026-11-08
+
+### Added
+
+- Eight custom Zacess Scenes in `apps/zacess-scenes/scenes`, drawn as Lua pixel scenes with scrolling captions: hello-isaac, now-building, lidarsat, scope, phaemos, build-passed, build-failed and football, where BUILD FC scores when the build passes and the shot hits the post or lands in the keeper's hands when it fails. The setup scripts link them into the scenes folder on every machine. `scenes.toml` plays the new pass scenes (rocket launch, pit stop, PCB bring-up, drone landing, kettle boil) and fail scenes (launch scrub, stuck pit stop, dead LED, landing abort, cold kettle) alongside the custom ones.
+- Zacess Warm Dark and Zacess Warm Light, the gentler pair held to WCAG AA (4.5:1), join the eight themes, so `zt warm-dark`, `zt warm-light` and `termtheme warm-dark` work on macOS, Linux, WSL and Windows. The terminal palette takes both from Zacess Themes and `build-themes.py` writes them for Terminal.app, iTerm2, Ghostty, Kitty, Alacritty, Windows Terminal, Ptyxis, GNOME Terminal, tmux, btop and nano, measuring each theme against its own text floor. KiCad, Processing, Vivado, Nextpad++, Notepad++, LTspice, MATLAB, Microchip Studio, Proteus, Thonny, Eclipse, STM32CubeIDE, Zed and Zotero carry both themes. Every apply script accepts the two short names. VS Code, Arduino IDE, the JetBrains IDEs, Neovim, Obsidian and Xcode take them once their packages move to the Zacess Themes release that ships them.
+
+### Changed
+
+- Every theme pin moves to Zacess Themes 1.0.0, the release that brings Zacess Warm Dark and Zacess Warm Light into every store and package. The JetBrains, Arduino IDE, Zed and Obsidian packages take their new digests, along with the VS Code extension list, zacess.nvim and the terminal palette version. The Arduino package lists all ten themes and the Obsidian package installs a fifth theme, Zacess Warm, which `themes.json` maps to the two warm looks. The Zed theme file and the Eclipse themes are copied from the release again. The Nextpad++, KiCad, Processing and Vivado builds read the 1.0.0 palette by its digest. The STM32CubeIDE, MATLAB, Proteus, Thonny, LTspice, Microchip Studio and Notepad++ themes are rebuilt from the release. The Arduino and Obsidian checks now expect ten themes. The Processing and Vivado checks hold syntax on the current line to 4.5:1, the rule Zacess Themes 0.6.0 sets, in place of 7:1.
+- The demo screenshots and clips for the macOS and Linux shell, lazygit, fzf, the terminal, tmux, Neovim and the git hooks are recorded again from the current setup. The shell, lazygit, fzf and git hook scenes gain Warm Dark and Warm Light versions. A new shot of the whole setup in one tmux session, with Neovim across the top and a shell, btop and a Zacess Scenes scene along the bottom, heads the root README and the tmux README. Two more shots in the same layout show a build that passes and one that fails, with Zacess Scenes watch mode beside each: the garden under its ALL GOOD banner and the storm under its FAILED banner with the error lines. They sit side by side below the main shot in the root README. All three are recorded in Deep Contrast Light as well and the READMEs show the light or dark shot to match the system theme.
+
 ### Fixed
 
 - Starship no longer prints `Executing command ... timed out` on a slow first prompt: `command_timeout` is 2000 ms on macOS, Linux and Windows, up from the 500 ms default.

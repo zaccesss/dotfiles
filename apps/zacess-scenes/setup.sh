@@ -3,11 +3,11 @@ set -euo pipefail
 
 # sets up Zacess Scenes on macOS and Linux: puts the newest release binary in ~/.local/bin after
 # checking it against its published checksum, installs bacon for watch mode with cargo and links
-# scenes.toml into the config folder. Safe to run again. The theme needs nothing here: Scenes reads
-# the one zt last set.
+# scenes.toml and my Lua scenes into the config folder. Safe to run again. The theme needs nothing
+# here: Scenes reads the one zt last set.
 #
-#   bash apps/zacess-scenes/setup.sh            install or update, then link the config
-#   bash apps/zacess-scenes/setup.sh --link     only link the config
+#   bash apps/zacess-scenes/setup.sh            install or update, then link the config and scenes
+#   bash apps/zacess-scenes/setup.sh --link     only link the config and scenes
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
 REPO="zacesshq/scenes"
@@ -28,6 +28,27 @@ link_config() {
     fi
     ln -sfn "$HERE/scenes.toml" "$target"
     printf 'Linked %s\n' "$target"
+}
+
+# each of my Lua scenes is linked on its own, so a scene started with zs new stays in the folder
+# beside them and an edit here shows up at the next start without running this again
+link_scenes() {
+    local scene name target bin
+    for scene in "$HERE"/scenes/*.lua; do
+        [ -e "$scene" ] || continue
+        name="$(basename "$scene")"
+        target="$CONFIG_DIR/scenes/$name"
+        if [ -e "$target" ] && [ ! -L "$target" ]; then
+            # a scene of the same name made by hand goes to the Bin rather than being overwritten
+            bin="$HOME/.Trash"
+            [ -d "$bin" ] || bin="${XDG_DATA_HOME:-$HOME/.local/share}/Trash/files"
+            mkdir -p "$bin"
+            mv "$target" "$bin/$name.$(date +%Y%m%d%H%M%S)"
+            printf 'Moved the old %s to the Bin.\n' "$target"
+        fi
+        ln -sfn "$scene" "$target"
+    done
+    printf 'Linked the Lua scenes into %s\n' "$CONFIG_DIR/scenes"
 }
 
 # the release target for this machine, as the release files name it
@@ -100,3 +121,4 @@ if [ "${1:-}" != "--link" ]; then
     install_bacon
 fi
 link_config
+link_scenes

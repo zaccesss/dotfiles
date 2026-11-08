@@ -1,12 +1,12 @@
 # notepad-plus-plus
 
-Notepad++ setup: the eight Zacess themes with Geist Mono, used together with Notepad++'s own dark mode. Notepad++ runs on Windows only. On macOS, [Nextpad++](../nextpad-plus-plus/) reads the same theme format.
+Notepad++ setup: the ten Zacess themes with Geist Mono, used together with Notepad++'s own dark mode. Notepad++ runs on Windows only. On macOS, [Nextpad++](../nextpad-plus-plus/) reads the same theme format.
 
 ## What it sets
 
 | Setting | Value | Why |
 | --- | --- | --- |
-| `%APPDATA%\Notepad++\themes\Zacess *.xml` | The eight Zacess themes | All eight show under **Settings > Style Configurator** |
+| `%APPDATA%\Notepad++\themes\Zacess *.xml` | The ten Zacess themes | All ten show under **Settings > Style Configurator** |
 | `DarkMode` `enable` in `config.xml` | `yes` for a dark theme, `no` for a light one | Menus, tabs and dialogs match the editor |
 | `DarkMode` `darkThemeName` or `lightThemeName` | The chosen theme's file | Notepad++ loads that theme whenever it switches to that mode |
 | Default Style font | GeistMono NF at 14 points | Geist Mono's Nerd Font build, under the short name Windows' older font lookup knows |
@@ -31,8 +31,8 @@ The script prints each file and key as `added`, `changed` or `unchanged`. Runnin
 ## Check it worked
 
 1. Start Notepad++. Menus and tabs are dark and the editor is black with Geist Mono in Deep Contrast Dark.
-2. **Settings > Style Configurator** shows the Zacess theme selected, with all eight in the list.
+2. **Settings > Style Configurator** shows the Zacess theme selected, with all ten in the list.
 
 ## Validation
 
-[`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks all eight themes are well-formed XML and their Default Style and Global override use Geist Mono with valid colours.
+[`scripts/validate.py`](scripts/validate.py) runs in CI on Linux. It checks all ten themes are well-formed XML and their Default Style and Global override use Geist Mono with valid colours.

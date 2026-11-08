@@ -9,7 +9,8 @@
 
 ## In action
 
-Screenshots in four Zacess themes, Deep Contrast Dark and Light, Yellow on Black and Cream,
+Screenshots in six Zacess themes, Deep Contrast Dark and Light, Yellow on Black, Cream, Warm Dark
+and Warm Light,
 recorded in a demo project. Each macOS and Linux shot links to a short animation of the same scene.
 
 ### macOS shell
@@ -22,6 +23,10 @@ recorded in a demo project. Each macOS and Linux shot links to a short animation
 | --- | --- |
 | [![Yellow on Black: the welcome banner with a neutral machine name, then gs and glog in a demo project under the Starship prompt](docs/demo/dotfiles-yellow-on-black.webp)](docs/demo/dotfiles-yellow-on-black.gif) | [![Cream: the welcome banner with a neutral machine name, then gs and glog in a demo project under the Starship prompt](docs/demo/dotfiles-cream.webp)](docs/demo/dotfiles-cream.gif) |
 
+| Warm Dark | Warm Light |
+| --- | --- |
+| [![Warm Dark: the welcome banner with a neutral machine name, then gs and glog in a demo project under the Starship prompt](docs/demo/dotfiles-warm-dark.webp)](docs/demo/dotfiles-warm-dark.gif) | [![Warm Light: the welcome banner with a neutral machine name, then gs and glog in a demo project under the Starship prompt](docs/demo/dotfiles-warm-light.webp)](docs/demo/dotfiles-warm-light.gif) |
+
 ### Linux (Ubuntu in OrbStack)
 
 | Deep Contrast Dark | Deep Contrast Light |
@@ -31,6 +36,10 @@ recorded in a demo project. Each macOS and Linux shot links to a short animation
 | Yellow on Black | Cream |
 | --- | --- |
 | [![Yellow on Black: the same dotfiles in bash on Ubuntu: the banner, the numbered topic files and a git log of a demo project](docs/demo/linux-yellow-on-black.webp)](docs/demo/linux-yellow-on-black.gif) | [![Cream: the same dotfiles in bash on Ubuntu: the banner, the numbered topic files and a git log of a demo project](docs/demo/linux-cream.webp)](docs/demo/linux-cream.gif) |
+
+| Warm Dark | Warm Light |
+| --- | --- |
+| [![Warm Dark: the same dotfiles in bash on Ubuntu: the banner, the numbered topic files and a git log of a demo project](docs/demo/linux-warm-dark.webp)](docs/demo/linux-warm-dark.gif) | [![Warm Light: the same dotfiles in bash on Ubuntu: the banner, the numbered topic files and a git log of a demo project](docs/demo/linux-warm-light.webp)](docs/demo/linux-warm-light.gif) |
 
 ### Windows (PowerShell 7 and Command Prompt in Windows Terminal)
 
@@ -42,8 +51,8 @@ recorded in a demo project. Each macOS and Linux shot links to a short animation
 | ![Dark: Command Prompt with the coloured user, machine and folder prompt running the gs macro in a demo project](docs/demo/windows-cmd-dark.webp) | ![Light: Command Prompt with the coloured user, machine and folder prompt running the gs macro in a demo project](docs/demo/windows-cmd-light.webp) |
 
 The shots show the real config in a throwaway demo project, in
-[Zacess Themes](https://github.com/zacesshq/themes) Deep Contrast Dark and Light, Yellow on Black
-and Cream.
+[Zacess Themes](https://github.com/zacesshq/themes) Deep Contrast Dark and Light, Yellow on Black,
+Cream, Warm Dark and Warm Light.
 
 ## About
 

@@ -157,7 +157,7 @@ function termtheme {
     switch ($words[0]) {
         { $_ -in '-h', '--help', 'help' } {
             'Usage: termtheme [<theme>|dark|light|auto [dark] [light]|default|default-dark|default-light|follow]'
-            '  a theme pins every terminal to it (zt list shows the eight), dark and light are the Deep Contrast pair,'
+            '  a theme pins every terminal to it (zt list shows the ten), dark and light are the Deep Contrast pair,'
             '  auto follows Windows, default is each terminal''s own theme and follow hands them back to zt'
             return
         }

@@ -5,7 +5,8 @@
 
 ## In action
 
-Screenshots in four Zacess themes, Deep Contrast Dark and Light, Yellow on Black and Cream,
+Screenshots in six Zacess themes, Deep Contrast Dark and Light, Yellow on Black, Cream, Warm Dark
+and Warm Light,
 recorded in a demo project. Each one links to a short animation of the same scene.
 
 ### lazygit
@@ -18,6 +19,10 @@ recorded in a demo project. Each one links to a short animation of the same scen
 | --- | --- |
 | [![Yellow on Black: lazygit showing two changed files with their diff, the branch and the commit list](docs/demo/lazygit-yellow-on-black.webp)](docs/demo/lazygit-yellow-on-black.gif) | [![Cream: lazygit showing two changed files with their diff, the branch and the commit list](docs/demo/lazygit-cream.webp)](docs/demo/lazygit-cream.gif) |
 
+| Warm Dark | Warm Light |
+| --- | --- |
+| [![Warm Dark: lazygit showing two changed files with their diff, the branch and the commit list](docs/demo/lazygit-warm-dark.webp)](docs/demo/lazygit-warm-dark.gif) | [![Warm Light: lazygit showing two changed files with their diff, the branch and the commit list](docs/demo/lazygit-warm-light.webp)](docs/demo/lazygit-warm-light.gif) |
+
 ### fzf
 
 | Deep Contrast Dark | Deep Contrast Light |
@@ -28,9 +33,13 @@ recorded in a demo project. Each one links to a short animation of the same scen
 | --- | --- |
 | [![Yellow on Black: fzf filtering a project's files for the word colour with the matches highlighted](docs/demo/fzf-yellow-on-black.webp)](docs/demo/fzf-yellow-on-black.gif) | [![Cream: fzf filtering a project's files for the word colour with the matches highlighted](docs/demo/fzf-cream.webp)](docs/demo/fzf-cream.gif) |
 
+| Warm Dark | Warm Light |
+| --- | --- |
+| [![Warm Dark: fzf filtering a project's files for the word colour with the matches highlighted](docs/demo/fzf-warm-dark.webp)](docs/demo/fzf-warm-dark.gif) | [![Warm Light: fzf filtering a project's files for the word colour with the matches highlighted](docs/demo/fzf-warm-light.webp)](docs/demo/fzf-warm-light.gif) |
+
 The shots show the real config in a throwaway demo project, in
-[Zacess Themes](https://github.com/zacesshq/themes) Deep Contrast Dark and Light, Yellow on Black
-and Cream.
+[Zacess Themes](https://github.com/zacesshq/themes) Deep Contrast Dark and Light, Yellow on Black,
+Cream, Warm Dark and Warm Light.
 
 ## What's here
 

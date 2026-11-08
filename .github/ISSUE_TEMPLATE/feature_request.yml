@@ -26,6 +26,7 @@ body:
         - terminal/terminal
         - terminal/tmux
         - terminal/btop
+        - terminal/nano
         - terminal/cli-tools
         - git/gitconfig
         - git/git-hooks
@@ -48,10 +49,15 @@ body:
         - editors/matlab
         - editors/ltspice
         - editors/proteus
+        - editors/nano
         - apps/raycast
         - apps/rectangle
         - apps/obsidian
         - apps/zotero
+        - apps/onedrive
+        - apps/zacess-scenes
+        - apps/zacess-games
+        - apps/translucenttb
         - The repository as a whole (README, CI, templates)
     validations:
       required: true

@@ -7,9 +7,9 @@
 
 [scenes]
 # calm scenes for a passing build, picked in turn
-pass = ["koi-pond", "lanterns", "tea", "winter-cabin", "constellations", "aurora"]
+pass = ["koi-pond", "lanterns", "tea", "winter-cabin", "constellations", "city-night", "aurora", "cat-nap", "mountain-lake", "garden", "balloons", "rocket-launch", "pit-stop", "pcb-bring-up", "drone-landing", "kettle-boil", "build-passed", "football"]
 # slow failure scenes
-fail = ["storm", "flood", "fog"]
+fail = ["storm", "flood", "fog", "tangle", "leak", "short-circuit", "thin-ice", "launch-scrub", "pit-stop-stuck", "dead-led", "landing-abort", "kettle-cold", "build-failed", "football"]
 rotation = "shuffle"
 # minutes before the next scene, in the watch and follow modes and in a scene run on its own
 interval = 5
