@@ -40,6 +40,13 @@ try {
     foreach ($topic in $topics) { . $topic.FullName }
 }
 
+# settings that belong to this machine alone, such as the SSH hosts inodes opens (IDE_NODES). the
+# file lives outside the repository and is never committed, so a host name or an address stays on
+# the machine it is for. it loads after the topics, so it can override anything they set
+$local = Join-Path $HOME '.profile.local.ps1'
+if (Test-Path -LiteralPath $local) { . $local }
+Remove-Variable local
+
 # =============================================================================
 # Welcome banner - printed after all topics load so welcome is defined
 # =============================================================================

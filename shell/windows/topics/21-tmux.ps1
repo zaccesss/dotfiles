@@ -8,6 +8,11 @@
 #   ide [folder]      nvim, a shell, a scene and a lazygit window
 #   idev [folder]     nvim over a shell, the dev server's logs and a scene, plus lazygit
 #   imon [folder]     btop4win beside docker ps and a scene
+#   ifull [folder]    nvim over a shell, btop4win and a scene, plus lazygit
+#   inodes [folder]   one pane for each SSH host in IDE_NODES, tiled
+#   iwrite [folder]   nvim beside a live preview and a scene
+#   idata [folder]    nvim over a Python console, a shell and a scene, plus lazygit
+#   idb [folder]      nvim over a database console, a shell and a scene, plus lazygit
 #   ilab [folder]     nvim over a build shell, a serial monitor shell and a scene
 #   ilog [folder]     two log shells side by side and a scene
 #   iplay [folder]    Zacess Games beside a scene
@@ -232,6 +237,106 @@ function imon {
     }
     _ide_scene $s '-v' '50%'
     _ide_show $s '-L'
+}
+
+# ifull: the whole setup in one window. nvim on top (60 percent) over a row of a shell, btop4win
+# (or btop) and a scene, plus the lazygit window. the middle pane is a plain shell when neither
+# is installed
+function ifull {
+    param([string]$Path = '.')
+    $s = _ide_open 'ifull' '-full' $Path; if (-not $s) { return }; if ($s.Open) { return _ide_show $s }
+    _ide_main $s 'editor'
+    _ide_send $s 'nvim .'
+    _ide_split $s '-v' '40%'
+    # the bottom row is shell 33, btop 33 and scene 34 percent: btop takes 67 percent of the row,
+    # then the scene takes half of that
+    _ide_split $s '-h' '67%'
+    _ide_scene $s '-h' '50%'
+    $top = Get-Command btop4win, btop -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($top) { _ide_send $s $top.Name }
+    _ide_git $s
+    _ide_show $s '-U'
+}
+
+# inodes: every machine at once. one pane for each SSH host named in IDE_NODES (separated by
+# spaces or colons), tiled to fill the window, each already connected
+function inodes {
+    param([string]$Path = '.')
+    $nodes = @("$env:IDE_NODES" -split '[\s:]+' | Where-Object { $_ })
+    if (-not $nodes) {
+        Write-Warning 'inodes: set IDE_NODES to the SSH hosts to open, for example $env:IDE_NODES = "node1 node2 node3 node4"'
+        return
+    }
+    $s = _ide_open 'inodes' '-nodes' $Path; if (-not $s) { return }; if ($s.Open) { return _ide_show $s }
+    _ide_main $s 'nodes'
+    $first = $true
+    foreach ($node in $nodes) {
+        if (-not $first) {
+            _ide_split $s '-h' '50%'
+            # tiled after every split, so a fifth or sixth pane still has room to open
+            _psmux_out select-layout -t $s.Pane tiled
+        }
+        _ide_send $s "ssh $node"
+        $first = $false
+    }
+    _ide_show $s
+}
+
+# iwrite: writing. nvim on the left (60 percent) beside a live preview over a scene. the preview
+# runs npm run dev when package.json has a dev script, glow for a folder of Markdown when it is
+# installed and is a plain shell otherwise
+function iwrite {
+    param([string]$Path = '.')
+    $s = _ide_open 'iwrite' '-write' $Path; if (-not $s) { return }; if ($s.Open) { return _ide_show $s }
+    _ide_main $s 'write'
+    _ide_send $s 'nvim .'
+    _ide_split $s '-h' '40%'
+    _ide_scene $s '-v' '30%'
+    $scripts = _ide_scripts $s
+    if ($scripts.dev) {
+        _ide_send $s 'npm run dev'
+    } elseif (Get-Command glow -ErrorAction SilentlyContinue) {
+        _ide_send $s 'glow .'
+    }
+    _ide_show $s '-L'
+}
+
+# idata: data and machine learning. nvim on top (60 percent) over a row of a Python console
+# (ipython when it is installed), a shell and a scene, plus the lazygit window
+function idata {
+    param([string]$Path = '.')
+    $s = _ide_open 'idata' '-data' $Path; if (-not $s) { return }; if ($s.Open) { return _ide_show $s }
+    _ide_main $s 'editor'
+    _ide_send $s 'nvim .'
+    _ide_split $s '-v' '40%'
+    $python = Get-Command ipython, python -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($python) { _ide_send $s $python.Name }
+    # the bottom row is console 40, shell 36 and scene 24 percent
+    _ide_split $s '-h' '60%'
+    _ide_scene $s '-h' '40%'
+    _ide_git $s
+    _ide_show $s '-U'
+}
+
+# idb: database work. nvim on top (60 percent) over a row of a database console, a shell and a
+# scene, plus the lazygit window. the console runs lazysql when it is installed, php artisan db in
+# a Laravel project and is a plain shell otherwise
+function idb {
+    param([string]$Path = '.')
+    $s = _ide_open 'idb' '-db' $Path; if (-not $s) { return }; if ($s.Open) { return _ide_show $s }
+    _ide_main $s 'editor'
+    _ide_send $s 'nvim .'
+    _ide_split $s '-v' '40%'
+    if (Get-Command lazysql -ErrorAction SilentlyContinue) {
+        _ide_send $s 'lazysql'
+    } elseif (Test-Path -LiteralPath (Join-Path $s.Dir 'artisan')) {
+        _ide_send $s 'php artisan db'
+    }
+    # the bottom row is console 50, shell 30 and scene 20 percent
+    _ide_split $s '-h' '50%'
+    _ide_scene $s '-h' '40%'
+    _ide_git $s
+    _ide_show $s '-U'
 }
 
 # ilab: embedded and lab work. nvim on top (65 percent) over a row of a build shell ready for make
