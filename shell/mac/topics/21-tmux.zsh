@@ -7,6 +7,11 @@
 #   ide [folder]      Neovim, a shell, a scene and a lazygit window
 #   idev [folder]     Neovim over a shell, the dev server's logs and a scene, plus lazygit
 #   imon [folder]     btop beside docker ps and a scene
+#   ifull [folder]    Neovim over a shell, btop and a scene, plus lazygit
+#   inodes [folder]   one pane for each SSH host in IDE_NODES, tiled
+#   iwrite [folder]   Neovim beside a live preview and a scene
+#   idata [folder]    Neovim over a Python console, a shell and a scene, plus lazygit
+#   idb [folder]      Neovim over a database console, a shell and a scene, plus lazygit
 #   ilab [folder]     Neovim over a build shell, a serial monitor shell and a scene
 #   ilog [folder]     two log shells side by side and a scene
 #   iplay [folder]    Zacess Games beside a scene
@@ -208,6 +213,117 @@ imon() {
     fi
     _ide_scene "$side" -v 50%
     _ide_show "$monitor"
+}
+
+# ifull: the whole setup in one window. Neovim on top (60 percent) over a row of a shell, btop
+# (or else htop or top) and a scene, plus the lazygit window. btop opens on its third preset, the
+# processor and the network, which is what fits a pane this narrow
+ifull() {
+    local dir name width height editor shell monitor
+    _ide_open ifull -full "$1" || { [ $? -eq 2 ] && _ide_show; return; }
+    editor="$(_ide_main editor)"
+    tmux send-keys -t "$editor" 'nvim .' Enter
+    shell="$(_ide_split "$editor" -v 40%)"
+    # the bottom row is shell 33, btop 33 and scene 34 percent: btop takes 67 percent of the row,
+    # then the scene takes half of that
+    monitor="$(_ide_split "$shell" -h 67%)"
+    _ide_scene "$monitor" -h 50%
+    if command -v btop >/dev/null 2>&1; then
+        tmux send-keys -t "$monitor" 'btop -p 3' Enter
+    elif command -v htop >/dev/null 2>&1; then
+        tmux send-keys -t "$monitor" htop Enter
+    else
+        tmux send-keys -t "$monitor" top Enter
+    fi
+    _ide_git
+    _ide_show "$editor"
+}
+
+# inodes: every machine at once. One pane for each SSH host named in IDE_NODES (separated by
+# spaces or colons), tiled to fill the window, each already connected. The session is named after
+# the folder like the others, so one project can keep its own set of machines open
+inodes() {
+    local dir name width height first pane host count
+    if [ -z "$IDE_NODES" ]; then
+        printf 'inodes: set IDE_NODES to the SSH hosts to open, for example IDE_NODES="node1 node2 node3 node4"\n' >&2
+        return 1
+    fi
+    _ide_open inodes -nodes "$1" || { [ $? -eq 2 ] && _ide_show; return; }
+    first="$(_ide_main nodes)"
+    count=0
+    # read line by line, since zsh does not split a plain variable into words as bash does
+    printf '%s\n' "$IDE_NODES" | tr -s ' :' '\n' | while read -r host; do
+        [ -n "$host" ] || continue
+        if [ "$count" -eq 0 ]; then
+            pane="$first"
+        else
+            pane="$(_ide_split "$first" -h 50%)"
+            # tiled after every split, so a fifth or sixth pane still has room to open
+            tmux select-layout -t "$first" tiled >/dev/null
+        fi
+        tmux send-keys -t "$pane" "ssh $host" Enter
+        count=$((count + 1))
+    done
+    _ide_show "$first"
+}
+
+# iwrite: writing. Neovim on the left (60 percent) beside a live preview over a scene. The preview
+# runs npm run dev when package.json has a dev script, so a site shows the page being written,
+# glow for a folder of Markdown when it is installed and is a plain shell otherwise
+iwrite() {
+    local dir name width height editor side
+    _ide_open iwrite -write "$1" || { [ $? -eq 2 ] && _ide_show; return; }
+    editor="$(_ide_main write)"
+    tmux send-keys -t "$editor" 'nvim .' Enter
+    side="$(_ide_split "$editor" -h 40%)"
+    _ide_scene "$side" -v 30%
+    if [ -f "$dir/package.json" ] && grep -q '"dev"[[:space:]]*:' "$dir/package.json"; then
+        tmux send-keys -t "$side" 'npm run dev' Enter
+    elif command -v glow >/dev/null 2>&1; then
+        tmux send-keys -t "$side" 'glow .' Enter
+    fi
+    _ide_show "$editor"
+}
+
+# idata: data and machine learning. Neovim on top (60 percent) over a row of a Python console
+# (ipython when it is installed), a shell and a scene, plus the lazygit window
+idata() {
+    local dir name width height editor console shell
+    _ide_open idata -data "$1" || { [ $? -eq 2 ] && _ide_show; return; }
+    editor="$(_ide_main editor)"
+    tmux send-keys -t "$editor" 'nvim .' Enter
+    console="$(_ide_split "$editor" -v 40%)"
+    # the bottom row is console 40, shell 36 and scene 24 percent
+    shell="$(_ide_split "$console" -h 60%)"
+    _ide_scene "$shell" -h 40%
+    if command -v ipython >/dev/null 2>&1; then
+        tmux send-keys -t "$console" ipython Enter
+    elif command -v python3 >/dev/null 2>&1; then
+        tmux send-keys -t "$console" python3 Enter
+    fi
+    _ide_git
+    _ide_show "$editor"
+}
+
+# idb: database work. Neovim on top (60 percent) over a row of a database console, a shell and a
+# scene, plus the lazygit window. The console runs lazysql when it is installed, php artisan db in
+# a Laravel project and is a plain shell otherwise, since which database to open differs per project
+idb() {
+    local dir name width height editor console shell
+    _ide_open idb -db "$1" || { [ $? -eq 2 ] && _ide_show; return; }
+    editor="$(_ide_main editor)"
+    tmux send-keys -t "$editor" 'nvim .' Enter
+    console="$(_ide_split "$editor" -v 40%)"
+    # the bottom row is console 50, shell 30 and scene 20 percent
+    shell="$(_ide_split "$console" -h 50%)"
+    _ide_scene "$shell" -h 40%
+    if command -v lazysql >/dev/null 2>&1; then
+        tmux send-keys -t "$console" lazysql Enter
+    elif [ -f "$dir/artisan" ]; then
+        tmux send-keys -t "$console" 'php artisan db' Enter
+    fi
+    _ide_git
+    _ide_show "$editor"
 }
 
 # ilab: embedded and lab work. Neovim on top (65 percent) over a row of a build shell ready for

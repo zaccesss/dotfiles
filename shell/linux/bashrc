@@ -23,6 +23,12 @@ for _f in "$DOTFILES/linux/topics/"*.sh; do
 done
 unset _f
 
+# settings that belong to this machine alone, such as the SSH hosts inodes opens (IDE_NODES). The
+# file lives outside the repository and is never committed, so a host name or an address stays on
+# the machine it is for. It loads after the topics, so it can override anything they set
+# shellcheck disable=SC1091
+[[ -f "$HOME/.bashrc.local" ]] && source "$HOME/.bashrc.local"
+
 # =============================================================================
 # Welcome banner - printed after all topics load so colour variables are ready
 # =============================================================================

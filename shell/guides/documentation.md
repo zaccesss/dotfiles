@@ -8,6 +8,7 @@ Detailed technical reference for this dotfiles repo. This covers how the loader 
 
 - [Architecture](#architecture)
 - [Loader mechanics](#loader-mechanics)
+- [Machine-only settings](#machine-only-settings)
 - [Navigation](#navigation)
 - [Git](#git)
 - [Repo management](#repo-management)
@@ -113,6 +114,24 @@ Get-ChildItem "$env:DOTFILES\windows\topics\*.ps1" | Sort-Object Name | ForEach-
 Files are loaded in numerical order (01 before 02, etc.). A higher-numbered file can override an alias defined in a lower-numbered file. See [Alias conflict rules](#alias-conflict-rules) for the known intentional cases.
 
 ---
+
+## Machine-only settings
+
+Each shell loads one more file after its topics when the file exists. It lives outside the repository and is never committed, so a host name, an address or a path that belongs to one machine stays on that machine.
+
+| Shell | File |
+| --- | --- |
+| zsh on macOS and Linux | `~/.zshrc.local` |
+| bash on Linux | `~/.bashrc.local` |
+| PowerShell on Windows | `~/.profile.local.ps1` |
+
+For example, the hosts `inodes` opens:
+
+```sh
+export IDE_NODES="host-one host-two host-three host-four"
+```
+
+On Windows the same line is `$env:IDE_NODES = "host-one host-two host-three host-four"`.
 
 ## Navigation
 
@@ -637,6 +656,11 @@ in the session when Zacess Scenes is installed. The focus starts on the main pan
 | `ide [folder]` | Neovim, a shell, a scene and a lazygit window |
 | `idev [folder]` | Neovim over a shell, the dev server's logs (`npm run dev` or `php artisan serve`) and a scene, plus lazygit |
 | `imon [folder]` | btop (btop4win on Windows) beside `docker ps` and a scene |
+| `ifull [folder]` | The whole setup in one window: Neovim over a shell, btop (btop4win on Windows) and a scene, plus lazygit |
+| `inodes [folder]` | One pane for each SSH host in `IDE_NODES` (separated by spaces or colons), tiled and already connected |
+| `iwrite [folder]` | Neovim beside a live preview (`npm run dev` for a site and glow for a folder of Markdown) and a scene |
+| `idata [folder]` | Neovim over a Python console (ipython when installed), a shell and a scene, plus lazygit |
+| `idb [folder]` | Neovim over a database console (lazysql when installed and `php artisan db` in a Laravel project otherwise), a shell and a scene, plus lazygit |
 | `ilab [folder]` | Neovim over a build shell, a serial monitor shell and a scene |
 | `ilog [folder]` | Two log shells side by side and a scene |
 | `iplay [folder]` | Zacess Games beside a scene |

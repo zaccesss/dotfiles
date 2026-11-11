@@ -8,6 +8,11 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+### Added
+
+- A machine-only settings file that each shell loads after its topics when it exists: `~/.zshrc.local`, `~/.bashrc.local` on Linux bash and `~/.profile.local.ps1` on Windows. It is never committed, so a host name or an address stays on the machine it is for. `IDE_NODES` for `inodes` goes there.
+- Five project layouts on macOS, Linux and Windows. `ifull` is the whole setup in one window: Neovim over a shell, btop and a scene, plus the lazygit window. It is the layout in the tmux README's picture, which no command opened before. `inodes` opens one tiled pane for each SSH host in `IDE_NODES`. `iwrite` is Neovim beside a live preview. `idata` is Neovim over a Python console and a shell. `idb` is Neovim over a database console and a shell.
+
 ## [2.11.0] - 2026-11-08
 
 ### Added
