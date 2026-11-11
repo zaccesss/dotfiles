@@ -8,6 +8,8 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+## [2.12.0] - 2026-11-11
+
 ### Added
 
 - A machine-only settings file that each shell loads after its topics when it exists: `~/.zshrc.local`, `~/.bashrc.local` on Linux bash and `~/.profile.local.ps1` on Windows. It is never committed, so a host name or an address stays on the machine it is for. `IDE_NODES` for `inodes` goes there.
