@@ -367,7 +367,9 @@ function _cachedInit {
     $sources = @($Exe) + @($DependsOn | Where-Object { Test-Path $_ })
     $newest = ($sources | ForEach-Object { (Get-Item $_).LastWriteTime } | Measure-Object -Maximum).Maximum
     if (-not (Test-Path $file) -or (Get-Item $file).LastWriteTime -lt $newest) {
-        $script = & $Exe @InitArgs | Out-String
+        # Smart App Control can refuse to start an unsigned tool (zoxide from winget is one), which
+        # is a terminating error that would print at the top of every new shell until it is allowed
+        try { $script = & $Exe @InitArgs | Out-String } catch { return }
         # an empty result (the tool failed) is never saved, so the next start tries again
         if (-not $script.Trim()) { return }
         if ($Transform) { $script = & $Transform $script }
