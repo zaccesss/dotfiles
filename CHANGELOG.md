@@ -8,6 +8,10 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+### Fixed
+
+- The scene pane in every tmux layout starts again. Zacess Scenes 1.1.0 refuses a general scene in the `fail` list, so `football` there made `zacess-scenes follow` exit at once with `the fail scene list names football, a general scene; it takes fail scenes.` It stays in the `pass` list.
+
 ## [2.12.0] - 2026-11-11
 
 ### Added

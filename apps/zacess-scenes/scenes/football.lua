@@ -11,8 +11,8 @@
 -- time of each result from ctx.clock and paints with the pixel canvas; on an older Zacess Scenes
 -- without them it leaves the times out and draws the same shapes in half-block characters.
 --
--- the score only carries over between a pass and a fail when the watch mode keeps this scene for
--- both, as with zw --scene football --fail-scene football
+-- Zacess Scenes 1.1.0 refuses a general scene as a fail scene, so the watch mode shows this one
+-- only while the build passes and a fail scene takes over when it fails
 
 -- seconds a pass takes at standard motion, then how long a player keeps the ball before the next
 local PASS_TIME = 1.4
