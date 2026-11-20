@@ -9,7 +9,8 @@ Every IDE that has been started once has a config folder under ~/Library/Applica
 - the Zacess Themes plugin is installed when it is missing, with the IDE's own `installPlugins`
   command (the launcher comes from the IDE's product-info.json); with no launcher found or when
   that command leaves nothing behind, the pinned release in theme-package.json is checked against
-  its digest and unpacked into <config>/plugins
+  its digest and unpacked into <config>/plugins. An older copy, in <config>/plugins or (Linux) in the
+  Marketplace folder ~/.local/share/JetBrains/<IDE>, is replaced in place by the pinned release
 - the colour schemes, file template, custom keymap and the two font files from this folder are
   copied in, byte for byte
 - the custom keymap is made the active one (options/<os>/keymap.xml) once the VSCode keymap
@@ -128,9 +129,15 @@ def plugin_ids(plugins):
     return ids
 
 
-def theme_plugin_version(d):
-    """The version of the Zacess Themes plugin in d's plugins/ folder (None when it is not there)."""
-    for jar in sorted((d / "plugins" / PACKAGE["folder"] / "lib").glob("*.jar")):
+def theme_plugin_places(d):
+    # <config>/plugins holds the pinned release on both systems and the Marketplace copy on macOS. On Linux the
+    # Marketplace puts plugins in ~/.local/share/JetBrains/<IDE> instead, outside the config folder
+    return [d / "plugins" / PACKAGE["folder"], HOME / ".local" / "share" / "JetBrains" / d.name / PACKAGE["folder"]]
+
+
+def theme_plugin_version(folder):
+    """The version of the Zacess Themes plugin unpacked in folder (None when it is not there)."""
+    for jar in sorted((folder / "lib").glob("*.jar")):
         try:
             with zipfile.ZipFile(jar) as archive:
                 manifest = archive.read("META-INF/plugin.xml").decode("utf-8", "replace")
@@ -143,8 +150,7 @@ def theme_plugin_version(d):
 
 
 def has_theme_plugin(d):
-    places = [d / "plugins" / PACKAGE["folder"], HOME / ".local" / "share" / "JetBrains" / d.name / PACKAGE["folder"]]
-    return any(p.is_dir() for p in places) or PACKAGE["id"] in plugin_ids(d / "plugins")
+    return any(p.is_dir() for p in theme_plugin_places(d)) or PACKAGE["id"] in plugin_ids(d / "plugins")
 
 
 release = None
@@ -247,17 +253,19 @@ if not PROJECTS.is_dir():
     print(f"  added      folder  {PROJECTS}")
 for d in dirs:
     info = infos.get(d.name, (None, None))[0]
-    installed = theme_plugin_version(d)
-    if installed is not None and installed != PACKAGE["version"]:
-        # an older copy in plugins/ is never updated by the IDE when it came from the pinned release,
-        # so it is replaced by the pinned one. the IDE loads it on its next start
-        shutil.rmtree(d / "plugins" / PACKAGE["folder"])
+    stale = [(p, v) for p in theme_plugin_places(d) if (v := theme_plugin_version(p)) not in (None, PACKAGE["version"])]
+    for folder, installed in stale:
+        # the IDE never updates a copy that came from the pinned release. A Marketplace copy waits for an update
+        # to be accepted inside the IDE. Either is replaced in place by the pinned one, loaded on the next start
         with zipfile.ZipFile(io.BytesIO(pinned_release())) as archive:
-            archive.extractall(d / "plugins")
-        print(f"  changed    {d.name}  plugins/{PACKAGE['folder']} {installed} to {PACKAGE['version']} (restart the IDE to load it)")
-    elif has_theme_plugin(d):
+            if not all(name.startswith(PACKAGE["folder"] + "/") for name in archive.namelist()):
+                sys.exit("The Zacess Themes release zip does not unpack into its own folder, so it was not installed")
+            shutil.rmtree(folder)
+            archive.extractall(folder.parent)
+        print(f"  changed    {d.name}  {folder} {installed} to {PACKAGE['version']} (restart the IDE to load it)")
+    if not stale and has_theme_plugin(d):
         print(f"  unchanged  {d.name}  plugins/{PACKAGE['folder']}")
-    else:
+    elif not stale:
         install_theme_plugin(d, infos)
     for scheme in sorted((FOLDER / "colors").glob("*.icls")):
         copy_file(d, scheme, f"colors/{scheme.name}")

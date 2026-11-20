@@ -8,6 +8,10 @@ A patch step for fixes, a minor step for additions and a major step when the lay
 
 ## [Unreleased]
 
+### Fixed
+
+- The JetBrains apply script brings an older Zacess Themes plugin up to the pinned release on Linux. The Marketplace installs plugins there in `~/.local/share/JetBrains/<IDE>`, outside the config folder. The script read the version only from the config folder's `plugins`, so a Marketplace copy was reported as unchanged at any version and could stay on a release without the Warm themes. The script now reads both places and replaces an older copy in the one that holds it.
+
 ## [2.13.0] - 2026-11-19
 
 ### Fixed
